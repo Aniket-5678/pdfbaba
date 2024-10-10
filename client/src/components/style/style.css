@@ -1,0 +1,3552 @@
+
+
+
+.navbar-container{
+    display: flex;
+    width: 100%;
+    height: 75px;
+    border: 1px solid white;
+    position: fixed;
+    top: 0;
+    left: 0;
+     z-index: 1000;
+     background-color: white; /* White background for the navbar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle box shadow effect */
+
+}
+
+
+.nav-img{
+  margin-top: 8px;
+}
+
+
+.nav-main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.nav-logo{
+    margin: 0px 20px;
+}
+.nav-seacrh-input{
+    margin: 0px 15px;
+}
+
+.nav-link{
+    margin: 0px 15px;
+}
+
+.nav-home{
+  text-decoration: none;
+  color: black;
+  font-size: 1.1rem;
+}
+.nav-1{
+    text-decoration: none;
+    color: white;
+    font-size: 0.8rem;
+    margin: 0px 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(0, 86, 179, 1) 100%);
+    background-clip: padding-box;
+    
+}
+
+.nav-1:hover {
+    background: linear-gradient(135deg, #50E3C2, #4A90E2);
+}
+.nav-2{
+    text-decoration: none;
+    color: white;
+    font-size: 0.8rem;
+    margin: 0px 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #F5A623, #F8E71C); /* Gradient background for nav-2 */
+    transition: background 0.3s ease;
+}
+
+.nav-2:hover {
+    background: linear-gradient(135deg, #F8E71C, #F5A623);
+}
+
+.nav-link-main{
+  display: flex;
+  align-items: center;
+  margin: 0px 60px;
+}
+/* Dropdown Button */
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background: none; /* No background color */
+  color: #232f3e; /* Text color */
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 5px;
+  position: relative; /* For positioning the arrow */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.dropdown-btn:hover {
+  color: #1b2a36; /* Darker color on hover */
+}
+
+/* Dropdown Arrow */
+.dropdown-btn::after {
+  content: '';
+  border: 5px solid transparent;
+  border-top-color: #232f3e; /* Arrow color */
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* So the arrow doesn't block clicks */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 100%; /* Align with the bottom of the button */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  width: 200px; /* Adjust width as needed */
+  z-index: 2000;
+  background-color: white;
+  max-height: 200px; /* Set a maximum height */
+  overflow-y: auto; /* Enable vertical scrolling */
+
+  /* Custom Scrollbar */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #4A90E2 #f0f0f0; /* Scroll thumb and track colors */
+}
+
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background-color: #4A90E2; /* Scroll thumb color */
+  border-radius: 10px; /* Rounded corners for the scroll thumb */
+  border: 2px solid #f0f0f0; /* Creates space around the thumb */
+}
+
+/* Show Dropdown Menu */
+.dropdown-menu.show {
+  display: block;
+}
+
+/* Dropdown Items */
+.dropdown-menu a {
+  text-decoration: none;
+  color: #232f3e;
+  padding: 10px 15px;
+  display: block;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f5f5f5; /* Light background on hover */
+}
+
+
+.dropbtn {
+  display: flex;
+  padding: 0px 20px;
+  background-color: #232f3e;
+  color: white;
+  border: 1px solid #232f3e;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border-radius: 17px;
+}
+
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%; /* Align with the bottom of the button */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  width: 130px; /* Adjust width as needed */
+  z-index: 2000;
+  background-color: white;
+  max-height: 200px; /* Set a maximum height */
+  overflow-y: auto;
+}
+
+.nav-dashboard {
+  text-decoration: none;
+  color: #232f3e;
+  font-size: 1.1rem;
+}
+
+.nav-link-logout {
+  display: flex;
+  color: black;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.nav-h2{
+  text-decoration: none;
+  color: grey;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  font-size: 1.8rem;
+  color: grey;
+}
+
+/* Styling for the open navigation menu */
+.nav-link-main.open {
+  display: block; /* Display the menu as a block */
+  position: absolute; /* Position it relative to the navbar */
+  top: 75px; /* Offset to prevent overlapping with the navbar */
+  left: 0;
+  right: 0;
+  background-color: #f0f4f8; /* Light blue-grey background for contrast */
+  padding: 20px; /* Adequate padding around menu items */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  z-index: 2000; /* Ensure it appears above other content */
+  border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+  transition: all 0.3s ease-in-out; /* Smooth transition for menu toggle */
+  
+  /* Optional: Add a fade-in effect */
+  opacity: 0;
+  visibility: hidden;
+}
+
+.nav-link-main.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Styling for the nav links inside the open menu */
+.nav-link-main.open .nav-link,
+.nav-link-main.open .dropdown-btn,
+.nav-link-main.open .about-nav,
+.nav-link-main.open .contact-nav {
+  display: block; /* Ensure links are block-level for full clickable area */
+  padding: 12px 20px; /* Spacing around links */
+  margin: 8px 0; /* Vertical spacing between links */
+  color: #1a202c; /* Dark text for readability */
+  text-decoration: none; /* Remove underline from links */
+  border-radius: 6px; /* Slightly rounded corners */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effects */
+  font-size: 1rem; /* Consistent font size */
+  font-weight: 500; /* Slightly bold for prominence */
+}
+
+/* Hover and Focus effects for nav links */
+.nav-link-main.open .nav-link:hover,
+.nav-link-main.open .nav-link:focus,
+.nav-link-main.open .dropdown-btn:hover,
+.nav-link-main.open .dropdown-btn:focus,
+.nav-link-main.open .about-nav:hover,
+.nav-link-main.open .about-nav:focus,
+.nav-link-main.open .contact-nav:hover,
+.nav-link-main.open .contact-nav:focus {
+  background-color: #e2e8f0; /* Light background on hover */
+  color: #2d3748; /* Darker text color for emphasis */
+  cursor: pointer; /* Pointer cursor to indicate interactivity */
+  outline: none; /* Remove default focus outline */
+}
+
+/* Accessibility: Add focus styles for keyboard navigation */
+.nav-link-main.open .nav-link:focus,
+.nav-link-main.open .dropdown-btn:focus,
+.nav-link-main.open .about-nav:focus,
+.nav-link-main.open .contact-nav:focus {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6); /* Custom focus outline */
+  background-color: #e2e8f0; /* Consistent with hover state */
+  color: #2d3748; /* Consistent with hover state */
+}
+
+
+
+
+.about-nav{
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: black;
+  padding: 0px 15px;
+}
+
+.contact-nav{
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: black;
+  padding: 0px 15px;
+}
+
+
+.pdfbaba-logo{
+  height: 30px;
+}
+
+
+/* Search Container */
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 2px 25px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 450px; /* Adjust max width as needed */
+}
+
+/* Search Input */
+.search-input {
+  border: none;
+  outline: none;
+  padding: 10px;
+  flex: 1;
+  font-size: 1rem;
+  background-color: transparent;
+  color: #333;
+  width: 100%; /* Ensure the input takes full width of the container */
+  max-width: 400px; /* Adjust max width as needed */
+}
+
+
+.search-input::placeholder {
+  font-family: 'Poppins', sans-serif; /* Modern lightweight font */
+  font-weight: 300; /* Light weight for placeholder text */
+  font-size: 14px; /* Balanced size */
+  color: #888; /* Soft grey color */
+}
+
+/* Clear Button */
+.clear-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+
+
+/* Search Button */
+.search-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+/* Search Results Dropdown */
+.search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0; /* Align results dropdown with input */
+  z-index: 1000;
+  max-height: 300px;
+  margin: 10px 0px;
+  overflow-y: auto;
+}
+
+/* Search Result Item */
+.search-result-item {
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.search-result-item a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+.search-result-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* Highlighted Search Result */
+.highlighted {
+  background-color: #007bff;
+  color: white;
+}
+
+/* No Results Message */
+.no-results {
+  margin-top: 10px; /* No extra margin needed */
+  padding: 10px 0px;
+  color: #aaa;
+  font-size: 0.9rem;
+  text-align: center;
+  background-color: #fff; /* Match input background */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 100%; /* Position below the input field */
+  left: 0; /* Align with the input field */
+  width: 100%; /* Match width of the input field */
+}
+
+
+
+
+
+/* Singup css */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .signup-main {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+  }
+  
+  .signup-main h3 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .signup-input {
+    width: 310px;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .signup-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .signup-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-link,
+  .forget-pass-link {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .login-link:hover,
+  .forget-pass-link:hover {
+    text-decoration: underline;
+  }
+
+
+
+  /* admin menu css*/
+  .adminmenu-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 100px 0px;
+  }
+
+  .admin-menu-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #007bff;
+    width: 300px;
+    height: 200px;
+    background-color: #007bff;
+    border-radius: 8px;
+  }
+
+
+  .admin-dash-container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-text{
+    display: flex;
+     align-items: center;
+     justify-content: center;
+     margin: 20px 0px;
+  }
+  .admin-menu-link{
+    text-decoration: none;
+    font-size: 1.1rem;
+    margin: 10px 0px;
+    color: white;
+  }
+
+
+
+
+
+  /* Createquestion.css */
+
+.create-question-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-question-container h3 {
+  margin-bottom: 20px;
+}
+
+.create-question-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+}
+
+.create-question-container input[type='text'],
+.create-question-container textarea,
+.create-question-container input[type='file'] {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.create-question-container textarea {
+  resize: vertical;
+}
+
+.create-question-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-question-container button:hover {
+  background-color: #0056b3;
+}
+
+
+
+/* Allquestion.css */
+
+.all-questions-container {
+  padding: 20px;
+}
+
+.all-questions-container h3 {
+  margin-bottom: 20px;
+}
+
+.all-questions-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.all-questions-container li {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.all-questions-container li h4 {
+  margin: 0 0 10px 0;
+}
+
+.all-questions-container li p {
+  margin: 0 0 10px 0;
+}
+
+.all-questions-container li a {
+  display: inline-block;
+  margin-right: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.all-questions-container li a:hover {
+  text-decoration: underline;
+}
+
+.all-questions-container iframe {
+  max-width: 100%;
+  border: none;
+}
+
+/* style.css */
+
+/* Edit Button Styling */
+.edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #007bff; /* Bright blue for edit button */
+  border: 1px solid #007bff;
+  color: white;
+  border-radius: 5px;
+  margin: 5px 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  border-color: #0056b3;
+}
+
+/* Delete Button Styling */
+.delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #dc3545; /* Red for delete button */
+  border: 1px solid #dc3545;
+  color: white;
+  border-radius: 5px;
+  margin: 5px 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+  border-color: #c82333;
+}
+
+/* View PDF Button Styling */
+.view-pdf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #28a745; /* Green for view PDF button */
+  border: 1px solid #28a745;
+  color: white;
+  border-radius: 5px;
+  margin: 5px 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.view-pdf:hover {
+  background-color: #218838; /* Darker green on hover */
+  border-color: #218838;
+}
+
+/* Home page */
+.Home-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 60px 0;
+}
+
+.home-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+ 
+}
+
+/* Carousel Container */
+.coursel-container {
+  width: 100%;
+  position: relative;
+}
+
+/* Banner Main Wrapper */
+.banner-main {
+  width: 100%;
+  position: relative;
+  overflow: hidden; /* Hide any overflowing parts of the image */
+}
+
+/* Banner Image */
+.banner-image {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  max-height: 420px; /* Adjust as needed */
+  object-fit: cover; /* Ensure the image covers the container without distortion */
+  border-radius: 8px; /* Rounded corners for a professional look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  display: block;
+}
+
+
+.board-title {
+  display: flex;
+  justify-content: center; /* Center align the title */
+  margin: 40px 160px;
+  font-size: 1.1rem; /* Larger font size */
+  color: #333; /* Dark color */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 1.5px; /* Add some letter spacing */
+  position: relative; /* For pseudo-elements */
+}
+
+
+
+.board-title::before, 
+.board-title::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 50px; /* Adjust width of decorative lines */
+  height: 2px; /* Thickness of decorative lines */
+  background-color: #007bff; /* Blue color matching the link color */
+}
+
+.board-title::before {
+  left: -60px; /* Position to the left of the title */
+}
+
+.board-title::after {
+  right: -60px; /* Position to the right of the title */
+}
+
+
+.banner-nav-button {
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+  color: #333; /* Dark grey color */
+  height: 60px; /* Adjusted height */
+  width: 60px; /* Fixed width */
+  border-radius: 50%; /* Fully rounded button */
+  font-size: 1.2rem; /* Slightly larger font */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added smooth transform transition */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Darker background on hover */
+  color: #fff; /* White color on hover */
+  transform: scale(1.1); /* Slightly larger on hover */
+}
+
+.banner-nav-button:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+}
+
+/* Product Listing Styles */
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between product cards */
+  justify-content: center;
+  padding: 20px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the content horizontally */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: calc(33% - 20px); /* Adjust based on number of items per row */
+  max-width: 300px; /* Fixed max-width for consistency */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 25px 20px;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.product-title {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #333;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.product-dropdown {
+  position: relative;
+  width: 100%; /* Full width of the product card */
+}
+
+.product-dropdown-button {
+  background-color: #007bff; /* A vibrant blue color */
+  color: white;
+  border: none;
+  padding: 8px 12px; /* Adjusted padding for a smaller button */
+  border-radius: 5px;
+  font-size: 0.9rem; /* Slightly smaller font size */
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  max-width: 150px; /* Set a maximum width */
+  width: auto; /* Width adjusts based on content */
+  display: block; /* Ensure it takes up the block space */
+  text-align: center; /* Center align text */
+  margin: 0 auto; /* Center the button */
+  position: relative; /* To ensure dropdown position is relative to the button */
+}
+
+.product-dropdown-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.product-dropdown-button:active {
+  transform: translateY(0);
+}
+
+
+.product-dropdown-menu {
+  display: none; /* Hide by default */
+  position: absolute; /* Position relative to the dropdown button */
+  top: 100%; /* Position below the button */
+  left: 50%;
+  transform: translateX(-50%); /* Center align the dropdown menu */
+  background-color: white; /* Background color of dropdown */
+  border: 1px solid #ddd; /* Border around the dropdown */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for dropdown */
+  padding: 10px;
+  width: 300px; /* Fixed width for consistency */
+  max-height: 100px; /* Adjust height to fit content */
+  overflow-y: auto; /* Scroll if content overflows */
+  z-index: 2000; /* Ensure it is on top */
+}
+
+/* Custom scrollbar for WebKit-based browsers */
+.product-dropdown-menu::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.product-dropdown-menu::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background color of the track */
+  border-radius: 10px; /* Round the track */
+}
+
+.product-dropdown-menu::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Round the scrollbar thumb */
+}
+
+.product-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+.product-dropdown-menu.show {
+  display: block; /* Show when class is toggled */
+}
+
+.product-dropdown-menu a {
+  display: block; /* Block-level items */
+  padding: 10px;
+  text-decoration: none;
+  color: #007bff;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.product-dropdown-menu a:hover {
+  background-color: #f0f0f0; /* Highlight on hover */
+}
+
+.Layout-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+
+/* Modal overlay */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+/* Modal content */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 8px;
+  overflow: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Close button */
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Modal body */
+.modal-body h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* PDF links container */
+.modal-body ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* PDF link styling */
+.modal-body li {
+  margin: 10px 0;
+}
+
+.modal-body a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #007bff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f8f9fa;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  font-size: 16px;
+}
+
+.modal-body a:hover {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.modal-body a:visited {
+  color: #0056b3;
+}
+
+.load-more-button {
+  display: flex ;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4a90e2, #007bff); /* Gradient background */
+  color: #fff; /* Text color */
+  padding: 12px 24px; /* Button padding */
+  border: none; /* Remove border */
+  border-radius: 25px; /* Rounded corners */
+  font-size: 0.9rem; /* Font size */
+  font-weight: 600; /* Font weight */
+  display: flex; /* Flexbox to align icon and text */
+  align-items: center; /* Center align items vertically */
+  justify-content: center; /* Center align items horizontally */
+  gap: 8px; /* Gap between icon and text */
+  cursor: pointer; /* Pointer cursor on hover */
+  margin: 20px auto; /* Center align the button */
+  transition: all 0.3s ease; /* Smooth transition effect */
+  box-shadow: 0 8px 15px rgba(0, 123, 255, 0.2); /* Subtle shadow effect */
+}
+
+.load-more-button:hover {
+  background: linear-gradient(135deg, #007bff, #4a90e2); /* Hover gradient effect */
+  transform: translateY(-3px); /* Lift effect on hover */
+  box-shadow: 0 12px 20px rgba(0, 123, 255, 0.3); /* Enhanced shadow on hover */
+}
+
+.load-more-button:disabled {
+  background: #d1d1d1; /* Disabled state background */
+  cursor: not-allowed; /* Disabled state cursor */
+  box-shadow: none; /* Remove shadow for disabled state */
+}
+
+
+.load-more-button svg {
+  margin-right: 10px; /* Space between icon and text */
+}
+
+
+
+
+
+/* Style for the "Popular PDFs" section */
+.popular-pdfs {
+  margin: 60px auto; /* Centering with auto margin */
+  padding: 40px 20px;
+  background-color: #ffffff; /* Clean white background */
+  border-radius: 12px; /* Soft corners for a modern look */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+  max-width: 1200px; /* Maximum width for large screens */
+}
+
+/* Section title styling */
+.popular-pdfs .section-title {
+  font-size: 1.5rem; /* Slightly smaller title font size for balance */
+  margin-bottom: 30px; /* Space below the title */
+  color: #007bff; /* Primary color for brand consistency */
+  font-weight: 700; /* Bold font for importance */
+  text-align: center; /* Center align the title */
+  letter-spacing: 0.5px; /* Slight letter spacing for elegance */
+}
+
+/* Container for the PDF slider */
+.popular-pdfs .slider-container {
+  position: relative; /* Positioning for custom arrows */
+}
+
+/* Individual PDF card styling */
+.pdf-card {
+  background-color: #ffffff; /* White background for contrast */
+  border: 1px solid #e0e0e0; /* Light border for separation */
+  border-radius: 8px; /* Slightly rounded corners for soft edges */
+  width: 100%; /* Full width within the slider */
+  padding: 20px; /* Reduced padding for smaller cards */
+  display: flex;
+  flex-direction: column; /* Column layout */
+  justify-content: space-between; /* Space between content */
+  align-items: center; /* Center content horizontally */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+  text-align: center; /* Center-align text inside cards */
+}
+
+/* Hover effect for PDF cards */
+.pdf-card:hover {
+  transform: translateY(-3px); /* Slight lift effect */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+}
+
+/* Title of the PDF */
+.pdf-card h4 {
+  font-size: 1.5rem; /* Smaller, more readable title */
+  color: #333333; /* Slightly darker text for readability */
+  margin-bottom: 10px;
+  font-weight: 600; /* Medium weight for better aesthetics */
+  transition: color 0.3s ease;
+}
+
+.pdf-card h4:hover {
+  color: #0056b3; /* Change color on hover for interactivity */
+}
+
+/* Description of the PDF */
+.pdf-card p {
+  font-size: 0.95rem; /* Smaller font for secondary text */
+  color: #555555; /* Darker grey for description */
+  margin-bottom: 15px; /* Margin to separate from button */
+  line-height: 1.5; /* Improved readability with line height */
+}
+
+/* Button to view PDFs */
+.pdf-button {
+  background-color: #007bff; /* Strong primary color */
+  color: #fff; /* White text for contrast */
+  border: none; /* No border */
+  padding: 8px 16px; /* Smaller padding for a compact button */
+  border-radius: 4px; /* Subtle rounding */
+  cursor: pointer; /* Pointer cursor for clarity */
+  font-size: 0.9rem; /* Smaller, readable font */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  width: auto; /* Adjust width to content */
+}
+
+.pdf-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Custom Arrow Styling */
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-arrow:hover {
+  background-color: rgba(0, 123, 255, 0.9); /* Primary color on hover */
+  transform: translateY(-50%) scale(1.1); /* Slightly larger on hover */
+}
+
+.next-arrow {
+  right: 10px;
+}
+
+.prev-arrow {
+  left: 10px;
+}
+
+/* Slider Dots Styling */
+.popular-pdfs .slick-dots {
+  bottom: -25px;
+}
+
+.popular-pdfs .slick-dots li button:before {
+  font-size: 10px;
+  color: #007bff; /* Primary color for active dots */
+}
+
+.popular-pdfs .slick-dots li.slick-active button:before {
+  color: #0056b3; /* Darker shade for active dot */
+}
+
+
+
+
+/* Custom Arrow Styles */
+.slick-prev,
+.slick-next {
+  color: #0056b3; /* Primary color */
+  z-index: 2; /* Ensure above other elements */
+  font-size: 24px; /* Larger size for visibility */
+  transition: color 0.2s ease; /* Smooth color transition */
+}
+
+/* Updated Custom Arrow Styles */
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3; /* Ensure highest z-index */
+  background-color: rgba(60, 60, 60, 0.9); /* Dark grey with slight transparency */
+  border-radius: 50%; /* Circular shape */
+  color: white; /* White arrow color */
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.next-arrow {
+  right: -30px; /* Offset from the right */
+}
+
+.prev-arrow {
+  left: -30px; /* Offset from the left */
+}
+
+/* Arrow hover effect */
+.custom-arrow:hover {
+  background-color: rgba(30, 30, 30, 1); /* Darker grey on hover */
+  transform: scale(1.1); /* Slight scale effect */
+}
+
+
+.platform-highlights {
+  padding: 2.5rem 2rem;
+  background: linear-gradient(145deg, #fce4e4, #f8d1d1); /* Soft gradient using the provided color */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05); /* Matching shadow for depth */
+  text-align: center; /* Center-align text */
+  margin: 3rem 2rem; /* Margin for spacing */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effect */
+  font-family: 'Poppins', sans-serif; /* Consistent font */
+}
+
+.platform-highlights:hover {
+  transform: translateY(-10px); /* Slight lift on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.07); /* Enhanced shadow on hover */
+}
+
+
+.section-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.highlights-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.highlight-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  width: 250px;
+  text-align: center;
+}
+
+.highlight-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.highlight-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.highlight-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.platformhiglights-main{
+  margin: 50px 0px;
+}
+
+
+
+/* Animation for modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+
+/* General styles */
+.question-paper-details {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+/* Heading styles */
+.question-paper-details h1 {
+  font-size: 2rem;
+  color: #007bff;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Description styles */
+.question-paper-details p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+/* PDF list styles */
+.question-paper-details h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.question-paper-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.question-paper-details li {
+  margin-bottom: 10px;
+}
+
+.question-paper-details a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.question-paper-details a:hover {
+  color: #0056b3;
+}
+
+
+.footer {
+  background-color: #060e15; /* Dark background color */
+  color: #ffffff; /* White text color */
+  padding: 40px 0;
+  font-family: 'Poppins', sans-serif; /* Use Poppins font */
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 20px;
+}
+
+.footer-about,
+.footer-links,
+.footer-contact,
+.footer-social,
+.footer-subscribe {
+  flex: 1 1 250px; /* Flexible sizing */
+  margin: 10px;
+}
+
+.footer-about p,
+.footer-contact p,
+.footer-links ul,
+.footer-links ul li,
+.footer-subscribe form,
+.footer-bottom p {
+  color: #d1d1d1; /* Light grey text color */
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li a {
+  color: #d1d1d1;
+  text-decoration: none;
+}
+
+.footer-links ul li a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-social .social-icons a img {
+  width: 32px;
+  margin-right: 15px;
+  transition: transform 0.2s; /* Animation for icons */
+}
+
+.footer-social .social-icons a img:hover {
+  transform: scale(1.1); /* Scale effect on hover */
+}
+
+.footer-subscribe form {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-subscribe input[type="email"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  flex-grow: 1;
+  background-color: #ffffff; /* White input background */
+  color: #060e15; /* Dark text color */
+}
+
+.footer-subscribe button{
+  padding: 10px 20px;
+  background-color: #ff9900; /* Orange button color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s; /* Button hover effect */
+}
+
+.footer-subscribe button:hover {
+  background-color: #e68a00; /* Darker orange on hover */
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px;
+  background-color: #040a11; /* Slightly darker background */
+  color: #d1d1d1;
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+
+.social{
+
+  height: 50px;
+  width: 100%;
+  border-radius: 28px;
+  box-sizing: 100%;
+}
+
+
+
+
+
+
+/* Aboutus.css */
+/* About Us Container */
+.aboutus-container {
+  background-color: #fafafa;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 70px ;
+  padding: 20px;
+}
+
+/* Banner Section */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+
+.about-banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container without distortion */
+  filter: brightness(70%); /* Darkens the image for better text visibility */
+  transition: filter 0.3s ease;
+  box-sizing: 100%;
+}
+
+.banner:hover .banner-image {
+  filter: brightness(80%); /* Slightly lightens on hover */
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff; /* White text for contrast */
+  text-align: center;
+  padding: 0 20px;
+}
+
+.banner-text h1 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Adds depth to the text */
+}
+
+.banner-text p {
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Section Styling */
+.section {
+  margin-bottom: 40px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #1a202c; /* Darker shade for the main title */
+}
+
+.subtitle {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #2d3748; /* Slightly lighter than the main title */
+}
+
+.paragraph {
+  font-size: 1rem;
+  color: #4a5568; /* Medium gray for paragraphs */
+}
+
+.list {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.listItem {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #4a5568;
+}
+
+/* Contact Information Styling */
+.contactInfo {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-top: 5px;
+}
+
+
+
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Team Section */
+.team-section {
+  padding: 50px 0;
+  background-color: #f9f9f9; /* Light grey background */
+  text-align: center;
+}
+
+.team-cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.team-card {
+  background-color: white;
+  border-radius: 10px;
+  /* Updated Box Shadow for a more professional look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+              0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added smooth transition */
+}
+
+/* Add a hover effect to enhance the professional feel */
+.team-card:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 
+              0 16px 32px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
+}
+.team-image {
+  width: 150px;   /* Set the width to 375px */
+  height: 155px;  /* Set the height to 666px */
+  border-radius: 90px;  /* Rounded corners for a clean look */
+  object-fit: cover;  /* Ensure the image covers the area without distortion */
+  margin-bottom: 10px;
+}
+
+.team-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.team-role {
+  font-size: 16px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.team-description {
+  font-size: 14px;
+  color: #555;
+}
+
+
+
+
+/* Contact Us Page Styling */
+
+.contact-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  margin: 3rem 0;
+  gap: 2rem; /* Space between content and image */
+}
+
+
+
+.contact-content {
+  flex: 1; /* Allow content to take up available space */
+  background-color: #ffffff;
+  padding: 3rem;
+  border-radius: 12px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+  max-width: 600px; /* Limit width for better balance */
+}
+
+.contact-content:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
+
+.contact-title {
+  font-size: 2.8rem;
+  color: #0056b3; /* Brand primary color */
+  margin-bottom: 1.5rem;
+  text-align: left; /* Align left for a professional look */
+}
+
+.contact-paragraph {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  color: #555; /* Softer text color for readability */
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* Space between form elements */
+}
+
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px; /* Softer border radius */
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+  border-color: #0056b3; /* Border color change on focus */
+  outline: none; /* Remove default outline */
+}
+
+.contact-textarea {
+  height: 200px;
+  resize: none; /* Prevent resizing for better layout control */
+}
+
+.contact-button {
+  padding: 1rem;
+  background-color: #0056b3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.contact-button:hover {
+  background-color: #004494;
+  transform: translateY(-3px); /* Slight lift effect on hover */
+}
+
+/* Card Section with Image */
+.contact-card {
+  display: flex;
+  flex-direction: column; /* Stack content on top of the image by default */
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f7f7;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-top: 20px;
+  max-width: 600px; /* Limit width for balance */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
+
+
+
+.card-content {
+  flex: 1;
+  margin-right: 20px;
+  text-align: left; /* Align text to left */
+}
+
+.card-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #0056b3;
+}
+
+.card-content p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.card-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem; /* Add margin for spacing */
+}
+
+.contact-card-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Image shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card-img:hover {
+  transform: scale(1.05); /* Subtle zoom effect on hover */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
+
+
+
+/* Spinner Container */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Keep spinner fixed in the middle */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  background-color: rgba(255, 255, 255, 0.8); /* Light overlay effect */
+  z-index: 9999; /* Ensure it stays on top */
+}
+
+/* Spinner Style */
+.spinner-container .clip-loader {
+  animation: spinnerRotate 1s linear infinite; /* Spinner rotation animation */
+}
+
+/* Spinner Animation */
+@keyframes spinnerRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+/* Updatequestionpaper.css */
+
+.update-question-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.update-question-container h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.update-question-container .form-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.update-question-container .form-group label {
+  display: block;
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.update-question-container .form-group input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.update-question-container .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.update-question-container .form-group input[type='file'] {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.update-question-container .form-group ul {
+  list-style: none;
+  padding: 0;
+}
+
+.update-question-container .form-group ul li {
+  margin-bottom: 5px;
+}
+
+.update-question-container .form-group ul li a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.update-question-container .form-group ul li a:hover {
+  text-decoration: underline;
+}
+
+.update-question-container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-question-container button:hover {
+  background-color: #0056b3;
+}
+
+.update-question-container button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+
+/* Featured PDF Categories Section */
+.featured-pdf-categories {
+  padding: 2.5rem 2rem; /* Same padding as contact-offer-container */
+  background: linear-gradient(145deg, #f9f9f9, #eaeaea); /* Soft gradient using #f9f9f9 */
+  border-radius: 15px; /* Rounded corners similar to contact-offer-container */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05); /* Consistent shadow */
+  text-align: center; /* Center-align text */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  font-family: 'Poppins', sans-serif; /* Consistent font */
+  margin: 3rem 2rem; /* Margin for spacing */
+}
+
+.featured-pdf-categories:hover {
+  transform: translateY(-10px); /* Slight lift on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.07); /* Enhanced shadow */
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #333333;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.category-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-icon {
+  font-size: 3rem; /* Adjust the size of the icon */
+  color: #007bff;  /* Color for the icon */
+  margin-bottom: 20px;
+}
+
+.category-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+.category-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* How It Works Section */
+.how-it-works {
+  padding: 50px 0;
+  background: linear-gradient(145deg, #f0f9ff, #e0f7fa); /* Matching gradient background */
+  text-align: center;
+  margin: 40px 0;
+  border-radius: 20px; /* Rounded corners for a smoother look */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.05); /* Similar deep shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.how-it-works:hover {
+  transform: translateY(-8px); /* Slight lift on hover */
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08); /* Enhanced shadow on hover */
+}
+
+
+.how-it-works-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.step-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.step-card:hover {
+  transform: translateY(-10px);
+}
+
+.step-icon {
+  font-size: 3rem; /* Adjust the size of the icon */
+  color: #28a745;  /* Color for the icon */
+  margin-bottom: 15px;
+}
+
+.step-card h4 {
+  font-size: 1.4rem;
+  color: #007bff;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.step-card p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Review Card Styles */
+
+.review-slider {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #f0f9ff; /* Light background for the slider container */
+  border-radius: 10px; /* Rounded corners for a softer look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  position: relative; /* Relative positioning for absolute navigation arrows */
+  overflow: hidden; /* Hide overflow for sliding effect */
+}
+
+.review-card,
+.owner-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #fff; /* White background for each card */
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effects */
+}
+
+.review-card:hover,
+.owner-card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+}
+
+.review-card-image,
+.owner-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%; /* Circular image */
+  object-fit: cover; /* Maintain aspect ratio */
+  margin-bottom: 15px; /* Space below the image */
+  border: 3px solid #007bff; /* Border color matching the theme */
+}
+
+.review-content,
+.owner-content {
+  width: 100%;
+}
+
+.review-name {
+  font-size: 1.2em; /* Slightly larger font for the name */
+  font-weight: bold;
+  color: #333; /* Dark color for contrast */
+  margin-bottom: 10px; /* Space below the name */
+}
+
+.review-text,
+.owner-content p {
+  font-size: 1em; /* Standard font size */
+  color: #666; /* Grey color for readability */
+  margin-bottom: 15px; /* Space below the text */
+  line-height: 1.5; /* Improved readability */
+}
+
+.review-stars {
+  font-size: 1.2em; /* Slightly larger font for stars */
+  color: #ffcc00; /* Gold color for stars */
+}
+
+.owner-content h2 {
+  font-size: 1.5em; /* Larger font for the heading */
+  color: #007bff; /* Primary color */
+  margin-bottom: 10px; /* Space below the heading */
+}
+
+.review-section-heading {
+  font-size: 1.5rem;
+  color: #333333;
+  margin-bottom: 40px;
+  font-weight: 600;
+  text-align: center; /* Center align */
+  margin-bottom: 2rem; /* Space below heading */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Navigation Arrow Styles */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent; /* Transparent background */
+  border: none; /* Remove default border */
+  color: #333; /* Dark arrow color */
+  font-size: 2em; /* Large font size for visibility */
+  cursor: pointer; /* Pointer cursor on hover */
+  z-index: 10; /* Place on top */
+  transition: color 0.3s ease; /* Smooth transition on hover */
+}
+
+.slider-arrow:hover {
+  color: #007bff; /* Change color on hover */
+}
+
+.slider-arrow.left {
+  left: 10px; /* Position left arrow */
+  color: grey;
+}
+
+.slider-arrow.right {
+  right: 10px; /* Position right arrow */
+  color: grey;
+}
+
+
+
+/* Contact Offer Container */
+.contact-offer-container {
+  background: linear-gradient(145deg, #f0f9ff, #e0f7fa); /* Soft pastel gradient */
+  padding: 3rem 2.5rem; /* Ample padding for spacing */
+  border-radius: 20px; /* Softer, more rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.05); /* Deep shadow for depth */
+  text-align: center; /* Centered text */
+  margin: 4rem auto; /* Center the container with margins */
+  width: 90%; /* Responsive width */
+  max-width: 800px; /* Max width for larger screens */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  font-family: 'Poppins', sans-serif; /* Preferred font */
+}
+
+.contact-offer-container:hover {
+  transform: translateY(-8px); /* Subtle lift on hover */
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08); /* Enhanced shadow on hover */
+}
+
+/* Contact Offer Heading */
+.contact-offer-heading {
+  font-size: 1.5rem; /* Larger, more prominent heading */
+  color: #0066cc; /* Bright blue for emphasis */
+  margin-bottom: 1.5rem; /* Space below the heading */
+  font-weight: 700; /* Bold heading */
+}
+
+/* Contact Offer Text */
+.contact-offer-text {
+  font-size: 1.2rem; /* Comfortable text size */
+  color: #444444; /* Darker gray for readability */
+  margin-bottom: 1.5rem; /* Space below text */
+  line-height: 1.7; /* Slightly more spaced lines for readability */
+  max-width: 700px; /* Limit text width for readability */
+  margin: 0 auto 2rem auto; /* Center text and add bottom space */
+}
+
+/* Contact Information */
+.contact-offer-contact {
+  font-size: 1.4rem; /* Slightly larger for emphasis */
+  color: #333333; /* Dark color for contrast */
+  font-weight: 600; /* Medium font weight */
+  margin-bottom: 2rem; /* Space below contact info */
+}
+
+/* Button Styling */
+.contact-offer-button {
+  display: inline-block;
+  padding: 1rem 2.5rem; /* Balanced padding */
+  background-color: #0077cc; /* Primary blue */
+  color: #ffffff; /* White text */
+  border: none; /* No border */
+  border-radius: 50px; /* Fully rounded button */
+  font-size: 1.2rem; /* Larger button text */
+  font-weight: 600; /* Medium weight for visibility */
+  text-decoration: none; /* Remove underline */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+  box-shadow: 0 5px 15px rgba(0, 119, 204, 0.3); /* Subtle shadow */
+}
+
+.contact-offer-button:hover {
+  background-color: #0059a3; /* Darker blue on hover */
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 8px 20px rgba(0, 119, 204, 0.4); /* Enhanced shadow on hover */
+}
+
+.pdf-search-guide {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.pdf-search-guide h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.pdf-search-guide p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.pdf-search-guide ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.pdf-search-guide li {
+  margin-bottom: 10px;
+}
+
+.pdf-search-guide li strong {
+  color: #007bff;
+}
+
+.pdf-search-guide a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.pdf-search-guide a:hover {
+  text-decoration: underline;
+}
+
+.pdf-search-guide .contact-info {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.pdf-search-guide .contact-info p {
+  font-size: 1rem;
+  color: #777;
+}
+
+.not-found-container {
+  text-align: center;
+  padding: 50px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+
+/* Scoped CSS for NotFoundComponent */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Light background */
+  color: #343a40; /* Dark text color */
+  text-align: center;
+  padding: 20px;
+}
+
+.not-found-container h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #dc3545; /* Red color for 404 text */
+}
+
+.not-found-container p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #6c757d; /* Grey color for text */
+}
+
+.not-found-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff; /* Blue color for button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.not-found-container button:hover {
+  background-color: #0056b3; /* Darker blue for hover effect */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.not-found-container button:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.platform-info-card {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px; /* Slightly rounded corners for a modern look */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
+  margin: 40px auto; /* Center the card horizontally with margin */
+  max-width: 1000px; /* Prevent the card from stretching too wide */
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions for hover effects */
+}
+
+.platform-info-card:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+  transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+.card-image {
+  flex: 0 0 400px; /* Fixed width for the image container */
+  padding: 15px; /* Padding around the image */
+}
+
+.info-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px; /* Rounded corners for the image */
+  border: 2px solid #f1f1f1; /* Subtle border around the image */
+}
+
+.card-content {
+  flex: 1;
+  padding: 20px 30px;
+}
+
+.info-title {
+  font-size: 2.2rem; /* Larger font size for emphasis */
+  margin-bottom: 15px;
+  color: #333333;
+  font-weight: 600; /* Slightly bolder title */
+}
+
+.info-description {
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+  color: #555555;
+  line-height: 1.7; /* Increased line height for readability */
+}
+
+.info-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Increased gap for better spacing */
+  margin-bottom: 20px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem; /* Slightly larger font size for features */
+  color: #444444;
+}
+
+.feature-icon {
+  color: #007bff;
+  margin-right: 12px; /* Slightly increased margin for better spacing */
+  font-size: 1.6rem; /* Slightly larger icon */
+}
+
+.info-button {
+  padding: 14px 30px; /* Slightly larger padding for the button */
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px; /* Slightly more rounded corners */
+  font-size: 1.1rem; /* Larger font size for the button */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.info-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+
+
+/* Container for the Explore Page */
+.explore-container {
+  padding: 30px 20px;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  font-family: var(--font-family);
+  margin: 50px 0px;
+}
+
+/* Title Styling */
+.explore-title {
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+/* Grid Layout for PDFs */
+.pdf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual PDF Card */
+.pdf-card {
+  background-color: var(--card-background);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pdf-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* PDF Title */
+.pdf-title {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+/* PDF Description */
+.pdf-description {
+  font-size: 1.1rem;
+  color: var(--light-text-color);
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* Download Button */
+.pdf-download-button {
+  padding: 12px 30px;
+  background-color: var(--secondary-color);
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.pdf-download-button:hover,
+.pdf-download-button:focus {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+  outline: none; /* Remove default outline */
+  /* Optional: Add a custom focus outline for accessibility */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+/* Spinner Container */
+.explore-spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh; /* Full viewport height */
+}
+
+/* Error Container */
+.explore-error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  color: red;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0 20px;
+}
+
+
+/* Load More Button Container */
+.explore-load-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0px;
+}
+
+/* Load More Button */
+.explore-load-more-button {
+  padding: 12px 30px;
+  background-color: var(--secondary-color, #007bff); /* Fallback color if variable not defined */
+  color: #fff;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.explore-load-more-button:hover,
+.explore-load-more-button:focus {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  outline: none; /* Remove default outline */
+  /* Optional: Add a custom focus outline for accessibility */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.explore-load-more-button:disabled {
+  background-color: #6c757d; /* Gray color when disabled */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* Dark Mode for Buttons */
+button.toggle-theme {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button.toggle-theme:hover {
+  background-color: var(--button-hover-bg);
+}
+
+
+
+.btn-mode{
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  
+  .nav-link-main {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-link-main.open {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    margin: 0;
+    padding: 15px; 
+  }
+ 
+
+  .nav-link-main.open .nav-link,
+  .nav-link-main.open .dropdown-btn,
+  .nav-link-main.open .about-nav,
+  .nav-link-main.open .contact-nav {
+    font-size: 0.95rem; /* Slightly smaller font on mobile */
+    padding: 10px 15px; /* Adjust padding */
+  }
+
+  .signup-input {
+    width: 290px;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+  .pdfbaba-logo{
+     height: 25px;
+  }
+  .search-container {
+    padding: 2px 10px;
+    width: auto; /* Adjust container width for better alignment */
+    margin: 0 10px;
+  }
+
+  .search-input {
+    padding: 5px; /* Reduce padding */
+    font-size: 0.9rem;
+    width: 90px; /* Set specific width to 80px */
+  }
+
+  .clear-button {
+    right: 10px; /* Adjust button position */
+    font-size: 16px;
+  }
+
+  .search-button {
+    padding: 8px;
+  }
+
+  .search-results {
+    max-height: 200px;
+  }
+
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    
+  }
+
+  .search-result-item a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: block;
+  }
+  .no-results {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+.nav-home {
+  text-decoration: none;
+  color: black;
+  font-size: 0.9rem;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 25px 20px;
+}
+
+.contact-container {
+  flex-direction: column; /* Stack content for smaller screens */
+  padding: 2rem;
+}
+
+.contact-content{
+ width: 290px;
+}
+
+.contact-image {
+  width: 100%; /* Full width for content and image */
+  margin: 1rem 0; /* Add margin between stacked elements */
+}
+
+.contact-card{
+  width: 300px;
+}
+
+ .banner-image{
+  height: 140px;
+ }
+ .MuiButtonBase-root { /* Targeting Material-UI button classes */
+  background-color: transparent !important; /* Make background transparent */
+  box-shadow: none !important; /* Remove shadow if needed */
+}
+
+.category-card, .step-card {
+  width: 100%;
+  padding: 15px;
+}
+
+.category-icon, .step-icon {
+  font-size: 2.5rem; /* Adjust icon size for smaller screens */
+}
+
+.section-title {
+  font-size: 1.5rem;
+}
+
+.category-title {
+  font-size: 1.3rem;
+}
+
+.category-description, .step-card p {
+  font-size: 0.9rem;
+}
+
+
+  /* Responsive style for Popular PDFs section */
+  .popular-pdfs {
+    margin: 15px 10px; /* Reduced margin for smaller screens */
+    padding: 2.5rem 2rem; /* Same padding as contact-offer-container */
+    background: linear-gradient(145deg, #ffffff, #f0f0f0); /* Soft gradient using white */
+    border-radius: 15px; /* Rounded corners similar to contact-offer-container */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05); /* Matching shadow for depth */
+    text-align: center; /* Center-align text */
+    max-width: 100%; /* Full width for smaller screens */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+  }
+  
+  .popular-pdfs:hover {
+    transform: translateY(-10px); /* Slight lift on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.07); /* Enhanced shadow on hover */
+  }
+  
+
+  .popular-pdfs-title {
+    font-size: 1.5rem; /* Smaller font size for titles */
+    margin-bottom: 15px; /* Less space below the title */
+    color: #0056b3;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .pdf-card {
+    width: 100%; /* Full width for cards */
+    margin-bottom: 15px; /* Margin between cards */
+    padding: 15px; /* Padding inside cards */
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center; /* Center align text */
+
+  }
+
+  .pdf-card-title {
+    font-size: 1.2rem; /* Smaller font size */
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .pdf-card-description {
+    font-size: 0.9rem; /* Smaller font size */
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .pdf-card button {
+    font-size: 0.9rem; /* Smaller button text */
+    padding: 8px 12px; /* Adjusted padding for buttons */
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .pdf-card button:hover {
+    background-color: #004494; /* Hover effect for buttons */
+  }
+
+  .review-slider {
+    padding: 20px 5px; /* Adjusted padding for smaller screens */
+  }
+
+  .review-card,
+  .owner-card {
+    margin: 5px; /* Less margin for compact view */
+  }
+
+  .review-card-image,
+  .owner-image {
+    width: 60px; /* Smaller image for mobile */
+    height: 60px;
+  }
+
+  .review-name {
+    font-size: 1.1em; /* Slightly smaller text */
+  }
+
+  .review-text,
+  .owner-content p {
+    font-size: 0.95em; /* Smaller text for mobile */
+  }
+
+  .review-stars {
+    font-size: 1em; /* Adjust star size */
+  }
+
+  .contact-offer-container {
+    padding: 2rem 1.5rem; /* Adjust padding for smaller screens */
+    margin: 0; /* Adjust margin for better spacing */
+  }
+
+  .contact-offer-heading {
+    font-size: 2rem; /* Smaller font size for headings on mobile */
+    margin-bottom: 1rem; /* Less margin for heading */
+  }
+
+  .contact-offer-text,
+  .contact-offer-contact {
+    font-size: 1.2rem; /* Smaller font size for text */
+    margin-bottom: 1.5rem; /* Reduced margin for better spacing */
+  }
+
+  .contact-offer-button {
+    padding: 0.8rem 1.8rem; /* Adjust button padding */
+    font-size: 1rem; /* Smaller font size for button */
+  }
+
+  .platform-info-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-image {
+    flex: 0 0 100%;
+  }
+
+  .card-content {
+    padding: 20px 15px;
+  }
+
+  .info-title {
+    font-size: 1.75rem;
+  }
+
+  .info-description {
+    font-size: 1rem;
+  }
+
+  .info-features {
+    justify-content: center;
+  }
+
+
+  .explore-container {
+    padding: 40px 15px;
+    margin: 50px 0px;
+  }
+
+  .explore-title {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .pdf-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pdf-card {
+    padding: 18px;
+    max-width:300px; /* Ensure full width within grid */
+    margin: 0 auto; /* Center the card */
+  }
+
+  .pdf-title {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+
+  .pdf-description {
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+
+  .pdf-download-button {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+
+}
+
+.banner {
+  height: 200px;
+}
+
+.banner-text h1 {
+  font-size: 1.2rem;
+
+}
+
+.banner-text p {
+  font-size: 1rem;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.paragraph,
+.listItem,
+.contactInfo {
+  font-size: 0.95rem;
+}
+
+
+  #dark .popular-pdfs {
+
+  background: linear-gradient(145deg, #111313, #111313);
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+}
+
+
+#dark .search-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 30px;
+  transition: background-color 0.3s ease;
+  background-color: #000000;
+  border: 1px solid #111313;
+ 
+}
+
+
+
+
+}
+
+
+
+
+
+/* ipad css */
+@media (max-width:786px) {
+   
+  .nav-link-main {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-link-main.open {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    margin: 0;
+    padding: 15px; 
+  }
+ 
+
+  .nav-link-main.open .nav-link,
+  .nav-link-main.open .dropdown-btn,
+  .nav-link-main.open .about-nav,
+  .nav-link-main.open .contact-nav {
+    font-size: 0.95rem; /* Slightly smaller font on mobile */
+    padding: 10px 15px; /* Adjust padding */
+  }
+
+
+
+  /* Responsive style for Popular PDFs section */
+  .popular-pdfs {
+    margin: 15px 10px; /* Reduced margin for smaller screens */
+    padding: 2.5rem 2rem; /* Same padding as contact-offer-container */
+    background: linear-gradient(145deg, #ffffff, #f0f0f0); /* Soft gradient using white */
+    border-radius: 15px; /* Rounded corners similar to contact-offer-container */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05); /* Matching shadow for depth */
+    text-align: center; /* Center-align text */
+    max-width: 100%; /* Full width for smaller screens */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+  }
+  
+  .popular-pdfs:hover {
+    transform: translateY(-10px); /* Slight lift on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.07); /* Enhanced shadow on hover */
+  }
+  
+
+  .popular-pdfs-title {
+    font-size: 1.5rem; /* Smaller font size for titles */
+    margin-bottom: 15px; /* Less space below the title */
+    color: #0056b3;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .pdf-card {
+    width: 100%; /* Full width for cards */
+    margin-bottom: 15px; /* Margin between cards */
+    padding: 15px; /* Padding inside cards */
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center; /* Center align text */
+
+  }
+
+  .pdf-card-title {
+    font-size: 1.2rem; /* Smaller font size */
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .pdf-card-description {
+    font-size: 0.9rem; /* Smaller font size */
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .pdf-card button {
+    font-size: 0.9rem; /* Smaller button text */
+    padding: 8px 12px; /* Adjusted padding for buttons */
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .pdf-card button:hover {
+    background-color: #004494; /* Hover effect for buttons */
+  }
+
+
+
+
+}
+
+
+
+
+
+
+
+/* dark mode css */
+
+#dark .navbar-container{
+  background-color: #060e15;
+  border: 1px solid #060e15;
+}
+
+#dark .about-nav{
+  color: white;
+}
+
+#dark .contact-nav{
+  color: white;
+}
+
+#dark .dropdown-btn{
+  color: white;
+}
+
+#dark .board-title{
+  color: white;
+}
+
+
+#dark .nav-home{
+  color: white;
+}
+#dark .search-container {
+
+  background-color: black;
+
+  border: 1px solid black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ 
+}
+
+#dark .search-input{
+  color: white;
+}
+
+#dark .search-button{
+  color: white;
+}
+
+#dark .product-card {
+  background-color: #111313;
+ 
+}
+
+#dark  .product-title {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: white;
+}
+
+
+
+#dark .featured-pdf-categories {
+  padding: 2.5rem 2rem;
+  background: linear-gradient(145deg,  #111313, #111313);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  margin: 3rem 2rem;
+}
+
+
+#dark .category-card {
+  background-color: black;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+#dark .category-title {
+  font-size: 1.5rem;
+  color: white;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+#dark .section-title {
+  color: white;
+}
+
+
+#dark .how-it-works {
+  padding: 50px 0;
+  background: linear-gradient(145deg, #111313, #111313);
+  text-align: center;
+  margin: 40px 0;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+#dark .step-card {
+  background-color: black;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+
+#dark .platform-info-card {
+  display: flex;
+  align-items: center;
+  background-color:#111313 ;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin: 40px auto;
+  max-width: 1000px;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+
+#dark .card-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+#dark .card-content p {
+  font-size: 1rem;
+  color: white;
+  line-height: 1.6;
+}
+
+
+
+#dark .popular-pdfs {
+
+  background-color: #111313 ;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+ 
+}
+
+
+#dark .pdf-card{
+  background-color: black;
+}
+
+#dark .pdf-card h4  {
+  color: white;
+}
+
+#dark .pdf-card p {
+ 
+  color:  grey;
+
+}
+
+
+#dark .review-slider {
+ 
+  background-color: #111313;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+
+
+#dark .review-card, .owner-card {
+
+  background-color: #000000;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+#dark .review-section-heading {
+
+  color:  white ;
+
+}
+
+#dark .review-name {
+ 
+  color: white;
+ 
+}
+
+
+#dark .platform-highlights {
+
+  background: linear-gradient(145deg, #111313, #111313);
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+}
+
+
+#dark .highlight-card {
+  background: black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+#dark .highlight-title {
+  color: white;
+}
+
+
+#dark .pdf-search-guide {
+  background-color: #111313;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
+}
+
+#dark .pdf-search-guide h3 {
+  
+  color: white;
+
+}
+
+#dark .pdf-search-guide li {
+  color: white;
+}
+
+
+#dark .contact-offer-container {
+  background: linear-gradient(145deg, #111313, #111313);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.05);
+ 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+}
+
+
+#dark .contact-offer-heading {
+
+  color: white;
+
+}
+
+
+#dark .contact-offer-text {
+
+  color: white;
+ 
+}
+
+
+#dark .contact-offer-contact {
+
+  color: grey;
+
+}
+
+#dark .aboutus-container {
+  background-color: #111313;
+
+}
+
+#dark .subtitle {
+
+  color: white;
+}
+
+
+#dark .paragraph {
+  color: grey;
+}
+
+
+#dark .contact-content {
+
+  background-color: #111313;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+}
+
+
+#dark .contact-input {
+ background-color: #000000;
+  border: 1px solid #ddd;
+ color:  white;
+ 
+}
+
+#dark .contact-textarea {
+
+  background-color: #000000;
+  color: white;
+}
+#dark .contact-paragraph {
+
+  color: grey;
+}
+
+
+#dark .contact-card {
+
+  background-color: #111313;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+}
+
+
+#dark .question-paper-details {
+
+  background-color: #111313;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  color: white;
+}
+
+
+#dark .question-paper-details h3 {
+
+  color: grey;
+
+}
+
+
+
+#dark .dropdown-menu {
+
+  border: 1px solid #ddd;
+
+  background-color: #000000;
+
+}
+
+
+
+#dark .signup-main {
+  background:#111313;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+
+#dark .signup-input {
+
+  border: 1px solid #ddd;
+  background-color: #000000;
+  color: white;
+
+}
+
+#dark .signup-main h3 {
+ color: white;
+}
+
+
+#dark .search-result-item {
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  background-color: #000000;
+  border: 1px solid  #111313;
+  
+}
+
+#dark .search-result-item a {
+  color: white;
+
+}
+
+
+#dark .hamburger{
+  color: #f3ee52;
+}
+
+
+
+
+#dark .nav-link-main.open {
+
+  background-color: #000000; /* Light blue-grey background for contrast */
+
+}
+
+
+
+
+#dark .create-question-container h3 {
+ color: white;
+}
+
+#dark .admin-menu-link {
+ 
+  color: white;
+}
+
+#dark .all-questions-container li h4 {
+ color: white;
+}
+
+
+#dark .all-questions-container li p {
+ color: white;
+}
+
+
+
+#dark .admin-menu-main {
+ background-color: black;
+}
+
+#dark .update-question-container {
+ 
+  background-color: #111313;
+ 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+#dark .team-section {
+  padding: 50px 0;
+  background-color: #111313;
+  text-align: center;
+}
+
+
+#dark .team-card {
+  background-color: #000000;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+#dark   .no-results {
+background-color: #111313;
+}
+
+#dark .pdf-title {
+color: white;
+}
+
+
+
+
+.user-dashboard-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-content{
+  margin-bottom: 100px;
+}
+
+
