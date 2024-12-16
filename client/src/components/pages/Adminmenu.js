@@ -6,6 +6,7 @@ const Adminmenu = () => {
   return (
     <div className='adminmenu-container'>
     <nav className='admin-menu-main'>
+    <Link  className='admin-menu-link'to='/dashboard/admin/create-category'>create category</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/create-question'>create pdf</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/all-question'>All pdf</Link>
         <Link className='admin-menu-link' to='/dashboard/admin/all-user'>users</Link>

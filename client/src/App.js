@@ -17,6 +17,8 @@ import Forgetpass from "./components/pages/Forgetpass";
 import NotFoundComponent from "./components/pages/NotFoundComponent";
 import ExplorePage from "./components/pages/ExplorePage";
 import { useTheme } from "./components/context/ThemeContext";
+import  CreateCategory  from './components/pages/admin/CreateCategory'
+import CategoryProduct from "./components/pages/CategoryProduct";
 
 
 
@@ -37,6 +39,7 @@ const [theme] = useTheme()
         <Route path="/contact" element={<Contact/>} />
         <Route path="/explore" element={<ExplorePage/>} />
         <Route path="*" element={<NotFoundComponent/>} />
+        <Route path="/category/:slug" element={<CategoryProduct/>} />
 
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
@@ -51,7 +54,7 @@ const [theme] = useTheme()
           <Route path="admin/create-question" element={<Createquestion/>} /> 
           <Route path="admin/all-question" element={<Allquestion/>} /> 
           <Route path="admin/update-question/:id" element={<Updatequestionpaper/>} /> 
-
+          <Route path="admin/create-category" element={<CreateCategory/>} /> 
          </Route>
 
 

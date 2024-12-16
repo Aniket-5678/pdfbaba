@@ -1,14 +1,16 @@
 import QuestionPaper from "../models/questionPaper.model.js"
 import fs from 'fs';
 import path from 'path';
+import slugify from "slugify";
+import categoryModel from "../models/category.model.js"
 
 // Create Question Paper
 export const createQuestionPaper = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, category } = req.body;
     const pdfFiles = req.files;
 
-    if (!name || !description || !pdfFiles || pdfFiles.length === 0) {
+    if (!name || !description || !category || !pdfFiles || pdfFiles.length === 0) {
       return res.status(400).json({
         success: false,
         message: 'Name, description, and at least one PDF file are required',
@@ -16,11 +18,15 @@ export const createQuestionPaper = async (req, res) => {
     }
 
     const pdfUrls = pdfFiles.map(file => `${req.protocol}://${req.get('host')}/uploads/pdfs/${file.filename}`);
+    
+   const slug = slugify(name)
 
     const newQuestionPaper = new QuestionPaper({
       name,
       description,
       pdfs: pdfUrls, // Ensure your schema field is `pdfs` if you use this name
+      slug,
+      category
     });
 
     await newQuestionPaper.save();
@@ -48,7 +54,7 @@ export const createQuestionPaper = async (req, res) => {
 // Get All Question Papers
 export const getAllQuestionPapers = async (req, res) => {
   try {
-    const questionPapers = await QuestionPaper.find();
+    const questionPapers = await QuestionPaper.find().populate("category");
     res.status(200).json({
       success: true,
       data: questionPapers,
@@ -67,7 +73,7 @@ export const getAllQuestionPapers = async (req, res) => {
 export const getQuestionPaperById = async (req, res) => {
   try {
     const { id } = req.params;
-    const questionPaper = await QuestionPaper.findById(id);
+    const questionPaper = await QuestionPaper.findById(id).populate("category");
 
     if (!questionPaper) {
       return res.status(404).json({
@@ -94,7 +100,7 @@ export const getQuestionPaperById = async (req, res) => {
 export const updateQuestionPaper = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description } = req.body;
+    const { name, description, category} = req.body;
     const pdfFiles = req.files;
 
     const updatedData = { name, description };
@@ -102,7 +108,8 @@ export const updateQuestionPaper = async (req, res) => {
       const pdfUrls = pdfFiles.map(file => `${req.protocol}://${req.get('host')}/uploads/pdfs/${file.filename}`);
       updatedData.pdfs = pdfUrls;
     }
-
+     
+    const slug = slugify(name)
     const questionPaper = await QuestionPaper.findByIdAndUpdate(id, updatedData, { new: true });
 
     if (!questionPaper) {
@@ -116,6 +123,8 @@ export const updateQuestionPaper = async (req, res) => {
       success: true,
       message: 'Question paper updated successfully',
       data: questionPaper,
+      category,
+      slug
     });
   } catch (error) {
     console.error(error);
@@ -160,3 +169,27 @@ export const deleteQuestionPaper = async (req, res) => {
     });
   }
 };
+
+
+
+
+//product-category controller
+
+export const productCategoryController = async(req, res) => {
+  try {
+      const category = await categoryModel.findOne({slug: req.params.slug})
+      const products = await QuestionPaper.find({category}).populate("category")
+      res.status(200).send({
+          success:true,
+          category,
+          products
+      })
+  } catch (error) {
+      console.log(error);
+      res.status(400).send({
+          success:false,
+          message: "error while getting category wise product",
+          error
+      })
+  }
+}

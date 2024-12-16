@@ -15,6 +15,7 @@ import PlatformHighlights from './PlatformHighlights';
 import ContactOffer from './ContactOffer';
 import PdfSearchGuide from './PdfSearchGuide';
 import PlatformInfoCard from './PlatformInfoCard';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -23,6 +24,25 @@ const HomePage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [visibleCount, setVisibleCount] = useState(6); // Initially show 6 products
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  
+  const [categories, setCategories] = useState([])
+
+   
+  useEffect(() => {
+    const getAllcategory = async () => {
+      try {
+        const { data } = await axios.get('/api/v1/category/get-category');
+        console.log("Category Data: ", data); // Debugging
+        setCategories(data.category); // Correctly set category array
+      } catch (error) {
+        console.error("Error fetching categories: ", error);
+      }
+    };
+    getAllcategory();
+  }, []);
+
+
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -124,6 +144,21 @@ const HomePage = () => {
         <div className='Board-content'>
           <h3 className='board-title'>Learning Platform</h3>
         </div>
+       
+       {/* category name card */}
+       <div>
+       <div className='category-name' >
+           {categories?.map((cat) => (
+            <Link className='cat-link' to={`/category/${cat.slug}`} >
+           <div className='cat-card' key={cat._id}>
+         {cat.name}
+          </div>
+          </Link>
+  ))}
+        </div>
+  </div>
+ {/* category name card */}
+        
 
         <div className='products-container'>
           {products.slice(0, visibleCount).map((product) => (

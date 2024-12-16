@@ -1,20 +1,44 @@
-import React,{useState} from 'react'
+import React,{useState , useEffect} from 'react'
 import Layout from "../../Layout/Layout"
 import axios from "axios"
 import toast from "react-hot-toast"
 import Adminmenu from '../Adminmenu'
+import {Select} from "antd"
 import { useNavigate } from 'react-router-dom';
 import "../../style/style.css"
-
+const {Option} = Select
 
 
 
 const Createquestion = () => {
 
+
+  const [categories, setCategories] = useState([])
     const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [pdfs, setPdfs] = useState([]);
   const navigate = useNavigate();
+  const [category, setCategory] = useState("")
+
+
+
+  const getAllcategories = async() => {
+    try {
+       const {data} = await axios.get('/api/v1/category/get-category')
+       if (data?.success) {
+          setCategories(data?.category)
+       }
+    } catch (error) {
+      console.log(error);
+      toast.error('something went wrong while getting categories')
+    }
+  }
+
+useEffect(()=> {
+ getAllcategories()
+},[])
+
+
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -26,6 +50,7 @@ const Createquestion = () => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
+    formData.append("category", category)
 
     for (let i = 0; i < pdfs.length; i++) {
       formData.append('pdfs', pdfs[i]);
@@ -60,6 +85,18 @@ const Createquestion = () => {
       </div>
       <h3>Create Question Paper</h3>
       <form onSubmit={handleSubmit}>
+      
+      <div>
+      <Select className='select-category' bordered={false} placeholder="select category" showSearch onChange={(value) => {setCategory(value)}}>
+                      {categories?.map((c)=> (
+                        <Option key={c._id} value={c._id}>{c.name}</Option>
+                      ))}   
+                    </Select>
+      </div>
+
+
+
+
         <input
           type='text'
           value={name}

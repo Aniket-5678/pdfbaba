@@ -5,7 +5,7 @@ import App from './App';
 import {BrowserRouter} from "react-router-dom"
 import { AuthProvider } from './components/context/auth';
 import { ThemeProvider } from './components/context/ThemeContext';
-
+import 'antd/dist/reset.css'
 
 
 

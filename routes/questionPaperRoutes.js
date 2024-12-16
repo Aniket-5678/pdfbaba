@@ -1,6 +1,6 @@
 import express from "express"
 import upload from "../middlewear/multer.js"
-import { createQuestionPaper, deleteQuestionPaper, getAllQuestionPapers, getQuestionPaperById, updateQuestionPaper } from "../controllers/questionPaperController.js"
+import { createQuestionPaper, deleteQuestionPaper, getAllQuestionPapers, getQuestionPaperById, productCategoryController, updateQuestionPaper } from "../controllers/questionPaperController.js"
 import { isAdmin, requireSignIn } from "../middlewear/authmiddlewear.js"
 
 
@@ -20,6 +20,9 @@ router.put('/update-question/:id', requireSignIn, isAdmin, upload.array('pdfs', 
 // Route to delete a question paper
 router.delete('/delete-question/:id', requireSignIn, isAdmin, deleteQuestionPaper);
 
+
+
+router.get('/product-category/:slug', productCategoryController)
 
 
 export default router

@@ -5,6 +5,11 @@ const questionPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  slug:{
+    type: String,
+    required: true
+},
   description: {
     type: String,
     required: true,
@@ -13,6 +18,13 @@ const questionPaperSchema = new mongoose.Schema({
     type: [String],
     required: true, // URL to the PDF file
   },
+  category: {
+    type: mongoose.ObjectId ,
+    ref: 'Category',
+    required: true
+},
+
+
 }, { timestamps: true });
 
 const QuestionPaper = mongoose.model('QuestionPaper', questionPaperSchema);

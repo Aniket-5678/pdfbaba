@@ -2580,8 +2580,56 @@ button.toggle-theme:hover {
   cursor: pointer;
 }
 
+/* Container for category cards */
+.category-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
 
+/* Individual category card */
+.cat-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;  /* Adjust width to your preference */
+  height: 100px;  /* Make it square for a circle */
+  background-color: #007bff; /* Blue background color */
+  color: #fff;  /* White text color */
+  font-size: 0.8rem;  /* Text size */
+  font-weight: bold;
+  border-radius: 50%;  /* Make it a circle */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  padding: 10px;
+  text-transform: capitalize; /* Capitalize the category name */
+}
 
+.cat-card:hover {
+  transform: scale(1.1);  /* Slightly enlarge the card */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);  /* Enhance shadow on hover */
+}
+
+.cat-card:active {
+  transform: scale(1);  /* Scale back on click */
+}
+
+.cat-link{
+  text-decoration: none;
+  color: white;
+}
+
+.products-category{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 100px 0px;
+  width: 100%;
+}
 
 
 
@@ -2967,7 +3015,16 @@ width: 300px;
  
 }
 
+.cat-card {
+  width: 80px;  /* Adjust width */
+  height: 80px;  /* Adjust height */
+  font-size: 0.7rem;  /* Adjust text size */
+}
 
+/* Ensure the container looks good on smaller screens */
+.category-name {
+  gap: 15px;  /* Reduce gap on mobile */
+}
 
 
 }
