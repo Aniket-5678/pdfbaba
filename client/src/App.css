@@ -2,6 +2,7 @@
 
 
 body {
-    font-family: 'Poppins', sans-serif;
-  }
-
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6; /* Optional: improves text readability */
+  color: #333; /* Optional: sets a consistent text color */
+}

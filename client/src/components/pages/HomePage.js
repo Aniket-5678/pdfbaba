@@ -147,7 +147,7 @@ const HomePage = () => {
        
        {/* category name card */}
        <div>
-       <div className='category-name' >
+       <div className='cat-name' >
            {categories?.map((cat) => (
             <Link className='cat-link' to={`/category/${cat.slug}`} >
            <div className='cat-card' key={cat._id}>
