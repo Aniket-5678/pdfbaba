@@ -87,7 +87,7 @@ const Aboutus = () => {
             If you have any questions, suggestions, or feedback, feel free to reach out to us at:
           </p>
           <p className="contactInfo">📧 ani23june@gmail.com</p>
-          <p className="contactInfo">📞+917020772919</p>
+          <p className="contactInfo">📞+918830730929</p>
         </section>
 
 

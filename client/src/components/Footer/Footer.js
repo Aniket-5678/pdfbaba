@@ -64,7 +64,7 @@ const Footer = () => {
         <div className="footer-contact">
           <h3>Contact Us</h3>
           <p>Email: ani23june@gmail.com</p>
-          <p>Phone: +917020772919</p>
+          <p>Phone: +918830730929</p>
         </div>
 
         {/* Social Media Section */}

@@ -10,7 +10,7 @@ const ContactOffer = () => {
         If you're unable to find the PDFs you need, don't worry! You can contact us directly, and we will provide the PDF for any subject for just ₹49. Reach out to us, and we'll help you find what you need.
       </p>
       <p className="contact-offer-contact">
-        📞 Contact us at: <strong>+917020772919</strong>
+        📞 Contact us at: <strong>+918830730929</strong>
       </p>
       <Link to="/contact" className="contact-offer-button">
         Go to Contact Page

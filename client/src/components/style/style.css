@@ -250,6 +250,7 @@
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effects */
   font-size: 1rem; /* Consistent font size */
   font-weight: 500; /* Slightly bold for prominence */
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Hover and Focus effects for nav links */
@@ -265,6 +266,7 @@
   color: #2d3748; /* Darker text color for emphasis */
   cursor: pointer; /* Pointer cursor to indicate interactivity */
   outline: none; /* Remove default focus outline */
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Accessibility: Add focus styles for keyboard navigation */
@@ -275,6 +277,7 @@
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6); /* Custom focus outline */
   background-color: #e2e8f0; /* Consistent with hover state */
   color: #2d3748; /* Consistent with hover state */
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -285,6 +288,7 @@
   font-size: 1.1rem;
   color: black;
   padding: 0px 15px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .contact-nav{
@@ -292,6 +296,7 @@
   font-size: 1.1rem;
   color: black;
   padding: 0px 15px;
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -313,6 +318,7 @@
   transition: all 0.3s ease;
   width: 100%;
   max-width: 450px; /* Adjust max width as needed */
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Search Input */
@@ -326,6 +332,7 @@
   color: #333;
   width: 100%; /* Ensure the input takes full width of the container */
   max-width: 400px; /* Adjust max width as needed */
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -1471,6 +1478,7 @@
   margin: 0 auto;
   margin-top: 70px ;
   padding: 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Banner Section */
@@ -1504,6 +1512,7 @@
   color: #ffffff; /* White text for contrast */
   text-align: center;
   padding: 0 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .banner-text h1 {
@@ -1530,17 +1539,20 @@
   font-size: 1.8rem;
   margin-bottom: 20px;
   color: #1a202c; /* Darker shade for the main title */
+  font-family: 'Poppins', sans-serif;
 }
 
 .subtitle {
   font-size: 1.6rem;
   margin-bottom: 15px;
   color: #2d3748; /* Slightly lighter than the main title */
+  font-family: 'Poppins', sans-serif;
 }
 
 .paragraph {
   font-size: 1rem;
   color: #4a5568; /* Medium gray for paragraphs */
+  font-family: 'Poppins', sans-serif;
 }
 
 .list {
@@ -1552,6 +1564,7 @@
   font-size: 1rem;
   margin-bottom: 10px;
   color: #4a5568;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Contact Information Styling */
@@ -1559,6 +1572,7 @@
   font-size: 1rem;
   color: #4a5568;
   margin-top: 5px;
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -1573,6 +1587,7 @@ html {
   padding: 50px 0;
   background-color: #f9f9f9; /* Light grey background */
   text-align: center;
+  font-family: 'Poppins', sans-serif;
 }
 
 .team-cards {
@@ -1581,6 +1596,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 40px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .team-card {
@@ -1593,6 +1609,7 @@ html {
   width: 250px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added smooth transition */
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Add a hover effect to enhance the professional feel */
@@ -1613,17 +1630,20 @@ html {
   font-size: 18px;
   font-weight: bold;
   margin: 10px 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .team-role {
   font-size: 16px;
   color: #007bff;
   margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .team-description {
   font-size: 14px;
   color: #555;
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -2219,12 +2239,14 @@ html {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 800px;
   margin: 20px auto;
+  font-family: 'Poppins', sans-serif;
 }
 
 .pdf-search-guide h3 {
   font-size: 1.8rem;
   color: #333;
   margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .pdf-search-guide p {
@@ -2232,16 +2254,19 @@ html {
   color: #555;
   line-height: 1.6;
   margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .pdf-search-guide ul {
   list-style-type: disc;
   margin-left: 20px;
   margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .pdf-search-guide li {
   margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .pdf-search-guide li strong {
@@ -2334,6 +2359,7 @@ html {
   padding: 20px;
   box-sizing: border-box;
   transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions for hover effects */
+  font-family: 'Poppins', sans-serif;
 }
 
 .platform-info-card:hover {
@@ -2885,7 +2911,8 @@ width: 300px;
 
   .contact-offer-container {
     padding: 2rem 1.5rem; /* Adjust padding for smaller screens */
-    margin: 0; /* Adjust margin for better spacing */
+     /* Adjust margin for better spacing */
+     font-family: 'Poppins', sans-serif;
   }
 
   .contact-offer-heading {
@@ -3130,8 +3157,14 @@ width: 300px;
     background-color: #004494; /* Hover effect for buttons */
   }
 
-
-
+  .subscribe-form{
+    display: flex;
+    
+  }
+  .subscribe-form  button {
+    width: 100px;
+    font-size: 0.8rem;
+  }
 
 }
 
@@ -3605,5 +3638,7 @@ color: white;
 .user-content{
   margin-bottom: 100px;
 }
+
+
 
 
