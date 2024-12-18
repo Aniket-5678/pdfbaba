@@ -2651,6 +2651,7 @@ button.toggle-theme:hover {
 
 .products-category{
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   margin: 100px 0px;
