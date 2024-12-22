@@ -18,12 +18,32 @@ import LogoImage from "../images/pdfbaba.png"
 const Navbar = () => {
   const [auth, setAuth] = useAuth();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [questionPapers, setQuestionPapers] = useState([]);
   const [isQuestionDropdownOpen, setQuestionDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const questionDropdownRef = useRef(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useTheme(); 
+
+
+  const [categories, setCategories] = useState([])
+
+   
+  useEffect(() => {
+    const getAllcategory = async () => {
+      try {
+        const { data } = await axios.get('/api/v1/category/get-category');
+        console.log("Category Data: ", data); // Debugging
+        setCategories(data.category); // Correctly set category array
+      } catch (error) {
+        console.error("Error fetching categories: ", error);
+      }
+    };
+    getAllcategory();
+  }, []);
+
+
+
+
 
 
 
@@ -56,22 +76,7 @@ const Navbar = () => {
   };
   
 
-  useEffect(() => {
-    const fetchQuestionPapers = async () => {
-      try {
-        const { data } = await axios.get('/api/v1/questionpaper/all-questions');
-        if (data.success) {
-          setQuestionPapers(data.data);
-        } else {
-          console.error('Failed to fetch question papers');
-        }
-      } catch (error) {
-        console.error('Error fetching question papers', error);
-      }
-    };
 
-    fetchQuestionPapers();
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -139,8 +144,8 @@ const Navbar = () => {
               PDFS <CgChevronDown />
             </button>
             <div className={`dropdown-menu ${isQuestionDropdownOpen ? 'show' : ''}`}>
-              {questionPapers.map((paper) => (
-                <Link key={paper._id} to={`/question/${paper._id}`} className="nav-link">
+              {categories.map((paper) => (
+                <Link key={paper._id} to={`/category/${paper.slug}`} className="nav-link">
                   <p className='nav-h2'>{paper.name}</p>
                 </Link>
               ))}

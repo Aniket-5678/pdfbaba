@@ -53,10 +53,18 @@ const CategoryProduct = () => {
 
   return (
     <Layout>
+     
+    
+      
+     
+     
+
       <div className="products-category">
+     
         {
           products.length > 0 ? (
             products.map((product) => (
+                  
               <div key={product._id} className="product-card">
                 <h4 className='product-title'>{product?.name}</h4>
                 <p className='product-description'>{product?.description}</p>
@@ -105,6 +113,7 @@ const CategoryProduct = () => {
           </div>
         )}
       </Modal>
+     
     </Layout>
   );
 };
