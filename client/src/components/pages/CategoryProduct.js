@@ -65,9 +65,11 @@ const CategoryProduct = () => {
           products.length > 0 ? (
             products.map((product) => (
                   
-              <div key={product._id} className="product-card">
-                <h4 className='product-title'>{product?.name}</h4>
-                <p className='product-description'>{product?.description}</p>
+              <div key={product._id} className="categorywise-product">
+                <h4 className='categorywise-title'>{product?.name}</h4>
+                <p className='categorywise-description'>{product.description.length > 30 
+          ? `${product.description.substring(0, 60)}` 
+          : product.description}</p>
 
                 {/* Render PDF download button */}
                 {product.pdfs?.length > 0 && (

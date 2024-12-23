@@ -164,7 +164,9 @@ const HomePage = () => {
           {products.slice(0, visibleCount).map((product) => (
             <div key={product._id} className='product-card'>
               <h3 className='product-title'>{product.name}</h3>
-              <p className='product-description'>{product.description}</p>
+              <p className='product-description'> {product.description.length > 16 
+          ? `${product.description.substring(0, 45)}...` 
+          : product.description}</p>
               <button
                 className='product-dropdown-button'
                 onClick={() => openModal(product)}
