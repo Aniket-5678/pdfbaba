@@ -1765,7 +1765,7 @@ html {
 }
 
 .card-content h2 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   margin-bottom: 10px;
   color: #0056b3;
 }
@@ -1980,7 +1980,7 @@ html {
 }
 
 .category-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #333;
   margin: 15px 0;
   font-weight: 600;
@@ -2243,7 +2243,7 @@ html {
 }
 
 .pdf-search-guide h3 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: #333;
   margin-bottom: 10px;
   font-family: 'Poppins', sans-serif;
@@ -2707,6 +2707,13 @@ button.toggle-theme:hover {
 
 /* Responsive styles */
 @media (max-width: 600px) {
+
+
+  .nav-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
   
   .nav-link-main {
     display: none;
@@ -2717,7 +2724,11 @@ button.toggle-theme:hover {
 
   .hamburger {
     display: block;
+    position: relative;
+    top: 5px;
   }
+
+ 
 
   .nav-link-main.open {
     display: flex;
@@ -2897,12 +2908,17 @@ button.toggle-theme:hover {
   font-size: 2.5rem; /* Adjust icon size for smaller screens */
 }
 
+.step-card h4{
+  font-size: 1.1rem;
+}
+
+
 .section-title {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
 }
 
 .category-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
 .category-description, .step-card p {
@@ -2928,6 +2944,12 @@ button.toggle-theme:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.07); /* Enhanced shadow on hover */
   }
   
+
+  .popular-pdfs .section-title{
+    font-size: 1.1rem;
+  }
+
+
 
   .popular-pdfs-title {
     font-size: 1.5rem; /* Smaller font size for titles */
@@ -2959,6 +2981,11 @@ button.toggle-theme:hover {
     color: #666;
     margin-bottom: 10px;
   }
+
+  .pdf-card h4 {
+    font-size: 1.1rem;
+  }
+
 
   .pdf-card button {
     font-size: 0.9rem; /* Smaller button text */
@@ -2995,12 +3022,17 @@ button.toggle-theme:hover {
 
   .review-text,
   .owner-content p {
-    font-size: 0.95em; /* Smaller text for mobile */
+    font-size: 0.9rem; /* Smaller text for mobile */
   }
 
   .review-stars {
     font-size: 1em; /* Adjust star size */
   }
+
+  .review-section-heading{
+    font-size: 1.1rem;
+  }
+
 
   .contact-offer-container {
     padding: 2rem 1.5rem; /* Adjust padding for smaller screens */
@@ -3009,19 +3041,19 @@ button.toggle-theme:hover {
   }
 
   .contact-offer-heading {
-    font-size: 2rem; /* Smaller font size for headings on mobile */
+    font-size: 1.1rem; /* Smaller font size for headings on mobile */
     margin-bottom: 1rem; /* Less margin for heading */
   }
 
   .contact-offer-text,
   .contact-offer-contact {
-    font-size: 1.2rem; /* Smaller font size for text */
+    font-size: 0.9rem; /* Smaller font size for text */
     margin-bottom: 1.5rem; /* Reduced margin for better spacing */
   }
 
   .contact-offer-button {
     padding: 0.8rem 1.8rem; /* Adjust button padding */
-    font-size: 1rem; /* Smaller font size for button */
+    font-size: 0.9rem; /* Smaller font size for button */
   }
 
   .platform-info-card {
@@ -3048,6 +3080,19 @@ button.toggle-theme:hover {
   .info-features {
     justify-content: center;
   }
+
+  .info-button {
+    padding: 10px 25px;
+    background-color: #007bff;
+    margin: 0px 45px;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 
 
   .explore-container {
@@ -3101,7 +3146,7 @@ button.toggle-theme:hover {
 }
 
 .subtitle {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .title {
@@ -3138,7 +3183,7 @@ button.toggle-theme:hover {
 .cat-card {
   width: 80px;  /* Adjust width */
   height: 80px;  /* Adjust height */
-  font-size: 0.7rem;  /* Adjust text size */
+  font-size: 0.6rem;  /* Adjust text size */
 }
 
 /* Ensure the container looks good on smaller screens */
@@ -3189,9 +3234,62 @@ button.toggle-theme:hover {
 }
 
 
+.card-content h2 {
+  font-size: 1.1rem;
+ 
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.feature span{
+  font-size: 0.9rem;
+}
 
 
+.highlight-title{
+  font-size: 0.9rem;
+}
 
+.pdf-search-guide h3{
+  font-size: 1.1rem;
+}
+
+.pdf-search-guide p{
+  font-size: 0.9rem;
+}
+
+.pdf-search-guide li {
+  font-size: 0.9rem;
+}
+
+.pdf-search-guide .contact-info p{
+  font-size: 0.9rem;
+}
+
+
+.contact-title{
+  font-size: 1.3rem;
+}
+
+.contact-paragraph{
+  font-size: 1.1rem;
+}
+
+.signup-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
 
 
 }
