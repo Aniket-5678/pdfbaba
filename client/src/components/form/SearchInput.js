@@ -82,7 +82,7 @@ const SearchInput = () => {
       <input
         type="text"
         className="search-input"
-        placeholder="Search pdfs"
+        placeholder="Search notes"
         value={query}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

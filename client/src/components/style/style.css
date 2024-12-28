@@ -54,7 +54,7 @@
     border: 2px solid transparent;
     background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(0, 86, 179, 1) 100%);
     background-clip: padding-box;
-    
+     
 }
 
 .nav-1:hover {
@@ -203,6 +203,7 @@
 .nav-h2{
   text-decoration: none;
   color: grey;
+  font-size: 0.9rem;
 }
 
 .hamburger {
@@ -225,10 +226,9 @@
   z-index: 2000; /* Ensure it appears above other content */
   border-radius: 0 0 10px 10px; /* Rounded bottom corners */
   transition: all 0.3s ease-in-out; /* Smooth transition for menu toggle */
-  
-  /* Optional: Add a fade-in effect */
   opacity: 0;
   visibility: hidden;
+ 
 }
 
 .nav-link-main.open {
@@ -286,17 +286,19 @@
 .about-nav{
   text-decoration: none;
   font-size: 1.1rem;
-  color: black;
+  color:#333333 ;
   padding: 0px 15px;
   font-family: 'Poppins', sans-serif;
+  line-height: 1.9; 
 }
 
 .contact-nav{
   text-decoration: none;
   font-size: 1.1rem;
-  color: black;
+  color: #333333;
   padding: 0px 15px;
   font-family: 'Poppins', sans-serif;
+  line-height: 1.9;
 }
 
 
@@ -381,14 +383,31 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 5px 0px;
   position: absolute;
   width: 100%;
   top: 100%;
-  left: 0; /* Align results dropdown with input */
+  left: 0; /* Align dropdown with input */
   z-index: 1000;
-  max-height: 300px;
-  margin: 10px 0px;
-  overflow-y: auto;
+  max-height: 300px; /* Limit height for scrolling */
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Invisible Scrollbar for WebKit Browsers (Chrome, Safari, Edge) */
+.search-results::-webkit-scrollbar {
+  width: 0; /* Removes vertical scrollbar width */
+  height: 0; /* Removes horizontal scrollbar height */
+}
+
+/* Invisible Scrollbar for Firefox */
+.search-results {
+  scrollbar-width: none; /* Hides the scrollbar in Firefox */
+}
+
+/* For IE and Legacy Browsers */
+.search-results {
+  -ms-overflow-style: none; /* Hides scrollbar in IE10+ */
 }
 
 /* Search Result Item */
@@ -401,6 +420,7 @@
   color: #333;
   text-decoration: none;
   display: block;
+  font-size: 0.9rem;
 }
 
 .search-result-item:hover {
@@ -442,6 +462,9 @@
   }
   
   .signup-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #ffffff;
     padding: 2rem;
     border-radius: 8px;
@@ -2613,6 +2636,7 @@ button.toggle-theme:hover {
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
+
 }
 
 /* Individual category card */

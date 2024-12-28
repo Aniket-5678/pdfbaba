@@ -19,7 +19,6 @@ import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [visibleCount, setVisibleCount] = useState(6); // Initially show 6 products
@@ -55,11 +54,7 @@ const HomePage = () => {
         }
       } catch (error) {
         console.error('Error fetching products', error);
-      } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      }
+      } 
     };
 
     fetchProducts();
@@ -86,13 +81,6 @@ const HomePage = () => {
     }, 1000)
   };
 
-  if (loading) {
-    return (
-      <div className="spinner-container">
-        <ClipLoader color="#007bff" size={50} />
-      </div>
-    );
-  }
 
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
