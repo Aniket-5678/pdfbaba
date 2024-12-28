@@ -2632,45 +2632,59 @@ button.toggle-theme:hover {
 /* Container for category cards */
 .cat-name {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
   justify-content: center;
-  margin-top: 20px;
-
+  flex-wrap: wrap;
+  background-color: white;  /* Light grey background for the container */
+  padding: 20px;
+  border-radius: 10px;  /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Light shadow */
+  margin-top: 30px;  /* Space from top */
+  max-width: 900px;  /* Limit the max width */
+  margin: 0 auto;  /* Center the container */
+  transition: all 0.3s ease;  /* Smooth transition for box-shadow and other properties */
 }
 
-/* Individual category card */
+/* Hover effect for the container */
+.cat-name:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);  /* Stronger shadow on hover */
+  transform: scale(1.02);  /* Slightly enlarge the container */
+}
 .cat-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100px;  /* Adjust width to your preference */
-  height: 100px;  /* Make it square for a circle */
+  width: 80px;  /* Smaller width */
+  height: 80px;  /* Square size */
   background-color: #007bff; /* Blue background color */
   color: #fff;  /* White text color */
-  font-size: 0.8rem;  /* Text size */
+  font-size: 0.75rem;  /* Adjusted text size for a smaller look */
   font-weight: bold;
   border-radius: 50%;  /* Make it a circle */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   text-align: center;
-  padding: 10px;
+  padding: 8px;
   text-transform: capitalize; /* Capitalize the category name */
+  margin: 10px;  /* Add margin between cards */
 }
 
+/* Hover effect for category card */
 .cat-card:hover {
   transform: scale(1.1);  /* Slightly enlarge the card */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);  /* Enhance shadow on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);  /* Enhanced shadow on hover */
 }
 
+/* Active effect for category card */
 .cat-card:active {
   transform: scale(1);  /* Scale back on click */
 }
 
-.cat-link{
+/* Link styles */
+.cat-link {
   text-decoration: none;
-  color: white;
+  color: white;  /* Ensures text in the link is white */
 }
 
 .products-category{
@@ -2799,7 +2813,9 @@ button.toggle-theme:hover {
     width: 90px; /* Set specific width to 80px */
   }
 
-  
+  .search-input::placeholder {
+    font-size: 0.7rem;
+  }
 
   .clear-button {
     right: 10px; /* Adjust button position */
@@ -3228,6 +3244,7 @@ button.toggle-theme:hover {
 .footer-subscribe {
   flex: 1 1 100%; /* Full width for all sections */
   text-align: center; /* Center the text for better mobile display */
+  font-size: 0.8rem;
 }
 
 .footer-subscribe form {
@@ -3254,7 +3271,7 @@ button.toggle-theme:hover {
 }
 
 .footer-bottom p {
-  font-size: 0.8rem; /* Reduce font size for footer bottom text */
+  font-size: 0.7rem; /* Reduce font size for footer bottom text */
 }
 
 
