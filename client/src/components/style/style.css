@@ -2835,7 +2835,7 @@ button.toggle-theme:hover {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    
+  
   }
 
   .search-result-item a {
@@ -2844,8 +2844,9 @@ button.toggle-theme:hover {
     justify-content: center;
     color: #333;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     display: block;
+    
   }
   .no-results {
     font-size: 0.85rem;
@@ -3316,7 +3317,7 @@ button.toggle-theme:hover {
 }
 
 .contact-paragraph{
-  font-size: 1.1rem;
+  font-size: 0.9rem;
 }
 
 .signup-main {
@@ -3578,13 +3579,13 @@ button.toggle-theme:hover {
 
 
 #dark .card-content h2 {
-  font-size: 1.8rem;
+  font-size: 1.1rem;
   margin-bottom: 10px;
   color: white;
 }
 
 #dark .card-content p {
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: white;
   line-height: 1.6;
 }
@@ -3904,6 +3905,29 @@ color: white;
 }
 
 
+
+#dark .cat-name{
+  background-color: #111313;
+}
+
+#dark .categorywise-product{
+  background-color: #111313;
+}
+
+
+#dark .categorywise-title {
+  color: grey;
+}
+
+
+
+#dark .feature span{
+  color: grey;
+}
+
+#dark .pdf-search-guide p{
+  color: grey;
+}
 
 
 .user-dashboard-container{
