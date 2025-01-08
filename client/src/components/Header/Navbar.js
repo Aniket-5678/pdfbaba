@@ -7,13 +7,13 @@ import { CgProfile, CgChevronDown } from "react-icons/cg";
 import SearchInput from '../form/SearchInput';
 import axios from 'axios';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { MdDarkMode } from "react-icons/md";
-import { MdLightMode } from "react-icons/md";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useTheme } from '../context/ThemeContext';
-import LogoImage from "../images/pdfbaba.png"
+import LogoImage from "../images/pdfbaba.png";
+import { MdClose } from 'react-icons/md';
 
-
-
+// MUI Components
+import { Drawer, List, ListItem, Divider } from '@mui/material';
 
 const Navbar = () => {
   const [auth, setAuth] = useAuth();
@@ -23,30 +23,19 @@ const Navbar = () => {
   const questionDropdownRef = useRef(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useTheme(); 
+  const [categories, setCategories] = useState([]);
 
-
-  const [categories, setCategories] = useState([])
-
-   
   useEffect(() => {
-    const getAllcategory = async () => {
+    const getAllCategory = async () => {
       try {
         const { data } = await axios.get('/api/v1/category/get-category');
-        console.log("Category Data: ", data); // Debugging
-        setCategories(data.category); // Correctly set category array
+        setCategories(data.category); 
       } catch (error) {
         console.error("Error fetching categories: ", error);
       }
     };
-    getAllcategory();
+    getAllCategory();
   }, []);
-
-
-
-
-
-
-
 
   const handleLogout = () => {
     setAuth({ ...auth, user: null, token: "" });
@@ -66,17 +55,9 @@ const Navbar = () => {
     setMenuOpen(!isMenuOpen);
   };
 
-
   const handleTheme = () => {
-    setTheme((prevState) => {
-      const newTheme = prevState === 'light' ? 'dark' : 'light';
-      console.log("Theme changed to:", newTheme);
-      return newTheme;
-    });
+    setTheme((prevState) => prevState === 'light' ? 'dark' : 'light');
   };
-  
-
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -94,7 +75,6 @@ const Navbar = () => {
     };
   }, []);
 
-  // Add this useEffect for handling resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) { // Adjust this value based on your breakpoints
@@ -120,8 +100,7 @@ const Navbar = () => {
 
         <div className='nav-logo'>
           <Link className='nav-home ' to='/'>
-          <img className='pdfbaba-logo'  src={LogoImage} alt='logo' />
-     
+            <img className='pdfbaba-logo' src={LogoImage} alt='logo' />
           </Link>
         </div>
 
@@ -129,19 +108,61 @@ const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className={`nav-link-main ${isMenuOpen ? 'open' : ''}`}>
+     {/* MUI Drawer for Mobile Menu */}
+<Drawer
+  anchor="left"
+  open={isMenuOpen}
+  onClose={toggleMenu}
+  sx={{
+    display: { xs: 'block', sm: 'none' }, // Drawer only on mobile
+    width: '300px',  // Adjust width of the drawer
+  }}
+>
+  <div className="drawer-header">
+    <MdClose className="close-btn" onClick={toggleMenu} />
+  </div>
+  <List>
+  <ListItem  components={Link}  to = "/"className="menu-item_1">PDF BABA</ListItem>
+    <ListItem button component={Link} to="/about" className="menu-item">About us</ListItem>
+    <ListItem button component={Link} to="/contact" className="menu-item">Contact us</ListItem>
+    <Divider />
 
-        <div className='aboutus'>
-             <Link className='about-nav' to='/about' >About us</Link>
+    {/* Display all categories directly */}
+    {categories.map((paper) => (
+      <ListItem key={paper._id} button component={Link} to={`/category/${paper.slug}`} className="menu-item">
+        <p className="nav-h2">{paper.name}</p>
+      </ListItem>
+    ))}
+
+    <Divider />
+
+    {/* Auth links */}
+    {!auth.user ? (
+      <>
+        <ListItem button component={Link} to='/register' className="menu-item">Signup</ListItem>
+        <ListItem button component={Link} to='/login' className="menu-item">Login</ListItem>
+      </>
+    ) : (
+      <ListItem button onClick={toggleDropdown} className="menu-item">
+        {auth?.user.name} <CgProfile color='gold' />
+      </ListItem>
+    )}
+  </List>
+</Drawer>
+
+        {/* Desktop Menu */}
+        <div className="nav-link-main">
+          <div className='aboutus'>
+            <Link className='about-nav' to='/about'>About us</Link>
           </div>
 
           <div className='contactus'>
-             <Link className='contact-nav' to='/contact' >contact us</Link>
+            <Link className='contact-nav' to='/contact'>Contact us</Link>
           </div>
-          
+
           <div className="dropdown" ref={questionDropdownRef}>
             <button onClick={toggleQuestionDropdown} className="dropdown-btn">
-              PDFS <CgChevronDown />
+              PDFs <CgChevronDown />
             </button>
             <div className={`dropdown-menu ${isQuestionDropdownOpen ? 'show' : ''}`}>
               {categories.map((paper) => (
@@ -151,8 +172,6 @@ const Navbar = () => {
               ))}
             </div>
           </div>
-
-         
 
           {!auth.user ? (
             <>
@@ -181,8 +200,8 @@ const Navbar = () => {
         </div>
 
         <div className='btn-mode' onClick={handleTheme}>
-    {theme === "light" ? (<MdLightMode color='#f0e68c'  size={30}/>) : (<MdDarkMode  color='#4b0082' size={30}/>)}
-  </div>
+          {theme === "light" ? (<MdLightMode color='#f0e68c' size={30} />) : (<MdDarkMode color='#4b0082' size={30} />)}
+        </div>
       </nav>
     </div>
   );

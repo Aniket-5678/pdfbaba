@@ -414,6 +414,7 @@
 .search-result-item {
   padding: 10px;
   transition: background-color 0.3s ease;
+ 
 }
 
 .search-result-item a {
@@ -2768,23 +2769,6 @@ button.toggle-theme:hover {
 
  
 
-  .nav-link-main.open {
-    display: flex;
-    align-items: center;
-    width: 100vw;
-    margin: 0;
-    padding: 15px; 
-  }
- 
-
-  .nav-link-main.open .nav-link,
-  .nav-link-main.open .dropdown-btn,
-  .nav-link-main.open .about-nav,
-  .nav-link-main.open .contact-nav {
-    font-size: 0.95rem; /* Slightly smaller font on mobile */
-    padding: 10px 15px; /* Adjust padding */
-  }
-
   .signup-input {
     width: 290px;
     padding: 0.8rem;
@@ -3332,6 +3316,24 @@ button.toggle-theme:hover {
   max-width: 400px;
   box-sizing: border-box;
 }
+
+.MuiListItem-root {
+  font-size: 16px; /* Adjust font size for smaller screens */
+}
+
+.menu-item {
+  font-size: 16px;
+  padding: 15px 18px; /* Adjust padding for better spacing */
+}
+
+.nav-h2 {
+  font-size: 16px;
+}
+
+.close-btn {
+  font-size: 32px; /* Larger close button for better accessibility */
+}
+
 
 
 }
@@ -3942,5 +3944,101 @@ color: white;
 }
 
 
+/* Mobile Drawer Styles */
+.drawer-header {
+  display: flex;
+  justify-content: flex-end;
+  width: 270px;
+  align-items: center;
+  padding: 16px; /* Reduced padding for a more compact header */
+  background-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  z-index: 1300; /* Ensure header stays on top of other content */
+}
+
+.close-btn {
+  font-size: 28px; /* Slightly smaller button */
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease-in-out;
+}
+
+.close-btn:hover {
+  color: #d9534f; /* Red color on hover for attention */
+}
+
+.MuiList-root {
+  padding: 0;
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0; /* Soft top border */
+  height: 100vh; /* Full height for drawer */
+  overflow-y: auto; /* Enable scrolling if content exceeds screen height */
+  z-index: 1200; /* Ensure content stays beneath the header */
+}
+
+.menu-item {
+  font-size: 16px; /* Slightly smaller text size for better compactness */
+  font-weight: 500;
+  color: #333;
+  padding: 14px 20px; /* Reduced padding to fit more items */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background-color: #0056b3;
+  color: white;
+  cursor: pointer;
+  transform: translateX(8px); /* Subtle slide effect */
+}
+
+.menu-item:active {
+  background-color: #004085; /* Darker blue when clicked */
+}
+
+.menu-item .nav-h2 {
+  margin-left: 10px;
+  font-size: 16px; /* Ensure the category name fits within the compact space */
+  font-weight: 500;
+  color: inherit;
+}
+
+.MuiListItem-root {
+  border-bottom: 1px solid #f0f0f0; /* Light separator for list items */
+}
+
+/* Focus & Active Styles */
+.menu-item:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.6); /* Blue focus outline */
+}
+
+.close-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.6); /* Blue focus outline for close button */
+}
+
+/* Styling for icons */
+.menu-item .icon {
+  font-size: 18px; /* Slightly smaller icons */
+  margin-right: 12px; /* Reduced space between icon and text */
+  color: #666;
+}
+
+.menu-item:hover .icon {
+  color: white; /* Change icon color on hover */
+}
+
+/* Active state for icons */
+.menu-item:active .icon {
+  color: white;
+}
+
+
+.menu-item_1{
+  color: #0077cc;
+}
 
 
