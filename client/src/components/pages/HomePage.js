@@ -7,7 +7,8 @@ import Modal from 'react-modal';
 import { FaChevronDown } from 'react-icons/fa'; // Load More Icon
 import { ClipLoader } from 'react-spinners';
 import { IoClose } from "react-icons/io5";
-import { MdArrowBack, MdArrowForward } from "react-icons/md"; // Custom arrow icons
+import { IoIosArrowDropleftCircle } from "react-icons/io";
+import { IoIosArrowDroprightCircle } from "react-icons/io";
 import Slider from "react-slick"; // Import react-slick
 import Featurepdf from './Featurepdf';
 import Reviewcard from "../pages/Reviewcard"
@@ -16,6 +17,7 @@ import ContactOffer from './ContactOffer';
 import PdfSearchGuide from './PdfSearchGuide';
 import PlatformInfoCard from './PlatformInfoCard';
 import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -82,18 +84,19 @@ const HomePage = () => {
   };
 
 
-  // Custom arrow components
-  const NextArrow = ({ onClick }) => (
-    <div className="custom-arrow next-arrow" onClick={onClick}>
-      <MdArrowForward size={30} />
-    </div>
-  );
+// Next Arrow
+const NextArrow = ({ onClick }) => (
+  <div className="custom-arrow next-arrow" onClick={onClick}>
+    <IoIosArrowDropleftCircle size={30} />
+  </div>
+);
 
-  const PrevArrow = ({ onClick }) => (
-    <div className="custom-arrow prev-arrow" onClick={onClick}>
-      <MdArrowBack size={30} />
-    </div>
-  );
+// Previous Arrow
+const PrevArrow = ({ onClick }) => (
+  <div className="custom-arrow prev-arrow" onClick={onClick}>
+    <IoIosArrowDroprightCircle size={30}  />
+  </div>
+);
 
   // Slider settings for react-slick
   const sliderSettings = {
@@ -122,6 +125,39 @@ const HomePage = () => {
     ],
   };
 
+
+// Add a new slider settings object specifically for categories
+const categorySlider = {
+  dots: false, // Disable dots
+  infinite: true,
+  speed: 500,
+  slidesToShow: 4, // Display 4 categories at once
+  slidesToScroll: 1,
+  nextArrow: <NextArrow />,
+  prevArrow: <PrevArrow />,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2, // Show 2 categories on smaller screens
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1, // Show 1 category on very small screens
+        slidesToScroll: 1,
+      },
+    },
+  ],
+};
+
+
+
+
+  
+
   return (
     <Layout>
       <div className='Home-container'>
@@ -132,21 +168,121 @@ const HomePage = () => {
         <div className='Board-content'>
           <h3 className='board-title'>Learning Platform</h3>
         </div>
-       
-       {/* category name card */}
-       <div>
-       <div className='cat-name' >
-           {categories?.map((cat) => (
-            <Link className='cat-link' to={`/category/${cat.slug}`} >
-           <div className='cat-card' key={cat._id}>
-         {cat.name}
-          </div>
-          </Link>
-  ))}
-        </div>
-  </div>
- {/* category name card */}
-        
+
+        <Box
+  sx={{
+    padding: { xs: '10px', sm: '20px' },
+    background: '#f9fcfc',
+    textAlign: 'center',
+    fontFamily: 'Poppins, sans-serif', // Apply Poppins font family
+  
+  }}
+>
+ 
+
+  <Slider
+    {...categorySlider}
+    sx={{
+      '.slick-slide': {
+        display: 'flex',
+        justifyContent: 'center',
+        padding: { xs: '5px', sm: '10px' },
+      },
+      '.slick-track': {
+        display: 'flex',
+        justifyContent: 'center',
+      },
+    }}
+    responsive={[
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          arrows: false, // Disable arrows on mobile
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 1,
+          arrows: true, // Enable arrows for tablet and desktop
+        },
+      },
+      {
+        breakpoint: 1440,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 1,
+          arrows: true,
+        },
+      },
+    ]}
+  >
+    {categories.map((category) => (
+      <Box
+        className="catbox"
+        key={category._id}
+        sx={{
+          width: '100%',
+          margin: '0 auto',
+          padding: { xs: '5px', sm: '10px' },
+          textAlign: 'center',
+          fontFamily: 'Poppins, sans-serif', // Apply Poppins font family to each category box
+        }}
+      >
+        <Link to={`/category/${category.slug}`} style={{ textDecoration: 'none' }}>
+          <Box
+            sx={{
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+              padding: { xs: '8px', sm: '12px' },
+              borderRadius: '10px',
+              background: '#fff',
+              transition: 'all 0.3s ease-in-out',
+              ':hover': {
+                boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)',
+                transform: 'scale(1.05)',
+              },
+              cursor: 'pointer',
+            }}
+          >
+          <Typography
+  variant="h6"
+  sx={{
+    fontSize: { xs: '0.7rem', sm: '0.8rem' },
+    color: '#333',
+    fontWeight: 'bold',
+    marginBottom: '5px',
+    fontFamily: 'Poppins, sans-serif', // Apply Poppins font family to category name
+    maxWidth: '150px', // Set a maximum width
+    overflow: 'hidden', // Hide any content that exceeds the width
+    textOverflow: 'ellipsis', // Add ellipsis if the text is too long
+    whiteSpace: 'nowrap', // Prevent text from wrapping into multiple lines
+    margin: '0 auto', // Center align the text
+  }}
+>
+  {category.name}
+</Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: { xs: '0.7rem', sm: '0.9rem' },
+                color: '#777',
+                fontFamily: 'Poppins, sans-serif', // Apply Poppins font family to description
+              }}
+            >
+              Explore now
+            </Typography>
+          </Box>
+        </Link>
+      </Box>
+    ))}
+  </Slider>
+</Box>
+
+
 
         <div className='products-container'>
           {products.slice(0, visibleCount).map((product) => (

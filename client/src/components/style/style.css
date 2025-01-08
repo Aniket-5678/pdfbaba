@@ -1168,32 +1168,29 @@
   transform: translateY(-2px); /* Slight lift effect */
 }
 
-/* Custom Arrow Styling */
 .custom-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.custom-arrow:hover {
-  background-color: rgba(0, 123, 255, 0.9); /* Primary color on hover */
-  transform: translateY(-50%) scale(1.1); /* Slightly larger on hover */
-}
-
-.next-arrow {
-  right: 10px;
-}
-
+.next-arrow,
 .prev-arrow {
-  left: 10px;
+  color: #333; /* Default arrow color */
+  background-color: transparent; /* Transparent background */
+  border: 2px solid #333; /* Solid border for a subtle clean effect */
+  border-radius: 50%; /* Circular look */
+  padding: 8px; /* Space around the arrow */
 }
 
+/* Hover effect for the arrows */
+.custom-arrow:hover {
+  color: grey; /* Bright color when hovered (like Udemy's yellow accent) */
+  background-color: rgba(0, 0, 0, 0.1); /* Slight background color change */
+  transform: scale(1.1); /* Slightly increase the size on hover */
+}
 /* Slider Dots Styling */
 .popular-pdfs .slick-dots {
   bottom: -25px;
@@ -3333,6 +3330,9 @@ button.toggle-theme:hover {
 .close-btn {
   font-size: 32px; /* Larger close button for better accessibility */
 }
+
+
+
 
 
 
