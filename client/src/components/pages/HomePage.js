@@ -18,6 +18,8 @@ import PdfSearchGuide from './PdfSearchGuide';
 import PlatformInfoCard from './PlatformInfoCard';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
+import PdfFormat from './PdfFormat';
+import { useTheme } from '../context/ThemeContext'; 
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -27,7 +29,7 @@ const HomePage = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   
   const [categories, setCategories] = useState([])
-
+ const [theme] = useTheme(); 
    
   useEffect(() => {
     const getAllcategory = async () => {
@@ -172,14 +174,11 @@ const categorySlider = {
         <Box
   sx={{
     padding: { xs: '10px', sm: '20px' },
-    background: '#f9fcfc',
+    background: theme === 'dark' ? '#1a1a1a' : '#f9fcfc', // Dark background for dark mode
     textAlign: 'center',
     fontFamily: 'Poppins, sans-serif', // Apply Poppins font family
-  
   }}
 >
- 
-
   <Slider
     {...categorySlider}
     sx={{
@@ -236,40 +235,40 @@ const categorySlider = {
         <Link to={`/category/${category.slug}`} style={{ textDecoration: 'none' }}>
           <Box
             sx={{
-              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+              boxShadow: theme === 'dark' ? '0px 4px 10px rgba(255, 255, 255, 0.1)' : '0px 4px 10px rgba(0, 0, 0, 0.1)', // Darker box shadow for dark mode
               padding: { xs: '8px', sm: '12px' },
               borderRadius: '10px',
-              background: '#fff',
+              background: theme === 'dark' ? '#333' : '#fff', // Dark background for dark mode
               transition: 'all 0.3s ease-in-out',
               ':hover': {
-                boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.15)',
+                boxShadow: theme === 'dark' ? '0px 8px 20px rgba(255, 255, 255, 0.15)' : '0px 8px 20px rgba(0, 0, 0, 0.15)',
                 transform: 'scale(1.05)',
               },
               cursor: 'pointer',
             }}
           >
-          <Typography
-  variant="h6"
-  sx={{
-    fontSize: { xs: '0.7rem', sm: '0.8rem' },
-    color: '#333',
-    fontWeight: 'bold',
-    marginBottom: '5px',
-    fontFamily: 'Poppins, sans-serif', // Apply Poppins font family to category name
-    maxWidth: '150px', // Set a maximum width
-    overflow: 'hidden', // Hide any content that exceeds the width
-    textOverflow: 'ellipsis', // Add ellipsis if the text is too long
-    whiteSpace: 'nowrap', // Prevent text from wrapping into multiple lines
-    margin: '0 auto', // Center align the text
-  }}
->
-  {category.name}
-</Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                color: theme === 'dark' ? '#fff' : '#333', // White text for dark mode
+                fontWeight: 'bold',
+                marginBottom: '5px',
+                fontFamily: 'Poppins, sans-serif', // Apply Poppins font family to category name
+                maxWidth: '150px', // Set a maximum width
+                overflow: 'hidden', // Hide any content that exceeds the width
+                textOverflow: 'ellipsis', // Add ellipsis if the text is too long
+                whiteSpace: 'nowrap', // Prevent text from wrapping into multiple lines
+                margin: '0 auto', // Center align the text
+              }}
+            >
+              {category.name}
+            </Typography>
             <Typography
               variant="body2"
               sx={{
                 fontSize: { xs: '0.7rem', sm: '0.9rem' },
-                color: '#777',
+                color: theme === 'dark' ? '#bbb' : '#777', // Lighter text color for dark mode
                 fontFamily: 'Poppins, sans-serif', // Apply Poppins font family to description
               }}
             >
@@ -341,6 +340,10 @@ const categorySlider = {
             </div>
           )}
         </Modal>
+
+        <div>
+          <PdfFormat/>
+        </div>
 
       <div className='feature-pdf'>
         <Featurepdf/>
