@@ -7,10 +7,22 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'; // Import arrows
 import pdfformatImagefirst from '../images/pdfformat1.png';
 import pdfformatImagesecond from '../images/pdfformat2.png';
 import pdfformatImagethird from '../images/pdfformat3.png';
+import pdfformatImagefourth from '../images/pdfformat4.png';
+import pdfformatImagefifth from '../images/pdfformat5.png';
+import pdfformatImagesixth from '../images/pdfformat6.png';
+import pdfformatImageseventh from '../images/pdfformat7.png';
+import pdfformatImageeight from '../images/pdfformat8.png';
+
+import pdfformatImagenine from '../images/pdfformat9.png';
+import pdfformatImageten from '../images/pdfformat10.png';
+import pdfformatImageeleven from '../images/pdfformat11.png';
+import pdfformatImagetwele from '../images/pdfformat12.png';
+
+
 import { useTheme } from '../context/ThemeContext';  // Assuming you have a context to manage theme
 
 const PdfFormat = () => {
-  const images = [pdfformatImagefirst, pdfformatImagesecond, pdfformatImagethird];
+  const images = [pdfformatImagefirst, pdfformatImagesecond, pdfformatImagethird,  pdfformatImagefourth, pdfformatImagefifth  ,pdfformatImagesixth, pdfformatImageseventh, pdfformatImageeight, pdfformatImagenine, pdfformatImageten, pdfformatImageeleven, pdfformatImagetwele];
   const [theme] = useTheme(); // Use the theme context to get the current theme
 
   // Custom Arrows
