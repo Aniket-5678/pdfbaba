@@ -1,17 +1,16 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
-import javacriptImage from "../images/javascriptbanner.png"
-import HtmlImage from "../images/htmlbanner.png"
 import bscImage from "../images/bsc.png"
+import JavascriptnewImage from "../images/javascriptbest.png"
 
 
 
 // Import more images as needed
 
 const data = [
+  JavascriptnewImage,
   bscImage ,
-  javacriptImage,
-  HtmlImage
+
 
  
   // Add more imported images to this array

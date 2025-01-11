@@ -19,6 +19,7 @@ import {
   Grid,
 } from '@mui/material';
 import { IoClose } from 'react-icons/io5';
+import { useTheme } from '../context/ThemeContext';
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -28,6 +29,7 @@ const CategoryProduct = () => {
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [theme] = useTheme(); // Use the theme context
 
   useEffect(() => {
     if (params.slug) getProductByCategory();
@@ -56,7 +58,16 @@ const CategoryProduct = () => {
     setSelectedProduct(null);
   };
 
-  const theme = createTheme({
+  const themeStyles = createTheme({
+    palette: {
+      mode: theme === 'dark' ? 'dark' : 'light',
+      background: {
+        default: theme === 'dark' ? '#121212' : '#ffffff',
+      },
+      text: {
+        primary: theme === 'dark' ? '#ffffff' : '#000000',
+      },
+    },
     typography: {
       fontFamily: '"Poppins", sans-serif',
     },
@@ -79,27 +90,48 @@ const CategoryProduct = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeStyles}>
       <Layout>
-        {/* Header Section */}
-        <Box sx={{ backgroundColor: '#f5f5f5', py: 5, textAlign: 'center', marginTop: '50px' }}>
-          <Typography variant="h3" gutterBottom>
+        <Box
+          sx={{
+            backgroundColor: theme === 'dark' ? '#333' : '#f5f5f5',
+            py: 5,
+            textAlign: 'center',
+            marginTop: '50px',
+          }}
+        >
+          <Typography
+            variant="h3"
+            gutterBottom
+            sx={{
+              color: theme === 'dark' ? 'white' : 'black',
+            }}
+          >
             {category.name || 'Category'}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: theme === 'dark' ? '#cccccc' : '#666666',
+            }}
+          >
             Explore the best resources for {category.name}
           </Typography>
         </Box>
 
-        {/* Product Section */}
         <Container sx={{ py: 5 }}>
           <Grid container spacing={3}>
             {products.length > 0 ? (
               products.map((product) => (
-                <Grid item xs={6} sm={6} md={4} key={product._id}> {/* Updated for responsive layout */}
-                  <Card>
+                <Grid item xs={6} sm={6} md={4} key={product._id}>
+                  <Card
+                    sx={{
+                      backgroundColor: theme === 'dark' ? '#424242' : '#ffffff',
+                      color: theme === 'dark' ? '#ffffff' : '#000000',
+                    }}
+                  >
                     <CardContent>
-                      <Typography variant="h5" gutterBottom>
+                      <Typography variant="h5" fontSize="1.1rem" fontFamily='"Poppins", sans-serif' gutterBottom>
                         {product.name}
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
@@ -108,18 +140,17 @@ const CategoryProduct = () => {
                           : product.description}
                       </Typography>
                     </CardContent>
-                    <CardActions sx={{ display: { xs: 'block', sm: 'flex' } }}> {/* Mobile display as block */}
+                    <CardActions>
                       {product.pdfs?.length > 0 && (
                         <Button
                           size="small"
                           variant="contained"
                           onClick={() => openModal(product)}
                           sx={{
-                            width: '100%',  // Make button full width on mobile
-                            backgroundColor: 'white',  // Button color on mobile for better visibility
-                            color: 'black',  // Button text color on mobile
+                            backgroundColor: theme === 'dark' ? '#757575' : 'white',
+                            color: theme === 'dark' ? 'white' : 'black',
                             '&:hover': {
-                              backgroundColor: '#f1f1f1',  // Adjust hover color on mobile
+                              backgroundColor: theme === 'dark' ? '#616161' : '#f1f1f1',
                             },
                           }}
                         >
@@ -136,9 +167,14 @@ const CategoryProduct = () => {
           </Grid>
         </Container>
 
-        {/* Modal for displaying PDFs */}
-        <Dialog open={modalOpen} onClose={closeModal} fullWidth maxWidth="sm" sx={{ borderRadius: '8px' }}>
-          <DialogTitle sx={{ position: 'relative', backgroundColor: '#3f51b5', color: 'white', padding: '16px 24px' }}>
+        {/* Modal */}
+        <Dialog open={modalOpen} onClose={closeModal} fullWidth maxWidth="sm">
+          <DialogTitle
+            sx={{
+              backgroundColor: theme === 'dark' ? '#1e88e5' : '#3f51b5',
+              color: 'white',
+            }}
+          >
             {selectedProduct?.name || 'Product PDFs'}
             <IoClose
               size={24}
@@ -152,7 +188,7 @@ const CategoryProduct = () => {
               }}
             />
           </DialogTitle>
-          <DialogContent sx={{ padding: '24px', backgroundColor: '#f9f9f9' }}>
+          <DialogContent sx={{ backgroundColor: theme === 'dark' ? '#424242' : '#f9f9f9' }}>
             {selectedProduct && (
               <Box>
                 <Typography variant="h6" gutterBottom>
@@ -169,7 +205,7 @@ const CategoryProduct = () => {
                           rel="noopener noreferrer"
                           style={{
                             textDecoration: 'none',
-                            color: '#3f51b5',
+                            color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
                             fontWeight: 'bold',
                           }}
                         >
@@ -182,8 +218,12 @@ const CategoryProduct = () => {
               </Box>
             )}
           </DialogContent>
-          <DialogActions sx={{ backgroundColor: '#3f51b5', padding: '12px 24px' }}>
-            <Button onClick={closeModal} color="primary" sx={{ color: 'white' }}>
+          <DialogActions
+            sx={{
+              backgroundColor: theme === 'dark' ? '#1e88e5' : '#3f51b5',
+            }}
+          >
+            <Button onClick={closeModal} sx={{ color: 'white' }}>
               Close
             </Button>
           </DialogActions>

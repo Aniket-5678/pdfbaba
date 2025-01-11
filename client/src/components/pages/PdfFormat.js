@@ -12,17 +12,28 @@ import pdfformatImagefifth from '../images/pdfformat5.png';
 import pdfformatImagesixth from '../images/pdfformat6.png';
 import pdfformatImageseventh from '../images/pdfformat7.png';
 import pdfformatImageeight from '../images/pdfformat8.png';
-
 import pdfformatImagenine from '../images/pdfformat9.png';
 import pdfformatImageten from '../images/pdfformat10.png';
 import pdfformatImageeleven from '../images/pdfformat11.png';
 import pdfformatImagetwele from '../images/pdfformat12.png';
 
-
-import { useTheme } from '../context/ThemeContext';  // Assuming you have a context to manage theme
+import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
 
 const PdfFormat = () => {
-  const images = [pdfformatImagefirst, pdfformatImagesecond, pdfformatImagethird,  pdfformatImagefourth, pdfformatImagefifth  ,pdfformatImagesixth, pdfformatImageseventh, pdfformatImageeight, pdfformatImagenine, pdfformatImageten, pdfformatImageeleven, pdfformatImagetwele];
+  const images = [
+    pdfformatImagefirst,
+    pdfformatImagesecond,
+    pdfformatImagethird,
+    pdfformatImagefourth,
+    pdfformatImagefifth,
+    pdfformatImagesixth,
+    pdfformatImageseventh,
+    pdfformatImageeight,
+    pdfformatImagenine,
+    pdfformatImageten,
+    pdfformatImageeleven,
+    pdfformatImagetwele,
+  ];
   const [theme] = useTheme(); // Use the theme context to get the current theme
 
   // Custom Arrows
@@ -74,6 +85,28 @@ const PdfFormat = () => {
     autoplaySpeed: 3000,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
+    appendDots: dots => (
+      <Box
+        sx={{
+          marginTop: '10px', // Add spacing between images and dots
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        {dots}
+      </Box>
+    ),
+    customPaging: () => (
+      <Box
+        sx={{
+          width: '10px',
+          height: '10px',
+          borderRadius: '50%',
+          backgroundColor: '#888', // Default dot color
+          '&:hover': { backgroundColor: '#555' }, // Hover effect
+        }}
+      />
+    ),
   };
 
   return (
@@ -96,9 +129,20 @@ const PdfFormat = () => {
         sx={{
           flex: 1,
           maxWidth: { xs: '100%', sm: '50%' },
-          width: { xs: '300px', sm: 'auto' }, // Set width for mobile screens
-          position: 'relative', // Make sure arrows are within the slider box
-          marginBottom: { xs: '1rem', sm: '0' }, // Adjust margin for small screens
+          width: { xs: '300px', sm: 'auto' },
+          position: 'relative',
+          marginBottom: { xs: '1rem', sm: '0' },
+          '.slick-dots': {
+            bottom: '-20px', // Ensure dots stay below the slider
+            position: 'absolute',
+          },
+          '.slick-dots li button:before': {
+            fontSize: '12px', // Adjust dot size
+            color: theme === 'dark' ? '#f5f5f5' : '#555', // Dot color
+          },
+          '.slick-dots li.slick-active button:before': {
+            color: theme === 'dark' ? '#fff' : '#000', // Active dot color
+          },
         }}
       >
         <Slider {...sliderSettings}>
@@ -115,7 +159,7 @@ const PdfFormat = () => {
                 src={image}
                 alt={`PDF sample ${index + 1}`}
                 style={{
-                  width: '80%', // Adjust the size
+                  width: '80%',
                   maxHeight: '300px',
                   objectFit: 'contain',
                   borderRadius: '8px',
@@ -132,18 +176,18 @@ const PdfFormat = () => {
         sx={{
           flex: 1,
           maxWidth: { xs: '100%', sm: '50%' },
-          textAlign: { xs: 'center', sm: 'left' }, // Center-align for small screens
-          marginTop: { xs: '1rem', sm: '0' }, // Adding margin-top on small screens to avoid overlap
+          textAlign: { xs: 'center', sm: 'left' },
+          marginTop: { xs: '1rem', sm: '0' },
         }}
       >
         <Typography
           variant="h5"
           sx={{
-            fontSize: { xs: '1.2rem', sm: '1.8rem' }, // Adjust font size for mobile
-            fontWeight: '600', // Bold for header
-            color: theme === 'dark' ? '#f5f5f5' : '#333', // Adjust header text color
-            marginBottom: '1rem', // Bottom margin for spacing
-            fontFamily: "'Poppins', sans-serif", // Poppins font-family
+            fontSize: { xs: '1.2rem', sm: '1.8rem' },
+            fontWeight: '600',
+            color: theme === 'dark' ? '#f5f5f5' : '#333',
+            marginBottom: '1rem',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
           Elevate Your Learning with PDF Notes
@@ -151,11 +195,11 @@ const PdfFormat = () => {
         <Typography
           variant="body1"
           sx={{
-            fontSize: { xs: '0.9rem', sm: '1rem' }, // Adjust font size for mobile
-            color: theme === 'dark' ? '#e0e0e0' : '#555', // Adjust body text color
-            lineHeight: 1.6, // Line spacing for readability
-            marginBottom: '1.5rem', // Bottom margin for spacing
-            fontFamily: "'Poppins', sans-serif", // Poppins font-family
+            fontSize: { xs: '0.9rem', sm: '1rem' },
+            color: theme === 'dark' ? '#e0e0e0' : '#555',
+            lineHeight: 1.6,
+            marginBottom: '1.5rem',
+            fontFamily: "'Poppins', sans-serif",
           }}
         >
           Enhance your learning experience with PDF notes—structured for clarity and easy navigation. Whether you're reviewing course materials or accessing practice papers, PDFs provide a versatile and efficient format. Browse through the slider to explore different formats and how they can help organize your study sessions.
