@@ -2,6 +2,7 @@ import React from 'react';
 import Carousel from 'react-material-ui-carousel';
 import bscImage from "../images/bsc.png"
 import JavascriptnewImage from "../images/javascriptbest.png"
+import techzoneImage from "../images/techzone.png"
 
 
 
@@ -10,6 +11,7 @@ import JavascriptnewImage from "../images/javascriptbest.png"
 const data = [
   JavascriptnewImage,
   bscImage ,
+  techzoneImage
 
 
  

@@ -11,7 +11,6 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import Slider from "react-slick"; // Import react-slick
 import Featurepdf from './Featurepdf';
-import Reviewcard from "../pages/Reviewcard"
 import PlatformHighlights from './PlatformHighlights';
 import ContactOffer from './ContactOffer';
 import PdfSearchGuide from './PdfSearchGuide';
@@ -20,6 +19,7 @@ import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import PdfFormat from './PdfFormat';
 import { useTheme } from '../context/ThemeContext'; 
+import Faq from './Faq';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -367,9 +367,7 @@ const categorySlider = {
           </Slider>
         </div>
 
-        <div className='review-section'>
-          <Reviewcard />
-        </div>
+     
         
         <div className='platformhiglights-main'>
           <PlatformHighlights/>
@@ -382,6 +380,10 @@ const categorySlider = {
 
           <div className='contact-offer'>
              <ContactOffer/>
+          </div>
+
+          <div>
+            <Faq/>
           </div>
 
       </div>
