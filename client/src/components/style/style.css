@@ -4,7 +4,7 @@
 .navbar-container{
     display: flex;
     width: 100%;
-    height: 75px;
+    height: 70px;
     border: 1px solid white;
     position: fixed;
     top: 0;
@@ -44,36 +44,45 @@
   color: black;
   font-size: 1.1rem;
 }
-.nav-1{
-    text-decoration: none;
-    color: white;
-    font-size: 0.8rem;
-    margin: 0px 10px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: 2px solid transparent;
-    background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(0, 86, 179, 1) 100%);
-    background-clip: padding-box;
-     
+.nav-1 {
+  text-decoration: none;
+  color: white; /* White text for contrast */
+  font-size: 0.8rem;
+  margin: 0 10px;
+  padding: 8px 20px;
+  border-radius: 5px;
+  border: 1px solid #007bff; /* Vibrant blue border */
+  background-color: #007bff; /* Vibrant blue background */
+  font-weight: 600; /* Bold text for emphasis */
+  transition: all 0.3s ease; /* Smooth transition */
 }
 
 .nav-1:hover {
-    background: linear-gradient(135deg, #50E3C2, #4A90E2);
+  background-color: white; /* White background on hover */
+  color: #007bff; /* Vibrant blue text on hover */
+  border: 2px solid #007bff; /* Keeps the border consistent */
 }
-.nav-2{
-    text-decoration: none;
-    color: white;
-    font-size: 0.8rem;
-    margin: 0px 10px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background: linear-gradient(135deg, #F5A623, #F8E71C); /* Gradient background for nav-2 */
-    transition: background 0.3s ease;
+
+.nav-2 {
+  text-decoration: none;
+  color: #343A40; /* Dark grey text for professionalism */
+  font-size: 0.8rem;
+  margin: 0 10px;
+  padding: 8px 20px;
+  border-radius: 5px;
+  border: 1px solid #343A40; /* Dark grey border */
+  background-color: transparent; /* Transparent background */
+  font-weight: 600; /* Bold text for emphasis */
+  transition: all 0.3s ease; /* Smooth transition */
 }
 
 .nav-2:hover {
-    background: linear-gradient(135deg, #F8E71C, #F5A623);
+  background-color: #343A40; /* Dark grey background on hover */
+  color: white; /* White text on hover */
 }
+
+
+
 
 .nav-link-main{
   display: flex;
@@ -1431,14 +1440,22 @@
 }
 
 .footer-social .social-icons a img {
-  width: 32px;
-  margin-right: 15px;
-  transition: transform 0.2s; /* Animation for icons */
+  width: 40px; /* Consistent size for all icons */
+  height: 40px; /* Perfect circle */
+  margin-right: 15px; /* Space between icons */
+  border-radius: 50%; /* Circular shape */
+  border: 1px solid #d1d5db; /* Light grey border for subtle professionalism */
+  padding: 8px; /* Adequate spacing inside the circle */
+  background-color: #f9fafb; /* Light background for clean look */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth animations */
 }
 
 .footer-social .social-icons a img:hover {
-  transform: scale(1.1); /* Scale effect on hover */
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
 }
+
+
 
 .footer-subscribe form {
   display: flex;
@@ -4039,6 +4056,13 @@ color: white;
 .menu-item_1{
   color: #0077cc;
 }
+
+
+
+#dark .nav-2 {
+  color: white;
+}
+
 
 
 
