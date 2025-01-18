@@ -71,7 +71,7 @@ const Footer = () => {
         <div className="footer-social">
           <h3>Follow Us</h3>
           <div className="social-icons">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/share/18Ynq6wtQX/?mibextid=LQQJ4d" target="_blank" rel="noopener noreferrer">
               <img className='social' src={facbookImage} alt="Facebook" />
             </a>
             <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
@@ -80,7 +80,7 @@ const Footer = () => {
             <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
               <img className='social' src={linkdinImage} alt="LinkedIn" />
             </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/pdf_baba?igsh=YzN3ZThjcW1wbmds" target="_blank" rel="noopener noreferrer">
               <img className='social' src={instagramImage} alt="Instagram" />
             </a>
           </div>

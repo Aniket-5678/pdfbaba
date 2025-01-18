@@ -3,15 +3,20 @@ import Carousel from 'react-material-ui-carousel';
 import JavascriptnewImage from "../images/javascript.png"
 import techzoneImage from "../images/techzone.png"
 import reactjsImage from "../images/reactjs.png"
-
+import spaceImage from "../images/space.png"
+import spritualImage from "../images/spritual.png"
 
 
 // Import more images as needed
 
 const data = [
   JavascriptnewImage,
+  spaceImage,
   techzoneImage,
-  reactjsImage
+  reactjsImage,
+  spritualImage
+ 
+ 
 
 
  
