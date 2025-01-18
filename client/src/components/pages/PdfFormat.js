@@ -4,36 +4,28 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'; // Import arrows from react-icons
-import pdfformatImagefirst from '../images/pdfformat1.png';
-import pdfformatImagesecond from '../images/pdfformat2.png';
-import pdfformatImagethird from '../images/pdfformat3.png';
-import pdfformatImagefourth from '../images/pdfformat4.png';
-import pdfformatImagefifth from '../images/pdfformat5.png';
-import pdfformatImagesixth from '../images/pdfformat6.png';
-import pdfformatImageseventh from '../images/pdfformat7.png';
-import pdfformatImageeight from '../images/pdfformat8.png';
-import pdfformatImagenine from '../images/pdfformat9.png';
-import pdfformatImageten from '../images/pdfformat10.png';
-import pdfformatImageeleven from '../images/pdfformat11.png';
-import pdfformatImagetwele from '../images/pdfformat12.png';
 
+import earthImagefirst from "../images/earth1.png"
+import earthImagetwo from "../images/earth2.png"
+import earthImagethird from "../images/earth3.png"
+import earthImagefourth from "../images/earth4.png"
+import earthImagefifth from "../images/earth5.png"
+import earthImagesixth from "../images/earth6.png"
+import earthImageseven from "../images/earth7.png"
 import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
 
 const PdfFormat = () => {
   const images = [
-    pdfformatImagefirst,
-    pdfformatImagesecond,
-    pdfformatImagethird,
-    pdfformatImagefourth,
-    pdfformatImagefifth,
-    pdfformatImagesixth,
-    pdfformatImageseventh,
-    pdfformatImageeight,
-    pdfformatImagenine,
-    pdfformatImageten,
-    pdfformatImageeleven,
-    pdfformatImagetwele,
+    earthImagefirst,
+    earthImagetwo,
+    earthImagethird,
+    earthImagefourth,
+    earthImagefifth,
+    earthImagesixth,
+    earthImageseven,
+ 
   ];
+  
   const [theme] = useTheme(); // Use the theme context to get the current theme
 
   // Custom Arrows
@@ -76,7 +68,7 @@ const PdfFormat = () => {
   );
 
   const sliderSettings = {
-    dots: true,
+    dots: false, // Remove dots
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -85,28 +77,6 @@ const PdfFormat = () => {
     autoplaySpeed: 3000,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
-    appendDots: dots => (
-      <Box
-        sx={{
-          marginTop: '10px', // Add spacing between images and dots
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        {dots}
-      </Box>
-    ),
-    customPaging: () => (
-      <Box
-        sx={{
-          width: '10px',
-          height: '10px',
-          borderRadius: '50%',
-          backgroundColor: '#888', // Default dot color
-          '&:hover': { backgroundColor: '#555' }, // Hover effect
-        }}
-      />
-    ),
   };
 
   return (

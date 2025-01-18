@@ -89,14 +89,14 @@ const HomePage = () => {
 // Next Arrow
 const NextArrow = ({ onClick }) => (
   <div className="custom-arrow next-arrow" onClick={onClick}>
-    <IoIosArrowDropleftCircle size={30} />
+    <IoIosArrowDroprightCircle size={30} />
   </div>
 );
 
 // Previous Arrow
 const PrevArrow = ({ onClick }) => (
   <div className="custom-arrow prev-arrow" onClick={onClick}>
-    <IoIosArrowDroprightCircle size={30}  />
+    <IoIosArrowDropleftCircle size={30}  />
   </div>
 );
 
