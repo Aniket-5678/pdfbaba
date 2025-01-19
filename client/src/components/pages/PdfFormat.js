@@ -12,6 +12,12 @@ import earthImagefourth from "../images/earth4.png"
 import earthImagefifth from "../images/earth5.png"
 import earthImagesixth from "../images/earth6.png"
 import earthImageseven from "../images/earth7.png"
+import chakraImageone from "../images/chakra1.png"
+import chakraImagetwo from "../images/chakra2.png"
+import chakraImagethree from "../images/chakra3.png"
+import chakraImagefour from "../images/chakra4.png"
+
+
 import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
 
 const PdfFormat = () => {
@@ -23,6 +29,10 @@ const PdfFormat = () => {
     earthImagefifth,
     earthImagesixth,
     earthImageseven,
+    chakraImageone,
+    chakraImagetwo,
+    chakraImagethree,
+    chakraImagefour
  
   ];
   
@@ -75,6 +85,7 @@ const PdfFormat = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+    pauseOnHover: false,  // Prevents pausing on hover
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
   };

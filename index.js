@@ -34,6 +34,9 @@ app.use('/uploads/pdfs', express.static(pdfDir));
 
 
 
+
+
+
 app.use(express.json())
 
 app.use(cors({
