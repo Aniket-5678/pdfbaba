@@ -3348,7 +3348,22 @@ button.toggle-theme:hover {
   font-size: 32px; /* Larger close button for better accessibility */
 }
 
+.modal-content {
+  width: 90%; /* Ensure modal fits well on mobile screens */
+  margin: 0 auto; /* Center modal content */
+}
 
+.modal-header {
+  font-size: 14px; /* Adjust header font size for mobile */
+}
+
+.modal-body {
+  font-size: 12px; /* Slightly smaller font for mobile readability */
+}
+
+.modal-footer {
+  text-align: center; /* Center-align footer for better look */
+}
 
 
 
@@ -4063,7 +4078,43 @@ color: white;
   color: white;
 }
 
+.modal-body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px; /* Smaller font size for the text */
+  color: #333;
+}
 
+/* Instructions section for Android users */
+.android-instructions {
+  margin-top: 20px;
+  font-size: 13px; /* Smaller font size for text */
+  color: #333;
+}
+
+.android-instructions h4 {
+  font-size: 15px; /* Slightly larger for the heading */
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.android-instructions p {
+  margin-bottom: 10px;
+}
+
+.android-instructions ol {
+  padding-left: 20px;
+  font-size: 13px; /* Smaller font size for list items */
+  line-height: 1.5;
+}
+
+.android-instructions li {
+  margin-bottom: 8px;
+}
+
+.android-instructions p:last-child {
+  font-size: 12px; /* Even smaller font for additional note */
+  color: #555;
+}
 
 
 

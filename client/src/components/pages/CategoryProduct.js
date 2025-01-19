@@ -212,9 +212,25 @@ const CategoryProduct = () => {
                           {filename}
                         </a>
                       </li>
+
                     );
                   })}
                 </ul>
+
+                         {/* Instructions for Android users */}
+      <div className="android-instructions">
+        <h4>Instructions for Android Users:</h4>
+        <p>
+          To download the PDF on your Android device:
+        </p>
+        <ol>
+          <li>Hold the link of the PDF you want to download.</li>
+          <li>An options menu will appear.</li>
+          <li>Select "Download link" from the options.</li>
+          <li>After the download is complete, you can access the PDF from your device's file manager.</li>
+        </ol>
+        <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
+      </div>
               </Box>
             )}
           </DialogContent>
