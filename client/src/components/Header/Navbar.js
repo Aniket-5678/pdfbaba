@@ -6,11 +6,12 @@ import toast from 'react-hot-toast';
 import { CgProfile, CgChevronDown } from "react-icons/cg";
 import SearchInput from '../form/SearchInput';
 import axios from 'axios';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import {  FaTimes } from 'react-icons/fa';
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useTheme } from '../context/ThemeContext';
 import LogoImage from "../images/pdfbaba.png";
 import { MdClose } from 'react-icons/md';
+import { BiMenuAltLeft } from "react-icons/bi";
 
 // MUI Components
 import { Drawer, List, ListItem, Divider } from '@mui/material';
@@ -95,7 +96,7 @@ const Navbar = () => {
       <nav className='nav-main'>
         
         <div className='hamburger' onClick={toggleMenu}>
-          {isMenuOpen ? <FaTimes /> : <FaBars />}
+          {isMenuOpen ? <FaTimes /> : <BiMenuAltLeft />}
         </div>
 
         <div className='nav-logo'>

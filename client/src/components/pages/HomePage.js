@@ -176,11 +176,17 @@ const categorySlider = {
     padding: { xs: '10px', sm: '20px' },
     background: theme === 'dark' ? '#1a1a1a' : '#f9fcfc', // Dark background for dark mode
     textAlign: 'center',
-    fontFamily: 'Poppins, sans-serif', // Apply Poppins font family
+    fontFamily: 'Poppins, sans-serif', // Apply Poppins font family,
+    backgroundColor: theme === 'dark' ? '#1a1a1a' : '#ffffff',
   }}
 >
   <Slider
     {...categorySlider}
+    autoplay={true} // Enable automatic sliding
+    autoplaySpeed={2500} // Set the speed of sliding (in milliseconds)
+    infinite={true} // Enable infinite loop
+    cssEase="linear" // Smooth linear sliding
+    speed={800} // Set the speed of the transition (in milliseconds)
     sx={{
       '.slick-slide': {
         display: 'flex',
@@ -280,6 +286,7 @@ const categorySlider = {
     ))}
   </Slider>
 </Box>
+
 
 
 

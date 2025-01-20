@@ -3367,6 +3367,10 @@ button.toggle-theme:hover {
 
 
 
+.how-it-works-steps .step-card{
+  width: 300px;
+}
+
 
 }
 
@@ -3865,7 +3869,7 @@ button.toggle-theme:hover {
 
 
 #dark .hamburger{
-  color: #f3ee52;
+  color: white;
 }
 
 

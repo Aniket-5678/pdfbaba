@@ -134,6 +134,7 @@ const PdfFormat = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                margin: '0px 35px'
               }}
             >
               <img
