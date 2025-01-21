@@ -2080,6 +2080,7 @@ html {
   color: #007bff;
   margin-bottom: 10px;
   font-weight: 500;
+  font-family: 'Poppins', sans-serif;
 }
 
 .step-card p {
@@ -4122,3 +4123,22 @@ color: white;
 
 
 
+.pdf-search-guide ol {
+  list-style-position: inside; /* Ensures the numbers are inside the list */
+  margin: 20px auto; /* Centers the list and gives it some spacing */
+  padding: 0;
+  max-width: 600px; /* Limits the width for better readability */
+  text-align: left; /* Ensures the text inside the list items is aligned to the left */
+}
+
+.pdf-search-guide ol li {
+  font-size: 16px; /* Adjusts the size of the list items */
+  line-height: 1.8; /* Adds spacing between lines */
+  padding: 5px 0; /* Adds spacing between list items */
+  color: #333; /* Changes the text color for better readability */
+}
+
+.pdf-search-guide ol li::marker {
+  font-weight: bold; /* Makes the numbers bold */
+  color: #007bff; /* Changes the number color to blue */
+}

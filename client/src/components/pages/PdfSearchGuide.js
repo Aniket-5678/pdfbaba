@@ -1,29 +1,46 @@
 import React from 'react';
-import "../style/style.css"
+import "../style/style.css";
 
 const PdfSearchGuide = () => {
   return (
     <div className="pdf-search-guide">
-      <h3>How to Find the PDFs You Need</h3>
-      <p>Welcome to our learning platform! You can find PDFs related to a wide range of subjects, including various technologies, courses, exams, and entrance tests, by following these guidelines:</p>
+      <h3>How to Find and Download PDFs on PDF Baba</h3>
+      <p>Welcome to PDF Baba! Our platform offers a vast collection of high-quality PDFs across various subjects, including technology, science, exams, and more. Here’s how you can easily find and download the PDFs:</p>
+
+      <h4>For Android Users:</h4>
+      <p>On your Android device, follow these simple steps to find and download PDFs:</p>
+      <ol>
+        <li>Browse through the website and find the subject or category you're interested in.</li>
+        <li>Once you find the PDF, simply click on the link.</li>
+        <li>Hold the link for a moment and a "Download" option will appear.</li>
+        <li>Select "Download" and the PDF will be saved to your device for offline access.</li>
+      </ol>
+
+      <h4>For PC and iOS Users:</h4>
+      <p>If you're on a PC or iOS device, you can directly access and download the PDFs:</p>
+      <ol>
+        <li>Simply click on the PDF link you want to download.</li>
+        <li>The PDF will open in your browser or PDF viewer.</li>
+        <li>On PC, you can right-click the PDF and select "Save As" to store it on your computer.</li>
+        <li>On iOS, use the "Share" button to save the PDF to your device.</li>
+      </ol>
+
+      <h4>Categories of PDFs Available:</h4>
+      <p>We offer PDFs in the following categories to support your educational needs:</p>
       <ul>
-        <li><strong>12th Grade:</strong> Look for PDFs related to 12th-grade subjects such as Mathematics, Physics, Chemistry, and more.</li>
-        <li><strong>BSc:</strong> Search for PDFs related to Bachelor of Science courses in different specializations like Physics, Chemistry, Biology, etc.</li>
-        <li><strong>BCom:</strong> Find PDFs related to Bachelor of Commerce subjects including Accounting, Economics, and Business Law.</li>
-        <li><strong>CS:</strong> Search for Computer Science PDFs covering topics like Programming, Data Structures, Algorithms, and more.</li>
-        <li><strong>MERN Stack:</strong> Find PDFs related to the MERN stack technologies, including MongoDB, Express, React, and Node.js. Look for guides, tutorials, and examples.</li>
-        <li><strong>JavaScript:</strong> Explore PDFs related to JavaScript programming, including concepts, frameworks, and best practices.</li>
-        <li><strong>JEE:</strong> Find PDFs related to Joint Entrance Examination (JEE) preparation, including previous years' papers, study guides, and practice materials.</li>
-        <li><strong>IMUCET:</strong> Look for PDFs related to the Institute of Management, University of Chennai Entrance Test (IMUCET), including sample papers, study materials, and practice tests.</li>
-        <li><strong>Additional Technologies:</strong> You can also find PDFs on various other technologies by using relevant keywords in the search functionality.</li>
+        <li><strong>12th Science:</strong> Find comprehensive notes on Mathematics, Physics, Chemistry, and more.</li>
+        <li><strong>Tech Zone:</strong> Access PDF tutorials and guides on technologies like React JS, Node JS, JavaScript, HTML, and CSS.</li>
+        <li><strong>Spiritual Insights:</strong> Explore PDF notes on the main chakras, meditation, and spiritual practices.</li>
+        <li><strong>Space Studies:</strong> Learn about Earth and other celestial bodies with our detailed space study PDFs.</li>
       </ul>
-      <p>To find the PDFs, use the search bar available on the website and enter keywords related to the subject, technology, or exam you're interested in. For example, typing "JEE" will help you find PDFs related to JEE preparation, while "IMUCET" will provide resources on IMUCET.</p>
+
+      <p>To search for specific PDFs, use the search bar at the top of the website. Just type in the subject or technology you're interested in, and the results will display a list of relevant PDFs. For example, search for "React JS" to find all related notes on React JS.</p>
+
       <div className="contact-info">
-        <p>If you have any questions or need further assistance, feel free to contact our support team.</p>
+        <p>If you need any help or have any questions, feel free to contact our support team. We're here to assist you!</p>
       </div>
     </div>
   );
 };
 
 export default PdfSearchGuide;
-

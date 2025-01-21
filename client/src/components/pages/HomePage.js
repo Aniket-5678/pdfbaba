@@ -12,7 +12,6 @@ import { IoIosArrowDroprightCircle } from "react-icons/io";
 import Slider from "react-slick"; // Import react-slick
 import Featurepdf from './Featurepdf';
 import PlatformHighlights from './PlatformHighlights';
-import ContactOffer from './ContactOffer';
 import PdfSearchGuide from './PdfSearchGuide';
 import PlatformInfoCard from './PlatformInfoCard';
 import { Link } from 'react-router-dom';
@@ -100,32 +99,6 @@ const PrevArrow = ({ onClick }) => (
   </div>
 );
 
-  // Slider settings for react-slick
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    nextArrow: <NextArrow />, // Use custom next arrow
-    prevArrow: <PrevArrow />, // Use custom previous arrow
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
 
 
 // Add a new slider settings object specifically for categories
@@ -290,36 +263,39 @@ const categorySlider = {
 
 
 
-        <div className='products-container'>
-          {products.slice(0, visibleCount).map((product) => (
-            <div key={product._id} className='product-card'>
-              <h3 className='product-title'>{product.name}</h3>
-              <p className='product-description'> {product.description.length > 16 
-          ? `${product.description.substring(0, 45)}...` 
-          : product.description}</p>
-              <button
-                className='product-dropdown-button'
-                onClick={() => openModal(product)}
-              >
-                View PDFs
-              </button>
-            </div>
-            
-          ))}
-        </div>
+<div className='products-container'>
+  {products.slice(0, visibleCount).map((product) => (
+    <div key={product._id} className='product-card'>
+      <h3 className='product-title'>{product.name}</h3>
+      <p className='product-description'>
+        {product.description} {/* Displaying full description without truncation */}
+      </p>
+      <button
+        className='product-dropdown-button'
+        onClick={() => openModal(product)}
+      >
+        View PDFs
+      </button>
+    </div>
+  ))}
+</div>
 
-        {visibleCount < products.length && (
-          <button className='load-more-button' onClick={handleLoadMore} disabled={isLoadingMore}    aria-label="Load More PDFs"  >
-            {isLoadingMore ? (
-              <ClipLoader color="#fff" size={20} />
-            ) : (
-              <>
-                <FaChevronDown /> Load More
-              </>
-            )}
-          </button>
-        )}
-
+{visibleCount < products.length && (
+  <button
+    className='load-more-button'
+    onClick={handleLoadMore}
+    disabled={isLoadingMore}
+    aria-label="Load More PDFs"
+  >
+    {isLoadingMore ? (
+      <ClipLoader color="#fff" size={20} />
+    ) : (
+      <>
+        <FaChevronDown /> Load More
+      </>
+    )}
+  </button>
+)}
         {/* Modal for displaying PDF links */}
         <Modal
           isOpen={modalIsOpen}
@@ -374,21 +350,6 @@ const categorySlider = {
           <PlatformInfoCard />
         </div>
 
-        {/* Popular PDFs Slider */}
-        <div className='popular-pdfs'>
-          <h3 className='section-title'>Popular PDFs</h3>
-          <Slider {...sliderSettings}>
-            {products.slice(0, 6).map((product) => (
-              <div key={product._id} className='pdf-card'>
-                <h4>{product.name}</h4>
-                <p>{product.description}</p>
-                <button className='pdf-button' onClick={() => openModal(product)}>View PDFs</button>
-              </div>
-            ))}
-          </Slider>
-        </div>
-
-     
         
         <div className='platformhiglights-main'>
           <PlatformHighlights/>
@@ -398,11 +359,6 @@ const categorySlider = {
           <PdfSearchGuide/>
         </div>
           
-
-          <div className='contact-offer'>
-             <ContactOffer/>
-          </div>
-
           <div>
             <Faq/>
           </div>

@@ -5,18 +5,17 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'; // Import arrows from react-icons
 
-import earthImagefirst from "../images/earth1.png"
-import earthImagetwo from "../images/earth2.png"
-import earthImagethird from "../images/earth3.png"
-import earthImagefourth from "../images/earth4.png"
-import earthImagefifth from "../images/earth5.png"
-import earthImagesixth from "../images/earth6.png"
-import earthImageseven from "../images/earth7.png"
-import chakraImageone from "../images/chakra1.png"
-import chakraImagetwo from "../images/chakra2.png"
-import chakraImagethree from "../images/chakra3.png"
-import chakraImagefour from "../images/chakra4.png"
-
+import earthImagefirst from "../images/earth1.png";
+import earthImagetwo from "../images/earth2.png";
+import earthImagethird from "../images/earth3.png";
+import earthImagefourth from "../images/earth4.png";
+import earthImagefifth from "../images/earth5.png";
+import earthImagesixth from "../images/earth6.png";
+import earthImageseven from "../images/earth7.png";
+import chakraImageone from "../images/chakra1.png";
+import chakraImagetwo from "../images/chakra2.png";
+import chakraImagethree from "../images/chakra3.png";
+import chakraImagefour from "../images/chakra4.png";
 
 import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
 
@@ -33,9 +32,8 @@ const PdfFormat = () => {
     chakraImagetwo,
     chakraImagethree,
     chakraImagefour
- 
   ];
-  
+
   const [theme] = useTheme(); // Use the theme context to get the current theme
 
   // Custom Arrows
@@ -172,7 +170,7 @@ const PdfFormat = () => {
             fontFamily: "'Poppins', sans-serif",
           }}
         >
-          Elevate Your Learning with PDF Notes
+          Enhance Your Learning with Comprehensive PDF Resources
         </Typography>
         <Typography
           variant="body1"
@@ -182,9 +180,10 @@ const PdfFormat = () => {
             lineHeight: 1.6,
             marginBottom: '1.5rem',
             fontFamily: "'Poppins', sans-serif",
+            margin: '0px 10px'
           }}
         >
-          Enhance your learning experience with PDF notes—structured for clarity and easy navigation. Whether you're reviewing course materials or accessing practice papers, PDFs provide a versatile and efficient format. Browse through the slider to explore different formats and how they can help organize your study sessions.
+          PDFs serve as a vital resource for any learner. With clear organization, easy navigation, and compatibility across all devices, PDF notes transform your study experience. Whether you're reviewing class lectures, solving practice papers, or preparing for exams, PDF files provide a structured and accessible format that ensures efficient learning. Explore a range of PDF resources through this interactive slider, designed to help you find the most useful materials for your academic journey.
         </Typography>
       </Box>
     </Box>

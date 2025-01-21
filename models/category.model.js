@@ -11,7 +11,7 @@ name: {
 slug: {
  type: String,
  lowercase: true
-}
+},
 
 }, {timestamps: true})
 
