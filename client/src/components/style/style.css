@@ -3372,6 +3372,24 @@ button.toggle-theme:hover {
   width: 300px;
 }
 
+.mobile-search-container {
+  padding: 15px;
+}
+
+.mobile-search-container .MuiListItem-root {
+  padding: 8px 10px;
+}
+
+.mobile-search-container .MuiListItemText-root {
+  font-size: 13px;
+}
+
+.mobile-search-container .MuiTextField-root {
+  font-size: 14px;
+}
+
+
+
 
 }
 
@@ -4141,4 +4159,34 @@ color: white;
 .pdf-search-guide ol li::marker {
   font-weight: bold; /* Makes the numbers bold */
   color: #007bff; /* Changes the number color to blue */
+}
+
+
+
+
+.mobile-search-container {
+  padding: 16px;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.mobile-search-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid #2c8edf; /* Border color */
+  border-radius: 8px; /* Rounded corners */
+  outline: none;
+  background-color: #f9f9f9; /* Light background */
+  color: #333; /* Text color */
+}
+
+.mobile-search-input:focus {
+  border-color: #0056b3; /* Focus color */
+  box-shadow: 0 0 4px #0056b3; /* Subtle shadow on focus */
+  background-color: #fff; /* White background on focus */
 }
