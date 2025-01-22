@@ -77,7 +77,7 @@ const HomePage = () => {
     setTimeout(() => {
       setVisibleCount((prevCount) => {
         const newCount = prevCount + 6;
-        return newCount > 15 ? 15 : newCount; // Ensure not to exceed 15
+        return newCount > 25 ? 25 : newCount; // Ensure not to exceed 25
       });
       setIsLoadingMore(false);
     }, 1000)
