@@ -19,6 +19,8 @@ import ExplorePage from "./components/pages/ExplorePage";
 import { useTheme } from "./components/context/ThemeContext";
 import  CreateCategory  from './components/pages/admin/CreateCategory'
 import CategoryProduct from "./components/pages/CategoryProduct";
+import Howsearchworks from "./components/pages/Howsearchworks";
+import Categoryworks from "./components/pages/Categoryworks";
 
 
 
@@ -40,6 +42,8 @@ const [theme] = useTheme()
         <Route path="/explore" element={<ExplorePage/>} />
         <Route path="*" element={<NotFoundComponent/>} />
         <Route path="/category/:slug" element={<CategoryProduct/>} />
+        <Route path="/howitworks"  element={<Howsearchworks/>} />
+        <Route path="/categoryworks" element={<Categoryworks/>} />
 
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
