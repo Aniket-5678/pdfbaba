@@ -1,31 +1,40 @@
-// src/components/ExplorePage.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ClipLoader } from 'react-spinners'; // Spinner for loading state
+import { ClipLoader } from 'react-spinners';
 import Modal from 'react-modal';
-import { IoClose } from 'react-icons/io5'; // Close icon for modal
-import '../style/style.css'; // Ensure your CSS file is correctly imported
+import { IoClose } from 'react-icons/io5';
+import { Box, Typography, Button, Grid, Card, CardContent, Rating, useMediaQuery } from '@mui/material';
+import { styled } from '@mui/system';
 import Layout from '../Layout/Layout';
+import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
+
+const StyledModalContent = styled('div')(({ theme }) => ({
+  padding: theme.spacing(3),
+  maxWidth: '500px',
+  margin: 'auto',
+  backgroundColor: theme === 'dark' ? '#121212' : '#fff', // Dark or light background
+  borderRadius: theme.shape.borderRadius,
+}));
 
 const ExplorePage = () => {
   const [pdfs, setPdfs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false); // State for loading more PDFs
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal state
-  const [selectedPdf, setSelectedPdf] = useState(null); // Selected PDF state
-  const [visibleCount, setVisibleCount] = useState(6); // Initially show 6 PDFs
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedPdf, setSelectedPdf] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const [theme] = useTheme(); // Use the theme context to get the current theme
 
   useEffect(() => {
-    // Fetch PDFs from the backend API
     const fetchPdfs = async () => {
       try {
-        const response = await axios.get('/api/v1/questionpaper/all-questions'); // Adjust the endpoint as needed
+        const response = await axios.get('/api/v1/questionpaper/all-questions');
         if (response.data.success) {
-          setPdfs(response.data.data); // Assuming the PDFs are in response.data.data
+          setPdfs(response.data.data);
         } else {
-          setError('Failed to fetch PDFs.');
+          setError('Unable to fetch PDF notes. Please try again later.');
         }
       } catch (err) {
         setError('An error occurred while fetching PDFs.');
@@ -34,122 +43,178 @@ const ExplorePage = () => {
         setLoading(false);
       }
     };
-
     fetchPdfs();
   }, []);
 
-  // Open modal and set selected PDF
   const openModal = (pdf) => {
     setSelectedPdf(pdf);
     setModalIsOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setModalIsOpen(false);
     setSelectedPdf(null);
   };
 
-  // Handle Load More button click
   const handleLoadMore = () => {
     setLoadingMore(true);
     setTimeout(() => {
       setVisibleCount((prevCount) => prevCount + 6);
       setLoadingMore(false);
-    }, 1000); // Simulate a network request delay
+    }, 1000);
   };
 
   if (loading) {
     return (
-      <div className="explore-spinner-container">
+      <Box display="flex" justifyContent="center" alignItems="center" height="80vh">
         <ClipLoader color="#007bff" size={50} />
-      </div>
+        <Typography sx={{ marginLeft: 2 }}>Loading PDF notes...</Typography>
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <div className="explore-error-container">
-        <p>{error}</p>
-      </div>
+      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" height="80vh">
+        <Typography color="error" variant="h6">
+          {error}
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => window.location.reload()}
+          sx={{ marginTop: 2 }}
+        >
+          Retry
+        </Button>
+      </Box>
     );
   }
 
   return (
     <Layout>
-      <div className="explore-container">
-        <h1 className="explore-title">Available PDF Notes</h1>
-        <div className="pdf-grid">
+      <Box sx={{ padding: 3, backgroundColor: theme === 'dark' ? '#121212' : '#fff', color: theme === 'dark' ? '#f5f5f5' : '#333' }}>
+        <Typography variant="h4" gutterBottom>
+          Explore PDF Notes
+        </Typography>
+        <Grid container spacing={2}>
           {pdfs.slice(0, visibleCount).map((pdf) => (
-            <div key={pdf._id} className="pdf-card">
-              {/* If you have images for PDFs, include them here */}
-              {/* <img src={pdf.imageUrl} alt={`${pdf.name} Cover`} /> */}
-              <h3 className="pdf-title">{pdf.name}</h3>
-              <p className="pdf-description">{pdf.description}</p>
-              <button
-                className="pdf-button"
-                onClick={() => openModal(pdf)}
-                aria-label={`View PDFs for ${pdf.name}`}
+            <Grid
+              item
+              xs={12}
+              sm={6} // 2 items per row on small screens
+              md={4} // 3 items per row on medium screens
+              lg={3} // 4 items per row on large screens
+              key={pdf._id}
+            >
+              <Card
+                sx={{
+                  height: '100%',
+                  backgroundColor: theme === 'dark' ? '#121212' : '#fff', // Set dark or light mode background
+                  color: theme === 'dark' ? '#f5f5f5' : '#333', // Adjust text color for readability
+                  boxShadow: theme === 'dark' ? '0 4px 6px rgba(0,0,0,0.8)' : '0 4px 6px rgba(0,0,0,0.1)', // Optional shadow adjustment
+                  transition: 'background-color 0.3s, color 0.3s',
+                }}
               >
-                View PDFs
-              </button>
-            </div>
-          ))}
-        </div>
+                <CardContent>
+  <Typography variant="h6" gutterBottom>
+    {pdf.name}
+  </Typography>
+  <Typography
+    variant="body2"
+    sx={{
+      color: theme === 'dark' ? '#fff' : 'textSecondary', // White color in dark mode
+    }}
+    gutterBottom
+  >
+    {pdf.description}
+  </Typography>
+  <Rating
+    value={Math.floor(Math.random() * 5) + 1} // Randomized rating
+    readOnly
+    size="small"
+    sx={{ marginBottom: 1 }}
+  />
+  <Box display="flex" justifyContent="space-between" alignItems="center">
+    <Button
+      variant="outlined"
+      onClick={() => openModal(pdf)}
+      size="small"
+      sx={{ marginRight: 1 }}
+    >
+      View PDFs
+    </Button>
+    <Button
+      variant="contained"
+      color="primary"
+      href={pdf.pdfs[0]} // Assuming first PDF link for download
+      target="_blank"
+      size="small"
+    >
+      Download
+    </Button>
+  </Box>
+</CardContent>
 
-        {/* Load More Button */}
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         {visibleCount < pdfs.length && (
-          <div className="explore-load-container ">
-            <button
-              className="explore-load-more-button" // Unique class name as requested
+          <Box display="flex" justifyContent="center" marginTop={3}>
+            <Button
+              variant="contained"
+              color="primary"
               onClick={handleLoadMore}
               disabled={loadingMore}
-              aria-label="Load More PDFs"
             >
-              {loadingMore ? (
-                <ClipLoader color="#fff" size={20} />
-              ) : (
-                'Load More'
-              )}
-            </button>
-          </div>
+              {loadingMore ? <ClipLoader color="#fff" size={20} /> : 'Load More'}
+            </Button>
+          </Box>
         )}
+      </Box>
 
-        {/* Modal for displaying PDF links */}
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          contentLabel="PDF Links"
-          className="modal-content"
-          overlayClassName="modal-overlay"
-          ariaHideApp={false} // Add this line if you encounter accessibility warnings
-        >
-          <button
-            onClick={closeModal}
-            className="modal-close-button"
-            aria-label="Close Modal"
-          >
-            <IoClose size={20} />
-          </button>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="PDF Details"
+        ariaHideApp={false}
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          content: {
+            border: 'none',
+            inset: '10% auto auto auto',
+            maxWidth: '500px',
+            backgroundColor: theme === 'dark' ? '#121212' : '#fff', // Dark or light background
+            color: theme === 'dark' ? '#f5f5f5' : '#333',
+          },
+        }}
+      >
+        <StyledModalContent>
+          <Box display="flex" justifyContent="flex-end">
+            <IoClose size={24} style={{ cursor: 'pointer' }} onClick={closeModal} />
+          </Box>
           {selectedPdf && (
-            <div className="modal-body">
-              <h3>{selectedPdf.name} - PDFs</h3>
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                {selectedPdf.name}
+              </Typography>
               <ul>
-                {selectedPdf.pdfs.map((pdfUrl, pdfIndex) => {
-                  const filename = pdfUrl.split('/').pop();
-                  return (
-                    <li key={pdfIndex}>
-                      <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                        {filename}
-                      </a>
-                    </li>
-                  );
-                })}
+                {selectedPdf.pdfs.map((pdfUrl, index) => (
+                  <li key={index}>
+                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                      {decodeURIComponent(pdfUrl.split('/').pop())}
+                    </a>
+                  </li>
+                ))}
               </ul>
-            </div>
+            </Box>
           )}
-        </Modal>
-      </div>
+        </StyledModalContent>
+      </Modal>
     </Layout>
   );
 };
