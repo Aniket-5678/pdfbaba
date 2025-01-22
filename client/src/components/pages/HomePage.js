@@ -11,7 +11,6 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import Slider from "react-slick"; // Import react-slick
 import Featurepdf from './Featurepdf';
-import PlatformHighlights from './PlatformHighlights';
 import PdfSearchGuide from './PdfSearchGuide';
 import PlatformInfoCard from './PlatformInfoCard';
 import { Link } from 'react-router-dom';
@@ -352,7 +351,7 @@ const categorySlider = {
 
         
         <div className='platformhiglights-main'>
-          <PlatformHighlights/>
+         
         </div>
 
         <div>
