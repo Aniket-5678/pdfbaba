@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Searchinput from "../form/SearchInput";
 import "../style/style.css"; // Ensure this CSS file contains styles for unique class names prefixed with 'searchfunction'.
 import { useTheme } from '../context/ThemeContext';
+import Layout from "../Layout/Layout"
 
 const Howsearchworks = () => {
   const [theme] = useTheme(); // Accessing the theme context
@@ -12,11 +13,13 @@ const Howsearchworks = () => {
   }, []);
 
   return (
+    <Layout>
     <div className="searchfunction-container" 
       style={{ 
         backgroundColor: theme === 'dark' ? '#1a1a1a' : '#f9fcfc', 
         color: theme === 'dark' ? '#fff' : '#333', 
         fontFamily: 'Poppins, sans-serif',
+        margin: '100px 0px'
       }}
     >
       {/* Page Title */}
@@ -128,6 +131,7 @@ const Howsearchworks = () => {
         </p>
       </div>
     </div>
+    </Layout>
   );
 };
 

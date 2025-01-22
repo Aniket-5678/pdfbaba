@@ -105,6 +105,7 @@ const CategoryProduct = () => {
             gutterBottom
             sx={{
               color: theme === 'dark' ? 'white' : 'black',
+              fontSize: '1.1rem'
             }}
           >
             {category.name || 'Category'}
@@ -134,7 +135,7 @@ const CategoryProduct = () => {
                       <Typography variant="h5" fontSize="1.1rem" fontFamily='"Poppins", sans-serif' gutterBottom>
                         {product.name}
                       </Typography>
-                      <Typography variant="body2" color="textSecondary">
+                      <Typography variant="body2" color="textSecondary"  >
                         {product.description.length > 60
                           ? `${product.description.substring(0, 60)}...`
                           : product.description}
