@@ -2,20 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
 import Modal from 'react-modal';
-import { IoClose } from 'react-icons/io5';
 import { Box, Typography, Button, Grid, Card, CardContent, Rating, useMediaQuery } from '@mui/material';
-import { styled } from '@mui/system';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Layout from '../Layout/Layout';
 import { useTheme } from '../context/ThemeContext';
 
-const StyledModalContent = styled('div')(({ theme }) => ({
-  padding: theme.spacing(3),
-  maxWidth: '500px',
-  margin: 'auto',
-  backgroundColor: theme.palette.background.paper, // Dynamically change background
-  borderRadius: theme.shape.borderRadius,
-}));
+
 
 const ExplorePage = () => {
   const [pdfs, setPdfs] = useState([]);
@@ -178,27 +170,7 @@ const ExplorePage = () => {
             },
           }}
         >
-          <StyledModalContent>
-            <Box display="flex" justifyContent="flex-end">
-              <IoClose size={24} style={{ cursor: 'pointer' }} onClick={closeModal} />
-            </Box>
-            {selectedPdf && (
-              <Box>
-                <Typography variant="h6" gutterBottom>
-                  {selectedPdf.name}
-                </Typography>
-                <ul>
-                  {selectedPdf.pdfs.map((pdfUrl, index) => (
-                    <li key={index}>
-                      <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                        {decodeURIComponent(pdfUrl.split('/').pop())}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </Box>
-            )}
-          </StyledModalContent>
+        
         </Modal>
       </Layout>
     </ThemeProvider>
