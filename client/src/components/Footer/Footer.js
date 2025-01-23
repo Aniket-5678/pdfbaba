@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../style/style.css";
 import axios from "axios";
-import toast from 'react-hot-toast';
-import { RingLoader } from 'react-spinners';
-import facbookImage from "../images/facebook.png"
-import linkdinImage from "../images/linkdin.png"
-import instagramImage from "../images/instagram.png"
-import twitterImage from "../images/twitter.png"
+import toast from "react-hot-toast";
+import { RingLoader } from "react-spinners";
+import facbookImage from "../images/facebook.png";
+import linkdinImage from "../images/linkdin.png";
+import instagramImage from "../images/instagram.png";
+import twitterImage from "../images/twitter.png";
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false); // State to manage loading
 
   // Function to handle form submission
@@ -19,17 +19,17 @@ const Footer = () => {
     setLoading(true); // Start loading
 
     try {
-      const response = await axios.post('/api/v1/email/send-email', { email });
+      const response = await axios.post("/api/v1/email/send-email", { email });
 
       toast.success(response.data.message);
-      setEmail('');
+      setEmail("");
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
 
       if (error.response && error.response.data && error.response.data.error) {
         toast.error(error.response.data.error);
       } else {
-        toast.error('An error occurred. Please try again.');
+        toast.error("An error occurred. Please try again.");
       }
     } finally {
       setLoading(false); // Stop loading
@@ -41,10 +41,11 @@ const Footer = () => {
       <div className="footer-container">
         {/* About Section */}
         <div className="footer-about">
-          <h3>About  PDFBaba</h3>
+          <h3>About PDFBaba</h3>
           <p>
-          PDFBaba is a platform dedicated to providing quality educational materials and resources for learners worldwide.
-            Join us and start your learning journey today!
+            PDFBaba is a platform dedicated to providing quality educational
+            materials and resources for learners worldwide. Join us and start
+            your learning journey today!
           </p>
         </div>
 
@@ -52,11 +53,33 @@ const Footer = () => {
         <div className="footer-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/contact">Contact Us</Link></li>
-            <li><Link to="/register">signup</Link></li>
-            <li><Link to="/login">Login</Link></li>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About Us</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact Us</Link>
+            </li>
+            <li>
+              <Link to="/privacy">
+              
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/termcondition"  >
+                Terms & Conditions
+              </Link>
+            </li>
+            <li>
+              <Link to="/register">signup</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+           
           </ul>
         </div>
 
@@ -71,17 +94,33 @@ const Footer = () => {
         <div className="footer-social">
           <h3>Follow Us</h3>
           <div className="social-icons">
-            <a href="https://www.facebook.com/share/18Ynq6wtQX/?mibextid=LQQJ4d" target="_blank" rel="noopener noreferrer">
-              <img className='social' src={facbookImage} alt="Facebook" />
+            <a
+              href="https://www.facebook.com/share/18Ynq6wtQX/?mibextid=LQQJ4d"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img className="social" src={facbookImage} alt="Facebook" />
             </a>
-            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-              <img className='social' src={twitterImage} alt="Twitter" />
+            <a
+              href="https://www.twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img className="social" src={twitterImage} alt="Twitter" />
             </a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
-              <img className='social' src={linkdinImage} alt="LinkedIn" />
+            <a
+              href="https://www.linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img className="social" src={linkdinImage} alt="LinkedIn" />
             </a>
-            <a href="https://www.instagram.com/pdf_baba?igsh=YzN3ZThjcW1wbmds" target="_blank" rel="noopener noreferrer">
-              <img className='social' src={instagramImage} alt="Instagram" />
+            <a
+              href="https://www.instagram.com/pdf_baba?igsh=YzN3ZThjcW1wbmds"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img className="social" src={instagramImage} alt="Instagram" />
             </a>
           </div>
         </div>
@@ -98,7 +137,7 @@ const Footer = () => {
               required
             />
             <button type="submit" disabled={loading}>
-              {loading ? <RingLoader size={24} color="#ffffff" /> : 'Subscribe'}
+              {loading ? <RingLoader size={24} color="#ffffff" /> : "Subscribe"}
             </button>
           </form>
         </div>

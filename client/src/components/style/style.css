@@ -1413,6 +1413,7 @@
 .footer-subscribe {
   flex: 1 1 250px; 
   margin: 10px;
+  font-size: 0.9rem;
 }
 
 .footer-about p,
@@ -3254,6 +3255,7 @@ button.toggle-theme:hover {
   flex: 1 1 100%; /* Full width for all sections */
   text-align: center; /* Center the text for better mobile display */
   font-size: 0.8rem;
+ 
 }
 
 .footer-subscribe form {

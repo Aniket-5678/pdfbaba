@@ -162,14 +162,7 @@ const Navbar = () => {
           <div className='contactus'>
             <Link className='contact-nav' to='/contact'>Contact us</Link>
           </div>
-          
-          <div className='priavcymain' >
-            <Link className='privacypolicy' to='/privacy'  > Privacy Policy</Link>
-          </div>
 
-          <div className='termmain'>
-            <Link className='termcondition' to='/termcondition' >Terms & Conditions </Link>
-          </div>
 
           <div className="dropdown" ref={questionDropdownRef}>
             <button onClick={toggleQuestionDropdown} className="dropdown-btn">
