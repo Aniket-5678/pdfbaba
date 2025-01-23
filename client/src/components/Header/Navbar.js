@@ -126,6 +126,8 @@ const Navbar = () => {
   <ListItem  components={Link}  to = "/"className="menu-item_1">PDF BABA</ListItem>
     <ListItem button component={Link} to="/about" className="menu-item">About us</ListItem>
     <ListItem button component={Link} to="/contact" className="menu-item">Contact us</ListItem>
+    <ListItem button component={Link} to="/privacy" className="menu-item">Privacy Policy</ListItem>
+    <ListItem button component={Link} to="/termcondition" className="menu-item">Terms & Conditions</ListItem>
     <Divider />
 
     {/* Display all categories directly */}
@@ -159,6 +161,14 @@ const Navbar = () => {
 
           <div className='contactus'>
             <Link className='contact-nav' to='/contact'>Contact us</Link>
+          </div>
+          
+          <div className='priavcymain' >
+            <Link className='privacypolicy' to='/privacy'  > Privacy Policy</Link>
+          </div>
+
+          <div className='termmain'>
+            <Link className='termcondition' to='/termcondition' >Terms & Conditions </Link>
           </div>
 
           <div className="dropdown" ref={questionDropdownRef}>

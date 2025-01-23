@@ -21,6 +21,9 @@ import  CreateCategory  from './components/pages/admin/CreateCategory'
 import CategoryProduct from "./components/pages/CategoryProduct";
 import Howsearchworks from "./components/pages/Howsearchworks";
 import Categoryworks from "./components/pages/Categoryworks";
+import PrivacyPolicy from "./components/pages/PrivacyPolicy";
+import TermCondition from "./components/pages/TermCondition";
+
 
 
 
@@ -44,7 +47,8 @@ const [theme] = useTheme()
         <Route path="/category/:slug" element={<CategoryProduct/>} />
         <Route path="/howitworks"  element={<Howsearchworks/>} />
         <Route path="/categoryworks" element={<Categoryworks/>} />
-
+       <Route path="/privacy" element={<PrivacyPolicy/>} />
+       <Route path="/termcondition" element={<TermCondition/>} />
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 

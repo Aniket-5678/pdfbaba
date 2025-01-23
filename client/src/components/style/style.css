@@ -87,7 +87,7 @@
 .nav-link-main{
   display: flex;
   align-items: center;
-  margin: 0px 60px;
+  margin: 0px 5px;
 }
 /* Dropdown Button */
 .dropdown-btn {
@@ -95,7 +95,7 @@
   align-items: center;
   padding: 10px 15px;
   background: none; /* No background color */
-  color: #232f3e; /* Text color */
+  color:  #121212; /* Text color */
   border: none;
   font-size: 0.9rem;
   cursor: pointer;
@@ -295,7 +295,7 @@
 .about-nav{
   text-decoration: none;
   font-size: 0.9rem;
-  color:#333333 ;
+  color: #121212 ;
   padding: 0px 15px;
   font-family: 'Poppins', sans-serif;
   line-height: 1.9; 
@@ -304,7 +304,7 @@
 .contact-nav{
   text-decoration: none;
   font-size: 0.9rem;
-  color: #333333;
+  color: #121212;
   padding: 0px 15px;
   font-family: 'Poppins', sans-serif;
   line-height: 1.9;
@@ -4382,3 +4382,29 @@ color: white;
 
 
 
+.privacypolicy{
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #121212;
+  padding: 0px 15px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.9;
+}
+
+.termcondition{
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #121212;
+  padding: 0px 15px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.9;
+}
+
+
+#dark .privacypolicy {
+  color: white;
+}
+
+#dark .termcondition{
+  color: white;
+}
