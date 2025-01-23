@@ -125,41 +125,77 @@ const CategoryProduct = () => {
             {products.length > 0 ? (
               products.map((product) => (
                 <Grid item xs={6} sm={6} md={4} key={product._id}>
-                  <Card
-                    sx={{
-                      backgroundColor: theme === 'dark' ? '#424242' : '#ffffff',
-                      color: theme === 'dark' ? '#ffffff' : '#000000',
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h5" fontSize="1.1rem" fontFamily='"Poppins", sans-serif' gutterBottom>
-                        {product.name}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary"  >
-                        {product.description.length > 60
-                          ? `${product.description.substring(0, 60)}...`
-                          : product.description}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      {product.pdfs?.length > 0 && (
-                        <Button
-                          size="small"
-                          variant="contained"
-                          onClick={() => openModal(product)}
-                          sx={{
-                            backgroundColor: theme === 'dark' ? '#757575' : 'white',
-                            color: theme === 'dark' ? 'white' : 'black',
-                            '&:hover': {
-                              backgroundColor: theme === 'dark' ? '#616161' : '#f1f1f1',
-                            },
-                          }}
-                        >
-                          View PDFs
-                        </Button>
-                      )}
-                    </CardActions>
-                  </Card>
+              <Card
+  sx={{
+    backgroundColor: theme === 'dark' ? '#424242' : '#ffffff',
+    color: theme === 'dark' ? '#ffffff' : '#000000',
+    boxShadow: theme === 'dark' ? '0px 4px 12px rgba(0, 0, 0, 0.3)' : '0px 4px 12px rgba(0, 0, 0, 0.1)',
+    borderRadius: '8px',
+    transition: 'transform 0.3s, box-shadow 0.3s',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: theme === 'dark' ? '0px 8px 20px rgba(0, 0, 0, 0.5)' : '0px 8px 20px rgba(0, 0, 0, 0.2)',
+    },
+  }}
+>
+  <CardContent>
+    <Typography
+      variant="h5"
+      fontSize="1.2rem"
+      fontFamily='"Poppins", sans-serif'
+      gutterBottom
+      sx={{
+        fontWeight: 600,
+        fontSize: '0.9rem',
+        color: theme === 'dark' ? '#ffffff' : '#333333',
+      }}
+    >
+      {product.name}
+    </Typography>
+    <Typography
+      variant="body2"
+      color="textSecondary"
+      sx={{
+        fontSize: '0.8rem',
+        lineHeight: 1.5,
+        color: theme === 'dark' ? '#cccccc' : '#666666',
+        
+      }}
+    >
+      {product.description.length > 60
+        ? `${product.description.substring(0, 60)}...`
+        : product.description}
+    </Typography>
+  </CardContent>
+  <CardActions
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: '16px',
+    }}
+  >
+    {product.pdfs?.length > 0 && (
+      <Button
+        size="small"
+        variant="contained"
+        onClick={() => openModal(product)}
+        sx={{
+          backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+          color: 'white',
+          fontWeight: 500,
+          fontSize: '0.8rem',
+          textTransform: 'none',
+          '&:hover': {
+            backgroundColor: theme === 'dark' ? '#42a5f5' : '#303f9f',
+          },
+        }}
+      >
+        View PDFs
+      </Button>
+    )}
+  </CardActions>
+</Card>
+
                 </Grid>
               ))
             ) : (

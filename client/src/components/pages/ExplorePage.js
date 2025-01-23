@@ -7,6 +7,7 @@ import { createTheme } from '@mui/material/styles';
 import Layout from '../Layout/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { IoClose } from "react-icons/io5";
+import { BiFontSize } from 'react-icons/bi';
 
 const ExplorePage = () => {
   const [pdfs, setPdfs] = useState([]);
@@ -15,7 +16,7 @@ const ExplorePage = () => {
   const [error, setError] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [visibleCount, setVisibleCount] = useState(8);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [theme] = useTheme(); // Use the theme context
 
@@ -102,49 +103,89 @@ const ExplorePage = () => {
 
   return (
     <Layout>
-      <Box sx={{ padding: 3 }}>
-        <Typography variant="h4" gutterBottom>
-          Explore PDF Notes
-        </Typography>
+      <Box sx={{ padding: 3 , margin: '80px 0px'}}>
         <Grid container spacing={2}>
-          {pdfs.slice(0, visibleCount).map((pdf) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={pdf._id}>
-              <Card
-                sx={{
-                  height: '100%',
-                  backgroundColor: themeStyles.palette.background.default, // Dynamic background color
-                  color: themeStyles.palette.text.primary, // Dynamic text color
-                  boxShadow: theme === 'dark' ? '0 4px 6px rgba(0,0,0,0.8)' : '0 4px 6px rgba(0,0,0,0.1)',
-                  transition: 'background-color 0.3s, color 0.3s',
-                  fontFamily: '"Poppins", sans-serif', // Ensure Poppins is applied to card content
-                }}
-              >
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {pdf.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={theme === 'dark' ? 'white' : 'textSecondary'} // Set description color based on theme
-                    gutterBottom
-                  >
-                    {pdf.description}
-                  </Typography>
-                  <Rating value={Math.floor(Math.random() * 5) + 1} readOnly size="small" sx={{ marginBottom: 1 }} />
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Button variant="outlined" onClick={() => openModal(pdf)} size="small">
-                      View PDFs
-                    </Button>
-                    <Button variant="contained" color="primary" href={pdf.pdfs[0]} target="_blank" size="small">
-                      Download
-                    </Button>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+  {pdfs.slice(0, visibleCount).map((pdf) => (
+    <Grid
+      item
+      xs={6} // 2 cards per row on mobile
+      sm={4} // 3 cards per row on small devices
+      md={3} // 4 cards per row on medium devices
+      lg={3} // 4 cards per row on large devices
+      key={pdf._id}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center', // Center the card horizontally
+      }}
+    >
+      <Card
+        sx={{
+          height: '100%',
+          backgroundColor: themeStyles.palette.background.default,
+          color: themeStyles.palette.text.primary,
+          boxShadow: theme === 'dark' ? '0 4px 6px rgba(0,0,0,0.8)' : '0 4px 6px rgba(0,0,0,0.1)',
+          transition: 'background-color 0.3s, color 0.3s',
+          fontFamily: '"Poppins", sans-serif',
+          width: '100%'
+        }}
+      >
+        <CardContent>
+          <Typography variant="h6" gutterBottom  sx={{
+              fontSize: isMobile ? '0.8rem' : '1.1rem',
+            }}  >
+            {pdf.name}
+          </Typography>
+          <Typography
+            variant="body2"
+            color={theme === 'dark' ? 'white' : 'textSecondary'}
+            gutterBottom
+            sx={{
+              fontSize: isMobile ? '0.7rem' : '0.9rem',
+            }}
+          >
+            {pdf.description}
+          </Typography>
+          <Rating value={Math.floor(Math.random() * 5) + 1} readOnly size="small" sx={{ marginBottom: 1 }} />
+          <Box
+  display="flex"
+  flexDirection={isMobile ? 'column' : 'row'}
+  justifyContent="space-between"
+  alignItems="center"
+  gap={isMobile ? 1 : 0} // Adds spacing between buttons for column layout
+>
+  <Button
+    variant="outlined"
+    onClick={() => openModal(pdf)}
+    size="small"
+    sx={{
+      fontSize: isMobile ? '0.7rem' : '0.9rem',
+      padding: isMobile ? '4px 8px' : '6px 12px',
+      width: isMobile ? '100%' : 'auto', // Full-width on mobile
+    }}
+  >
+    View PDFs
+  </Button>
+  <Button
+    variant="contained"
+    color="primary"
+    href={pdf.pdfs[0]}
+    target="_blank"
+    size="small"
+    sx={{
+      fontSize: isMobile ? '0.7rem' : '0.9rem',
+      padding: isMobile ? '4px 8px' : '6px 12px',
+      width: isMobile ? '100%' : 'auto', // Full-width on mobile
+    }}
+  >
+    Download
+  </Button>
+</Box>
 
+        </CardContent>
+      </Card>
+    </Grid>
+  ))}
+</Grid>
         {visibleCount < pdfs.length && (
           <Box display="flex" justifyContent="center" marginTop={3}>
             <Button

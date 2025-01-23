@@ -3448,6 +3448,20 @@ button.toggle-theme:hover {
 }
 
 
+.MuiButton-outlined {
+  color: #007bff !important; /* Make sure the text color is visible */
+  border-color: #007bff !important; /* Ensure the border is visible */
+}
+
+.MuiButton-containedPrimary {
+  background-color: #007bff !important; /* Blue button for visibility */
+  color: white !important; /* Text color for visibility */
+
+}
+
+.MuiButton-containedPrimary:hover {
+  background-color: #0056b3 !important; /* Darker blue for hover */
+}
 
 
 
