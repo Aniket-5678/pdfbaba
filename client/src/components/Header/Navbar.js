@@ -9,9 +9,10 @@ import axios from 'axios';
 import {  FaTimes } from 'react-icons/fa';
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useTheme } from '../context/ThemeContext';
-import LogoImage from "../images/pdfbaba.png";
 import { MdClose } from 'react-icons/md';
 import { BiMenuAltLeft } from "react-icons/bi";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 // MUI Components
 import { Drawer, List, ListItem, Divider } from '@mui/material';
@@ -101,7 +102,7 @@ const Navbar = () => {
 
         <div className='nav-logo'>
           <Link className='nav-home ' to='/'>
-            <img className='pdfbaba-logo' src={LogoImage} alt='logo' />
+           <h2><MdKeyboardArrowLeft  />PDF-BABA<MdOutlineKeyboardArrowRight /></h2>
           </Link>
         </div>
 

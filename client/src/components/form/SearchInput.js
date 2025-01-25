@@ -72,7 +72,7 @@ const SearchInput = () => {
       {isMobile ? (
         <>
           <IconButton onClick={() => setDrawerOpen(true)} style={{ color: theme === 'dark' ? 'white' : 'gray' }}>
-            <SearchIcon  style={{position: 'relative', left: '40px' , fontSize: '1.6rem' }} />
+            <SearchIcon  style={{position: 'relative', left: '10px' , fontSize: '1.6rem' }} />
           </IconButton>
           <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
             <div className="mobile-search-container">
