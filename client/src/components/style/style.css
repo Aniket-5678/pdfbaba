@@ -3465,6 +3465,23 @@ button.toggle-theme:hover {
   background-color: #0056b3 !important; /* Darker blue for hover */
 }
 
+.nav-home h2{
+  position: relative;
+  left: 10px;
+}
+
+.board-title {
+  font-size: 1rem; /* Adjust font size for mobile */
+  justify-content: center; /* Center the text */
+  margin: 20px auto; /* Center the title with auto margins */
+  display: flex; /* Ensure the title is a flex container */
+  align-items: center; /* Vertically center the text */
+}
+
+.board-title::before, 
+.board-title::after {
+  content: none; /* Remove the lines */
+}
 
 
 
@@ -4424,3 +4441,67 @@ color: white;
 
 
 
+/* Feature Section Wrapper */
+.feature-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 1200px;
+  margin: 50px auto; /* Center the section */
+  background-color: #f9f9f9; /* Light background for a clean look */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for professionalism */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Left Content Section */
+.feature-content-box {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.feature-content-box h1 {
+  font-size: 2.5rem;
+  color: #333; /* Darker text for contrast */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.feature-content-box p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.feature-content-box .feature-button {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1rem;
+  color: white;
+  background-color: #0073e6; /* Professional blue */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.feature-content-box .feature-button:hover {
+  background-color: #005bb5; /* Darker blue on hover */
+}
+
+/* Right Image Section */
+.feature-image-box {
+  flex: 1;
+}
+
+.feature-image-box img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

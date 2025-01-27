@@ -18,6 +18,7 @@ import { Box, Typography } from '@mui/material';
 import PdfFormat from './PdfFormat';
 import { useTheme } from '../context/ThemeContext'; 
 import Faq from './Faq';
+import Featureimage from './Featureimage';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -360,6 +361,10 @@ const categorySlider = {
           
           <div>
             <Faq/>
+          </div>
+
+          <div>
+           <Featureimage/>
           </div>
 
       </div>

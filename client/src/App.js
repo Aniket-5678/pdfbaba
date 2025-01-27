@@ -23,6 +23,7 @@ import Howsearchworks from "./components/pages/Howsearchworks";
 import Categoryworks from "./components/pages/Categoryworks";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy";
 import TermCondition from "./components/pages/TermCondition";
+import Discovermore from "./components/pages/Discovermore";
 
 
 
@@ -49,6 +50,7 @@ const [theme] = useTheme()
         <Route path="/categoryworks" element={<Categoryworks/>} />
        <Route path="/privacy" element={<PrivacyPolicy/>} />
        <Route path="/termcondition" element={<TermCondition/>} />
+       <Route path="/discover-more"  element={<Discovermore/>} />
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
