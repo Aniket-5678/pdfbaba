@@ -12,6 +12,7 @@ import { useTheme } from '../context/ThemeContext';
 import { MdClose } from 'react-icons/md';
 import { BiMenuAltLeft } from "react-icons/bi";
 import { Drawer, List, ListItem, Divider } from '@mui/material';
+import TopContentSlider from '../pages/TopContentSlider';
 
 const Navbar = () => {
   const [auth, setAuth] = useAuth();
@@ -22,6 +23,36 @@ const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useTheme(); 
   const [categories, setCategories] = useState([]);
+
+  const [showTopContentSlider, setShowTopContentSlider] = useState(true);
+  const lastScrollY = useRef(0);
+
+
+// Track scroll direction
+useEffect(() => {
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    
+    // Hide the slider when scrolling down (only hide if we're past 50px)
+    if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+      setShowTopContentSlider(false); 
+    } 
+    // Show the slider only when scrolling up and we're at the top of the page
+    else if (currentScrollY < lastScrollY.current && currentScrollY <= 50) {
+      setShowTopContentSlider(true); 
+    }
+
+    lastScrollY.current = currentScrollY;
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+  };
+}, []);
+
+
+
 
   useEffect(() => {
     const getAllCategory = async () => {
@@ -90,6 +121,10 @@ const Navbar = () => {
 
   return (
     <div className='navbar-container'>
+       <div className={`topslider-main ${!showTopContentSlider ? 'topslider-hidden' : ''}`} >
+       {showTopContentSlider && <TopContentSlider />}
+       </div>
+
       <nav className='nav-main'>
         
         <div className='hamburger' onClick={toggleMenu}>

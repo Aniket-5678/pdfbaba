@@ -61,7 +61,7 @@ const Categoryworks = () => {
           background: theme === 'dark' ? '#1a1a1a' : '#f9fcfc',
           fontFamily: 'Poppins, sans-serif',
           textAlign: 'center',
-          margin: '100px 0px',
+          margin: '135px 0px',
         }}
       >
         <Typography 

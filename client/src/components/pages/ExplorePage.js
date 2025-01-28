@@ -103,7 +103,7 @@ const ExplorePage = () => {
 
   return (
     <Layout>
-      <Box sx={{ padding: 3 , margin: '80px 0px'}}>
+      <Box sx={{ padding: 3 , margin: '100px 0px'}}>
         <Grid container spacing={2}>
   {pdfs.slice(0, visibleCount).map((pdf) => (
     <Grid

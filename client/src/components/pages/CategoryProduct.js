@@ -97,7 +97,7 @@ const CategoryProduct = () => {
             backgroundColor: theme === 'dark' ? '#333' : '#f5f5f5',
             py: 5,
             textAlign: 'center',
-            marginTop: '50px',
+            marginTop: '90px',
           }}
         >
           <Typography
