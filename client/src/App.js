@@ -24,7 +24,7 @@ import Categoryworks from "./components/pages/Categoryworks";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy";
 import TermCondition from "./components/pages/TermCondition";
 import Discovermore from "./components/pages/Discovermore";
-
+import  { Toaster } from 'react-hot-toast';
 
 
 
@@ -34,6 +34,7 @@ const [theme] = useTheme()
 
   return (
     <div className="App">
+      <Toaster/>
       <div id={theme}>
       <Routes>
         <Route path="/" element={ <HomePage/>} />

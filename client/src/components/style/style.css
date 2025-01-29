@@ -3369,6 +3369,7 @@ button.toggle-theme:hover {
 .modal-content {
   width: 90%; /* Ensure modal fits well on mobile screens */
   margin: 0 auto; /* Center modal content */
+  margin-top: 40px;
 }
 
 .modal-header {

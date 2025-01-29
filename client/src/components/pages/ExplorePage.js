@@ -104,88 +104,114 @@ const ExplorePage = () => {
   return (
     <Layout>
       <Box sx={{ padding: 3 , margin: '100px 0px'}}>
-        <Grid container spacing={2}>
-  {pdfs.slice(0, visibleCount).map((pdf) => (
-    <Grid
-      item
-      xs={6} // 2 cards per row on mobile
-      sm={4} // 3 cards per row on small devices
-      md={3} // 4 cards per row on medium devices
-      lg={3} // 4 cards per row on large devices
-      key={pdf._id}
-      sx={{
-        display: 'flex',
-        justifyContent: 'center', // Center the card horizontally
-      }}
-    >
-      <Card
-        sx={{
-          height: '100%',
-          backgroundColor: themeStyles.palette.background.default,
-          color: themeStyles.palette.text.primary,
-          boxShadow: theme === 'dark' ? '0 4px 6px rgba(0,0,0,0.8)' : '0 4px 6px rgba(0,0,0,0.1)',
-          transition: 'background-color 0.3s, color 0.3s',
-          fontFamily: '"Poppins", sans-serif',
-          width: '100%'
-        }}
-      >
-        <CardContent>
-          <Typography variant="h6" gutterBottom  sx={{
-              fontSize: isMobile ? '0.8rem' : '1.1rem',
-            }}  >
-            {pdf.name}
-          </Typography>
-          <Typography
-            variant="body2"
-            color={theme === 'dark' ? 'white' : 'textSecondary'}
-            gutterBottom
+        {/* Title Section */}
+        <Box sx={{ marginBottom: 4, textAlign: 'center' }}>
+          <Typography 
+            variant="h4" 
             sx={{
-              fontSize: isMobile ? '0.7rem' : '0.9rem',
+              fontSize: isMobile ? '1.1rem' : '1.5rem', 
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: '300', 
+              color: themeStyles.palette.text.primary
             }}
           >
-            {pdf.description}
+            Explore Our PDF Collection
           </Typography>
-          <Rating value={Math.floor(Math.random() * 5) + 1} readOnly size="small" sx={{ marginBottom: 1 }} />
-          <Box
-  display="flex"
-  flexDirection={isMobile ? 'column' : 'row'}
-  justifyContent="space-between"
-  alignItems="center"
-  gap={isMobile ? 1 : 0} // Adds spacing between buttons for column layout
->
-  <Button
-    variant="outlined"
-    onClick={() => openModal(pdf)}
-    size="small"
-    sx={{
-      fontSize: isMobile ? '0.7rem' : '0.9rem',
-      padding: isMobile ? '4px 8px' : '6px 12px',
-      width: isMobile ? '100%' : 'auto', // Full-width on mobile
-    }}
-  >
-    View PDFs
-  </Button>
-  <Button
-    variant="contained"
-    color="primary"
-    href={pdf.pdfs[0]}
-    target="_blank"
-    size="small"
-    sx={{
-      fontSize: isMobile ? '0.7rem' : '0.9rem',
-      padding: isMobile ? '4px 8px' : '6px 12px',
-      width: isMobile ? '100%' : 'auto', // Full-width on mobile
-    }}
-  >
-    Download
-  </Button>
-</Box>
+          <Typography 
+            variant="body1" 
+            sx={{
+              fontSize: isMobile ? '0.9rem' : '1rem', 
+              fontFamily: 'Poppins, sans-serif',
+              color: themeStyles.palette.text.primary,
+              marginTop: 1
+            }}
+          >
+            Browse through various study materials, including question papers, notes, and more.
+          </Typography>
+        </Box>
 
-        </CardContent>
-      </Card>
-    </Grid>
-  ))}
-</Grid>
+        <Grid container spacing={2}>
+          {pdfs.slice(0, visibleCount).map((pdf) => (
+            <Grid
+              item
+              xs={6} // 2 cards per row on mobile
+              sm={4} // 3 cards per row on small devices
+              md={3} // 4 cards per row on medium devices
+              lg={3} // 4 cards per row on large devices
+              key={pdf._id}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center', // Center the card horizontally
+              }}
+            >
+              <Card
+                sx={{
+                  height: '100%',
+                  backgroundColor: themeStyles.palette.background.default,
+                  color: themeStyles.palette.text.primary,
+                  boxShadow: theme === 'dark' ? '0 4px 6px rgba(0,0,0,0.8)' : '0 4px 6px rgba(0,0,0,0.1)',
+                  transition: 'background-color 0.3s, color 0.3s',
+                  fontFamily: '"Poppins", sans-serif',
+                  width: '100%'
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" gutterBottom  sx={{
+                      fontSize: isMobile ? '0.8rem' : '1.1rem',
+                    }}  >
+                    {pdf.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color={theme === 'dark' ? 'white' : 'textSecondary'}
+                    gutterBottom
+                    sx={{
+                      fontSize: isMobile ? '0.7rem' : '0.9rem',
+                    }}
+                  >
+                    {pdf.description}
+                  </Typography>
+                  <Rating value={Math.floor(Math.random() * 5) + 1} readOnly size="small" sx={{ marginBottom: 1 }} />
+                  <Box
+                    display="flex"
+                    flexDirection={isMobile ? 'column' : 'row'}
+                    justifyContent="space-between"
+                    alignItems="center"
+                    gap={isMobile ? 1 : 0} // Adds spacing between buttons for column layout
+                  >
+                    <Button
+                      variant="outlined"
+                      onClick={() => openModal(pdf)}
+                      size="small"
+                      sx={{
+                        fontSize: isMobile ? '0.7rem' : '0.9rem',
+                        padding: isMobile ? '4px 8px' : '6px 12px',
+                        width: isMobile ? '100%' : 'auto', // Full-width on mobile
+                      }}
+                    >
+                      View PDFs
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      href={pdf.pdfs[0]}
+                      target="_blank"
+                      size="small"
+                      sx={{
+                        fontSize: isMobile ? '0.7rem' : '0.9rem',
+                        padding: isMobile ? '4px 8px' : '6px 12px',
+                        width: isMobile ? '100%' : 'auto', // Full-width on mobile
+                      }}
+                    >
+                      Download
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         {visibleCount < pdfs.length && (
           <Box display="flex" justifyContent="center" marginTop={3}>
             <Button
