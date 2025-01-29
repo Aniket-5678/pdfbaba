@@ -141,6 +141,7 @@ useEffect(() => {
           <SearchInput />
         </div>
 
+
      {/* MUI Drawer for Mobile Menu */}
 <Drawer
   anchor="left"
@@ -187,6 +188,7 @@ useEffect(() => {
 
         {/* Desktop Menu */}
         <div className="nav-link-main">
+
           <div className='aboutus'>
             <Link className='about-nav' to='/about'>About us</Link>
           </div>

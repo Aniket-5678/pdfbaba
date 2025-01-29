@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
 
   return (
     <Layout>
-      <Container maxWidth="md" sx={{ mt: 10, px: { xs: 2, sm: 4 }, py: { xs: 3, sm: 4 } }}>
+      <Container maxWidth="md" sx={{ mt: 15, px: { xs: 2, sm: 4 }, py: { xs: 3, sm: 4 } }}>
         <Typography
           variant="h4"
           component="h1"
