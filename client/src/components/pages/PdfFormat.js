@@ -16,6 +16,9 @@ import chakraImageone from "../images/chakra1.png";
 import chakraImagetwo from "../images/chakra2.png";
 import chakraImagethree from "../images/chakra3.png";
 import chakraImagefour from "../images/chakra4.png";
+import jupiterfirst from "../images/jupiter1.png";
+import jupitersecond from "../images/jupiter2.png";
+import jupiterthird from "../images/jupiter3.png";
 
 import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
 
@@ -31,7 +34,10 @@ const PdfFormat = () => {
     chakraImageone,
     chakraImagetwo,
     chakraImagethree,
-    chakraImagefour
+    chakraImagefour,
+    jupiterfirst,
+    jupitersecond,
+    jupiterthird
   ];
 
   const [theme] = useTheme(); // Use the theme context to get the current theme

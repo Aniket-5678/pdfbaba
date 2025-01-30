@@ -179,9 +179,13 @@ useEffect(() => {
         <ListItem button component={Link} to='/login' className="menu-item">Login</ListItem>
       </>
     ) : (
-      <ListItem button onClick={toggleDropdown} className="menu-item">
-        {auth?.user.name} <CgProfile color='gold' />
-      </ListItem>
+      <>
+                <ListItem className="menu-item">
+                  <CgProfile size={25} style={{ marginRight: "10px" }} /> {auth?.user.name}
+                </ListItem>
+                <ListItem button component={Link} to={`/dashboard/${auth?.user?.role === 1 ? 'admin' : 'user'}`} className="menu-item">Dashboard</ListItem>
+                <ListItem button onClick={handleLogout} className="menu-item">Logout</ListItem>
+              </>
     )}
   </List>
 </Drawer>
