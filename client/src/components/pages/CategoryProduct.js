@@ -155,6 +155,7 @@ const CategoryProduct = () => {
     <Typography
       variant="body2"
       color="textSecondary"
+       fontFamily='"Poppins", sans-serif'
       sx={{
         fontSize: '0.8rem',
         lineHeight: 1.5,
@@ -202,6 +203,65 @@ const CategoryProduct = () => {
               <Typography>No products available</Typography>
             )}
           </Grid>
+
+
+          <Box
+  sx={{
+    py: 5,
+    backgroundColor: theme === 'dark' ? '#333' : '#f5f5f5',
+    marginTop: '60px',
+    textAlign: 'center',
+    px: { xs: 2, sm: 5 }, // Responsive padding for smaller screens
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center', // Align items center horizontally
+    justifyContent: 'center', // Align content vertically
+  }}
+>
+  <Typography
+    variant="h4"
+     fontFamily='"Poppins", sans-serif'
+    sx={{
+      color: theme === 'dark' ? 'white' : 'black',
+      marginBottom: '20px',
+      fontSize: { xs: '0.9rem', sm: '1.5rem' }, // Responsive font size
+      textAlign: 'center',
+     
+    }}
+  >
+    Explore Knowledge Across Different Fields
+  </Typography>
+
+  <Typography
+    variant="body1"
+     fontFamily='"Poppins", sans-serif'
+    sx={{
+      color: theme === 'dark' ? '#cccccc' : '#666666',
+      fontSize: { xs: '0.9rem', sm: '1rem' }, // Responsive font size
+      lineHeight: 1.6,
+      textAlign: 'center', // Ensure text is centered
+      paddingLeft: { xs: 0, sm: '20px' }, // Padding adjustment for mobile
+    }}
+  >
+    Our platform provides a wide range of educational resources on various topics including:
+    <ul
+      style={{
+        paddingLeft: '20px',
+        margin: '0',
+        listStyleType: 'disc',
+        marginBottom: '20px',
+      }}
+    >
+      <li><strong>Mysteries</strong>: Dive into the unexplained and unravel some of the world's greatest secrets.</li>
+      <li><strong>Space</strong>: Expand your understanding of the universe and our place in it.</li>
+      <li><strong>Technology</strong>: Stay up to date with the latest tech developments and breakthroughs.</li>
+      <li><strong>Health</strong>: Improve your well-being with resources on nutrition, exercise, and mental health.</li>
+      <li><strong>Education</strong>: Access study materials and resources to boost your academic performance.</li>
+      <li><strong>Spirituality</strong>: Explore ancient wisdom and modern practices for a deeper understanding of life.</li>
+    </ul>
+  </Typography>
+</Box>
+
         </Container>
 
         {/* Modal */}
