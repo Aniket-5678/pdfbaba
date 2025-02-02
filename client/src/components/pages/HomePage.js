@@ -35,7 +35,6 @@ const HomePage = () => {
     const getAllcategory = async () => {
       try {
         const { data } = await axios.get('/api/v1/category/get-category');
-        console.log("Category Data: ", data); // Debugging
         setCategories(data.category); // Correctly set category array
       } catch (error) {
         console.error("Error fetching categories: ", error);

@@ -7,7 +7,7 @@ import { createTheme } from '@mui/material/styles';
 import Layout from '../Layout/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { IoClose } from "react-icons/io5";
-import { BiFontSize } from 'react-icons/bi';
+
 
 const ExplorePage = () => {
   const [pdfs, setPdfs] = useState([]);
@@ -224,6 +224,8 @@ const ExplorePage = () => {
             </Button>
           </Box>
         )}
+        
+
       </Box>
 
       <Modal

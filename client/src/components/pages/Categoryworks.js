@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
 import Layout from "../Layout/Layout";
 
+
 const Categoryworks = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Spinner state
