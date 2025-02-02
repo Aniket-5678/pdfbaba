@@ -19,6 +19,7 @@ import PdfFormat from './PdfFormat';
 import { useTheme } from '../context/ThemeContext'; 
 import Faq from './Faq';
 import Featureimage from './Featureimage';
+import NativeAd from './NativeAd';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -365,6 +366,10 @@ const categorySlider = {
 
           <div>
            <Featureimage/>
+          </div>
+          
+          <div>
+            <NativeAd/>
           </div>
 
       </div>
