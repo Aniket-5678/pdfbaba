@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import { IoClose } from 'react-icons/io5';
 import { useTheme } from '../context/ThemeContext';
-import NativeAd from "../pages/NativeAd"
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -262,9 +261,7 @@ const CategoryProduct = () => {
     </ul>
   </Typography>
 </Box>
-<Box>
-   <NativeAd/>
-</Box>
+
 
         </Container>
 

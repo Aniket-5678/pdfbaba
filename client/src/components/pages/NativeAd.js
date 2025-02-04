@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
+import { useEffect } from "react";
 
 const NativeAd = () => {
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.async = true;
-    script.src = "//pl25749166.profitablecpmrate.com/6e3b09de6f6074e527679b516dc65e2f/invoke.js";
     script.setAttribute("data-cfasync", "false");
-
-    // Enhanced error handling
-    script.onerror = (error) => {
-      console.error("Error loading script:", error);
-      alert("Failed to load the ad. Please try again later.");
-    };
-
+    script.src = "//pl25749166.profitablecpmrate.com/6e3b09de6f6074e527679b516dc65e2f/invoke.js";
+    
     document.body.appendChild(script);
 
     return () => {

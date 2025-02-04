@@ -21,6 +21,7 @@ import Faq from './Faq';
 import Featureimage from './Featureimage';
 import NativeAd from './NativeAd';
 
+
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
