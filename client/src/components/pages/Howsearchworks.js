@@ -3,6 +3,7 @@ import Searchinput from "../form/SearchInput";
 import "../style/style.css"; // Ensure this CSS file contains styles for unique class names prefixed with 'searchfunction'.
 import { useTheme } from '../context/ThemeContext';
 import Layout from "../Layout/Layout"
+import SocialBarAd from './SocialBarAd';
 
 const Howsearchworks = () => {
   const [theme] = useTheme(); // Accessing the theme context
@@ -22,6 +23,10 @@ const Howsearchworks = () => {
         margin: '100px 0px'
       }}
     >
+
+      <div>
+        <SocialBarAd/>
+      </div>
       {/* Page Title */}
       <h2 className="searchfunction-title" 
         style={{ color: theme === 'dark' ? '#fff' : '#333' }}

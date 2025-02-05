@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
 import Layout from "../Layout/Layout";
+import BannerAd from './BannerAd';
+import SmallBannerAd from './SmallBannerAd';
 
 
 const Categoryworks = () => {
@@ -55,6 +57,9 @@ const Categoryworks = () => {
         </Box>
       )}
 
+<Box marginBottom={'5px'} >
+          <SmallBannerAd/>
+        </Box>
       {/* Main Content */}
       <Box 
         sx={{
@@ -65,12 +70,15 @@ const Categoryworks = () => {
           margin: '135px 0px',
         }}
       >
+     
         <Typography 
           variant="h4" 
           sx={{ marginBottom: '20px', color: theme === 'dark' ? '#fff' : '#333', fontSize: { xs: '1.1rem' } }}
         >
           Explore Categories
         </Typography>
+
+       
 
         <Grid container spacing={2} justifyContent="center">
           {categories.map((category) => (
@@ -154,6 +162,9 @@ const Categoryworks = () => {
           >
             We provide the most comprehensive and up-to-date information in each category to help you achieve your goals. Our platform is designed with user experience in mind and tailored to suit your needs.
           </Typography>
+        </Box>
+        <Box marginTop={'40px'} >
+          <BannerAd/>
         </Box>
       </Box>
     </Layout>

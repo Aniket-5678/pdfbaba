@@ -14,8 +14,7 @@ const data = [
   spaceImage,
   techzoneImage,
   reactjsImage,
-  spritualImage
- 
+  spritualImage,
  
 
 

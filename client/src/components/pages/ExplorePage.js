@@ -7,6 +7,8 @@ import { createTheme } from '@mui/material/styles';
 import Layout from '../Layout/Layout';
 import { useTheme } from '../context/ThemeContext';
 import { IoClose } from "react-icons/io5";
+import SmallBannerAd from './SmallBannerAd';
+import SocialBarAd from "../pages/SocialBarAd"
 
 
 const ExplorePage = () => {
@@ -104,6 +106,14 @@ const ExplorePage = () => {
   return (
     <Layout>
       <Box sx={{ padding: 3 , margin: '100px 0px'}}>
+       
+      <Box marginTop={'5px'} >
+          <SmallBannerAd/>
+        </Box>
+        <Box>
+          <SocialBarAd/>
+        </Box>
+
         {/* Title Section */}
         <Box sx={{ marginBottom: 4, textAlign: 'center' }}>
           <Typography 
@@ -112,6 +122,7 @@ const ExplorePage = () => {
               fontSize: isMobile ? '1.1rem' : '1.5rem', 
               fontFamily: 'Poppins, sans-serif',
               fontWeight: '300', 
+              marginTop: '10px',
               color: themeStyles.palette.text.primary
             }}
           >
@@ -224,7 +235,6 @@ const ExplorePage = () => {
             </Button>
           </Box>
         )}
-        
 
       </Box>
 

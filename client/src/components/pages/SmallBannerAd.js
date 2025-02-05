@@ -1,31 +1,31 @@
 import { useEffect, useRef } from "react";
 
-const BannerAd = () => {
+const SmallBannerAd = () => {
   const adRef = useRef(null);
 
   useEffect(() => {
     const currentAdRef = adRef.current;
 
     if (currentAdRef) {
-      console.log("Banner Ad mounted or updated");
+      console.log("Small Banner Ad mounted");
 
-      // Creating the first script (atOptions)
+      // Creating first script (atOptions)
       const script1 = document.createElement("script");
       script1.type = "text/javascript";
       script1.innerHTML = `
         atOptions = {
-          'key': '37e09e5650b41876a01bf6b363ff425c',
+          'key': 'eb1630be355ed6fe6b4fdd83898c0600',
           'format': 'iframe',
-          'height': 250,
-          'width': 300,
+          'height': 60,
+          'width': 468,
           'params': {}
         };
       `;
 
-      // Creating the second script (invoke.js)
+      // Creating second script (invoke.js)
       const script2 = document.createElement("script");
       script2.type = "text/javascript";
-      script2.src = "//www.highperformanceformat.com/37e09e5650b41876a01bf6b363ff425c/invoke.js";
+      script2.src = "//www.highperformanceformat.com/eb1630be355ed6fe6b4fdd83898c0600/invoke.js";
       script2.async = true;
 
       // Append both scripts to the ad container
@@ -34,9 +34,9 @@ const BannerAd = () => {
     }
 
     return () => {
-      if (adRef.current) {
-        console.log("Cleaning up Banner Ad");
-        adRef.current.innerHTML = ""; // Remove scripts on unmount
+      if (currentAdRef) {
+        console.log("Cleaning up Small Banner Ad");
+        currentAdRef.innerHTML = ""; // Cleanup on unmount
       }
     };
   }, []);
@@ -46,7 +46,7 @@ const BannerAd = () => {
       ref={adRef}
       style={{
         width: "100%",
-        height: "250px", // Banner size
+        height: "60px", // Banner size
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -56,4 +56,4 @@ const BannerAd = () => {
   );
 };
 
-export default BannerAd;
+export default SmallBannerAd;
