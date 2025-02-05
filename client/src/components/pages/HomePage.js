@@ -372,6 +372,8 @@ const categorySlider = {
             <NativeAd/>
           </div>
 
+          
+
       </div>
     </Layout>
   )
