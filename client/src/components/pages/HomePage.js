@@ -20,7 +20,6 @@ import { useTheme } from '../context/ThemeContext';
 import Faq from './Faq';
 import Featureimage from './Featureimage';
 import NativeAd from './NativeAd';
-import SocialBarAd from "../pages/SocialBarAd"
 
 
 const HomePage = () => {
@@ -371,9 +370,6 @@ const categorySlider = {
           
           <div>
             <NativeAd/>
-          </div>
-          <div>
-          <SocialBarAd/>
           </div>
           
 
