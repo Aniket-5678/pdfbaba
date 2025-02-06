@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { IoClose } from 'react-icons/io5';
 import { useTheme } from '../context/ThemeContext';
-import SmallBannerAd from './SmallBannerAd';
+import SmallBannerAd from "../pages/SmallBannerAd"
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -261,13 +261,13 @@ const CategoryProduct = () => {
       <li><strong>Spirituality</strong>: Explore ancient wisdom and modern practices for a deeper understanding of life.</li>
     </ul>
   </Typography>
-  <Box>
-    <SmallBannerAd/>
-  </Box>
+ 
 
  
 </Box>
-
+<Box marginTop={'30px'} >
+  <SmallBannerAd/>
+</Box>
 
         </Container>
 

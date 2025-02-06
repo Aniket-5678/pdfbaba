@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Container, Typography, Button, Card, CardContent, Grid, useMediaQuery } from '@mui/material';
+import { Container, Typography, Button, Card, CardContent, Grid, useMediaQuery, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTheme as useCustomTheme } from '../context/ThemeContext'; // Import theme context for dark mode
 import SchoolIcon from '@mui/icons-material/School';
@@ -11,6 +11,9 @@ import PeopleIcon from '@mui/icons-material/People';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import Layout from "../Layout/Layout";
 import { Link } from 'react-router-dom';
+import SmallBannerAd from "../pages/SmallBannerAd"
+import NativeAd from "../pages/NativeAd"
+import SocialBarAd from "./SocialBarAd"
 
 const Discovermore = () => {
   const [theme] = useCustomTheme(); // Get theme from context
@@ -24,6 +27,9 @@ const Discovermore = () => {
   return (
     <Layout>
       <Container maxWidth="md" sx={{ textAlign: 'center', py: 4, mt: 15 }}>
+        <Box marginBottom={'30px'} >
+          <SmallBannerAd/>
+        </Box>
         <Typography 
           variant={isMobile ? "h5" : "h4"} 
           fontWeight="bold"
@@ -172,6 +178,12 @@ const Discovermore = () => {
           </Grid>
         </Grid>
       </Container>
+      <Box>
+        <NativeAd/>
+      </Box>
+      <Box>
+        <SocialBarAd/>
+      </Box>
     </Layout>
   );
 };

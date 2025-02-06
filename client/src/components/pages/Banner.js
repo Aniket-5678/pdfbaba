@@ -5,6 +5,7 @@ import techzoneImage from "../images/techzone.png"
 import reactjsImage from "../images/reactjs.png"
 import spaceImage from "../images/space.png"
 import spritualImage from "../images/spritual.png"
+import mysteryImage from "../images/mystery.png"
 
 
 // Import more images as needed
@@ -15,7 +16,7 @@ const data = [
   techzoneImage,
   reactjsImage,
   spritualImage,
- 
+  mysteryImage
 
 
  

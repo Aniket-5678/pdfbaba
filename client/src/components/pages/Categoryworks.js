@@ -6,8 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
 import Layout from "../Layout/Layout";
 import BannerAd from './BannerAd';
-import SmallBannerAd from './SmallBannerAd';
-
+import SocialBannerAd from "./SocialBarAd"
 
 const Categoryworks = () => {
   const [categories, setCategories] = useState([]);
@@ -37,6 +36,7 @@ const Categoryworks = () => {
 
   return (
     <Layout>
+
       {/* Full Page Spinner */}
       {loading && (
         <Box
@@ -57,9 +57,7 @@ const Categoryworks = () => {
         </Box>
       )}
 
-<Box marginBottom={'5px'} >
-          <SmallBannerAd/>
-        </Box>
+       
       {/* Main Content */}
       <Box 
         sx={{
@@ -70,6 +68,7 @@ const Categoryworks = () => {
           margin: '135px 0px',
         }}
       >
+
      
         <Typography 
           variant="h4" 
@@ -165,6 +164,10 @@ const Categoryworks = () => {
         </Box>
         <Box marginTop={'40px'} >
           <BannerAd/>
+        </Box>
+
+        <Box  >
+          <SocialBannerAd/>
         </Box>
       </Box>
     </Layout>
