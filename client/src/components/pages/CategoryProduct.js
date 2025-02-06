@@ -271,83 +271,108 @@ const CategoryProduct = () => {
 
         </Container>
 
-        {/* Modal */}
         <Dialog open={modalOpen} onClose={closeModal} fullWidth maxWidth="sm">
-          <DialogTitle
-            sx={{
-              backgroundColor: theme === 'dark' ? '#1e88e5' : '#3f51b5',
-              color: 'white',
-            }}
-          >
-            {selectedProduct?.name || 'Product PDFs'}
-            <IoClose
-              size={24}
-              onClick={closeModal}
-              style={{
-                cursor: 'pointer',
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                color: 'white',
-              }}
-            />
-          </DialogTitle>
-          <DialogContent sx={{ backgroundColor: theme === 'dark' ? '#424242' : '#f9f9f9' }}>
-            {selectedProduct && (
-              <Box>
-                <Typography variant="h6" gutterBottom>
-                  PDFs Available:
-                </Typography>
-                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                  {selectedProduct.pdfs.map((pdfUrl, index) => {
-                    const filename = pdfUrl.split('/').pop();
-                    return (
-                      <li key={index} style={{ marginBottom: '8px' }}>
-                        <a
-                          href={pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            textDecoration: 'none',
-                            color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {filename}
-                        </a>
-                      </li>
-
-                    );
-                  })}
-                </ul>
-
-                         {/* Instructions for Android users */}
-      <div className="android-instructions">
-        <h4>Instructions for Android Users:</h4>
-        <p>
-          To download the PDF on your Android device:
-        </p>
-        <ol>
-          <li>Hold the link of the PDF you want to download.</li>
-          <li>An options menu will appear.</li>
-          <li>Select "Download link" from the options.</li>
-          <li>After the download is complete, you can access the PDF from your device's file manager.</li>
-        </ol>
-        <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
-      </div>
+  <DialogTitle
+    sx={{
+      backgroundColor: theme === 'dark' ? '#1e88e5' : '#3f51b5',
+      color: 'white',
+    }}
+  >
+    {selectedProduct?.name || 'Product PDFs'}
+    <IoClose
+      size={24}
+      onClick={closeModal}
+      style={{
+        cursor: 'pointer',
+        position: 'absolute',
+        top: '16px',
+        right: '16px',
+        color: 'white',
+      }}
+    />
+  </DialogTitle>
+  <DialogContent sx={{ backgroundColor: theme === 'dark' ? '#424242' : '#f9f9f9' }}>
+    {selectedProduct && (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          PDFs Available:
+        </Typography>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
+          {selectedProduct.pdfs.map((pdfUrl, index) => {
+            const filename = pdfUrl.split('/').pop();
+            return (
+              <Box
+                key={index}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 16px',
+                  backgroundColor: theme === 'dark' ? '#333' : '#fff',
+                  borderRadius: '8px',
+                  boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+                  marginBottom: '10px',
+                  transition: '0.3s',
+                  '&:hover': {
+                    backgroundColor: theme === 'dark' ? '#424242' : '#f1f1f1',
+                  },
+                }}
+              >
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    textDecoration: 'none',
+                    color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+                    fontWeight: 'bold',
+                    wordBreak: 'break-word',
+                    fontSize: '16px',
+                  }}
+                >
+                  {filename}
+                </a>
+                <span
+                  style={{
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                    color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+                  }}
+                >
+                  📥
+                </span>
               </Box>
-            )}
-          </DialogContent>
-          <DialogActions
-            sx={{
-              backgroundColor: theme === 'dark' ? '#1e88e5' : '#3f51b5',
-            }}
-          >
-            <Button onClick={closeModal} sx={{ color: 'white' }}>
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+            );
+          })}
+        </ul>
+
+        {/* Instructions for Android users */}
+        <div className="android-instructions" style={{ marginTop: '20px' }}>
+          <h4>Instructions for Android Users:</h4>
+          <p>To download the PDF on your Android device:</p>
+          <ol>
+            <li>Hold the link of the PDF you want to download.</li>
+            <li>An options menu will appear.</li>
+            <li>Select "Download link" from the options.</li>
+            <li>After the download is complete, you can access the PDF from your device's file manager.</li>
+          </ol>
+          <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
+        </div>
+      </Box>
+    )}
+  </DialogContent>
+  <DialogActions
+    sx={{
+      backgroundColor: theme === 'dark' ? '#1e88e5' : '#3f51b5',
+    }}
+  >
+    <Button onClick={closeModal} sx={{ color: 'white' }}>
+      Close
+    </Button>
+  </DialogActions>
+</Dialog>
+
+
       </Layout>
     </ThemeProvider>
   );
