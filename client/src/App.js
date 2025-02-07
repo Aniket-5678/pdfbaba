@@ -25,6 +25,7 @@ import PrivacyPolicy from "./components/pages/PrivacyPolicy";
 import TermCondition from "./components/pages/TermCondition";
 import Discovermore from "./components/pages/Discovermore";
 import  { Toaster } from 'react-hot-toast';
+import ServiceList from "./components/pages/ServiceList";
 
 
 
@@ -52,6 +53,7 @@ const [theme] = useTheme()
        <Route path="/privacy" element={<PrivacyPolicy/>} />
        <Route path="/termcondition" element={<TermCondition/>} />
        <Route path="/discover-more"  element={<Discovermore/>} />
+       <Route path="/service" element={<ServiceList/>} />
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 

@@ -20,6 +20,7 @@ import { useTheme } from '../context/ThemeContext';
 import Faq from './Faq';
 import Featureimage from './Featureimage';
 import NativeAd from './NativeAd';
+import Services from './Services';
 
 
 const HomePage = () => {
@@ -262,8 +263,6 @@ const categorySlider = {
 </Box>
 
 
-
-
 <div className='products-container'>
   {products.slice(0, visibleCount).map((product) => (
     <div key={product._id} className='product-card'>
@@ -338,6 +337,12 @@ const categorySlider = {
             </div>
           )}
         </Modal>
+
+        <div>
+  <Services/>
+</div>
+
+
 
         <div>
           <PdfFormat/>

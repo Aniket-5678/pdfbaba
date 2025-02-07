@@ -107,6 +107,7 @@ const PdfFormat = () => {
         alignItems: 'center',
         position: 'relative', // Ensure arrows stay on top of the content
         fontFamily: "'Poppins', sans-serif", // Poppins font-family
+        marginTop: '30px',
       }}
     >
       {/* Slider Section */}
