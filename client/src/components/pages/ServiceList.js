@@ -4,6 +4,7 @@ import { WhatsApp } from "@mui/icons-material";
 import Layout from "../Layout/Layout";
 import SpacebanneImage from "../images/space.png";
 import PDFNotesImages from "../images/chakra1.png";
+import TechprojectImage from "../images/techzone.png"
 import { useTheme } from "../context/ThemeContext";
 
 const services = [
@@ -11,7 +12,7 @@ const services = [
     id: 1,
     title: "Web Development Project Code",
     description: "A complete MERN stack project for students.",
-    image: "https://via.placeholder.com/300",
+    image: TechprojectImage ,
     whatsapp: "https://wa.me/918830730929",
   },
   {
