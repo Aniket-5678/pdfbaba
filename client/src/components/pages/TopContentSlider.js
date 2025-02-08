@@ -14,7 +14,8 @@ const TopContentSlider = () => {
     'Get NodeJS and ExpressJS Resources!',
     'Learn HTML and CSS with Practical Examples!',
     'Free JavaScript Interview Preparation Notes!',
-    'Download Latest JavaScript Frameworks Guides'
+    'Download Latest JavaScript Frameworks Guides',
+     ' Get Full Project Code for Just $1! (Limited Offer) '
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
