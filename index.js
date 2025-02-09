@@ -29,6 +29,10 @@ if (!fs.existsSync(pdfDir)) {
   fs.mkdirSync(pdfDir, { recursive: true });
 }
 
+
+
+
+
 // Middleware to serve static files
 app.use('/uploads/pdfs', express.static(pdfDir));
 

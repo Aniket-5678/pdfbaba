@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
-import { Card, CardContent, Typography, Button, Grid, Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, Typography, Button, Grid, Box, Modal } from "@mui/material";
 import { WhatsApp } from "@mui/icons-material";
+import { AiOutlineClose } from "react-icons/ai";
 import Layout from "../Layout/Layout";
 import SpacebanneImage from "../images/space.png";
 import PDFNotesImages from "../images/chakra1.png";
@@ -15,7 +16,6 @@ const services = [
     description: "A complete MERN stack project for students.",
     image: portfolioImage,
     link: "https://portfolio-4-8gnu.onrender.com",
-    whatsapp: "https://wa.me/918830730929",
   },
   {
     id: 2,
@@ -23,26 +23,24 @@ const services = [
     description: "React animation using tsparticles.",
     image: reactanimationImage,
     link: "https://aniketsinghproject.netlify.app/",
-    whatsapp: "https://wa.me/918830730929",
   },
   {
     id: 3,
     title: "Thumbnail Design Pack",
     description: "High-quality thumbnails for student projects.",
     image: SpacebanneImage,
-    whatsapp: "https://wa.me/918830730929",
   },
   {
     id: 4,
     title: "PPTX Notes PDF",
     description: "Handwritten notes available in PDF format.",
     image: PDFNotesImages,
-    whatsapp: "https://wa.me/918830730929",
   },
 ];
 
 const ServiceList = () => {
   const [theme] = useTheme();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,11 +91,7 @@ const ServiceList = () => {
                 <img
                   src={service.image}
                   alt={service.title}
-                  style={{
-                    width: "100%",
-                    height: "180px",
-                    objectFit: "cover",
-                  }}
+                  style={{ width: "100%", height: "180px", objectFit: "cover" }}
                 />
                 <CardContent
                   sx={{
@@ -131,78 +125,141 @@ const ServiceList = () => {
                   >
                     {service.description}
                   </Typography>
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 1,
-                      mt: "auto",
-                      width: "100%",
-                    }}
-                  >
-                   {/* ✅ "View" Button (Only for id 1 & 2) */}
-{service.link && (
-  <Button
-    variant="contained"
-    color="primary"
-    href={service.link} // ✅ Direct link use kar rahe hain
-    target="_blank" // ✅ New tab me open hoga
-    rel="noopener noreferrer" // ✅ Security ke liye important
-    sx={{
-      width: "100%",
-      fontFamily: "Poppins, sans-serif",
-      fontSize: { xs: "0.85rem", sm: "1rem" },
-      bgcolor: theme === "dark" ? "#3B82F6" : "#1976D2",
-      "&:hover": {
-        bgcolor: theme === "dark" ? "#2563EB" : "#1565C0",
-      },
-      color: "white",
-      py: { xs: 1, sm: 1.2 },
-    }}
-  >
-    {service.id === 1 ? "View Portfolio" : "View Animation Project"}
-  </Button>
-)}
-
-                    
+                  {service.link && (
                     <Button
-  variant="contained"
-  color="success"
-  startIcon={<WhatsApp />}
-  href={service.whatsapp}
-  target="_blank"
-  sx={{
-    width: "100%",
-    fontFamily: "Poppins, sans-serif",
-    fontSize: { xs: "0.85rem", sm: "1rem" },
-    bgcolor: theme === "dark" ? "#25D366" : "#4CAF50",
-    "&:hover": {
-      bgcolor: theme === "dark" ? "#1EBE5B" : "#388E3C",
-    },
-    color: "white",
-    py: { xs: 1, sm: 1.2 },
-    display: "flex !important",  // ✅ Ensure it appears
-    visibility: "visible !important",  // ✅ Always visible
-    alignItems: "center",
-    justifyContent: "center",
-    "@media (max-width: 600px)": {
-      bgcolor: "#4CAF50 !important",  // ✅ Ensure correct color in dark mode
-      display: "flex !important",
-      visibility: "visible !important",
-    },
-  }}
->
-  Contact Us on WhatsApp
-</Button>
-
-                  </Box>
+                      variant="contained"
+                      color="primary"
+                      href={service.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{
+                        width: "100%",
+                        fontFamily: "Poppins, sans-serif",
+                        fontSize: { xs: "0.85rem", sm: "1rem" },
+                        bgcolor: theme === "dark" ? "#3B82F6" : "#1976D2",
+                        "&:hover": { bgcolor: theme === "dark" ? "#2563EB" : "#1565C0" },
+                        color: "white",
+                        py: { xs: 1, sm: 1.2 },
+                      }}
+                    >
+                      View Project
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Box>
+
+      {/* Floating WhatsApp Icon */}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          right: 20,
+          bgcolor: "#25D366",
+          borderRadius: "50%",
+          width: 50,
+          height: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          boxShadow: 3,
+        }}
+        onClick={() => setOpen(true)}
+      >
+        <WhatsApp sx={{ color: "white", fontSize: 30 }} />
+      </Box>
+
+   
+{/* Modal */}
+<Modal open={open} onClose={() => setOpen(false)}>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      bgcolor: theme === "dark" ? "#1e1e1e" : "white",
+      color: theme === "dark" ? "white" : "black",
+      boxShadow: 5, // Enhanced shadow for a premium look
+      p: 4,
+      borderRadius: "12px", // More rounded for modern feel
+      width: { xs: "90%", sm: "400px" }, // Mobile-friendly width
+      maxWidth: "90vw",
+      maxHeight: "85vh",
+      overflowY: "auto",
+    }}
+  >
+    {/* Header with Close Button */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottom: "1px solid",
+        borderColor: theme === "dark" ? "#333" : "#ddd",
+        pb: 2,
+        mb: 3,
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{
+          fontSize: { xs: "1.1rem", sm: "1.4rem" },
+          fontWeight: "bold",
+        }}
+      >
+        Contact Us
+      </Typography>
+
+      {/* Close Button */}
+      <AiOutlineClose
+        size={22}
+        onClick={() => setOpen(false)}
+        style={{
+          cursor: "pointer",
+          color: theme === "dark" ? "#bbb" : "#333",
+          transition: "color 0.2s ease-in-out",
+        }}
+        onMouseEnter={(e) => (e.target.style.color = "red")}
+        onMouseLeave={(e) => (e.target.style.color = theme === "dark" ? "#bbb" : "#333")}
+      />
+    </Box>
+
+    {/* WhatsApp Button */}
+    <Button
+      variant="contained"
+      component="a"
+      href="https://wa.me/918830730929"
+      target="_blank"
+      rel="noopener noreferrer"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        maxWidth: "250px",
+        margin: "auto",
+        padding: "12px",
+        bgcolor: "#25D366 !important",
+        color: "white",
+        fontSize: "1rem",
+        fontWeight: "bold",
+        textTransform: "none",
+        borderRadius: "8px",
+        boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
+        transition: "all 0.3s ease-in-out",
+        "&:hover": { bgcolor: "#1DA851 !important", transform: "scale(1.05)" }, // Smooth hover effect
+      }}
+    >
+      Open WhatsApp
+    </Button>
+  </Box>
+</Modal>
+
     </Layout>
   );
 };
