@@ -3,11 +3,13 @@ import { Card, CardContent, Typography, Button, Grid, Box, Modal } from "@mui/ma
 import { WhatsApp } from "@mui/icons-material";
 import { AiOutlineClose } from "react-icons/ai";
 import Layout from "../Layout/Layout";
-import SpacebanneImage from "../images/space.png";
 import PDFNotesImages from "../images/chakra1.png";
 import { useTheme } from "../context/ThemeContext";
 import portfolioImage from "../images/Portfolio.png";
 import reactanimationImage from "../images/Reactjsthumbnail.png";
+import youtubeImage from "../images/youtube.png"
+import clothesImage from "../images/clothes.png"
+import jordanImage from "../images/Jordan.png"
 
 const services = [
   {
@@ -26,14 +28,26 @@ const services = [
   },
   {
     id: 3,
-    title: "Thumbnail Design Pack",
-    description: "High-quality thumbnails for student projects.",
-    image: SpacebanneImage,
+    title: "YouTube Thumbnail Design",
+    description: "Want eye-catching YouTube thumbnails? Get custom-designed thumbnails that boost your video’s click-through rate. Contact us on WhatsApp!",
+    image: youtubeImage,
   },
   {
     id: 4,
+    title: "E-commerce Banner Design",
+    description: "Professional, high-quality e-commerce banners to enhance your product visibility and attract more customers.",
+    image: clothesImage,
+  },
+  {
+    id: 5,
+    title: "E-commerce Product Banner",
+    description: "Custom product banners designed for e-commerce stores, ensuring visually appealing and sales-driven graphics.",
+    image: jordanImage,
+  },
+  {
+    id: 6,
     title: "PPTX Notes PDF",
-    description: "Handwritten notes available in PDF format.",
+    description: "Well-structured PPT notes in PDF format for any subject.",
     image: PDFNotesImages,
   },
 ];
@@ -71,6 +85,19 @@ const ServiceList = () => {
         >
           📂 Available Services
         </Typography>
+
+        <Typography
+          textAlign="center"
+          sx={{
+            fontFamily: "Poppins, sans-serif",
+            color: theme === "dark" ? "#BDBDBD" : "#555",
+            fontSize: { xs: "0.9rem", sm: "1rem" },
+            marginBottom: "20px",
+          }}
+        >
+          Need a custom YouTube thumbnail or banner design? Contact us on WhatsApp for professional and eye-catching designs!
+        </Typography>
+
 
         <Grid container spacing={2} justifyContent="center" marginTop={"20px"}>
           {services.map((service) => (
