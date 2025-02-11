@@ -8,6 +8,7 @@ import sendmailRoutes from "./routes/sendmailRoutes.js"
 import contactRoutes from "./routes/contactRoutes.js"
 import searchRoutes from "./routes/searchRoutes.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
+import  quizRoutes from "./routes/quizRoutes.js"
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -61,6 +62,8 @@ app.use('/api/v1/contactuser',  contactRoutes)
 app.use('/api/v1/keyword',  searchRoutes)
 
 app.use('/api/v1/category', categoryRoutes )
+
+app.use('/api/v1/quizzes', quizRoutes)
 
 
 // Serve static frontend files

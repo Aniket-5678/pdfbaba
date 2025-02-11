@@ -21,6 +21,7 @@ import Faq from './Faq';
 import Featureimage from './Featureimage';
 import NativeAd from './NativeAd';
 import Services from './Services';
+import QuizIntro from './QuizIntro';
 
 
 const HomePage = () => {
@@ -261,6 +262,10 @@ const categorySlider = {
     ))}
   </Slider>
 </Box>
+
+<div>
+  <QuizIntro/>
+</div>
 
 
 <div className='products-container'>

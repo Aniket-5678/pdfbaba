@@ -26,6 +26,10 @@ import TermCondition from "./components/pages/TermCondition";
 import Discovermore from "./components/pages/Discovermore";
 import  { Toaster } from 'react-hot-toast';
 import ServiceList from "./components/pages/ServiceList";
+import CreateQuiz from "./components/pages/admin/CreateQuiz";
+import QuizList from "./components/pages/admin/QuizList";
+import QuizPlayList from "./components/pages/QuizPlayList";
+import PlayQuiz from "./components/pages/PlayQuiz";
 
 
 
@@ -54,6 +58,8 @@ const [theme] = useTheme()
        <Route path="/termcondition" element={<TermCondition/>} />
        <Route path="/discover-more"  element={<Discovermore/>} />
        <Route path="/service" element={<ServiceList/>} />
+       <Route path="/quizplaylist" element={<QuizPlayList/>}/>
+       <Route path="/play/:id" element={<PlayQuiz/>} />
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
@@ -68,6 +74,8 @@ const [theme] = useTheme()
           <Route path="admin/all-question" element={<Allquestion/>} /> 
           <Route path="admin/update-question/:id" element={<Updatequestionpaper/>} /> 
           <Route path="admin/create-category" element={<CreateCategory/>} /> 
+          <Route path="admin/create-quiz" element={<CreateQuiz/>} /> 
+          <Route path="admin/all-quiz" element={<QuizList/>} /> 
          </Route>
 
 
