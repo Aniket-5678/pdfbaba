@@ -44,7 +44,7 @@ const QuizIntro = () => {
             variant="body1"
             paragraph
             sx={{
-              fontSize: { xs: "1rem", sm: "1.1rem" },
+              fontSize: { xs: "0.9rem", sm: "1.1rem" },
               fontFamily: "Poppins, sans-serif",
               color: theme === "dark" ? "#BDBDBD" : "#2c2c2c",
               mb: 2,
