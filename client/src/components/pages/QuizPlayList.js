@@ -1,113 +1,170 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Layout from "../Layout/Layout";
-import { Card, CardContent, Typography, Button, Grid, Box } from "@mui/material";
-import { useTheme } from "../context/ThemeContext"; // Theme context for dark mode
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Layout from '../Layout/Layout';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Grid,
+  Box,
+  TextField,
+  Autocomplete,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { useTheme } from '../context/ThemeContext';
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
   const navigate = useNavigate();
-  const [theme] = useTheme();
+  const [theme] = useTheme(); // Get theme state
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     fetchQuizzes();
   }, []);
 
   const fetchQuizzes = async () => {
     try {
-      const response = await axios.get("/api/v1/quizzes/all");
+      const response = await axios.get('/api/v1/quizzes/all');
       setQuizzes(response.data);
     } catch (error) {
-      console.error("Error fetching quizzes:", error);
+      console.error('Error fetching quizzes:', error);
+    }
+  };
+
+  const handleSearchSelect = (event, value) => {
+    if (value) {
+      navigate(`/play/${value._id}`);
     }
   };
 
   return (
     <Layout>
-      <Box marginTop={"100px"} sx={{ px: { xs: 2, sm: 4 }, py: 3 }}>
+      <Box
+        marginTop="100px"
+        sx={{
+          px: { xs: 2, sm: 4 },
+          py: 3,
+          minHeight: '100vh',
+        }}
+      >
         <Typography
           variant="h4"
           fontWeight="bold"
           sx={{
-            textAlign: "center",
+            textAlign: 'center',
             mb: 3,
-            fontFamily: "Poppins, sans-serif",
-            fontSize: { xs: "1.2rem", sm: "1.5rem" },
-            color: theme === "dark" ? "white" : "black",
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: { xs: '1.2rem', sm: '1.5rem' },
+            color: theme === 'dark' ? 'white' : 'black',
           }}
         >
           Available Quizzes
         </Typography>
 
-        {quizzes.length === 0 ? (
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: "center",
-              fontFamily: "Poppins, sans-serif",
-              fontSize: { xs: "0.9rem", sm: "1.2rem" },
-              color: theme === "dark" ? "white" : "black",
-            }}
-          >
-            No quizzes available
+        {/* Search Bar */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <Autocomplete
+  options={quizzes}
+  getOptionLabel={(option) => option.title}
+  onChange={handleSearchSelect}
+  sx={{
+    width: { xs: '100%', sm: '50%' },
+    backgroundColor: theme === 'dark' ? '#333' : '#fff',
+    borderRadius: '5px',
+    '& .MuiAutocomplete-listbox': {
+      backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff', // Dark mode background
+      color: theme === 'dark' ? 'white' : 'black', // Text color
+    },
+  }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Search Quiz"
+      variant="outlined"
+      InputProps={{
+        ...params.InputProps,
+        startAdornment: (
+          <>
+            <SearchIcon sx={{ color: theme === 'dark' ? '#bbb' : '#000' }} />
+            {params.InputProps.startAdornment}
+          </>
+        ),
+      }}
+      sx={{
+        backgroundColor: theme === 'dark' ? '#333' : '#fff',
+        color: theme === 'dark' ? 'white' : 'black',
+        borderRadius: '5px',
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: theme === 'dark' ? '#bbb' : '#ccc',
+          },
+          '&:hover fieldset': {
+            borderColor: theme === 'dark' ? '#fff' : '#000',
+          },
+        },
+      }}
+    />
+  )}
+  componentsProps={{
+    popper: {
+      sx: {
+        '& .MuiAutocomplete-paper': {
+          backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff',
+          color: theme === 'dark' ? 'white' : 'black',
+        },
+      },
+    },
+  }}
+/>
+
+        </Box>
+
+      
+        <Grid container spacing={3} justifyContent="center">
+  {quizzes.map((quiz) => (
+    <Grid item xs={6} sm={6} md={4} key={quiz._id}> {/* Change xs from 12 to 6 */}
+      <Card
+        sx={{
+          backgroundColor: theme === 'dark' ? '#1e1e1e' : 'white',
+          color: theme === 'dark' ? 'white' : 'black',
+          boxShadow: theme === 'dark' ? '0px 4px 10px rgba(255,255,255,0.1)' : '0px 4px 10px rgba(0,0,0,0.1)',
+          transition: '0.3s',
+          '&:hover': {
+            transform: 'scale(1.02)',
+          },
+        }}
+      >
+        <CardContent>
+          <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.1rem' }}>
+            {quiz.title}
           </Typography>
-        ) : (
-          <Grid container spacing={2} justifyContent="center">
-            {quizzes.map((quiz) => (
-              <Grid item xs={6} sm={6} md={4} key={quiz._id}>
-                <Card
-                  sx={{
-                    maxWidth: 400,
-                    mx: "auto",
-                    boxShadow: 3,
-                    borderRadius: 2,
-                    transition: "0.3s",
-                    ":hover": { boxShadow: 6 },
-                    backgroundColor: theme === "dark" ? "#333" : "white",
-                    color: theme === "dark" ? "white" : "black",
-                  }}
-                >
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      fontWeight="bold"
-                      sx={{
-                        fontFamily: "Poppins, sans-serif",
-                        color: theme === "dark" ? "white" : "black",
-                      }}
-                    >
-                      {quiz.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontFamily: "Poppins, sans-serif",
-                        color: theme === "dark" ? "#ccc" : "black",
-                        mt: 1,
-                      }}
-                    >
-                      {quiz.description}
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      sx={{ mt: 2, fontFamily: "Poppins, sans-serif" }}
-                      onClick={() => navigate(`/play/${quiz._id}`)}
-                    >
-                      Start Quiz
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
+          <Typography variant="body2" sx={{ fontSize: '0.8rem', opacity: 0.8 }}>
+            {quiz.category}
+          </Typography>
+          <Button
+            variant="contained"
+            fullWidth
+            sx={{
+              mt: 2,
+              backgroundColor: theme === 'dark' ? '#068fc6' : '#1976d2',
+              color: 'white',
+              '&:hover': {
+                backgroundColor: theme === 'dark' ? '#388e3c' : '#125ea2',
+              },
+            }}
+            onClick={() => navigate(`/play/${quiz._id}`)}
+          >
+            Start Quiz
+          </Button>
+        </CardContent>
+      </Card>
+    </Grid>
+  ))}
+</Grid>
+
       </Box>
     </Layout>
   );

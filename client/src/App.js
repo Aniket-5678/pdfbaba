@@ -33,6 +33,7 @@ import PlayQuiz from "./components/pages/PlayQuiz";
 
 
 
+
 function App() {
 
 const [theme] = useTheme()
@@ -60,6 +61,7 @@ const [theme] = useTheme()
        <Route path="/service" element={<ServiceList/>} />
        <Route path="/quizplaylist" element={<QuizPlayList/>}/>
        <Route path="/play/:id" element={<PlayQuiz/>} />
+       
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
