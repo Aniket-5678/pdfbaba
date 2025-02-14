@@ -10,6 +10,7 @@ import reactanimationImage from "../images/Reactjsthumbnail.png";
 import youtubeImage from "../images/youtube.png"
 import clothesImage from "../images/clothes.png"
 import jordanImage from "../images/Jordan.png"
+import promotionBannerImage from "../images/promotionbanner.png"
 
 const services = [
   {
@@ -18,6 +19,7 @@ const services = [
     description: "A complete MERN stack project for students.",
     image: portfolioImage,
     link: "https://portfolio-4-8gnu.onrender.com",
+    price: "$5",  
   },
   {
     id: 2,
@@ -25,30 +27,42 @@ const services = [
     description: "React animation using tsparticles.",
     image: reactanimationImage,
     link: "https://aniketsinghproject.netlify.app/",
+    price: "$3",  
   },
   {
     id: 3,
     title: "YouTube Thumbnail Design",
-    description: "Want eye-catching YouTube thumbnails? Get custom-designed thumbnails that boost your video’s click-through rate. Contact us on WhatsApp!",
+    description: "Want to boost your video’s click-through rate with an eye-catching thumbnail? We create custom-designed YouTube thumbnails that stand out. Whether it's for your channel or a single video, we’re here to help. Contact us on WhatsApp to get started—it's free for the first design!",
     image: youtubeImage,
+    price: "Free",  
   },
   {
     id: 4,
     title: "E-commerce Banner Design",
-    description: "Professional, high-quality e-commerce banners to enhance your product visibility and attract more customers.",
+    description: "Professional, high-quality e-commerce banners designed to increase product visibility and attract more customers. We provide personalized designs that align with your brand's vision. For just $1, we'll create a banner that matches your style and goals. Contact us on WhatsApp to get started!",
     image: clothesImage,
+    price: "$1",  
   },
   {
     id: 5,
     title: "E-commerce Product Banner",
-    description: "Custom product banners designed for e-commerce stores, ensuring visually appealing and sales-driven graphics.",
+    description: "Custom product banners designed specifically for your e-commerce store. We ensure the banners are visually appealing, engaging, and optimized to drive sales. For just $1, you’ll receive a custom design that enhances your product visibility. Get in touch via WhatsApp for a personalized banner!",
     image: jordanImage,
+    price: "$1",  
   },
   {
     id: 6,
     title: "PPTX Notes PDF",
-    description: "Well-structured PPT notes in PDF format for any subject.",
+    description: "We offer well-structured PPT notes in PDF format for any subject, designed to make learning easier. If you need similar notes tailored to your specific requirements, we’re happy to help. For just $1, we will create notes in PDF format that suit your study needs. Contact us on WhatsApp for more information!",
     image: PDFNotesImages,
+    price: "$1",  
+  },
+  {
+    id: 7,
+    title: "Custom Promotion Banner",
+    description: "Need a custom promotion banner for your brand or product? We design banners that effectively promote your offerings, increasing visibility and engagement. For just $1, we’ll create a banner that matches your campaign's goals and style. Contact us on WhatsApp to get started!",
+    image: promotionBannerImage, 
+    price: "$1",  
   },
 ];
 
@@ -120,59 +134,74 @@ const ServiceList = () => {
                   alt={service.title}
                   style={{ width: "100%", height: "180px", objectFit: "cover" }}
                 />
-                <CardContent
-                  sx={{
-                    p: { xs: 2, sm: 3 },
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    bgcolor: theme === "light" ? "white" : "#1e1e1e",
-                    flexGrow: 1,
-                  }}
-                >
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    sx={{
-                      fontFamily: "Poppins, sans-serif",
-                      fontSize: { xs: "1rem", sm: "1.2rem" },
-                      color: theme === "dark" ? "white" : "black",
-                    }}
-                  >
-                    {service.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: theme === "dark" ? "#BDBDBD" : "text.secondary",
-                      mb: 2,
-                      fontFamily: "Poppins, sans-serif",
-                      fontSize: { xs: "0.85rem", sm: "1rem" },
-                    }}
-                  >
-                    {service.description}
-                  </Typography>
-                  {service.link && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      href={service.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        width: "100%",
-                        fontFamily: "Poppins, sans-serif",
-                        fontSize: { xs: "0.85rem", sm: "1rem" },
-                        bgcolor: theme === "dark" ? "#3B82F6" : "#1976D2",
-                        "&:hover": { bgcolor: theme === "dark" ? "#2563EB" : "#1565C0" },
-                        color: "white",
-                        py: { xs: 1, sm: 1.2 },
-                      }}
-                    >
-                      View Project
-                    </Button>
-                  )}
-                </CardContent>
+               <CardContent
+  sx={{
+    p: { xs: 2, sm: 3 },
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    bgcolor: theme === "light" ? "white" : "#1e1e1e",
+    flexGrow: 1,
+  }}
+>
+  <Typography
+    variant="h6"
+    fontWeight="bold"
+    sx={{
+      fontFamily: "Poppins, sans-serif",
+      fontSize: { xs: "1rem", sm: "1.2rem" },
+      color: theme === "dark" ? "white" : "black",
+    }}
+  >
+    {service.title}
+  </Typography>
+  <Typography
+    variant="body2"
+    sx={{
+      color: theme === "dark" ? "#BDBDBD" : "text.secondary",
+      mb: 2,
+      fontFamily: "Poppins, sans-serif",
+      fontSize: { xs: "0.85rem", sm: "1rem" },
+    }}
+  >
+    {service.description}
+  </Typography>
+
+  {/* Display Price */}
+  <Typography
+    variant="body2"
+    sx={{
+      color: theme === "dark" ? "#BDBDBD" : "text.secondary",
+      fontFamily: "Poppins, sans-serif",
+      fontSize: { xs: "0.85rem", sm: "1rem" },
+      fontWeight: "bold",
+    }}
+  >
+    Price: {service.price}
+  </Typography>
+
+  {service.link && (
+    <Button
+      variant="contained"
+      color="primary"
+      href={service.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      sx={{
+        width: "100%",
+        fontFamily: "Poppins, sans-serif",
+        fontSize: { xs: "0.85rem", sm: "1rem" },
+        bgcolor: theme === "dark" ? "#3B82F6" : "#1976D2",
+        "&:hover": { bgcolor: theme === "dark" ? "#2563EB" : "#1565C0" },
+        color: "white",
+        py: { xs: 1, sm: 1.2 },
+      }}
+    >
+      View Project
+    </Button>
+  )}
+</CardContent>
+
               </Card>
             </Grid>
           ))}
