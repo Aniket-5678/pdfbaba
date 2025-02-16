@@ -11,6 +11,7 @@ import youtubeImage from "../images/youtube.png"
 import clothesImage from "../images/clothes.png"
 import jordanImage from "../images/Jordan.png"
 import promotionBannerImage from "../images/promotionbanner.png"
+import iphoneBannerImage from "../images/iphone.png"
 
 const services = [
   {
@@ -62,6 +63,13 @@ const services = [
     title: "Custom Promotion Banner",
     description: "Need a custom promotion banner for your brand or product? We design banners that effectively promote your offerings, increasing visibility and engagement. For just $1, we’ll create a banner that matches your campaign's goals and style. Contact us on WhatsApp to get started!",
     image: promotionBannerImage, 
+    price: "$1",  
+  },
+  {
+    id: 8,
+    title: "Custom Promotion Banner",
+    description: "Need a custom promotion banner for your brand or product? We design banners that effectively promote your offerings, increasing visibility and engagement. For just $1, we’ll create a banner that matches your campaign's goals and style. Contact us on WhatsApp to get started!",
+    image: iphoneBannerImage , 
     price: "$1",  
   },
 ];
