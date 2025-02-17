@@ -12,7 +12,7 @@ const SocialBarAd = () => {
       // Creating the script for the social bar ad
       const script = document.createElement("script");
       script.type = "text/javascript";
-      script.src = "//pl25750785.profitablecpmrate.com/e9/ae/84/e9ae8430553e56b0c3ca13c8e37d084b.js";
+      script.src = "//pl25750785.effectiveratecpm.com/e9/ae/84/e9ae8430553e56b0c3ca13c8e37d084b.js"; // Updated script source
       script.async = true;
 
       // Append the script to the ad container

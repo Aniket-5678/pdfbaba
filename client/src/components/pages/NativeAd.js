@@ -5,8 +5,8 @@ const NativeAd = () => {
     const script = document.createElement("script");
     script.async = true;
     script.setAttribute("data-cfasync", "false");
-    script.src = "//pl25749166.profitablecpmrate.com/6e3b09de6f6074e527679b516dc65e2f/invoke.js";
-    
+    script.src = "//pl25749166.effectiveratecpm.com/6e3b09de6f6074e527679b516dc65e2f/invoke.js";
+
     document.body.appendChild(script);
 
     return () => {
