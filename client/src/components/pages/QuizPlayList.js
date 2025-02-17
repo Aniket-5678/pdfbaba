@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '../context/ThemeContext';
+import NativeAd from './NativeAd';
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -165,6 +166,9 @@ const QuizPlayList = () => {
   ))}
 </Grid>
 
+      </Box>
+      <Box>
+        <NativeAd/>
       </Box>
     </Layout>
   );
