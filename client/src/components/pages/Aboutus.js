@@ -9,6 +9,7 @@ import AboutownerImage from "../images/aniketsingh.jpg"
 import graphicdesignerImage from "../images/ajit.jpg"
 import joshuaImage from "../images/joshua.jpg"
 import goldyImage from "../images/goldy.jpg"
+import SocialBarAd from './SocialBarAd';
 
 
 const Aboutus = () => {
@@ -137,6 +138,7 @@ const Aboutus = () => {
 
           </div>
         </section>
+        <SocialBarAd/>
       </div>
     </Layout>
   );

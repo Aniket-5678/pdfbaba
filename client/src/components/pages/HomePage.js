@@ -22,6 +22,7 @@ import Featureimage from './Featureimage';
 import NativeAd from './NativeAd';
 import Services from './Services';
 import QuizIntro from './QuizIntro';
+import SocialBarAd from "./SocialBarAd"
 
 
 const HomePage = () => {
@@ -339,7 +340,9 @@ const categorySlider = {
         </ol>
         <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
       </div>
+      <SocialBarAd />
             </div>
+            
           )}
         </Modal>
 

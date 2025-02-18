@@ -21,6 +21,7 @@ import {
 import { IoClose } from 'react-icons/io5';
 import { useTheme } from '../context/ThemeContext';
 import SmallBannerAd from "../pages/SmallBannerAd"
+import SocialBarAd from "./SocialBarAd"
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -358,6 +359,7 @@ const CategoryProduct = () => {
           </ol>
           <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
         </div>
+        <SocialBarAd/>
       </Box>
     )}
   </DialogContent>
