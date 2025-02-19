@@ -26,41 +26,59 @@ const QuizIntro = () => {
           bgcolor: theme === "dark" ? "#121212" : "#ffffff",
         }}
       >
-        <CardContent>
-          <Typography
-            variant="h4"
-            component="h2"
-            gutterBottom
+        <CardContent
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 3, // Spacing between text and button
+          }}
+        >
+          <Box
             sx={{
-              fontWeight: "bold",
-              fontFamily: "Poppins, sans-serif",
-              fontSize: { xs: "1.2rem", sm: "1.5rem" },
-              color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
+              textAlign: "left",
+              flex: 1,
             }}
           >
-            Start Your Quiz Journey
-          </Typography>
-          <Typography
-            variant="body1"
-            paragraph
-            sx={{
-              fontSize: { xs: "0.9rem", sm: "1.1rem" },
-              fontFamily: "Poppins, sans-serif",
-              color: theme === "dark" ? "#BDBDBD" : "#2c2c2c",
-              mb: 2,
-            }}
-          >
-            Boost your knowledge with our engaging quizzes. Pick a category, challenge yourself, and track your progress!
-          </Typography>
+            <Typography
+              variant="h4"
+              component="h2"
+              gutterBottom
+              sx={{
+                fontWeight: "bold",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: { xs: "1.1rem", sm: "1.5rem" },
+                color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
+                textAlign: { xs: "center", sm: "left" },
+              }}
+            >
+              Start Your Quiz Journey
+            </Typography>
+
+            <Typography
+              variant="body1"
+              paragraph
+              sx={{
+                fontSize: { xs: "0.9rem", sm: "1.1rem" },
+                fontFamily: "Poppins, sans-serif",
+                color: theme === "dark" ? "#BDBDBD" : "#2c2c2c",
+                maxWidth: "600px",
+                lineHeight: 1.6,
+              }}
+            >
+              Explore a variety of quizzes designed to challenge and expand your knowledge. 
+              Test your skills, track your progress, and enjoy learning in an interactive way!
+            </Typography>
+          </Box>
+
           <Button
             variant="contained"
             color="primary"
             component={Link}
             to="/quizplaylist"
             sx={{
-              mt: 2,
-              width: "100%",
-              maxWidth: { xs: "100%", sm: "300px" },
+              width: { xs: "100%", sm: "250px" },
               fontFamily: "Poppins, sans-serif",
               fontSize: { xs: "0.9rem", sm: "1rem" },
               py: { xs: 1.2, sm: 1.5 },
