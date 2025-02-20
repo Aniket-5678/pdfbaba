@@ -11,7 +11,7 @@ import {
   Box,
   TextField,
   Autocomplete,
-  CircularProgress, // Import Spinner
+  CircularProgress,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '../context/ThemeContext';
@@ -19,9 +19,9 @@ import NativeAd from './NativeAd';
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
-  const [loading, setLoading] = useState(true); // State for loader
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [theme] = useTheme(); // Get theme state
+  const [theme] = useTheme();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,7 +32,7 @@ const QuizPlayList = () => {
     try {
       const response = await axios.get('/api/v1/quizzes/all');
       setQuizzes(response.data);
-      setTimeout(() => setLoading(false), 1000); 
+      setTimeout(() => setLoading(false), 1000);
     } catch (error) {
       console.error('Error fetching quizzes:', error);
       setLoading(false);
@@ -58,7 +58,7 @@ const QuizPlayList = () => {
           alignItems: 'center',
         }}
       >
-        {loading ? ( // Show Loader when fetching data
+        {loading ? (
           <CircularProgress sx={{ color: theme === 'dark' ? 'white' : 'blue' }} />
         ) : (
           <>
@@ -76,7 +76,6 @@ const QuizPlayList = () => {
               Available Quizzes
             </Typography>
 
-            {/* Search Bar */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3, width: '100%' }}>
               <Autocomplete
                 options={quizzes}
@@ -96,6 +95,7 @@ const QuizPlayList = () => {
                       ...params.InputProps,
                       startAdornment: (
                         <>
+                          {loading && <CircularProgress size={20} sx={{ mr: 1 }} />}
                           <SearchIcon sx={{ color: theme === 'dark' ? '#bbb' : '#000' }} />
                           {params.InputProps.startAdornment}
                         </>
@@ -114,7 +114,6 @@ const QuizPlayList = () => {
               />
             </Box>
 
-            {/* Quizzes List */}
             <Grid container spacing={3} justifyContent="center">
               {quizzes.map((quiz) => (
                 <Grid item xs={6} sm={6} md={4} key={quiz._id}>
