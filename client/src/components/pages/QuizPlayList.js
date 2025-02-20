@@ -11,11 +11,11 @@ import {
   Box,
   TextField,
   Autocomplete,
-  CircularProgress,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '../context/ThemeContext';
 import NativeAd from './NativeAd';
+import { ClipLoader } from 'react-spinners'; // Import ClipLoader
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -59,7 +59,9 @@ const QuizPlayList = () => {
         }}
       >
         {loading ? (
-          <CircularProgress sx={{ color: theme === 'dark' ? 'white' : 'blue' }} />
+          <div className="spinner-container">
+            <ClipLoader color="#007bff" size={50} /> {/* Spinner matches Aboutus.js */}
+          </div>
         ) : (
           <>
             <Typography
@@ -95,7 +97,6 @@ const QuizPlayList = () => {
                       ...params.InputProps,
                       startAdornment: (
                         <>
-                          {loading && <CircularProgress size={20} sx={{ mr: 1 }} />}
                           <SearchIcon sx={{ color: theme === 'dark' ? '#bbb' : '#000' }} />
                           {params.InputProps.startAdornment}
                         </>
