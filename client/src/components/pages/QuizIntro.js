@@ -65,6 +65,7 @@ const QuizIntro = () => {
                 color: theme === "dark" ? "#BDBDBD" : "#2c2c2c",
                 maxWidth: "600px",
                 lineHeight: 1.6,
+                textAlign: { xs: "center", sm: "left" },
               }}
             >
               Explore a variety of quizzes designed to challenge and expand your knowledge. 
