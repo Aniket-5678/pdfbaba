@@ -317,11 +317,50 @@ const categorySlider = {
               <ul>
                 {selectedProduct.pdfs.map((pdfUrl, pdfIndex) => {
                   const filename = pdfUrl.split('/').pop();
+   
+                  const handleDownload = async (url, filename) => {
+                    try {
+                      const response = await fetch(url);
+                      const blob = await response.blob();
+                      const link = document.createElement('a');
+                      link.href = URL.createObjectURL(blob);
+                      link.download = filename;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    } catch (error) {
+                      console.error("Error downloading the file:", error);
+                    }
+                  };
+
                   return (
                     <li key={pdfIndex}>
                       <a href={pdfUrl} target='_blank' rel='noopener noreferrer'>
                         {filename}
                       </a>
+                      <button
+    onClick={() => handleDownload(pdfUrl, filename)}
+    style={{
+      backgroundColor: '#28a745', // Green color
+      color: '#fff',
+      border: 'none',
+      padding: '8px 16px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      cursor: 'pointer',
+      transition: '0.3s',
+      fontWeight: 'bold',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+      margin: '10px 0px',
+    }}
+    onMouseEnter={(e) => (e.target.style.backgroundColor = '#218838')} // Dark green on hover
+    onMouseLeave={(e) => (e.target.style.backgroundColor = '#28a745')}
+  >
+    📥 Download
+  </button>
                     </li>
                   );
                 })}

@@ -301,48 +301,85 @@ const CategoryProduct = () => {
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {selectedProduct.pdfs.map((pdfUrl, index) => {
             const filename = pdfUrl.split('/').pop();
+
+            const handleDownload = async (url, filename) => {
+              try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              } catch (error) {
+                console.error("Error downloading the file:", error);
+              }
+            };
+  
             return (
               <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '10px 16px',
-                  backgroundColor: theme === 'dark' ? '#333' : '#fff',
-                  borderRadius: '8px',
-                  boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
-                  marginBottom: '10px',
+              key={index}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '10px 16px',
+                backgroundColor: theme === 'dark' ? '#333' : '#fff',
+                borderRadius: '8px',
+                boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+                marginBottom: '10px',
+                transition: '0.3s',
+                width: '100%', // Full width by default
+                maxWidth: '400px', // Maximum width to avoid too wide on bigger screens
+                textAlign: 'center',
+                '&:hover': {
+                  backgroundColor: theme === 'dark' ? '#424242' : '#f1f1f1',
+                },
+                '@media (max-width: 600px)': {
+                  width: '90%', // Mobile screens will take 90% width
+                },
+              }}
+            >
+              {/* File Name - Click to View PDF */}
+              <a
+    href={pdfUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      textDecoration: 'none',
+      color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+      fontWeight: 'bold',
+      wordBreak: 'break-word',
+      fontSize: '16px',
+      marginBottom: '10px',
+      transition: '0.3s', // Smooth effect on hover
+    }}
+    onMouseEnter={(e) => (e.target.style.textDecoration = 'underline')} // Underline on hover
+    onMouseLeave={(e) => (e.target.style.textDecoration = 'none')} // Remove underline when not hovering
+  >
+    {filename} 📄
+  </a>
+            
+              {/* Download Button */}
+              <button
+                onClick={() => handleDownload(pdfUrl, filename)}
+                style={{
+                  backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '8px 14px',
+                  borderRadius: '5px',
+                  fontSize: '14px',
+                  cursor: 'pointer',
                   transition: '0.3s',
-                  '&:hover': {
-                    backgroundColor: theme === 'dark' ? '#424242' : '#f1f1f1',
-                  },
+                  width: '100%', // Full width for better mobile UX
+                  maxWidth: '200px', // Prevents button from getting too big
                 }}
               >
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    textDecoration: 'none',
-                    color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                    fontWeight: 'bold',
-                    wordBreak: 'break-word',
-                    fontSize: '16px',
-                  }}
-                >
-                  {filename}
-                </a>
-                <span
-                  style={{
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                    color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                  }}
-                >
-                  📥
-                </span>
-              </Box>
+                📥 Download
+              </button>
+            </Box>
             );
           })}
         </ul>
