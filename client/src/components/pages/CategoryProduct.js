@@ -302,9 +302,9 @@ const CategoryProduct = () => {
           {selectedProduct.pdfs.map((pdfUrl, index) => {
             const filename = pdfUrl.split('/').pop();
 
-            const handleDownload = async (url, filename) => {
+            const handleDownload = async (pdfUrl, filename) => {
               try {
-                const response = await fetch(url);
+                const response = await fetch(pdfUrl);
                 const blob = await response.blob();
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
