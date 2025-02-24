@@ -202,20 +202,7 @@ const ExplorePage = () => {
                     >
                       View PDFs
                     </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      href={pdf.pdfs[0]}
-                      target="_blank"
-                      size="small"
-                      sx={{
-                        fontSize: isMobile ? '0.7rem' : '0.9rem',
-                        padding: isMobile ? '4px 8px' : '6px 12px',
-                        width: isMobile ? '100%' : 'auto', // Full-width on mobile
-                      }}
-                    >
-                      Download
-                    </Button>
+                    
                   </Box>
                 </CardContent>
               </Card>
@@ -253,11 +240,13 @@ const ExplorePage = () => {
             <ul>
               {selectedPdf.pdfs.map((pdfUrl, pdfIndex) => {
                 const filename = pdfUrl.split('/').pop();  // Extract file name from URL
+                const securePdfUrl = pdfUrl.replace("http://", "https://");
                 const handleDownload = async (url, filename) => {
                   try {
-                    const response = await fetch(url);
+                    const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+                    const response = await fetch(secureUrl);
                     const blob = await response.blob();
-                    const link = document.createElement('a');
+                    const link = document.createElement("a");
                     link.href = URL.createObjectURL(blob);
                     link.download = filename;
                     document.body.appendChild(link);
@@ -274,7 +263,7 @@ const ExplorePage = () => {
                       {filename}  {/* Display the file name */}
                     </a>
                     <button
-    onClick={() => handleDownload(pdfUrl, filename)}
+    onClick={() => handleDownload(securePdfUrl, filename)}
     style={{
       backgroundColor: '#28a745', // Green color
       color: '#fff',
@@ -304,15 +293,8 @@ const ExplorePage = () => {
 
             {/* Instructions for Android users */}
             <div className="android-instructions">
-              <h4>Instructions for Android Users:</h4>
-              <p>To download the PDF on your Android device:</p>
-              <ol>
-                <li>Hold the link of the PDF you want to download.</li>
-                <li>An options menu will appear.</li>
-                <li>Select "Download link" from the options.</li>
-                <li>After the download is complete, you can access the PDF from your device's file manager.</li>
-              </ol>
-              <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
+            <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
+            <p><strong>For Android users:</strong> Simply click on the download button, and the file will be downloaded.</p>
             </div>
           </div>
         )}
