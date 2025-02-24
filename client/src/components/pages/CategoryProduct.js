@@ -301,12 +301,14 @@ const CategoryProduct = () => {
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {selectedProduct.pdfs.map((pdfUrl, index) => {
             const filename = pdfUrl.split('/').pop();
+            const securePdfUrl = pdfUrl.replace("http://", "https://");
 
-            const handleDownload = async (pdfUrl, filename) => {
+            const handleDownload = async (url, filename) => {
               try {
-                const response = await fetch(pdfUrl);
+                const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+                const response = await fetch(secureUrl);
                 const blob = await response.blob();
-                const link = document.createElement('a');
+                const link = document.createElement("a");
                 link.href = URL.createObjectURL(blob);
                 link.download = filename;
                 document.body.appendChild(link);
@@ -316,6 +318,7 @@ const CategoryProduct = () => {
                 console.error("Error downloading the file:", error);
               }
             };
+            
   
             return (
               <Box
@@ -363,7 +366,7 @@ const CategoryProduct = () => {
             
               {/* Download Button */}
               <button
-                onClick={() => handleDownload(pdfUrl, filename)}
+                onClick={() => handleDownload(securePdfUrl, filename)}
                 style={{
                   backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
                   color: '#fff',

@@ -317,12 +317,14 @@ const categorySlider = {
               <ul>
                 {selectedProduct.pdfs.map((pdfUrl, pdfIndex) => {
                   const filename = pdfUrl.split('/').pop();
+                  const securePdfUrl = pdfUrl.replace("http://", "https://");
    
-                  const handleDownload = async (pdfUrl, filename) => {
+                  const handleDownload = async (url, filename) => {
                     try {
-                      const response = await fetch(pdfUrl,);
+                      const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+                      const response = await fetch(secureUrl);
                       const blob = await response.blob();
-                      const link = document.createElement('a');
+                      const link = document.createElement("a");
                       link.href = URL.createObjectURL(blob);
                       link.download = filename;
                       document.body.appendChild(link);
@@ -339,7 +341,7 @@ const categorySlider = {
                         {filename}
                       </a>
                       <button
-    onClick={() => handleDownload(pdfUrl, filename)}
+    onClick={() => handleDownload(securePdfUrl, filename)}
     style={{
       backgroundColor: '#28a745', // Green color
       color: '#fff',
