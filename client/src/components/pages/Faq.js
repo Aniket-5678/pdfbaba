@@ -11,7 +11,7 @@ const Faq = () => {
     },
     {
       question: "How can I download the PDFs?",
-      answer: "Simply click on the download link for any PDF to access and download it. No payment or subscription is required for free PDFs."
+      answer: "Simply click on the download Button for any PDF to access and download it. No payment or subscription is required for free PDFs."
     },
     {
       question: "What PDFs are available?",
