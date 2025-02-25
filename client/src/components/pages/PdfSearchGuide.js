@@ -11,18 +11,15 @@ const PdfSearchGuide = () => {
       <p>On your Android device, follow these simple steps to find and download PDFs:</p>
       <ol>
         <li>Browse through the website and find the subject or category you're interested in.</li>
-        <li>Once you find the PDF, simply click on the link.</li>
-        <li>Hold the link for a moment and a "Download" option will appear.</li>
-        <li>Select "Download" and the PDF will be saved to your device for offline access.</li>
+        <li>Once you find the PDF, simply click on the Download button.</li>
+        <li>The PDF will be saved to your device for offline access.</li>
       </ol>
 
       <h4>For PC and iOS Users:</h4>
-      <p>If you're on a PC or iOS device, you can directly access and download the PDFs:</p>
+      <p>If you're using a PC or an iOS device, follow these simple steps to view and download PDFs:</p>
       <ol>
-        <li>Simply click on the PDF link you want to download.</li>
-        <li>The PDF will open in your browser or PDF viewer.</li>
-        <li>On PC, you can right-click the PDF and select "Save As" to store it on your computer.</li>
-        <li>On iOS, use the "Share" button to save the PDF to your device.</li>
+      <li>Click on the PDF link to open and view it directly in your browser or PDF viewer.</li>
+      <li>You can also click on the **Download** button provided to save the PDF directly to your device.</li>
       </ol>
 
       <h4>Categories of PDFs Available:</h4>
