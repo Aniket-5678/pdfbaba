@@ -32,6 +32,7 @@ const CategoryProduct = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [theme] = useTheme(); // Use the theme context
+  const [downloading, setDownloading] = useState({});
 
   useEffect(() => {
     if (params.slug) getProductByCategory();
@@ -305,7 +306,8 @@ const CategoryProduct = () => {
 
             const handleDownload = async (url, filename) => {
               try {
-                const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+                const secureUrl = url.replace("http://", "https://"); 
+                setDownloading(prev => ({ ...prev, [filename]: true })); // Set downloading state
                 const response = await fetch(secureUrl);
                 const blob = await response.blob();
                 const link = document.createElement("a");
@@ -316,6 +318,8 @@ const CategoryProduct = () => {
                 document.body.removeChild(link);
               } catch (error) {
                 console.error("Error downloading the file:", error);
+              } finally {
+                setDownloading(prev => ({ ...prev, [filename]: false })); // Reset downloading state
               }
             };
             
@@ -366,22 +370,28 @@ const CategoryProduct = () => {
             
               {/* Download Button */}
               <button
-                onClick={() => handleDownload(securePdfUrl, filename)}
-                style={{
-                  backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '8px 14px',
-                  borderRadius: '5px',
-                  fontSize: '14px',
-                  cursor: 'pointer',
-                  transition: '0.3s',
-                  width: '100%', // Full width for better mobile UX
-                  maxWidth: '200px', // Prevents button from getting too big
-                }}
-              >
-                📥 Download
-              </button>
+  onClick={() => handleDownload(securePdfUrl, filename)}
+  disabled={downloading[filename]} // Disable button while downloading
+  style={{
+    backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+    color: '#fff',
+    border: 'none',
+    padding: '8px 14px',
+    borderRadius: '5px',
+    fontSize: '14px',
+    cursor: downloading[filename] ? 'not-allowed' : 'pointer',
+    transition: '0.3s',
+    width: '100%',
+    maxWidth: '200px',
+    position: 'relative',
+  }}
+>
+  {downloading[filename] ? (
+    <span style={{ color: '#FFD700', fontWeight: 'bold' }}>Downloading...</span> // Golden Color
+  ) : (
+    '📥 Download'
+  )}
+</button>
             </Box>
             );
           })}

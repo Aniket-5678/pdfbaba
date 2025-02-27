@@ -21,6 +21,7 @@ const ExplorePage = () => {
   const [visibleCount, setVisibleCount] = useState(8);
   const isMobile = useMediaQuery('(max-width:600px)');
   const [theme] = useTheme(); // Use the theme context
+  const [downloading, setDownloading] = useState({});
 
   useEffect(() => {
     const fetchPdfs = async () => {
@@ -243,7 +244,8 @@ const ExplorePage = () => {
                 const securePdfUrl = pdfUrl.replace("http://", "https://");
                 const handleDownload = async (url, filename) => {
                   try {
-                    const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+                    const secureUrl = url.replace("http://", "https://"); 
+                    setDownloading(prev => ({ ...prev, [filename]: true })); // Set downloading state
                     const response = await fetch(secureUrl);
                     const blob = await response.blob();
                     const link = document.createElement("a");
@@ -254,8 +256,11 @@ const ExplorePage = () => {
                     document.body.removeChild(link);
                   } catch (error) {
                     console.error("Error downloading the file:", error);
+                  } finally {
+                    setDownloading(prev => ({ ...prev, [filename]: false })); // Reset downloading state
                   }
                 };
+                
 
                 return (
                   <li key={pdfIndex}>
@@ -264,6 +269,7 @@ const ExplorePage = () => {
                     </a>
                     <button
     onClick={() => handleDownload(securePdfUrl, filename)}
+    disabled={downloading[filename]} 
     style={{
       backgroundColor: '#28a745', // Green color
       color: '#fff',
@@ -271,7 +277,7 @@ const ExplorePage = () => {
       padding: '8px 16px',
       borderRadius: '6px',
       fontSize: '14px',
-      cursor: 'pointer',
+      cursor: downloading[filename] ? 'not-allowed' : 'pointer',
       transition: '0.3s',
       fontWeight: 'bold',
       display: 'flex',
@@ -283,7 +289,11 @@ const ExplorePage = () => {
     onMouseEnter={(e) => (e.target.style.backgroundColor = '#218838')} // Dark green on hover
     onMouseLeave={(e) => (e.target.style.backgroundColor = '#28a745')}
   >
-    📥 Download
+      {downloading[filename] ? (
+    <span style={{ color: '#FFD700', fontWeight: 'bold' }}>Downloading...</span> // Golden Color
+  ) : (
+    '📥 Download'
+  )}
   </button>
 
                   </li>

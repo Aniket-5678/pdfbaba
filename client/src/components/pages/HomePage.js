@@ -31,7 +31,7 @@ const HomePage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [visibleCount, setVisibleCount] = useState(6); // Initially show 6 products
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  
+   const [downloading, setDownloading] = useState({});
   const [categories, setCategories] = useState([])
  const [theme] = useTheme(); 
    
@@ -321,7 +321,8 @@ const categorySlider = {
    
                   const handleDownload = async (url, filename) => {
                     try {
-                      const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+                      const secureUrl = url.replace("http://", "https://"); 
+                      setDownloading(prev => ({ ...prev, [filename]: true })); // Set downloading state
                       const response = await fetch(secureUrl);
                       const blob = await response.blob();
                       const link = document.createElement("a");
@@ -332,6 +333,8 @@ const categorySlider = {
                       document.body.removeChild(link);
                     } catch (error) {
                       console.error("Error downloading the file:", error);
+                    } finally {
+                      setDownloading(prev => ({ ...prev, [filename]: false })); // Reset downloading state
                     }
                   };
 
@@ -342,6 +345,7 @@ const categorySlider = {
                       </a>
                       <button
     onClick={() => handleDownload(securePdfUrl, filename)}
+    disabled={downloading[filename]}
     style={{
       backgroundColor: '#28a745', // Green color
       color: '#fff',
@@ -349,7 +353,7 @@ const categorySlider = {
       padding: '8px 16px',
       borderRadius: '6px',
       fontSize: '14px',
-      cursor: 'pointer',
+      cursor: downloading[filename] ? 'not-allowed' : 'pointer',
       transition: '0.3s',
       fontWeight: 'bold',
       display: 'flex',
@@ -361,7 +365,11 @@ const categorySlider = {
     onMouseEnter={(e) => (e.target.style.backgroundColor = '#218838')} // Dark green on hover
     onMouseLeave={(e) => (e.target.style.backgroundColor = '#28a745')}
   >
-    📥 Download
+      {downloading[filename] ? (
+    <span style={{ color: '#FFD700', fontWeight: 'bold' }}>Downloading...</span> // Golden Color
+  ) : (
+    '📥 Download'
+  )}
   </button>
                     </li>
                   );
