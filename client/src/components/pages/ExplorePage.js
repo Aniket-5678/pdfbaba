@@ -9,6 +9,7 @@ import { useTheme } from '../context/ThemeContext';
 import { IoClose } from "react-icons/io5";
 import SmallBannerAd from './SmallBannerAd';
 import SocialBarAd from "../pages/SocialBarAd"
+import NativeAd from "./NativeAd"
 
 
 const ExplorePage = () => {
@@ -309,7 +310,10 @@ const ExplorePage = () => {
           </div>
         )}
       </Modal>
-
+      
+      <div>
+        <NativeAd/>
+      </div>
     </Layout>
   );
 };

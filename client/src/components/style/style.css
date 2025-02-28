@@ -315,6 +315,13 @@
   line-height: 1.9;
 }
 
+.contact-nav:hover{
+color: #0077cc;
+}
+
+.about-nav:hover{
+  color: #0077cc;
+  }
 
 .pdfbaba-logo{
   height: 30px;
