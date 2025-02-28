@@ -10,6 +10,7 @@ const QuestionpaperDetails = () => {
   const { id } = useParams();
   const [questionPaper, setQuestionPaper] = useState(null);
   const [loading, setLoading] = useState(true);
+   const [downloading, setDownloading] = useState({});
 
   useEffect(() => {
     const fetchQuestionPaper = async () => {
@@ -43,7 +44,8 @@ const QuestionpaperDetails = () => {
   // Function to handle PDF download
   const handleDownload = async (url, filename) => {
     try {
-      const secureUrl = url.replace("http://", "https://"); // Ensure HTTPS
+      const secureUrl = url.replace("http://", "https://"); 
+      setDownloading(prev => ({ ...prev, [filename]: true })); // Set downloading state
       const response = await fetch(secureUrl);
       const blob = await response.blob();
       const link = document.createElement("a");
@@ -54,6 +56,8 @@ const QuestionpaperDetails = () => {
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading the file:", error);
+    } finally {
+      setDownloading(prev => ({ ...prev, [filename]: false })); // Reset downloading state
     }
   };
 
@@ -70,6 +74,7 @@ const QuestionpaperDetails = () => {
               <li key={index} style={{ marginBottom: "10px" }}>
                 <button
                   onClick={() => handleDownload(pdf, filename)}
+                  disabled={downloading[filename]}
                   style={{
                     backgroundColor: "#007bff",
                     color: "#fff",
@@ -77,11 +82,15 @@ const QuestionpaperDetails = () => {
                     padding: "8px 14px",
                     borderRadius: "5px",
                     fontSize: "14px",
-                    cursor: "pointer",
+                    cursor: downloading[filename] ? 'not-allowed' : 'pointer',
                     transition: "0.3s",
                   }}
                 >
-                  📥 Download {filename}
+                  {downloading[filename] ? (
+    <span style={{ color: '#FFD700', fontWeight: 'bold' }}>Downloading...</span> // Golden Color
+  ) : (
+    `📥 Download${filename} `
+  )}
                 </button>
               </li>
             );
