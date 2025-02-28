@@ -158,7 +158,7 @@ useEffect(() => {
   <List>
   <ListItem  component={Link}  to = "/"className="menu-item_1">PDF BABA</ListItem>
   <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
-  <ListItem button component={Link} to="/servicet" className="menu-item">Services</ListItem>
+  <ListItem button component={Link} to="/service" className="menu-item">Services</ListItem>
     <ListItem button component={Link} to="/about" className="menu-item">About us</ListItem>
     <ListItem button component={Link} to="/contact" className="menu-item">Contact us</ListItem>
     <ListItem button component={Link} to="/privacy" className="menu-item">Privacy Policy</ListItem>
