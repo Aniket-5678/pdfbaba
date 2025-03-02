@@ -10,6 +10,7 @@ import { IoClose } from "react-icons/io5";
 import SmallBannerAd from './SmallBannerAd';
 import SocialBarAd from "../pages/SocialBarAd"
 import NativeAd from "./NativeAd"
+import PopunderAd from './PopunderAd';
 
 
 const ExplorePage = () => {
@@ -311,9 +312,10 @@ const ExplorePage = () => {
         )}
       </Modal>
       
-      <div>
-        <NativeAd/>
-      </div>
+      <>
+  <NativeAd />
+  <PopunderAd />
+</>
     </Layout>
   );
 };

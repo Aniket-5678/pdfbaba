@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import SmallBannerAd from "../pages/SmallBannerAd"
 import NativeAd from "../pages/NativeAd"
 import SocialBarAd from "./SocialBarAd"
+import PopunderAd from './PopunderAd';
 
 const Discovermore = () => {
   const [theme] = useCustomTheme(); // Get theme from context
@@ -183,6 +184,9 @@ const Discovermore = () => {
       </Box>
       <Box>
         <SocialBarAd/>
+      </Box>
+      <Box>
+        <PopunderAd/>
       </Box>
     </Layout>
   );

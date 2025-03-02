@@ -10,6 +10,7 @@ import graphicdesignerImage from "../images/ajit.jpg"
 import joshuaImage from "../images/joshua.jpg"
 import goldyImage from "../images/goldy.jpg"
 import SocialBarAd from './SocialBarAd';
+import PopunderAd from './PopunderAd';
 
 
 const Aboutus = () => {
@@ -139,6 +140,9 @@ const Aboutus = () => {
           </div>
         </section>
         <SocialBarAd/>
+      </div>
+      <div>
+        <PopunderAd/>
       </div>
     </Layout>
   );
