@@ -4,6 +4,7 @@ import "../style/style.css"; // Ensure this CSS file contains styles for unique 
 import { useTheme } from '../context/ThemeContext';
 import Layout from "../Layout/Layout"
 import SocialBarAd from './SocialBarAd';
+import PopunderAd from "./PopunderAd"
 
 const Howsearchworks = () => {
   const [theme] = useTheme(); // Accessing the theme context
@@ -135,6 +136,9 @@ const Howsearchworks = () => {
           feel free to reach out to our support team.
         </p>
       </div>
+      <>
+      <PopunderAd />
+      </>
     </div>
     </Layout>
   );
