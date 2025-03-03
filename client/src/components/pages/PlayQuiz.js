@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -13,7 +13,8 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import { useTheme } from "../context/ThemeContext"; // Import Theme Context
+import { useTheme } from "../context/ThemeContext";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 const PlayQuiz = () => {
   const { id } = useParams();
@@ -23,7 +24,8 @@ const PlayQuiz = () => {
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [theme] = useTheme(); // Get theme from context
+  const [answers, setAnswers] = useState([]);
+  const [theme] = useTheme();
 
   useEffect(() => {
     fetchQuiz();
@@ -39,8 +41,15 @@ const PlayQuiz = () => {
   };
 
   const handleNextQuestion = () => {
-    if (selectedOption === quiz.questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
+    const correctAnswer = quiz.questions[currentQuestion].correctAnswer;
+    const isCorrect = selectedOption.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
+    setAnswers((prev) => [
+      ...prev,
+      { question: quiz.questions[currentQuestion].questionText, selectedOption, correctAnswer, isCorrect },
+    ]);
+    
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 1);
     }
 
     if (currentQuestion + 1 < quiz.questions.length) {
@@ -52,7 +61,7 @@ const PlayQuiz = () => {
   };
 
   return (
-    <Container  maxWidth="md" sx={{ mt: 5 }}>
+    <Container maxWidth="md" sx={{ mt: 5 }}>
       {quiz ? (
         <Card
           sx={{
@@ -73,7 +82,6 @@ const PlayQuiz = () => {
                 <Typography variant="h6">
                   Q{currentQuestion + 1}: {quiz.questions[currentQuestion].questionText}
                 </Typography>
-
                 <RadioGroup
                   value={selectedOption}
                   onChange={(e) => setSelectedOption(e.target.value)}
@@ -96,27 +104,45 @@ const PlayQuiz = () => {
                 </RadioGroup>
 
                 <Box textAlign="center" mt={3}>
-                <Button
-  variant="contained"
-  onClick={handleNextQuestion}
-  disabled={!selectedOption}
-  sx={{
-    backgroundColor: theme === "dark" ? "#1976d2" : "#0678c6",
-    color: "white", // Ensure text is visible
-    "&:hover": {
-      backgroundColor: theme === "dark" ? "#1565c0" : "#0678c6", 
-    },
-  }}
->
-  {currentQuestion + 1 < quiz.questions.length ? "Next" : "Submit"}
-</Button>
-
+                  <Button
+                    variant="contained"
+                    onClick={handleNextQuestion}
+                    disabled={!selectedOption}
+                    sx={{
+                      backgroundColor: theme === "dark" ? "#1976d2" : "#0678c6",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: theme === "dark" ? "#1565c0" : "#0678c6",
+                      },
+                    }}
+                  >
+                    {currentQuestion + 1 < quiz.questions.length ? "Next" : "Submit"}
+                  </Button>
                 </Box>
               </Box>
             ) : (
               <Box textAlign="center" mt={3}>
                 <Typography variant="h5">Quiz Completed!</Typography>
                 <Typography variant="h6">Your Score: {score} / {quiz.questions.length}</Typography>
+                <Box mt={3}>
+                  <Typography variant="h6" fontWeight="bold">Your Quiz Results:</Typography>
+                  {answers.map((answer, index) => (
+                    <Box key={index} p={2} mt={2} sx={{
+                      backgroundColor: answer.isCorrect ? "#c8e6c9" : "#ffcdd2",
+                      borderRadius: "8px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px"
+                    }}>
+                      {answer.isCorrect ? <AiOutlineCheckCircle color="green" size={24} /> : <AiOutlineCloseCircle color="red" size={24} />}
+                      <Box>
+                        <Typography variant="body1">Q{index + 1}: {answer.question}</Typography>
+                        <Typography variant="body2">Your Answer: {answer.selectedOption}</Typography>
+                        <Typography variant="body2">Correct Answer: {answer.correctAnswer}</Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
                 <Button
                   variant="contained"
                   color="primary"
