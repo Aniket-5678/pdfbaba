@@ -6,12 +6,14 @@ import reactjsImage from "../images/reactjs.png"
 import spaceImage from "../images/space.png"
 import spritualImage from "../images/spritual.png"
 import mysteryImage from "../images/mystery.png"
+import quizbannerImage from "../images/quiz.png"
 
 
 // Import more images as needed
 
 const data = [
   JavascriptnewImage,
+  quizbannerImage,
   spaceImage,
   techzoneImage,
   reactjsImage,
