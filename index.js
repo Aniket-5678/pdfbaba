@@ -66,6 +66,15 @@ app.use('/api/v1/category', categoryRoutes )
 app.use('/api/v1/quizzes', quizRoutes)
 
 
+// ✅ Public folder serve karna
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get('/ads.txt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'ads.txt'));
+});
+
+
+
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, './client/build')));
 
