@@ -19,10 +19,10 @@ import PdfFormat from './PdfFormat';
 import { useTheme } from '../context/ThemeContext'; 
 import Faq from './Faq';
 import Featureimage from './Featureimage';
-import NativeAd from './NativeAd';
 import Services from './Services';
 import QuizIntro from './QuizIntro';
 import SocialBarAd from "./SocialBarAd"
+import GoogleDisplayAds from './GoogleDisplayAds';
 
 
 const HomePage = () => {
@@ -423,7 +423,7 @@ const categorySlider = {
           </div>
           
           <div>
-            <NativeAd/>
+            <GoogleDisplayAds/>
           </div>
           
 
