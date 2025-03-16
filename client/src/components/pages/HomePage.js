@@ -23,6 +23,7 @@ import Services from './Services';
 import QuizIntro from './QuizIntro';
 import SocialBarAd from "./SocialBarAd"
 import GoogleDisplayAds from './GoogleDisplayAds';
+import GoogleMultiplexAd from './GoogleMultiplexAd';
 
 
 const HomePage = () => {
@@ -422,10 +423,13 @@ const categorySlider = {
            <Featureimage/>
           </div>
           
-          <div>
-            <GoogleDisplayAds/>
+          <div  style={{ textAlign: "center", marginTop: "20px" }}>
+            <GoogleMultiplexAd/>
           </div>
-          
+           
+           <div style={{ display: "flex", justifyContent: "center" }} >
+            <GoogleDisplayAds/>
+           </div>
 
       </div>
     </Layout>

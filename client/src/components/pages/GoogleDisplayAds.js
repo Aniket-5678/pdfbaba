@@ -10,14 +10,21 @@ const GoogleDisplayAds = () => {
   }, []);
 
   return (
-    <ins
-      className="adsbygoogle"
-      style={{ display: "block" }}
-      data-ad-client="ca-pub-3816347733684991"
-      data-ad-slot="2254929562"
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    ></ins>
+    <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+      <ins
+        className="adsbygoogle"
+        style={{
+          display: "block",
+          textAlign: "center",
+          width: "100%", // Ensures responsiveness
+          maxWidth: "728px", // Standard desktop ad size
+        }}
+        data-ad-client="ca-pub-3816347733684991"
+        data-ad-slot="2254929562"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+    </div>
   );
 };
 
