@@ -11,12 +11,13 @@ const GoogleMultiplexAd = () => {
 
   return (
     <ins
-      className="adsbygoogle"
-      style={{ display: "block" }}
-      data-ad-format="autorelaxed"
-      data-ad-client="ca-pub-3816347733684991"
-      data-ad-slot="5634436210"
-    ></ins>
+    className="adsbygoogle"
+    style={{ display: "block" }}
+    data-ad-format="autorelaxed"
+    data-ad-client="ca-pub-3816347733684991"
+    data-ad-slot="5634436210"
+    data-full-width-responsive="true"
+  ></ins>
   );
 };
 
