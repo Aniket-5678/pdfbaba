@@ -218,26 +218,24 @@ const ServiceList = () => {
 
       {/* Floating WhatsApp Icon */}
       <Box
-        sx={{
-          position: "fixed",
-          bottom: 20,
-          right: 20,
-          bgcolor: "#25D366",
-          borderRadius: "50%",
-          width: 50,
-          height: 50,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          boxShadow: 3,
-        }}
-        onClick={() => setOpen(true)}
-      >
-        <WhatsApp sx={{ color: "white", fontSize: 30 }} />
-      </Box>
-
-   
+  sx={{
+    position: "fixed",
+    bottom: 95, // Moved higher to avoid Google Ads overlap
+    right: 20,
+    bgcolor: "#25D366",
+    borderRadius: "50%",
+    width: 50,
+    height: 50,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    boxShadow: 3,
+  }}
+  onClick={() => setOpen(true)}
+>
+  <WhatsApp sx={{ color: "white", fontSize: 30 }} />
+</Box>
 {/* Modal */}
 <Modal open={open} onClose={() => setOpen(false)}>
   <Box
