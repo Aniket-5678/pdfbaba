@@ -157,6 +157,7 @@ useEffect(() => {
   </div>
   <List>
   <ListItem  component={Link}  to = "/"className="menu-item_1">PDF BABA</ListItem>
+  <ListItem button component={Link} to="/roadmapdata" className="menu-item">Career Paths</ListItem>
   <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
   <ListItem button component={Link} to="/service" className="menu-item">Services</ListItem>
     <ListItem button component={Link} to="/about" className="menu-item">About us</ListItem>
@@ -194,6 +195,10 @@ useEffect(() => {
 
         {/* Desktop Menu */}
         <div className="nav-link-main">
+
+        <div className='contactus'>
+            <Link className='contact-nav' to='/roadmapdata'>Career Paths </Link>
+          </div>
 
         <div className='contactus'>
             <Link className='contact-nav' to='/quizplaylist'>Quiz </Link>

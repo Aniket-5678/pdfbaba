@@ -11,6 +11,8 @@ const Adminmenu = () => {
     <Link  className='admin-menu-link'to='/dashboard/admin/all-quiz'>All QUiz</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/create-question'>create pdf</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/all-question'>All pdf</Link>
+        <Link  className='admin-menu-link'to='/dashboard/admin/createroadmap'>createroadmap</Link>
+        <Link  className='admin-menu-link'to='/dashboard/admin/roadmaplist'>roadmaplist</Link>
         <Link className='admin-menu-link' to='/dashboard/admin/all-user'>users</Link>
     </nav>
     </div>

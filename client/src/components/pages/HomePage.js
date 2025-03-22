@@ -24,6 +24,7 @@ import QuizIntro from './QuizIntro';
 import SocialBarAd from "./SocialBarAd"
 import GoogleMultiplexAd from './GoogleMultiplexAd';
 import GoogleDisplayAds from './GoogleDisplayAds';
+import RoadmapSection from './RoadmapSection';
 
 
 const HomePage = () => {
@@ -264,6 +265,9 @@ const categorySlider = {
     ))}
   </Slider>
 </Box>
+<div>
+  <RoadmapSection/>
+</div>
 
 <div>
   <QuizIntro/>

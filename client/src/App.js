@@ -30,6 +30,11 @@ import CreateQuiz from "./components/pages/admin/CreateQuiz";
 import QuizList from "./components/pages/admin/QuizList";
 import QuizPlayList from "./components/pages/QuizPlayList";
 import PlayQuiz from "./components/pages/PlayQuiz";
+import CreateRoadmap from "./components/pages/admin/CreateRoadmap";
+import RoadmapList from "./components/pages/admin/RoadmapList";
+import UpdateRoadmap from "./components/pages/admin/UpdateRoadmap";
+import Roadmap from "./components/pages/Roadmap";
+import RoadmapDetail from "./components/pages/RoadmapDetail";
 
 
 
@@ -61,6 +66,8 @@ const [theme] = useTheme()
        <Route path="/service" element={<ServiceList/>} />
        <Route path="/quizplaylist" element={<QuizPlayList/>}/>
        <Route path="/play/:id" element={<PlayQuiz/>} />
+       <Route path="/roadmapdata" element={<Roadmap/>} />
+       <Route path="/roadmap/:id" element={<RoadmapDetail/>} />
        
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
@@ -78,6 +85,9 @@ const [theme] = useTheme()
           <Route path="admin/create-category" element={<CreateCategory/>} /> 
           <Route path="admin/create-quiz" element={<CreateQuiz/>} /> 
           <Route path="admin/all-quiz" element={<QuizList/>} /> 
+          <Route path="admin/createroadmap" element={<CreateRoadmap/>} />
+          <Route path="admin/roadmaplist" element={<RoadmapList/>} />
+          <Route path="admin/update/:id" element={<UpdateRoadmap/>} />
          </Route>
 
 

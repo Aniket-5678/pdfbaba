@@ -9,6 +9,7 @@ import contactRoutes from "./routes/contactRoutes.js"
 import searchRoutes from "./routes/searchRoutes.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
 import  quizRoutes from "./routes/quizRoutes.js"
+import roadmapRoutes from "./routes/roadmapRoutes.js"
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -65,6 +66,7 @@ app.use('/api/v1/category', categoryRoutes )
 
 app.use('/api/v1/quizzes', quizRoutes)
 
+app.use("/api/v1/roadmaps",  roadmapRoutes );
 
 // ✅ Public folder serve karna
 app.use(express.static(path.join(__dirname, "public")));
