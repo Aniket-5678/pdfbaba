@@ -6,6 +6,7 @@ const TopContentSlider = () => {
   const contentList = [
  'Explore Space Studies with Free Resources!',
     'Dive into Spiritual Insights with Free PDFs!',
+    '🔥 Try our new Domain Name Suggestor – get smart ideas instantly!',
     'Get Free Notes of JavaScript!',
     'Master Python with Free PDFs!',
     'Learn ReactJS with Step-by-Step Guides!',

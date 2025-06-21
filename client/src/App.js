@@ -35,6 +35,7 @@ import RoadmapList from "./components/pages/admin/RoadmapList";
 import UpdateRoadmap from "./components/pages/admin/UpdateRoadmap";
 import Roadmap from "./components/pages/Roadmap";
 import RoadmapDetail from "./components/pages/RoadmapDetail";
+import DomainSearch from "./components/pages/DomainSearch";
 
 
 
@@ -68,7 +69,7 @@ const [theme] = useTheme()
        <Route path="/play/:id" element={<PlayQuiz/>} />
        <Route path="/roadmapdata" element={<Roadmap/>} />
        <Route path="/roadmap/:id" element={<RoadmapDetail/>} />
-       
+       <Route path="/domain-suggestor" element={<DomainSearch/>}/>
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 

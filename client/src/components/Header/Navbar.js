@@ -26,6 +26,8 @@ const Navbar = () => {
 
   const [showTopContentSlider, setShowTopContentSlider] = useState(true);
   const lastScrollY = useRef(0);
+const [isToolDropdownOpen, setToolDropdownOpen] = useState(false);
+const toolDropdownRef = useRef(null);
 
 
 // Track scroll direction
@@ -84,25 +86,33 @@ useEffect(() => {
     setMenuOpen(!isMenuOpen);
   };
 
+  const toggleToolDropdown = () => {
+  setToolDropdownOpen(!isToolDropdownOpen);
+};
+
+
   const handleTheme = () => {
     setTheme((prevState) => prevState === 'light' ? 'dark' : 'light');
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-      if (questionDropdownRef.current && !questionDropdownRef.current.contains(event.target)) {
-        setQuestionDropdownOpen(false);
-      }
-    };
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+    if (questionDropdownRef.current && !questionDropdownRef.current.contains(event.target)) {
+      setQuestionDropdownOpen(false);
+    }
+    if (toolDropdownRef.current && !toolDropdownRef.current.contains(event.target)) {
+      setToolDropdownOpen(false);
+    }
+  };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -213,9 +223,19 @@ useEffect(() => {
             <Link className='about-nav' to='/about'>About us</Link>
           </div>
 
-          <div className='contactus'>
-            <Link className='contact-nav' to='/contact'>Contact us</Link>
-          </div>
+         
+<div className="dropdown" ref={toolDropdownRef}>
+  <button onClick={toggleToolDropdown} className="dropdown-btn">
+    Tools <CgChevronDown />
+  </button>
+  <div className={`dropdown-menu ${isToolDropdownOpen ? 'show' : ''}`}>
+   
+    <Link to="/domain-suggestor" className="nav-link">
+      <p className="nav-h2">Domain Suggestor</p>
+    </Link>
+  </div>
+</div>
+
 
          
 
