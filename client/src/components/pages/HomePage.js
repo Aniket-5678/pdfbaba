@@ -4,8 +4,6 @@ import Banner from './Banner';
 import '../style/style.css';
 import axios from 'axios';
 import Modal from 'react-modal';
-import { FaChevronDown } from 'react-icons/fa'; // Load More Icon
-import { ClipLoader } from 'react-spinners';
 import { IoClose } from "react-icons/io5";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
@@ -14,7 +12,7 @@ import Featurepdf from './Featurepdf';
 import PdfSearchGuide from './PdfSearchGuide';
 import PlatformInfoCard from './PlatformInfoCard';
 import { Link } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography ,Pagination} from '@mui/material';
 import PdfFormat from './PdfFormat';
 import { useTheme } from '../context/ThemeContext'; 
 import Faq from './Faq';
@@ -31,11 +29,12 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(6); // Initially show 6 products
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
    const [downloading, setDownloading] = useState({});
   const [categories, setCategories] = useState([])
  const [theme] = useTheme(); 
+
+ const [currentPage, setCurrentPage] = useState(1);
+const productsPerPage = 6;
    
   useEffect(() => {
     const getAllcategory = async () => {
@@ -79,16 +78,7 @@ const HomePage = () => {
     setSelectedProduct(null);
   };
 
-  const handleLoadMore = () => {
-    setIsLoadingMore(true);
-    setTimeout(() => {
-      setVisibleCount((prevCount) => {
-        const newCount = prevCount + 6;
-        return newCount > 25 ? 25 : newCount; // Ensure not to exceed 25
-      });
-      setIsLoadingMore(false);
-    }, 1000)
-  };
+
 
 
 // Next Arrow
@@ -275,38 +265,90 @@ const categorySlider = {
 
 
 <div className='products-container'>
-  {products.slice(0, visibleCount).map((product) => (
-    <div key={product._id} className='product-card'>
-      <h3 className='product-title'>{product.name}</h3>
-      <p className='product-description'>
-        {product.description} {/* Displaying full description without truncation */}
-      </p>
-      <button
-        className='product-dropdown-button'
-        onClick={() => openModal(product)}
-      >
-        View PDFs
-      </button>
-    </div>
-  ))}
+  {products.length === 0 ? (
+    <Typography
+      variant="h6"
+      sx={{
+        fontFamily: "Poppins",
+        color: theme === "dark" ? "#BDBDBD" : "#444",
+        textAlign: "center",
+        mt: 4,
+      }}
+    >
+      No PDFs found.
+    </Typography>
+  ) : (
+    products
+      .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
+      .map((product) => (
+        <div
+          key={product._id}
+          className="product-card"
+          style={{
+            background:
+              theme === "dark"
+                ? "rgba(255, 255, 255, 0.06)"
+                : "rgba(255, 255, 255, 0.6)",
+            backdropFilter: "blur(15px)",
+            WebkitBackdropFilter: "blur(15px)",
+            border:
+              theme === "dark"
+                ? "1px solid rgba(255, 255, 255, 0.1)"
+                : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRadius: "12px",
+            padding: "20px",
+            marginBottom: "20px",
+            boxShadow:
+              theme === "dark"
+                ? "0 8px 32px rgba(0,0,0,0.35)"
+                : "0 8px 32px rgba(31, 38, 135, 0.25)",
+            color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
+            fontFamily: "Poppins",
+          }}
+        >
+          <h3 className="product-title">{product.name}</h3>
+          <p className="product-description">{product.description}</p>
+          <button
+            className="product-dropdown-button"
+            onClick={() => openModal(product)}
+            style={{
+              padding: "10px 18px",
+              backgroundColor: "#1976d2",
+              color: "white",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              fontFamily: "Poppins",
+              fontWeight: "bold",
+              marginTop: "10px",
+            }}
+          >
+            View PDFs
+          </button>
+        </div>
+      ))
+  )}
 </div>
-
-{visibleCount < products.length && (
-  <button
-    className='load-more-button'
-    onClick={handleLoadMore}
-    disabled={isLoadingMore}
-    aria-label="Load More PDFs"
-  >
-    {isLoadingMore ? (
-      <ClipLoader color="#fff" size={20} />
-    ) : (
-      <>
-        <FaChevronDown /> Load More
-      </>
-    )}
-  </button>
+{products.length > productsPerPage && (
+  <div style={{ display: "flex", justifyContent: "center", margin: "30px 0" }}>
+    <Pagination
+      count={Math.ceil(products.length / productsPerPage)}
+      page={currentPage}
+      onChange={(event, value) => {
+        setCurrentPage(value);
+      }}
+      color="primary"
+      sx={{
+        "& .MuiPaginationItem-root": {
+          fontFamily: "Poppins",
+          color: theme === "dark" ? "#fff" : "#2c2c2c",
+        },
+      }}
+    />
+  </div>
 )}
+
+
         {/* Modal for displaying PDF links */}
         <Modal
           isOpen={modalIsOpen}

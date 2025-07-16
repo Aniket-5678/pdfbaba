@@ -11,6 +11,7 @@ import {
   Box,
   TextField,
   Autocomplete,
+  Pagination,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '../context/ThemeContext';
@@ -18,6 +19,8 @@ import NativeAd from './NativeAd';
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   const navigate = useNavigate();
   const [theme] = useTheme();
 
@@ -41,6 +44,16 @@ const QuizPlayList = () => {
     }
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll to top on page change
+  };
+
+  // Pagination logic
+  const indexOfLastQuiz = currentPage * itemsPerPage;
+  const indexOfFirstQuiz = indexOfLastQuiz - itemsPerPage;
+  const currentQuizzes = quizzes.slice(indexOfFirstQuiz, indexOfLastQuiz);
+
   return (
     <Layout>
       <Box
@@ -52,6 +65,7 @@ const QuizPlayList = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          bgcolor: theme === 'dark' ? '#121212' : '#f5f5f5',
         }}
       >
         <Typography
@@ -65,17 +79,17 @@ const QuizPlayList = () => {
             color: theme === 'dark' ? 'white' : 'black',
           }}
         >
-          Available Quizzes
+          🧠 Available Quizzes
         </Typography>
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3, width: '100%' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4, width: '100%' }}>
           <Autocomplete
             options={quizzes}
             getOptionLabel={(option) => option.title}
             onChange={handleSearchSelect}
             sx={{
               width: { xs: '100%', sm: '50%' },
-              backgroundColor: theme === 'dark' ? '#333' : '#fff',
+              backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff',
               borderRadius: '5px',
             }}
             renderInput={(params) => (
@@ -93,11 +107,15 @@ const QuizPlayList = () => {
                   ),
                 }}
                 sx={{
-                  backgroundColor: theme === 'dark' ? '#333' : '#fff',
+                  backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff',
                   borderRadius: '5px',
                   '& .MuiOutlinedInput-root': {
-                    '& fieldset': { borderColor: theme === 'dark' ? '#bbb' : '#ccc' },
-                    '&:hover fieldset': { borderColor: theme === 'dark' ? '#fff' : '#000' },
+                    '& fieldset': {
+                      borderColor: theme === 'dark' ? '#555' : '#ccc',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: theme === 'dark' ? '#aaa' : '#000',
+                    },
                   },
                 }}
               />
@@ -106,17 +124,23 @@ const QuizPlayList = () => {
         </Box>
 
         <Grid container spacing={3} justifyContent="center">
-          {quizzes.map((quiz) => (
-            <Grid item xs={6} sm={6} md={4} key={quiz._id}>
+          {currentQuizzes.map((quiz) => (
+            <Grid item xs={12} sm={6} md={4} key={quiz._id}>
               <Card
                 sx={{
-                  backgroundColor: theme === 'dark' ? '#1e1e1e' : 'white',
+                  borderRadius: 4,
+                  p: 1,
+                  backdropFilter: 'blur(10px)',
+                  background:
+                    theme === 'dark'
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(255, 255, 255, 0.3)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
                   color: theme === 'dark' ? 'white' : 'black',
-                  boxShadow: theme === 'dark'
-                    ? '0px 4px 10px rgba(255,255,255,0.1)'
-                    : '0px 4px 10px rgba(0,0,0,0.1)',
-                  transition: '0.3s',
-                  '&:hover': { transform: 'scale(1.02)' },
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.03)',
+                  },
                 }}
               >
                 <CardContent>
@@ -125,24 +149,34 @@ const QuizPlayList = () => {
                     fontWeight="bold"
                     sx={{
                       fontFamily: 'Poppins, sans-serif',
-                      fontSize: { xs: '0.9rem', md: '1.1rem' },
+                      fontSize: { xs: '1rem', md: '1.2rem' },
                     }}
                   >
                     {quiz.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      opacity: 0.7,
+                      mb: 2,
+                      fontFamily: 'Poppins, sans-serif',
+                    }}
+                  >
                     {quiz.category}
                   </Typography>
+
                   <Button
                     variant="contained"
                     fullWidth
-                    sx={{
-                      mt: 2,
-                      backgroundColor: theme === 'dark' ? '#068fc6' : '#1976d2',
-                      color: 'white',
-                      '&:hover': { backgroundColor: theme === 'dark' ? '#388e3c' : '#125ea2' },
-                    }}
                     onClick={() => navigate(`/play/${quiz._id}`)}
+                    sx={{
+                      backgroundColor: theme === 'dark' ? '#1e88e5' : '#1976d2',
+                      fontWeight: 'bold',
+                      fontFamily: 'Poppins, sans-serif',
+                      '&:hover': {
+                        backgroundColor: theme === 'dark' ? '#1565c0' : '#125ea2',
+                      },
+                    }}
                   >
                     Start Quiz
                   </Button>
@@ -151,7 +185,23 @@ const QuizPlayList = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* Pagination */}
+        <Box mt={5}>
+          <Pagination
+            count={Math.ceil(quizzes.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            sx={{
+              '& .MuiPaginationItem-root': {
+                fontFamily: 'Poppins, sans-serif',
+              },
+            }}
+          />
+        </Box>
       </Box>
+
       <Box>
         <NativeAd />
       </Box>

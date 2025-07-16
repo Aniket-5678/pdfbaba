@@ -17,6 +17,7 @@ import { useTheme } from '../context/ThemeContext';
 import Layout from '../Layout/Layout';
 import axios from 'axios';
 import GoogleDisplayAds from "./GoogleDisplayAds"
+import GoogleMultiplexAd from "./GoogleMultiplexAd"
 
 const DomainSearch = () => {
   const [name, setName] = useState('');
@@ -180,6 +181,7 @@ const DomainSearch = () => {
         )}
       </Container>
       <GoogleDisplayAds />
+      <GoogleMultiplexAd/>
     </Layout>
   );
 };
