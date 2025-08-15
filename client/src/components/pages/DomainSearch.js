@@ -10,26 +10,30 @@ import {
   IconButton,
   Tooltip,
   Divider,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTheme } from '../context/ThemeContext';
 import Layout from '../Layout/Layout';
 import axios from 'axios';
-import GoogleDisplayAds from "./GoogleDisplayAds"
-import GoogleMultiplexAd from "./GoogleMultiplexAd"
+import GoogleDisplayAds from "./GoogleDisplayAds";
+import GoogleMultiplexAd from "./GoogleMultiplexAd";
 
 const DomainSearch = () => {
   const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [copied, setCopied] = useState(null);
   const [error, setError] = useState('');
   const [theme] = useTheme();
 
-    useEffect(() => {
-          // Scroll to top when the component is mounted
-          window.scrollTo(0, 0);
-        }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleSearch = async () => {
     if (!name.trim()) {
@@ -40,7 +44,7 @@ const DomainSearch = () => {
 
     try {
       setError('');
-      const { data } = await axios.post('/api/v1/domain/suggest', { name });
+      const { data } = await axios.post('/api/v1/domain/suggest', { name, category });
       setSuggestions(data.suggestions);
       setCopied(null);
     } catch (err) {
@@ -84,7 +88,7 @@ const DomainSearch = () => {
           🔍 <span>Domain Name Suggester</span>
         </Typography>
 
-        {/* Search input and button */}
+        {/* Search input, category, and button */}
         <Box
           display="flex"
           justifyContent="center"
@@ -101,7 +105,7 @@ const DomainSearch = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             sx={{
-              maxWidth: { xs: '100%', sm: '400px' },
+              maxWidth: { xs: '100%', sm: '300px' },
               backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff',
               input: {
                 color: theme === 'dark' ? '#fff' : '#000',
@@ -109,6 +113,31 @@ const DomainSearch = () => {
               },
             }}
           />
+
+          <FormControl
+            fullWidth
+            sx={{
+              maxWidth: { xs: '100%', sm: '200px' },
+              backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff',
+            }}
+          >
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={category}
+              label="Category"
+              onChange={(e) => setCategory(e.target.value)}
+              sx={{
+                color: theme === 'dark' ? '#fff' : '#000',
+                fontFamily: 'Poppins',
+              }}
+            >
+              <MenuItem value="">Default</MenuItem>
+              <MenuItem value="tech">Tech</MenuItem>
+              <MenuItem value="business">Business</MenuItem>
+              <MenuItem value="personal">Personal</MenuItem>
+              <MenuItem value="shop">Shop</MenuItem>
+            </Select>
+          </FormControl>
 
           <Button
             variant="contained"
@@ -181,7 +210,7 @@ const DomainSearch = () => {
         )}
       </Container>
       <GoogleDisplayAds />
-      <GoogleMultiplexAd/>
+      <GoogleMultiplexAd />
     </Layout>
   );
 };

@@ -71,6 +71,10 @@ app.use("/api/v1/roadmaps",  roadmapRoutes );
 
 app.use("/api/v1/domain",  domainRoutes );
 
+
+
+
+
 // ✅ Public folder serve karna
 app.use(express.static(path.join(__dirname, "public")));
 

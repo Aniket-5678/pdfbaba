@@ -35,6 +35,12 @@ const CategoryProduct = () => {
   const [page, setPage] = useState(1);
   const productsPerPage = 6;
 
+
+
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     if (params.slug) getProductByCategory();
   }, [params.slug]);

@@ -174,6 +174,8 @@ useEffect(() => {
     <ListItem button component={Link} to="/contact" className="menu-item">Contact us</ListItem>
     <ListItem button component={Link} to="/privacy" className="menu-item">Privacy Policy</ListItem>
     <ListItem button component={Link} to="/termcondition" className="menu-item">Terms & Conditions</ListItem>
+        <ListItem button component={Link} to="/domain-suggestor" className="menu-item">Domain Suggestor</ListItem>
+
     <Divider />
 
     {/* Display all categories directly */}

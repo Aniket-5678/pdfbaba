@@ -20,7 +20,7 @@ import NativeAd from './NativeAd';
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 6; // 6 per page for better balance
   const navigate = useNavigate();
   const [theme] = useTheme();
 
@@ -46,7 +46,7 @@ const QuizPlayList = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll to top on page change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Pagination logic
@@ -82,6 +82,7 @@ const QuizPlayList = () => {
           🧠 Available Quizzes
         </Typography>
 
+        {/* Search Bar */}
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4, width: '100%' }}>
           <Autocomplete
             options={quizzes}
@@ -123,6 +124,7 @@ const QuizPlayList = () => {
           />
         </Box>
 
+        {/* Quiz Cards */}
         <Grid container spacing={3} justifyContent="center">
           {currentQuizzes.map((quiz) => (
             <Grid item xs={12} sm={6} md={4} key={quiz._id}>
@@ -130,6 +132,10 @@ const QuizPlayList = () => {
                 sx={{
                   borderRadius: 4,
                   p: 1,
+                  height: '220px', // fixed height
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                   backdropFilter: 'blur(10px)',
                   background:
                     theme === 'dark'
@@ -143,13 +149,16 @@ const QuizPlayList = () => {
                   },
                 }}
               >
-                <CardContent>
+                <CardContent sx={{ flexGrow: 1 }}>
                   <Typography
                     variant="h6"
                     fontWeight="bold"
                     sx={{
                       fontFamily: 'Poppins, sans-serif',
-                      fontSize: { xs: '1rem', md: '1.2rem' },
+                      fontSize: { xs: '1rem', md: '1.1rem' },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {quiz.title}
@@ -160,27 +169,31 @@ const QuizPlayList = () => {
                       opacity: 0.7,
                       mb: 2,
                       fontFamily: 'Poppins, sans-serif',
+                      fontSize: '0.85rem',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {quiz.category}
                   </Typography>
-
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => navigate(`/play/${quiz._id}`)}
-                    sx={{
-                      backgroundColor: theme === 'dark' ? '#1e88e5' : '#1976d2',
-                      fontWeight: 'bold',
-                      fontFamily: 'Poppins, sans-serif',
-                      '&:hover': {
-                        backgroundColor: theme === 'dark' ? '#1565c0' : '#125ea2',
-                      },
-                    }}
-                  >
-                    Start Quiz
-                  </Button>
                 </CardContent>
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={() => navigate(`/play/${quiz._id}`)}
+                  sx={{
+                    backgroundColor: theme === 'dark' ? '#1e88e5' : '#1976d2',
+                    fontWeight: 'bold',
+                    fontFamily: 'Poppins, sans-serif',
+                    '&:hover': {
+                      backgroundColor: theme === 'dark' ? '#1565c0' : '#125ea2',
+                    },
+                  }}
+                >
+                  Start Quiz
+                </Button>
               </Card>
             </Grid>
           ))}

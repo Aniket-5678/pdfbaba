@@ -50,18 +50,20 @@ const Roadmap = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    window.scrollTo(0, 0); // Optional: Scroll up on page change
+    window.scrollTo(0, 0);
   };
 
+  // Glassmorphism card style
   const getGlassCardStyle = () => ({
     cursor: "pointer",
     textAlign: "center",
     transition: "0.3s",
-    height: "150px",
-    borderRadius: 4,
+    minHeight: { xs: "110px", sm: "130px" }, // responsive min height
+    borderRadius: 8,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    padding: "16px",
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
     background:
@@ -77,8 +79,9 @@ const Roadmap = () => {
         ? "0 8px 32px rgba(0,0,0,0.35)"
         : "0 8px 32px rgba(31, 38, 135, 0.25)",
     color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
+    "&:active": { transform: "scale(0.98)" }, // mobile tap effect
     "&:hover": {
-      transform: "scale(1.05)",
+      transform: { xs: "none", sm: "scale(1.05)" }, // hover only on larger screens
       boxShadow:
         theme === "dark"
           ? "0 12px 48px rgba(0,0,0,0.5)"
@@ -88,7 +91,8 @@ const Roadmap = () => {
 
   return (
     <Layout>
-      <Container sx={{ py: 4, mt: 10 }}>
+      <Container sx={{ py: 4, mt: 15 }}>
+        {/* Title */}
         <Typography
           variant="h4"
           fontWeight="bold"
@@ -97,7 +101,7 @@ const Roadmap = () => {
           sx={{
             color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
             fontFamily: "'Poppins', sans-serif",
-            fontSize: "1.5rem",
+            fontSize: { xs: "1.3rem", sm: "1.5rem" },
             mb: 3,
           }}
         >
@@ -112,12 +116,17 @@ const Roadmap = () => {
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value);
-            setCurrentPage(1); // reset to page 1 on search
+            setCurrentPage(1);
           }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ color: theme === "dark" ? "#E0E0E0" : "#444" }} />
+                <SearchIcon
+                  sx={{
+                    fontSize: { xs: 22, sm: 24 },
+                    color: theme === "dark" ? "#E0E0E0" : "#444",
+                  }}
+                />
               </InputAdornment>
             ),
           }}
@@ -128,12 +137,13 @@ const Roadmap = () => {
             input: {
               color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
               fontFamily: "'Poppins', sans-serif",
+              fontSize: { xs: "0.9rem", sm: "1rem" },
             },
           }}
         />
 
-        {/* Cards */}
-        <Grid container spacing={4}>
+        {/* Roadmap Cards */}
+        <Grid container spacing={{ xs: 2, sm: 4 }}>
           {currentRoadmaps.length === 0 ? (
             <Typography
               variant="h6"
@@ -164,7 +174,7 @@ const Roadmap = () => {
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      height: "100%",
+                      width: "100%",
                       fontFamily: "'Poppins', sans-serif",
                     }}
                   >
@@ -185,7 +195,7 @@ const Roadmap = () => {
           )}
         </Grid>
 
-        {/* Pagination Controls */}
+        {/* Pagination */}
         {totalPages > 1 && (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
             <Pagination
@@ -193,6 +203,7 @@ const Roadmap = () => {
               page={currentPage}
               onChange={handlePageChange}
               color="primary"
+              size={window.innerWidth < 600 ? "small" : "medium"}
               sx={{
                 "& .MuiPaginationItem-root": {
                   fontFamily: "'Poppins', sans-serif",
@@ -201,10 +212,11 @@ const Roadmap = () => {
               }}
             />
           </Box>
-
         )}
-        <Box>
-          <NativeAd/>
+
+        {/* Ad */}
+        <Box mt={4}>
+          <NativeAd />
         </Box>
       </Container>
     </Layout>

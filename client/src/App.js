@@ -40,6 +40,7 @@ import DomainSearch from "./components/pages/DomainSearch";
 
 
 
+
 function App() {
 
 const [theme] = useTheme()
@@ -70,6 +71,7 @@ const [theme] = useTheme()
        <Route path="/roadmapdata" element={<Roadmap/>} />
        <Route path="/roadmap/:id" element={<RoadmapDetail/>} />
        <Route path="/domain-suggestor" element={<DomainSearch/>}/>
+  
          
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
