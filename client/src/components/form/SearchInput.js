@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { IoSearchOutline } from "react-icons/io5";
 import { useMediaQuery, TextField, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
-import { useTheme } from '../context/ThemeContext';  // Import the theme context
+import { useTheme } from '../context/ThemeContext';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import "../style/style.css";
@@ -17,7 +17,7 @@ const SearchInput = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isMobile = useMediaQuery('(max-width: 600px)');
-  const { theme } = useTheme(); // Access theme from context
+  const { theme } = useTheme();
 
   useEffect(() => {
     const search = async () => {
@@ -72,7 +72,7 @@ const SearchInput = () => {
       {isMobile ? (
         <>
           <IconButton onClick={() => setDrawerOpen(true)} style={{ color: theme === 'dark' ? 'white' : 'gray' }}>
-            <SearchIcon  style={{position: 'relative', left: '30px' , fontSize: '1.6rem' }} />
+            <SearchIcon style={{ position: 'relative', left: '30px', fontSize: '1.6rem' }} />
           </IconButton>
           <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
             <div className="mobile-search-container">
@@ -88,6 +88,11 @@ const SearchInput = () => {
                 placeholder="Search notes"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
                 autoFocus
                 style={{ margin: '20px' }}
               />
@@ -118,13 +123,18 @@ const SearchInput = () => {
             placeholder="Search notes"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
           />
           <button
             className="search-button"
             disabled={loading}
             onClick={handleSearch}
           >
-            {loading ? <ClipLoader color="#007bff" size={10} /> : <FaSearch  />}
+            {loading ? <ClipLoader color="#007bff" size={10} /> : <FaSearch />}
           </button>
           {!loading && query && results.length === 0 && (
             <div className="no-results show">No results found</div>
