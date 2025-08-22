@@ -22,7 +22,7 @@ import { IoClose } from 'react-icons/io5';
 import { useTheme } from '../context/ThemeContext';
 import SmallBannerAd from "../pages/SmallBannerAd";
 import SocialBarAd from "./SocialBarAd";
-import GoogleMultiplexAd from './GoogleMultiplexAd';
+import NativeAd from './NativeAd';
 
 
 const CategoryProduct = () => {
@@ -231,7 +231,7 @@ const CategoryProduct = () => {
           </Dialog>
         </>
       )}
-      <GoogleMultiplexAd/>
+      <NativeAd/>
       
     </Layout>
   );
