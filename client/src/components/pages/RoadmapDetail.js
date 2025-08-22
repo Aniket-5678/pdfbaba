@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "../context/ThemeContext"; // ✅ Theme context
 import GoogleMultiplexAd from "./GoogleMultiplexAd";
-import MonetagPushBanners from "./MonetagPushBanners";
+
 
 const RoadmapDetail = () => {
   const { id } = useParams();
@@ -159,7 +159,7 @@ const RoadmapDetail = () => {
         <GoogleMultiplexAd/>
       </Box>
       <Box>
-        <MonetagPushBanners/>
+   
       </Box>
     </Container>
   );

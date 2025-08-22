@@ -23,7 +23,7 @@ import jordanImage from "../images/Jordan.png";
 import promotionBannerImage from "../images/promotionbanner.png";
 import iphoneBannerImage from "../images/iphone.png";
 import PDFNotesImages from "../images/chakra1.png";
-import MonetagPushBanners from "./MonetagPushBanners";
+
 
 const services = [
   { id: 1, title: "Portfolio Project Code", description: "A complete MERN stack project for students.", image: portfolioImage, link: "https://portfolio-4-8gnu.onrender.com", price: "$5" },
@@ -243,7 +243,7 @@ const ServiceList = () => {
           </Box>
         </Modal>
       </Box>
-      <MonetagPushBanners/>
+ 
     </Layout>
   );
 };
