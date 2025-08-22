@@ -16,6 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import NativeAd from "./NativeAd";
+import MonetagPushBanners from "./MonetagPushBanners";
 
 const Roadmap = () => {
   const [roadmaps, setRoadmaps] = useState([]);
@@ -218,6 +219,7 @@ const Roadmap = () => {
         <Box mt={4}>
           <NativeAd />
         </Box>
+        <MonetagPushBanners/>
       </Container>
     </Layout>
   );

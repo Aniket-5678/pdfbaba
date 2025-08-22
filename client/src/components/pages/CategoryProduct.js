@@ -22,6 +22,7 @@ import { IoClose } from 'react-icons/io5';
 import { useTheme } from '../context/ThemeContext';
 import SmallBannerAd from "../pages/SmallBannerAd";
 import SocialBarAd from "./SocialBarAd";
+import MonetagPushBanners from './MonetagPushBanners';
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -169,6 +170,7 @@ const CategoryProduct = () => {
             <Box mt={5}>
               <SmallBannerAd />
             </Box>
+            <MonetagPushBanners/>
           </Container>
 
           {/* PDF Modal */}

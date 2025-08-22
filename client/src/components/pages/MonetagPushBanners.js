@@ -23,24 +23,8 @@ const MonetagPushBanners = () => {
   }, []);
 
   return (
-    <div
-      className="monetag-ads"
-      style={{
-        width: "100%",          // full responsive width
-        maxWidth: "728px",      // maximum ad width
-        height: "90px",         // banner height (adjustable)
-        margin: "20px auto",    // center alignment
-        backgroundColor: "#f9f9f9", // placeholder bg before ad loads
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-      }}
-    >
-      <span style={{ fontSize: "14px", color: "#666" }}>
-        Loading ad...
-      </span>
+    <div className="monetag-ads">
+      {/* Monetag ad yaha inject hoga */}
     </div>
   );
 };
