@@ -5,6 +5,7 @@ import Layout from "../Layout/Layout";
 import toast from "react-hot-toast";
 import "../style/style.css";
 import { ClipLoader } from "react-spinners";
+import GoogleDisplayAds from "./GoogleDisplayAds";
 
 const QuestionpaperDetails = () => {
   const { id } = useParams();
@@ -97,6 +98,7 @@ const QuestionpaperDetails = () => {
           })}
         </ul>
       </div>
+<GoogleDisplayAds/>
     </Layout>
   );
 };
