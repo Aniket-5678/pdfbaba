@@ -15,6 +15,12 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import helmetPkg from "react-helmet-async";
+const { HelmetProvider } = helmetPkg;
+
+
 //dotenv configuration
 dotenv.config()
 
@@ -88,9 +94,42 @@ app.get('/ads.txt', (req, res) => {
 app.use(express.static(path.join(__dirname, './client/build')));
 
 // Serve index.html for any unknown routes (for React Router)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './client/build', 'index.html'));
+app.get("*", (req, res) => {
+  const helmetContext = {};
+
+  // Render empty div only for helmet
+  ReactDOMServer.renderToString(
+    React.createElement(HelmetProvider, { context: helmetContext },
+      React.createElement("div", null)
+    )
+  );
+
+  const { helmet } = helmetContext;
+  const indexFile = path.resolve(__dirname, "./client/build/index.html");
+
+  fs.readFile(indexFile, "utf8", (err, data) => {
+    if (err) {
+      console.error("SSR Error:", err);
+      return res.status(500).send("Server error");
+    }
+
+    return res.send(
+      data
+        .replace('<div id="root"></div>', `<div id="root"></div>`)
+        .replace("<title>React App</title>", `${helmet.title.toString()}${helmet.meta.toString()}`)
+    );
+  });
 });
+
+
+
+
+
+//app.get('*', (req, res) => {
+//  res.sendFile(path.join(__dirname, './client/build', 'index.html'));
+//});
+
+
 
 
 
