@@ -16,6 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import NativeAd from "./NativeAd";
+import SmallBannerAd from "./SmallBannerAd";
 
 
 const Roadmap = () => {
@@ -38,12 +39,10 @@ const Roadmap = () => {
       .catch((err) => console.error("Error fetching roadmaps:", err));
   }, []);
 
-  // Filter based on search query
   const filteredRoadmaps = roadmaps.filter((roadmap) =>
     roadmap.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredRoadmaps.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -54,23 +53,22 @@ const Roadmap = () => {
     window.scrollTo(0, 0);
   };
 
-  // Glassmorphism card style
   const getGlassCardStyle = () => ({
     cursor: "pointer",
     textAlign: "center",
     transition: "0.3s",
-    minHeight: { xs: "110px", sm: "130px" }, // responsive min height
-    borderRadius: 8,
+    minHeight: { xs: "120px", sm: "140px" },
+    borderRadius: 16,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "16px",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
+    padding: "20px",
+    backdropFilter: "blur(14px)",
+    WebkitBackdropFilter: "blur(14px)",
     background:
       theme === "dark"
         ? "rgba(255, 255, 255, 0.06)"
-        : "rgba(255, 255, 255, 0.6)",
+        : "rgba(255, 255, 255, 0.55)",
     border:
       theme === "dark"
         ? "1px solid rgba(255, 255, 255, 0.1)"
@@ -80,9 +78,9 @@ const Roadmap = () => {
         ? "0 8px 32px rgba(0,0,0,0.35)"
         : "0 8px 32px rgba(31, 38, 135, 0.25)",
     color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
-    "&:active": { transform: "scale(0.98)" }, // mobile tap effect
+    "&:active": { transform: "scale(0.97)" },
     "&:hover": {
-      transform: { xs: "none", sm: "scale(1.05)" }, // hover only on larger screens
+      transform: { xs: "none", sm: "scale(1.05)" },
       boxShadow:
         theme === "dark"
           ? "0 12px 48px rgba(0,0,0,0.5)"
@@ -93,7 +91,6 @@ const Roadmap = () => {
   return (
     <Layout>
       <Container sx={{ py: 4, mt: 15 }}>
-        {/* Title */}
         <Typography
           variant="h4"
           fontWeight="bold"
@@ -102,14 +99,15 @@ const Roadmap = () => {
           sx={{
             color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
             fontFamily: "'Poppins', sans-serif",
-            fontSize: { xs: "1.3rem", sm: "1.5rem" },
-            mb: 3,
+            fontSize: { xs: "1.4rem", sm: "1.6rem", md: "1.8rem" },
+            mb: 4,
           }}
         >
           📌 Explore Roadmaps
         </Typography>
-
-        {/* Search Bar */}
+  <Box display="flex" justifyContent="center" mb={2}>
+    <SmallBannerAd />
+  </Box>
         <TextField
           fullWidth
           placeholder="Search by category..."
@@ -132,19 +130,18 @@ const Roadmap = () => {
             ),
           }}
           sx={{
-            mb: 4,
+            mb: 5,
             bgcolor: theme === "dark" ? "#1e1e1e" : "#ffffff",
             borderRadius: 2,
             input: {
               color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
               fontFamily: "'Poppins', sans-serif",
-              fontSize: { xs: "0.9rem", sm: "1rem" },
+              fontSize: { xs: "0.95rem", sm: "1rem" },
             },
           }}
         />
 
-        {/* Roadmap Cards */}
-        <Grid container spacing={{ xs: 2, sm: 4 }}>
+        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
           {currentRoadmaps.length === 0 ? (
             <Typography
               variant="h6"
@@ -162,9 +159,9 @@ const Roadmap = () => {
             currentRoadmaps.map((roadmap) => (
               <Grid
                 item
-                xs={12}
-                sm={6}
-                md={4}
+                xs={6} // 2 cards per row on mobile
+                sm={6} // 2 cards per row on small screens
+                md={4} // 3 cards per row on desktop
                 key={roadmap._id}
                 onClick={() => navigate(`/roadmap/${roadmap._id}`)}
               >
@@ -183,8 +180,9 @@ const Roadmap = () => {
                       variant="h6"
                       fontWeight="bold"
                       sx={{
-                        fontSize: { xs: "1rem", sm: "1.2rem" },
-                        textTransform: "capitalize",
+                      fontSize: { xs: "0.85rem", sm: "1.15rem", md: "1.25rem" }, // mobile chhota, desktop bada
+    textTransform: "capitalize",
+    textAlign: "center",
                       }}
                     >
                       {roadmap.category}
@@ -196,7 +194,6 @@ const Roadmap = () => {
           )}
         </Grid>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
             <Pagination
@@ -215,11 +212,9 @@ const Roadmap = () => {
           </Box>
         )}
 
-        {/* Ad */}
         <Box mt={4}>
           <NativeAd />
         </Box>
-        
       </Container>
     </Layout>
   );

@@ -4545,3 +4545,12 @@ color: white;
 
 
 
+.result-heading {
+  font-weight: 600;
+  font-size: 13px;
+  color: gray;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding-left: 8px;
+  text-transform: uppercase;
+}

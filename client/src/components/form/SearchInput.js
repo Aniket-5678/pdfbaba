@@ -3,17 +3,32 @@ import axios from 'axios';
 import { FaSearch } from 'react-icons/fa';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { IoSearchOutline } from "react-icons/io5";
-import { useMediaQuery, TextField, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
+import {
+  useMediaQuery,
+  TextField,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText
+} from '@mui/material';
 import { useTheme } from '../context/ThemeContext';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import "../style/style.css";
 
+const normalizeText = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " "); // multiple spaces ko single space banata hai
+};
+
 const SearchInput = () => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [noteResults, setNoteResults] = useState([]);
+  const [roadmapResults, setRoadmapResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const isMobile = useMediaQuery('(max-width: 600px)');
@@ -21,22 +36,35 @@ const SearchInput = () => {
 
   useEffect(() => {
     const search = async () => {
-      if (!query.trim()) {
-        setResults([]);
+      const normalizedQuery = normalizeText(query);
+
+      if (!normalizedQuery) {
+        setNoteResults([]);
+        setRoadmapResults([]);
         return;
       }
 
       setLoading(true);
       try {
-        const { data } = await axios.get('/api/v1/keyword/search', { params: { query } });
-        if (data.success) {
-          setResults(data.data);
-        } else {
-          setResults([]);
-        }
+        const [notesRes, roadmapRes] = await Promise.all([
+          axios.get('/api/v1/keyword/search', { params: { query: normalizedQuery } }),
+          axios.get('/api/v1/roadmaps')
+        ]);
+
+        // ✅ Notes results
+        const notes = notesRes.data.success ? notesRes.data.data : [];
+
+        // ✅ Roadmaps fuzzy filter
+        const filteredRoadmaps = roadmapRes.data.filter((r) =>
+          normalizeText(r.category).includes(normalizedQuery)
+        );
+
+        setNoteResults(notes);
+        setRoadmapResults(filteredRoadmaps);
       } catch (error) {
-        console.error('Error searching question papers', error);
-        setResults([]);
+        console.error('Error searching:', error);
+        setNoteResults([]);
+        setRoadmapResults([]);
       } finally {
         setLoading(false);
       }
@@ -44,26 +72,18 @@ const SearchInput = () => {
 
     const debounceTimer = setTimeout(() => {
       search();
-    }, 300);
+    }, 400);
 
     return () => clearTimeout(debounceTimer);
   }, [query]);
 
-  const handleSearch = async () => {
-    if (results.length > 0 && selectedIndex >= 0) {
-      window.location.href = `/question/${results[selectedIndex]._id}`;
-    } else if (query.trim()) {
-      try {
-        const { data } = await axios.get('/api/v1/keyword/search', { params: { query } });
-        if (data.success && data.data.length > 0) {
-          window.location.href = `/question/${data.data[0]._id}`;
-        } else {
-          window.location.href = '/not-found';
-        }
-      } catch (error) {
-        console.error('Error searching question papers', error);
-        window.location.href = '/not-found';
-      }
+  const handleSearch = () => {
+    if (noteResults.length > 0) {
+      window.location.href = `/question/${noteResults[0]._id}`;
+    } else if (roadmapResults.length > 0) {
+      window.location.href = `/roadmap/${roadmapResults[0]._id}`;
+    } else {
+      window.location.href = '/not-found';
     }
   };
 
@@ -71,9 +91,13 @@ const SearchInput = () => {
     <>
       {isMobile ? (
         <>
-          <IconButton onClick={() => setDrawerOpen(true)} style={{ color: theme === 'dark' ? 'white' : 'gray' }}>
+          <IconButton
+            onClick={() => setDrawerOpen(true)}
+            style={{ color: theme === 'dark' ? 'white' : 'gray' }}
+          >
             <SearchIcon style={{ position: 'relative', left: '30px', fontSize: '1.6rem' }} />
           </IconButton>
+
           <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
             <div className="mobile-search-container">
               <IconButton
@@ -82,33 +106,59 @@ const SearchInput = () => {
               >
                 <CloseIcon />
               </IconButton>
+
               <TextField
                 fullWidth
                 variant="outlined"
-                placeholder="Search notes"
+                placeholder="Search notes or roadmaps"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSearch();
-                  }
+                  if (e.key === 'Enter') handleSearch();
                 }}
                 autoFocus
                 style={{ margin: '20px' }}
               />
+
               {loading && <ClipLoader color="#007bff" size={20} />}
-              {!loading && results.length === 0 && query && (
+              {!loading && query && noteResults.length === 0 && roadmapResults.length === 0 && (
                 <div className="no-results show">No results found</div>
               )}
+
               <List>
-                {results.map((result) => (
+                {noteResults.length > 0 && (
+                  <ListItem className="result-heading">📖 Notes</ListItem>
+                )}
+                {noteResults.map((note) => (
                   <ListItem
                     button
-                    key={result._id}
-                    onClick={() => (window.location.href = `/question/${result._id}`)}
+                    key={note._id}
+                    onClick={() => (window.location.href = `/question/${note._id}`)}
                   >
-                    <IoSearchOutline size={20} color={theme === 'dark' ? '#ffffff' : '#2c8edf'} style={{ marginRight: '10px' }} />
-                    <ListItemText primary={result.description} />
+                    <IoSearchOutline
+                      size={20}
+                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
+                      style={{ marginRight: '10px' }}
+                    />
+                    <ListItemText primary={note.description} />
+                  </ListItem>
+                ))}
+
+                {roadmapResults.length > 0 && (
+                  <ListItem className="result-heading">🛣 Roadmaps</ListItem>
+                )}
+                {roadmapResults.map((roadmap) => (
+                  <ListItem
+                    button
+                    key={roadmap._id}
+                    onClick={() => (window.location.href = `/roadmap/${roadmap._id}`)}
+                  >
+                    <IoSearchOutline
+                      size={20}
+                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
+                      style={{ marginRight: '10px' }}
+                    />
+                    <ListItemText primary={roadmap.category} />
                   </ListItem>
                 ))}
               </List>
@@ -120,13 +170,11 @@ const SearchInput = () => {
           <input
             type="text"
             className="search-input"
-            placeholder="Search notes"
+            placeholder="Search notes or roadmaps"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch();
-              }
+              if (e.key === 'Enter') handleSearch();
             }}
           />
           <button
@@ -136,15 +184,35 @@ const SearchInput = () => {
           >
             {loading ? <ClipLoader color="#007bff" size={10} /> : <FaSearch />}
           </button>
-          {!loading && query && results.length === 0 && (
+
+          {!loading && query && noteResults.length === 0 && roadmapResults.length === 0 && (
             <div className="no-results show">No results found</div>
           )}
-          {results.length > 0 && (
+
+          {(noteResults.length > 0 || roadmapResults.length > 0) && (
             <ul className="search-results">
-              {results.map((result) => (
-                <li key={result._id} className="search-result-item">
-                  <a href={`/question/${result._id}`} target="_self" rel="noopener noreferrer">
-                    <IoSearchOutline size={20} color={theme === 'dark' ? '#ffffff' : '#2c8edf'} /> {result.description}
+              {noteResults.length > 0 && <li className="result-heading">📖 Notes</li>}
+              {noteResults.map((note) => (
+                <li key={note._id} className="search-result-item">
+                  <a href={`/question/${note._id}`} target="_self" rel="noopener noreferrer">
+                    <IoSearchOutline
+                      size={20}
+                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
+                    />{" "}
+                    {note.description}
+                  </a>
+                </li>
+              ))}
+
+              {roadmapResults.length > 0 && <li className="result-heading">🛣 Roadmaps</li>}
+              {roadmapResults.map((roadmap) => (
+                <li key={roadmap._id} className="search-result-item">
+                  <a href={`/roadmap/${roadmap._id}`} target="_self" rel="noopener noreferrer">
+                    <IoSearchOutline
+                      size={20}
+                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
+                    />{" "}
+                    {roadmap.category}
                   </a>
                 </li>
               ))}

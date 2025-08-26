@@ -24,7 +24,6 @@ import SmallBannerAd from "../pages/SmallBannerAd";
 import SocialBarAd from "./SocialBarAd";
 import NativeAd from './NativeAd';
 
-
 const CategoryProduct = () => {
   const params = useParams();
   const [products, setProducts] = useState([]);
@@ -35,17 +34,10 @@ const CategoryProduct = () => {
   const [theme] = useTheme();
   const [downloading, setDownloading] = useState({});
   const [page, setPage] = useState(1);
-  const productsPerPage = 6;
+  const productsPerPage = 9; // ✅ 9 products per page
 
-
-
-    useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (params.slug) getProductByCategory();
-  }, [params.slug]);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => { if (params.slug) getProductByCategory(); }, [params.slug]);
 
   const getProductByCategory = async () => {
     try {
@@ -53,20 +45,11 @@ const CategoryProduct = () => {
       const { data } = await axios.get(`/api/v1/questionpaper/product-category/${params.slug}`);
       setProducts(data.products);
       setCategory(data.category);
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
-  const openModal = (product) => {
-    setSelectedProduct(product);
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setSelectedProduct(null);
-  };
+  const openModal = (product) => { setSelectedProduct(product); setModalOpen(true); };
+  const closeModal = () => { setModalOpen(false); setSelectedProduct(null); };
 
   const handleDownload = async (url, filename) => {
     try {
@@ -98,6 +81,7 @@ const CategoryProduct = () => {
         </Box>
       ) : (
         <>
+          {/* Category Header */}
           <Box sx={{ backgroundColor: theme === 'dark' ? '#222' : '#f5f5f5', py: 5, mt: '90px', textAlign: 'center' }}>
             <Typography variant="h5" sx={{ fontFamily: 'Poppins', color: theme === 'dark' ? '#fff' : '#000' }}>
               {category.name || 'Category'}
@@ -107,34 +91,40 @@ const CategoryProduct = () => {
             </Typography>
           </Box>
 
+          {/* Product Grid */}
           <Container sx={{ py: 5 }}>
             <Grid container spacing={3}>
               {paginatedProducts.map((product) => (
-                <Grid item xs={12} sm={6} md={4} key={product._id}>
+                <Grid item xs={6} sm={6} md={4} key={product._id}>
                   <Card
                     sx={{
-                      backdropFilter: 'blur(10px)',
-                      backgroundColor: theme === 'dark'
-                        ? 'rgba(255, 255, 255, 0.1)'
-                        : 'rgba(255, 255, 255, 0.7)',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.85)',
                       color: theme === 'dark' ? '#fff' : '#000',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                      boxShadow: theme === 'dark'
+                        ? '0 8px 32px rgba(0,0,0,0.25)'
+                        : '0 8px 32px rgba(0,0,0,0.1)',
                       borderRadius: '16px',
                       transition: '0.3s',
+                      cursor: 'pointer',
                       '&:hover': {
                         transform: 'scale(1.03)',
+                        boxShadow: theme === 'dark'
+                          ? '0 12px 40px rgba(0,0,0,0.35)'
+                          : '0 12px 40px rgba(0,0,0,0.15)',
                       }
                     }}
                   >
                     <CardContent>
-                      <Typography fontWeight="bold" fontSize="1rem">
+                      <Typography fontWeight="bold" fontSize={{ xs: '0.9rem', sm: '1rem' }}>
                         {product.name}
                       </Typography>
-                      <Typography fontSize="0.875rem" sx={{ opacity: 0.8 }}>
+                      <Typography fontSize={{ xs: '0.8rem', sm: '0.875rem' }} sx={{ opacity: 0.8 }}>
                         {product.description.slice(0, 60)}...
                       </Typography>
                     </CardContent>
-                    <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+                    <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
                       {product.pdfs?.length > 0 && (
                         <Button
                           size="small"
@@ -142,7 +132,13 @@ const CategoryProduct = () => {
                           onClick={() => openModal(product)}
                           sx={{
                             backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
+                            color: '#fff',
                             textTransform: 'none',
+                            fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                            px: 2,
+                            '&:hover': {
+                              backgroundColor: theme === 'dark' ? '#42a5f5' : '#2c387e',
+                            }
                           }}
                         >
                           View PDFs
@@ -164,14 +160,15 @@ const CategoryProduct = () => {
                   variant="outlined"
                   shape="rounded"
                   color="primary"
+                  size={window.innerWidth < 600 ? 'small' : 'medium'}
                 />
               </Box>
             )}
 
+            {/* Small Banner Ad */}
             <Box mt={5}>
               <SmallBannerAd />
             </Box>
-           
           </Container>
 
           {/* PDF Modal */}
@@ -229,10 +226,10 @@ const CategoryProduct = () => {
               <Button onClick={closeModal} sx={{ color: 'white' }}>Close</Button>
             </DialogActions>
           </Dialog>
+
+          <NativeAd />
         </>
       )}
-      <NativeAd/>
-      
     </Layout>
   );
 };

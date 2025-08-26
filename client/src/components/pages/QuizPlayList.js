@@ -16,11 +16,12 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { useTheme } from '../context/ThemeContext';
 import NativeAd from './NativeAd';
+import SmallBannerAd from './SmallBannerAd';
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; // 6 per page for better balance
+  const itemsPerPage = 6;
   const navigate = useNavigate();
   const [theme] = useTheme();
 
@@ -82,6 +83,9 @@ const QuizPlayList = () => {
           🧠 Available Quizzes
         </Typography>
 
+  <Box display="flex" justifyContent="center" mb={2}>
+    <SmallBannerAd />
+  </Box>
         {/* Search Bar */}
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4, width: '100%' }}>
           <Autocomplete
@@ -127,12 +131,11 @@ const QuizPlayList = () => {
         {/* Quiz Cards */}
         <Grid container spacing={3} justifyContent="center">
           {currentQuizzes.map((quiz) => (
-            <Grid item xs={12} sm={6} md={4} key={quiz._id}>
+            <Grid item xs={6} sm={6} md={4} key={quiz._id}>
               <Card
                 sx={{
-                  borderRadius: 4,
-                  p: 1,
-                  height: '220px', // fixed height
+                  borderRadius: 3,
+                  height: 200, // ✅ Fixed height for all cards
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -141,21 +144,22 @@ const QuizPlayList = () => {
                     theme === 'dark'
                       ? 'rgba(255, 255, 255, 0.05)'
                       : 'rgba(255, 255, 255, 0.3)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                   color: theme === 'dark' ? 'white' : 'black',
-                  transition: 'transform 0.3s ease',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                   '&:hover': {
-                    transform: 'scale(1.03)',
+                    transform: 'translateY(-6px)',
+                    boxShadow: '0 12px 36px rgba(0,0,0,0.25)',
                   },
                 }}
               >
-                <CardContent sx={{ flexGrow: 1 }}>
+                <CardContent sx={{ flexGrow: 1, p: 2 }}>
                   <Typography
                     variant="h6"
                     fontWeight="bold"
                     sx={{
                       fontFamily: 'Poppins, sans-serif',
-                      fontSize: { xs: '1rem', md: '1.1rem' },
+                      fontSize: { xs: '0.9rem', md: '1rem' },
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -167,9 +171,9 @@ const QuizPlayList = () => {
                     variant="body2"
                     sx={{
                       opacity: 0.7,
-                      mb: 2,
+                      mt: 1,
                       fontFamily: 'Poppins, sans-serif',
-                      fontSize: '0.85rem',
+                      fontSize: '0.8rem',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -185,8 +189,10 @@ const QuizPlayList = () => {
                   onClick={() => navigate(`/play/${quiz._id}`)}
                   sx={{
                     backgroundColor: theme === 'dark' ? '#1e88e5' : '#1976d2',
+                    borderRadius: '0 0 12px 12px',
                     fontWeight: 'bold',
                     fontFamily: 'Poppins, sans-serif',
+                    textTransform: 'none',
                     '&:hover': {
                       backgroundColor: theme === 'dark' ? '#1565c0' : '#125ea2',
                     },

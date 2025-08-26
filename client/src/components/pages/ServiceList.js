@@ -23,17 +23,67 @@ import jordanImage from "../images/Jordan.png";
 import promotionBannerImage from "../images/promotionbanner.png";
 import iphoneBannerImage from "../images/iphone.png";
 import PDFNotesImages from "../images/chakra1.png";
-
+import SmallBannerAd from "./SmallBannerAd";
 
 const services = [
-  { id: 1, title: "Portfolio Project Code", description: "A complete MERN stack project for students.", image: portfolioImage, link: "https://portfolio-4-8gnu.onrender.com", price: "$5" },
-  { id: 2, title: "React Animation Project Code", description: "React animation using tsparticles.", image: reactanimationImage, link: "https://aniketsinghproject.netlify.app/", price: "$3" },
-  { id: 3, title: "YouTube Thumbnail Design", description: "Boost your video CTR with a custom thumbnail!", image: youtubeImage, price: "Free" },
-  { id: 4, title: "E-commerce Banner Design", description: "High-quality banners to increase visibility.", image: clothesImage, price: "$1" },
-  { id: 5, title: "E-commerce Product Banner", description: "Visually appealing banners for your products.", image: jordanImage, price: "$1" },
-  { id: 6, title: "PPTX Notes PDF", description: "Structured notes in PDF format.", image: PDFNotesImages, price: "$1" },
-  { id: 7, title: "Custom Promotion Banner", description: "Effective banners for promotions.", image: promotionBannerImage, price: "$1" },
-  { id: 8, title: "iPhone Style Banner", description: "Modern banner for tech products.", image: iphoneBannerImage, price: "$1" },
+  {
+    id: 1,
+    title: "Portfolio Project Code",
+    description: "A complete MERN stack project for students.",
+    image: portfolioImage,
+    link: "https://portfolio-4-8gnu.onrender.com",
+    price: "$5",
+  },
+  {
+    id: 2,
+    title: "React Animation Project Code",
+    description: "React animation using tsparticles.",
+    image: reactanimationImage,
+    link: "https://aniketsinghproject.netlify.app/",
+    price: "$3",
+  },
+  {
+    id: 3,
+    title: "YouTube Thumbnail Design",
+    description: "Boost your video CTR with a custom thumbnail!",
+    image: youtubeImage,
+    price: "Free",
+  },
+  {
+    id: 4,
+    title: "E-commerce Banner Design",
+    description: "High-quality banners to increase visibility.",
+    image: clothesImage,
+    price: "$1",
+  },
+  {
+    id: 5,
+    title: "E-commerce Product Banner",
+    description: "Visually appealing banners for your products.",
+    image: jordanImage,
+    price: "$1",
+  },
+  {
+    id: 6,
+    title: "PPTX Notes PDF",
+    description: "Structured notes in PDF format.",
+    image: PDFNotesImages,
+    price: "$1",
+  },
+  {
+    id: 7,
+    title: "Custom Promotion Banner",
+    description: "Effective banners for promotions.",
+    image: promotionBannerImage,
+    price: "$1",
+  },
+  {
+    id: 8,
+    title: "iPhone Style Banner",
+    description: "Modern banner for tech products.",
+    image: iphoneBannerImage,
+    price: "$1",
+  },
 ];
 
 const itemsPerPage = 6;
@@ -84,17 +134,22 @@ const ServiceList = () => {
         >
           📂 Available Services
         </Typography>
-
+       
+        <Box display="flex" justifyContent="center" mb={2}>
+          <SmallBannerAd />
+        </Box>
+        {/* Services Grid */}
         <Grid container spacing={3} justifyContent="center" ref={gridRef}>
           {paginatedServices.map((service) => (
-            <Grid item xs={12} sm={6} md={4} key={service.id}>
+            <Grid item xs={6} sm={6} md={4} key={service.id}>
               <Card
                 sx={{
                   borderRadius: 3,
                   backdropFilter: "blur(10px)",
-                  background: theme === "dark"
-                    ? "rgba(255,255,255,0.05)"
-                    : "rgba(255,255,255,0.3)",
+                  background:
+                    theme === "dark"
+                      ? "rgba(255,255,255,0.05)"
+                      : "rgba(255,255,255,0.3)",
                   boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
                   transition: "transform 0.3s ease",
                   "&:hover": { transform: "scale(1.03)" },
@@ -106,7 +161,7 @@ const ServiceList = () => {
                   alt={service.title}
                   style={{
                     width: "100%",
-                    height: "180px",
+                    height: "160px",
                     objectFit: "cover",
                     borderTopLeftRadius: 12,
                     borderTopRightRadius: 12,
@@ -118,13 +173,28 @@ const ServiceList = () => {
                     fontFamily: "Poppins, sans-serif",
                   }}
                 >
-                  <Typography variant="h6" fontWeight="bold">
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                  >
                     {service.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ my: 1 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      my: 1,
+                      fontSize: { xs: "0.75rem", sm: "0.85rem" },
+                    }}
+                  >
                     {service.description}
                   </Typography>
-                  <Typography fontWeight="bold">Price: {service.price}</Typography>
+                  <Typography
+                    fontWeight="bold"
+                    sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem" } }}
+                  >
+                    Price: {service.price}
+                  </Typography>
                   {service.link && (
                     <Button
                       href={service.link}
@@ -132,11 +202,14 @@ const ServiceList = () => {
                       fullWidth
                       variant="contained"
                       sx={{
-                        mt: 2,
-                        backgroundColor: theme === "dark" ? "#2196f3" : "#1976d2",
+                        mt: 1.5,
+                        backgroundColor:
+                          theme === "dark" ? "#2196f3" : "#1976d2",
                         fontFamily: "Poppins, sans-serif",
+                        fontSize: { xs: "0.75rem", sm: "0.9rem" },
                         "&:hover": {
-                          backgroundColor: theme === "dark" ? "#1565c0" : "#0d47a1",
+                          backgroundColor:
+                            theme === "dark" ? "#1565c0" : "#0d47a1",
                         },
                       }}
                     >
@@ -149,6 +222,7 @@ const ServiceList = () => {
           ))}
         </Grid>
 
+        {/* Pagination */}
         <Box display="flex" justifyContent="center" mt={4}>
           <Pagination
             count={Math.ceil(services.length / itemsPerPage)}
@@ -243,7 +317,6 @@ const ServiceList = () => {
           </Box>
         </Modal>
       </Box>
- 
     </Layout>
   );
 };
