@@ -11,6 +11,7 @@ const CreateQuiz = () => {
   const [questions, setQuestions] = useState([
     { questionText: "", options: ["", "", "", ""], correctAnswer: "" },
   ]);
+  const [jsonInput, setJsonInput] = useState(""); // 🔹 JSON paste field
 
   const handleQuestionChange = (index, field, value) => {
     const updatedQuestions = [...questions];
@@ -48,6 +49,7 @@ const CreateQuiz = () => {
         setCategory("");
         setTitle("");
         setQuestions([{ questionText: "", options: ["", "", "", ""], correctAnswer: "" }]);
+        setJsonInput(""); // reset JSON box
       }
     } catch (error) {
       console.error("Error:", error);
@@ -55,99 +57,128 @@ const CreateQuiz = () => {
     }
   };
 
+  // 🔹 JSON Loader
+  const handleLoadJson = () => {
+    try {
+      const parsed = JSON.parse(jsonInput);
+      if (Array.isArray(parsed)) {
+        setQuestions(parsed);
+      } else {
+        alert("Invalid format! Paste an array of questions.");
+      }
+    } catch (err) {
+      alert("Invalid JSON! Please check syntax.");
+    }
+  };
+
   return (
     <Layout>
-       
-    <Container maxWidth="md" sx={{ mt: 10}}>
-      <Card sx={{ p: 3, boxShadow: 3 }}>
-        <CardContent>
-          <Typography variant="h4" gutterBottom align="center">
-            Create a New Quiz
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Category"
-              variant="outlined"
-              margin="normal"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-            <TextField
-              fullWidth
-              label="Quiz Title"
-              variant="outlined"
-              margin="normal"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
+      <Container maxWidth="md" sx={{ mt: 10 }}>
+        <Card sx={{ p: 3, boxShadow: 3 }}>
+          <CardContent>
+            <Typography variant="h4" gutterBottom align="center">
+              Create a New Quiz
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label="Category"
+                variant="outlined"
+                margin="normal"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              />
+              <TextField
+                fullWidth
+                label="Quiz Title"
+                variant="outlined"
+                margin="normal"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
 
-            {questions.map((q, qIndex) => (
-              <Card key={qIndex} sx={{ my: 2, p: 2, boxShadow: 1 }}>
-                <TextField
-                  fullWidth
-                  label={`Question ${qIndex + 1}`}
-                  variant="outlined"
-                  margin="normal"
-                  value={q.questionText}
-                  onChange={(e) => handleQuestionChange(qIndex, "questionText", e.target.value)}
-                  required
-                />
+              {/* 🔹 Bulk JSON Paste Box */}
+              <TextField
+                fullWidth
+                label="Paste Questions JSON"
+                variant="outlined"
+                margin="normal"
+                multiline
+                rows={6}
+                value={jsonInput}
+                onChange={(e) => setJsonInput(e.target.value)}
+                placeholder='[{"questionText": "2+2=?", "options": ["1","2","3","4"], "correctAnswer": "4"}]'
+              />
+              <Button variant="contained" color="secondary" onClick={handleLoadJson}>
+                Load JSON
+              </Button>
 
-                {q.options.map((option, oIndex) => (
+              {questions.map((q, qIndex) => (
+                <Card key={qIndex} sx={{ my: 2, p: 2, boxShadow: 1 }}>
                   <TextField
-                    key={oIndex}
                     fullWidth
-                    label={`Option ${oIndex + 1}`}
+                    label={`Question ${qIndex + 1}`}
                     variant="outlined"
                     margin="normal"
-                    value={option}
-                    onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
+                    value={q.questionText}
+                    onChange={(e) => handleQuestionChange(qIndex, "questionText", e.target.value)}
                     required
                   />
-                ))}
 
-                <TextField
-                  fullWidth
-                  label="Correct Answer"
-                  variant="outlined"
-                  margin="normal"
-                  value={q.correctAnswer}
-                  onChange={(e) => handleQuestionChange(qIndex, "correctAnswer", e.target.value)}
-                  required
-                />
+                  {q.options.map((option, oIndex) => (
+                    <TextField
+                      key={oIndex}
+                      fullWidth
+                      label={`Option ${oIndex + 1}`}
+                      variant="outlined"
+                      margin="normal"
+                      value={option}
+                      onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
+                      required
+                    />
+                  ))}
 
-                <IconButton color="error" onClick={() => removeQuestion(qIndex)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Card>
-            ))}
+                  <TextField
+                    fullWidth
+                    label="Correct Answer"
+                    variant="outlined"
+                    margin="normal"
+                    value={q.correctAnswer}
+                    onChange={(e) => handleQuestionChange(qIndex, "correctAnswer", e.target.value)}
+                    required
+                  />
 
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddCircleIcon />}
-              onClick={addQuestion}
-              sx={{ mt: 2 }}
-            >
-              Add Question
-            </Button>
+                  <IconButton color="error" onClick={() => removeQuestion(qIndex)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Card>
+              ))}
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              fullWidth
-              sx={{ mt: 3 }}
-            >
-              Create Quiz
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </Container>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddCircleIcon />}
+                onClick={addQuestion}
+                sx={{ mt: 2 }}
+              >
+                Add Question
+              </Button>
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                fullWidth
+                sx={{ mt: 3 }}
+              >
+                Create Quiz
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </Container>
     </Layout>
   );
 };
