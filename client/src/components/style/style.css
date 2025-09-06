@@ -558,7 +558,7 @@ color: #0077cc;
     justify-content: center;
     border: 1px solid #007bff;
     width: 300px;
-    height: 400px;
+    height: 600px;
     background-color: #007bff;
     border-radius: 8px;
   }
@@ -3492,12 +3492,16 @@ button.toggle-theme:hover {
   align-items: center; /* Vertically center the text */
 }
 
+
+
 .board-title::before, 
 .board-title::after {
   content: none; /* Remove the lines */
 }
 
-
+.join-button {
+    font-size: 0.95rem;
+    padding: 10px 0;}
 
 }
 
@@ -4554,3 +4558,27 @@ color: white;
   padding-left: 8px;
   text-transform: uppercase;
 }
+
+
+.join-button {
+  background-color: #1976d2; /* professional blue */
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 0;
+  border-radius: 8px;
+  text-transform: none; /* avoid uppercase */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.join-button:hover {
+  background-color: #1565c0; /* slightly darker blue on hover */
+  transform: translateY(-2px); /* subtle lift effect */
+}
+
+.join-button:active {
+  background-color: #0d47a1; /* darker on click */
+  transform: translateY(0);
+}
+
