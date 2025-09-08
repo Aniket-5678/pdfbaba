@@ -239,12 +239,12 @@ function ExamList() {
   </Box>
 </Box>
 
-        {/* Banner Ad */}
+       
         <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
           <SmallBannerAd />
         </Box>
 
-        {/* Exams Grid */}
+       
         <Grid container spacing={3} sx={{ mt: 2 }}>
           {currentExams.length > 0 ? (
             currentExams.map((exam) => (

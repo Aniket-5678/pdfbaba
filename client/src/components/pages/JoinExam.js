@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
+import SmallBannerAd from "./SmallBannerAd";
 
 function JoinExam() {
   const { examId } = useParams();
@@ -75,6 +76,9 @@ function JoinExam() {
 
   return (
     <Container maxWidth="sm" sx={{ mt: 5 }}>
+ <Box sx={{ mt: 5, display: "flex", justifyContent: "center" }}>
+                      <SmallBannerAd />
+                    </Box>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
         <Box sx={{ textAlign: "center", mb: 3 }}>
           <Typography variant="h4" gutterBottom>

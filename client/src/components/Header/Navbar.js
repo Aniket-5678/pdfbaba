@@ -167,6 +167,22 @@ useEffect(() => {
   </div>
   <List>
   <ListItem  component={Link}  to = "/"className="menu-item_1">PDF BABA</ListItem>
+   {/* Auth links */}
+    {!auth.user ? (
+      <>
+        <ListItem button component={Link} to='/register' className="menu-item">Signup</ListItem>
+        <ListItem button component={Link} to='/login' className="menu-item">Login</ListItem>
+      </>
+    ) : (
+      <>
+                <ListItem className="menu-item">
+                  <CgProfile size={25} style={{ marginRight: "10px" }} /> {auth?.user.name}
+                </ListItem>
+                <ListItem button component={Link} to={`/dashboard/${auth?.user?.role === 1 ? 'admin' : 'user'}`} className="menu-item">Dashboard</ListItem>
+                <ListItem button onClick={handleLogout} className="menu-item">Logout</ListItem>
+              </>
+    )}
+    <ListItem button component={Link} to="/exams" className="menu-item">online MCQTest</ListItem>
   <ListItem button component={Link} to="/roadmapdata" className="menu-item">Career Paths</ListItem>
   <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
   <ListItem button component={Link} to="/service" className="menu-item">Services</ListItem>
@@ -187,21 +203,7 @@ useEffect(() => {
 
     <Divider />
 
-    {/* Auth links */}
-    {!auth.user ? (
-      <>
-        <ListItem button component={Link} to='/register' className="menu-item">Signup</ListItem>
-        <ListItem button component={Link} to='/login' className="menu-item">Login</ListItem>
-      </>
-    ) : (
-      <>
-                <ListItem className="menu-item">
-                  <CgProfile size={25} style={{ marginRight: "10px" }} /> {auth?.user.name}
-                </ListItem>
-                <ListItem button component={Link} to={`/dashboard/${auth?.user?.role === 1 ? 'admin' : 'user'}`} className="menu-item">Dashboard</ListItem>
-                <ListItem button onClick={handleLogout} className="menu-item">Logout</ListItem>
-              </>
-    )}
+
   </List>
 </Drawer>
 
