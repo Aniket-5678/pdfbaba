@@ -182,7 +182,7 @@ useEffect(() => {
                 <ListItem button onClick={handleLogout} className="menu-item">Logout</ListItem>
               </>
     )}
-    <ListItem button component={Link} to="/exams" className="menu-item">online MCQTest</ListItem>
+    
   <ListItem button component={Link} to="/roadmapdata" className="menu-item">Career Paths</ListItem>
   <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
   <ListItem button component={Link} to="/service" className="menu-item">Services</ListItem>
