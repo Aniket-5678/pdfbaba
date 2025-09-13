@@ -23,7 +23,6 @@ import SocialBarAd from "./SocialBarAd"
 import GoogleMultiplexAd from './GoogleMultiplexAd';
 import GoogleDisplayAds from './GoogleDisplayAds';
 import RoadmapSection from './RoadmapSection';
-import McqExamOnlineTest from './McqExamOnlineTest';
 
 
 const HomePage = () => {
@@ -256,9 +255,7 @@ const categorySlider = {
     ))}
   </Slider>
 </Box>
-<div>
-  <McqExamOnlineTest/>
-</div>
+
 <div>
   <RoadmapSection/>
 </div>

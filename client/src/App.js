@@ -36,12 +36,11 @@ import UpdateRoadmap from "./components/pages/admin/UpdateRoadmap";
 import Roadmap from "./components/pages/Roadmap";
 import RoadmapDetail from "./components/pages/RoadmapDetail";
 import DomainSearch from "./components/pages/DomainSearch";
-import CreateMCQExam from "./components/pages/admin/CreateMCQExam";
-import ExamList from "./components/pages/ExamList";
-import JoinExam from "./components/pages/JoinExam";
-import ExamStart from "./components/pages/ExamStart";
-import Result from "./components/pages/Result";
-import ExamWait from "./components/pages/ExamWait";
+
+
+
+
+
 
 
 
@@ -81,12 +80,8 @@ const [theme] = useTheme()
        <Route path="/roadmapdata" element={<Roadmap/>} />
        <Route path="/roadmap/:id" element={<RoadmapDetail/>} />
        <Route path="/domain-suggestor" element={<DomainSearch/>}/>
-         <Route path="/exams" element={<ExamList />} />
-        <Route path="/exam/:examId" element={<JoinExam />} />
-          <Route path="/exam/start/:examId" element={<ExamStart />} />
-        <Route path="/exam/result/:examId" element={<Result />} />
-   <Route path="/exam/wait/:examId" element={<ExamWait />} />
-         
+    
+   
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
 
@@ -105,7 +100,8 @@ const [theme] = useTheme()
           <Route path="admin/createroadmap" element={<CreateRoadmap/>} />
           <Route path="admin/roadmaplist" element={<RoadmapList/>} />
           <Route path="admin/update/:id" element={<UpdateRoadmap/>} />
-       <Route path="admin/createmcqexam" element={<CreateMCQExam/>} />
+       
+       
          </Route>
 
 

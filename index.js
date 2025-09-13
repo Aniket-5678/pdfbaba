@@ -11,13 +11,9 @@ import categoryRoutes from "./routes/categoryRoutes.js"
 import  quizRoutes from "./routes/quizRoutes.js"
 import roadmapRoutes from "./routes/roadmapRoutes.js"
 import domainRoutes from "./routes/domainRoutes.js"
-import mcqExamRoutes from "./routes/mcqExamRoutes.js"
-import mcqGameRoutes from "./routes/mcqGameRoutes.js"
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Server } from "socket.io";
-import http from "http";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import helmetPkg from "react-helmet-async";
@@ -56,20 +52,18 @@ app.use('/uploads/pdfs', express.static(pdfDir));
 app.use(express.json())
 
 
-const server = http.createServer(app);
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://pdf-baba.com",
+      "https://www.pdf-baba.com",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  })
+)
 
-// 2️⃣ Initialize Socket.IO using the server
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
-
-// 3️⃣ Now you can use io.on('connection', ...) later
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-});
 
 
 
@@ -92,8 +86,7 @@ app.use("/api/v1/roadmaps",  roadmapRoutes );
 
 app.use("/api/v1/domain",  domainRoutes );
 
-app.use("/api/v1/mcqexam", mcqExamRoutes);
-app.use("/api/v1/mcqgame", mcqGameRoutes);
+
 
 
 // ✅ Public folder serve karna
@@ -147,8 +140,7 @@ app.get("*", (req, res) => {
 
 
 
-server.listen(process.env.PORT, () => {
-    console.log(`Server is running on PORT ${process.env.PORT}`);
-});
-
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on PORT ${process.env.PORT}`)
+})
 
