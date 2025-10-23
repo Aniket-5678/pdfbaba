@@ -36,6 +36,12 @@ import UpdateRoadmap from "./components/pages/admin/UpdateRoadmap";
 import Roadmap from "./components/pages/Roadmap";
 import RoadmapDetail from "./components/pages/RoadmapDetail";
 import DomainSearch from "./components/pages/DomainSearch";
+import AdminCreateSourceCode from "./components/pages/admin/AdminCreateSourceCode";
+import ServiceDetails from "./components/pages/ServiceDetails";
+import SourceCodeBuyNow from "./components/pages/SourceCodeBuyNow";
+import SuccessPayment from "./components/pages/SuccessPayment";
+import SourceCodeOrder from "./components/pages/SourceCodeOrder";
+import AdminSourceCodeUpdateDelete from "./components/pages/admin/AdminSourceCodeUpdateDelete";
 
 
 
@@ -80,11 +86,14 @@ const [theme] = useTheme()
        <Route path="/roadmapdata" element={<Roadmap/>} />
        <Route path="/roadmap/:id" element={<RoadmapDetail/>} />
        <Route path="/domain-suggestor" element={<DomainSearch/>}/>
-    
-   
+     <Route path="/service/:id" element={<ServiceDetails />} />
+   <Route path="/sourcecode/buy/:id" element={<SourceCodeBuyNow />} />
+   <Route path="/success/:id" element={<SuccessPayment />} />
+
+     <Route path="/sourcecode-order" element={<SourceCodeOrder />} />
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
-
+           
          </Route>
          
 
@@ -100,7 +109,8 @@ const [theme] = useTheme()
           <Route path="admin/createroadmap" element={<CreateRoadmap/>} />
           <Route path="admin/roadmaplist" element={<RoadmapList/>} />
           <Route path="admin/update/:id" element={<UpdateRoadmap/>} />
-       
+       <Route path="admin/sourcecode" element={<AdminCreateSourceCode/>} />
+       <Route path="admin/sourcecodeupdatedelete" element={<AdminSourceCodeUpdateDelete/>} />
        
          </Route>
 

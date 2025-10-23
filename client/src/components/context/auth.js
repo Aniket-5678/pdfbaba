@@ -15,18 +15,18 @@ const AuthProvider = ({children}) => {
 axios.defaults.headers.common['Authorization'] = auth?.token
 
 useEffect(()=> {
-    const data = localStorage.getItem('auth')
-     if (data) {
-        const parsedata = JSON.parse(data)
-        setAuth({
-            ...auth,
-            user: parsedata.user,
-            token: parsedata.token
-        })
-     }
-    //eslint-disable-next-line
+  const data = localStorage.getItem('auth')
+  if (data) {
+    const parsedata = JSON.parse(data)
+    setAuth({
+      ...auth,
+      user: parsedata.user,
+      token: parsedata.token
+    })
+    // add Bearer prefix
+    axios.defaults.headers.common['Authorization'] = `Bearer ${parsedata.token}`
+  }
 },[])
-
 
 
    return (

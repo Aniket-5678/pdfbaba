@@ -255,7 +255,9 @@ const categorySlider = {
     ))}
   </Slider>
 </Box>
-
+        <div>
+  <Services/>
+</div>
 <div>
   <RoadmapSection/>
 </div>
@@ -434,11 +436,6 @@ const categorySlider = {
             
           )}
         </Modal>
-
-        <div>
-  <Services/>
-</div>
-
 
 
         <div>

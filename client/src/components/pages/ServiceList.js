@@ -3,100 +3,45 @@ import {
   Card,
   CardContent,
   Typography,
-  Button,
   Grid,
   Box,
-  Modal,
   Pagination,
+  CircularProgress,
 } from "@mui/material";
-import { WhatsApp } from "@mui/icons-material";
-import { AiOutlineClose } from "react-icons/ai";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
-
-// Import your images
-import portfolioImage from "../images/Portfolio.png";
-import reactanimationImage from "../images/Reactjsthumbnail.png";
-import youtubeImage from "../images/youtube.png";
-import clothesImage from "../images/clothes.png";
-import jordanImage from "../images/Jordan.png";
-import promotionBannerImage from "../images/promotionbanner.png";
-import iphoneBannerImage from "../images/iphone.png";
-import PDFNotesImages from "../images/chakra1.png";
+import { useAuth } from "../context/auth";
+import axios from "axios";
 import SmallBannerAd from "./SmallBannerAd";
-
-const services = [
-  {
-    id: 1,
-    title: "Portfolio Project Code",
-    description: "A complete MERN stack project for students.",
-    image: portfolioImage,
-    link: "https://portfolio-4-8gnu.onrender.com",
-    price: "$5",
-  },
-  {
-    id: 2,
-    title: "React Animation Project Code",
-    description: "React animation using tsparticles.",
-    image: reactanimationImage,
-    link: "https://aniketsinghproject.netlify.app/",
-    price: "$3",
-  },
-  {
-    id: 3,
-    title: "YouTube Thumbnail Design",
-    description: "Boost your video CTR with a custom thumbnail!",
-    image: youtubeImage,
-    price: "Free",
-  },
-  {
-    id: 4,
-    title: "E-commerce Banner Design",
-    description: "High-quality banners to increase visibility.",
-    image: clothesImage,
-    price: "$1",
-  },
-  {
-    id: 5,
-    title: "E-commerce Product Banner",
-    description: "Visually appealing banners for your products.",
-    image: jordanImage,
-    price: "$1",
-  },
-  {
-    id: 6,
-    title: "PPTX Notes PDF",
-    description: "Structured notes in PDF format.",
-    image: PDFNotesImages,
-    price: "$1",
-  },
-  {
-    id: 7,
-    title: "Custom Promotion Banner",
-    description: "Effective banners for promotions.",
-    image: promotionBannerImage,
-    price: "$1",
-  },
-  {
-    id: 8,
-    title: "iPhone Style Banner",
-    description: "Modern banner for tech products.",
-    image: iphoneBannerImage,
-    price: "$1",
-  },
-];
+import { useNavigate } from "react-router-dom";
 
 const itemsPerPage = 6;
 
 const ServiceList = () => {
   const [theme] = useTheme();
-  const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(false);
   const gridRef = useRef(null);
+  const [auth] = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchServices();
   }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get("/api/v1/sourcecode");
+      setServices(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -115,115 +60,148 @@ const ServiceList = () => {
       <Box
         sx={{
           px: { xs: 2, sm: 4 },
-          pt: { xs: 2, sm: 4 },
-          marginTop: "120px",
-          bgcolor: theme === "dark" ? "#121212" : "#ffffff",
+          pt: 6,
           minHeight: "100vh",
+          bgcolor: theme === "dark" ? "#0f0f0f" : "#f9f9f9",
+          mt: 10,
         }}
       >
         <Typography
-          variant="h5"
+          variant="h4"
           textAlign="center"
           fontWeight="bold"
+          fontSize={"1.1rem"}
+          mb={3}
           sx={{
             fontFamily: "Poppins, sans-serif",
-            color: theme === "dark" ? "white" : "black",
-            fontSize: { xs: "1.2rem", sm: "1.5rem" },
-            mb: 2,
+            color: theme === "dark" ? "#fff" : "#222",
           }}
         >
-          📂 Available Services
+          📂 Professional Source Code Projects
         </Typography>
-       
-        <Box display="flex" justifyContent="center" mb={2}>
+
+        <Typography
+          variant="subtitle1"
+          textAlign="center"
+          sx={{
+            mb: 4,
+            color: theme === "dark" ? "#bbb" : "#555",
+            fontFamily: "Poppins, sans-serif",
+          }}
+        >
+          Explore high-quality, ready-to-use website and app source codes.
+        </Typography>
+
+        <Box display="flex" justifyContent="center" mb={3}>
           <SmallBannerAd />
         </Box>
-        {/* Services Grid */}
-        <Grid container spacing={3} justifyContent="center" ref={gridRef}>
-          {paginatedServices.map((service) => (
-            <Grid item xs={6} sm={6} md={4} key={service.id}>
-              <Card
-                sx={{
-                  borderRadius: 3,
-                  backdropFilter: "blur(10px)",
-                  background:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.05)"
-                      : "rgba(255,255,255,0.3)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-                  transition: "transform 0.3s ease",
-                  "&:hover": { transform: "scale(1.03)" },
-                  height: "100%",
-                }}
-              >
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  style={{
-                    width: "100%",
-                    height: "160px",
-                    objectFit: "cover",
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
-                  }}
-                />
-                <CardContent
+
+        <Grid container spacing={4} justifyContent="center" ref={gridRef}>
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "50vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : paginatedServices.length === 0 ? (
+            <Typography
+              textAlign="center"
+              sx={{
+                mt: 8,
+                fontSize: "1.2rem",
+                color: theme === "dark" ? "#aaa" : "#444",
+              }}
+            >
+              No source code projects available right now.
+            </Typography>
+          ) : (
+            paginatedServices.map((service) => (
+              <Grid item xs={12} sm={6} md={4} key={service._id}>
+                <Card
                   sx={{
-                    color: theme === "dark" ? "#f5f5f5" : "#2c2c2c",
-                    fontFamily: "Poppins, sans-serif",
+                    borderRadius: 4,
+                    overflow: "hidden",
+                    transition: "all 0.3s ease",
+                    background:
+                      theme === "dark"
+                        ? "linear-gradient(145deg, #1a1a1a, #222)"
+                        : "#fff",
+                    boxShadow:
+                      theme === "dark"
+                        ? "0 8px 25px rgba(0,0,0,0.6)"
+                        : "0 4px 20px rgba(0,0,0,0.1)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow:
+                        theme === "dark"
+                          ? "0 12px 30px rgba(255,255,255,0.08)"
+                          : "0 12px 30px rgba(0,0,0,0.15)",
+                    },
+                    cursor: "pointer",
                   }}
+                  onClick={() => navigate(`/service/${service._id}`)}
                 >
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
-                  >
-                    {service.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
+                  <img
+                    src={
+                      service.thumbnail
+                        ? service.thumbnail
+                        : "/default-thumbnail.png"
+                    }
+                    alt={service.title}
+                    style={{
+                      width: "100%",
+                      height: "180px",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <CardContent
                     sx={{
-                      my: 1,
-                      fontSize: { xs: "0.75rem", sm: "0.85rem" },
+                      fontFamily: "Poppins, sans-serif",
+                      color: theme === "dark" ? "#eee" : "#2c2c2c",
                     }}
                   >
-                    {service.description}
-                  </Typography>
-                  <Typography
-                    fontWeight="bold"
-                    sx={{ fontSize: { xs: "0.8rem", sm: "0.9rem" } }}
-                  >
-                    Price: {service.price}
-                  </Typography>
-                  {service.link && (
-                    <Button
-                      href={service.link}
-                      target="_blank"
-                      fullWidth
-                      variant="contained"
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      fontSize={"0.9rem"}
+                      gutterBottom
+                      sx={{ mb: 1 }}
+                    >
+                      {service.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
                       sx={{
-                        mt: 1.5,
-                        backgroundColor:
-                          theme === "dark" ? "#2196f3" : "#1976d2",
-                        fontFamily: "Poppins, sans-serif",
-                        fontSize: { xs: "0.75rem", sm: "0.9rem" },
-                        "&:hover": {
-                          backgroundColor:
-                            theme === "dark" ? "#1565c0" : "#0d47a1",
-                        },
+                        mb: 2,
+                        color: theme === "dark" ? "#ccc" : "#666",
+                        height: "40px",
+                        overflow: "hidden",
                       }}
                     >
-                      View Project
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+                      {service.description}
+                    </Typography>
+                    <Typography
+                      fontWeight="bold"
+                      sx={{
+                        color: theme === "dark" ? "#00e676" : "#007bff",
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      ₹{service.price}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          )}
         </Grid>
 
-        {/* Pagination */}
-        <Box display="flex" justifyContent="center" mt={4}>
+        <Box display="flex" justifyContent="center" mt={5} mb={6}>
           <Pagination
             count={Math.ceil(services.length / itemsPerPage)}
             page={page}
@@ -233,89 +211,6 @@ const ServiceList = () => {
             size="large"
           />
         </Box>
-
-        {/* Floating WhatsApp Icon */}
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 95,
-            right: 20,
-            bgcolor: "#25D366",
-            borderRadius: "50%",
-            width: 50,
-            height: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            boxShadow: 3,
-            zIndex: 1300,
-          }}
-          onClick={() => setOpen(true)}
-        >
-          <WhatsApp sx={{ color: "white", fontSize: 30 }} />
-        </Box>
-
-        {/* WhatsApp Modal */}
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              bgcolor: theme === "dark" ? "#1e1e1e" : "white",
-              color: theme === "dark" ? "white" : "black",
-              boxShadow: 5,
-              p: 4,
-              borderRadius: "12px",
-              width: { xs: "90%", sm: "400px" },
-              maxHeight: "80vh",
-              overflowY: "auto",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderBottom: "1px solid",
-                borderColor: theme === "dark" ? "#333" : "#ddd",
-                pb: 2,
-                mb: 3,
-              }}
-            >
-              <Typography variant="h6">Contact Us</Typography>
-              <AiOutlineClose
-                size={22}
-                onClick={() => setOpen(false)}
-                style={{
-                  cursor: "pointer",
-                  color: theme === "dark" ? "#bbb" : "#333",
-                }}
-              />
-            </Box>
-            <Button
-              variant="contained"
-              fullWidth
-              href="https://wa.me/918830730929"
-              target="_blank"
-              sx={{
-                bgcolor: "#25D366 !important",
-                color: "white",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                borderRadius: "8px",
-                "&:hover": {
-                  bgcolor: "#1DA851 !important",
-                  transform: "scale(1.05)",
-                },
-              }}
-            >
-              Open WhatsApp
-            </Button>
-          </Box>
-        </Modal>
       </Box>
     </Layout>
   );

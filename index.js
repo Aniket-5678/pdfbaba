@@ -11,6 +11,7 @@ import categoryRoutes from "./routes/categoryRoutes.js"
 import  quizRoutes from "./routes/quizRoutes.js"
 import roadmapRoutes from "./routes/roadmapRoutes.js"
 import domainRoutes from "./routes/domainRoutes.js"
+import sourceCodeRoutes from "./routes/sourceCodeRoutes.js"
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -37,6 +38,8 @@ if (!fs.existsSync(pdfDir)) {
   fs.mkdirSync(pdfDir, { recursive: true });
 }
 
+const sourceCodeDir = path.join(process.cwd(), "sourcecodes");
+if (!fs.existsSync(sourceCodeDir)) fs.mkdirSync(sourceCodeDir, { recursive: true });
 
 
 
@@ -45,6 +48,16 @@ if (!fs.existsSync(pdfDir)) {
 app.use('/uploads/pdfs', express.static(pdfDir));
 
 
+
+app.use(
+  "/sourcecodes",
+  express.static(sourceCodeDir, { fallthrough: false }) // Important: prevents SPA fallback
+);
+
+// Handle missing ZIP files
+app.use("/sourcecodes", (req, res) => {
+  res.status(404).json({ message: "Source code file not found" });
+});
 
 
 
@@ -88,6 +101,8 @@ app.use("/api/v1/domain",  domainRoutes );
 
 
 
+// Mount source code routes
+app.use("/api/v1/sourcecode", sourceCodeRoutes);
 
 // ✅ Public folder serve karna
 app.use(express.static(path.join(__dirname, "public")));

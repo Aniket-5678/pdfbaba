@@ -185,8 +185,8 @@ useEffect(() => {
     
   <ListItem button component={Link} to="/roadmapdata" className="menu-item">Career Paths</ListItem>
   <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
-  <ListItem button component={Link} to="/service" className="menu-item">Services</ListItem>
-    <ListItem button component={Link} to="/about" className="menu-item">About us</ListItem>
+  <ListItem button component={Link} to="/service" className="menu-item">Website Projects</ListItem>
+    <ListItem button component={Link} to="/sourcecode-order" className="menu-item">sourcecodeOrder</ListItem>
     <ListItem button component={Link} to="/contact" className="menu-item">Contact us</ListItem>
     <ListItem button component={Link} to="/privacy" className="menu-item">Privacy Policy</ListItem>
     <ListItem button component={Link} to="/termcondition" className="menu-item">Terms & Conditions</ListItem>
@@ -211,7 +211,7 @@ useEffect(() => {
         <div className="nav-link-main">
 
         <div className='contactus'>
-            <Link className='contact-nav' to='/roadmapdata'>Career Paths </Link>
+            <Link className='contact-nav' to='/roadmapdata'>CareerPaths </Link>
           </div>
 
         <div className='contactus'>
@@ -219,12 +219,12 @@ useEffect(() => {
           </div>
           
         <div className='contactus'>
-            <Link className='contact-nav' to='/service'>Services</Link>
+            <Link className='contact-nav' to='/service'>WebsiteProjects</Link>
           </div>
    
          
           <div className='aboutus'>
-            <Link className='about-nav' to='/about'>About us</Link>
+            <Link className='about-nav' to='/sourcecode-order'>sourcecodeOrder</Link>
           </div>
 
          
