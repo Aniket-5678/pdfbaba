@@ -25,7 +25,11 @@ const fileFilter = (req, file, cb) => {
   else cb(new Error("Invalid file type"), false);
 };
 
-const sourcecodeUpload = multer({ storage, fileFilter }).fields([
+const sourcecodeUpload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 300 * 1024 * 1024 }, // 300 MB
+}).fields([
   { name: "zipFile", maxCount: 1 },
   { name: "thumbnail", maxCount: 1 },
   { name: "multipleImages", maxCount: 20 },
