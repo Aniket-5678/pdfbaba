@@ -54,7 +54,7 @@ const SourceCodeBuyNow = () => {
       }
 
       const options = {
-        key: "rzp_test_HuSgk3l6tgARfq",
+        key: "rzp_live_RZGTtRmXVsMddp",
         amount: data.amount,
         currency: data.currency,
         name: service.title,
