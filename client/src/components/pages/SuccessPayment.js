@@ -9,6 +9,7 @@ import {
   CardContent,
   CardActions,
   Divider,
+  LinearProgress,
 } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -17,9 +18,11 @@ import axios from "axios";
 import { useAuth } from "../context/auth";
 
 const SuccessPayment = () => {
-  const { id } = useParams(); // order id
+  const { id } = useParams();
   const [fileReady, setFileReady] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [downloading, setDownloading] = useState(false);
   const [auth] = useAuth();
 
   useEffect(() => {
@@ -47,10 +50,18 @@ const SuccessPayment = () => {
 
   const handleDownload = async () => {
     try {
-      setLoading(true);
+      setDownloading(true);
+      setDownloadProgress(0);
+
       const res = await axios.get(`/api/v1/sourcecode/download/${id}`, {
         headers: { Authorization: `Bearer ${auth.token}` },
         responseType: "blob",
+        onDownloadProgress: (progressEvent) => {
+          const percent = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setDownloadProgress(percent);
+        },
       });
 
       const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -61,22 +72,18 @@ const SuccessPayment = () => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
+      setDownloadProgress(100);
     } catch (err) {
       console.error("🚫 Download failed:", err.response?.data || err.message);
       alert("Download failed. File may have expired or you do not have access.");
     } finally {
-      setLoading(false);
+      setDownloading(false);
     }
   };
 
   if (!auth?.token) {
     return (
-      <Box
-        sx={{
-          textAlign: "center",
-          mt: 10,
-        }}
-      >
+      <Box textAlign="center" mt={10}>
         <ErrorIcon color="error" sx={{ fontSize: 60 }} />
         <Typography variant="h6" color="error" mt={2}>
           Please login first to access this download.
@@ -120,10 +127,7 @@ const SuccessPayment = () => {
             backgroundColor: "#fff",
           }}
         >
-          <CheckCircleIcon
-            color="success"
-            sx={{ fontSize: 60, mb: 2 }}
-          />
+          <CheckCircleIcon color="success" sx={{ fontSize: 60, mb: 2 }} />
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Payment Successful!
           </Typography>
@@ -143,32 +147,48 @@ const SuccessPayment = () => {
                   mb: 2,
                 }}
               >
-                <Typography
-                  variant="body1"
-                  fontWeight="500"
-                  color="primary.main"
-                >
+                <Typography variant="body1" fontWeight="500" color="primary.main">
                   sourcecode-{id}.zip
                 </Typography>
               </CardContent>
 
-              <CardActions sx={{ justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<CloudDownloadIcon />}
-                  onClick={handleDownload}
-                  sx={{
-                    textTransform: "none",
-                    fontWeight: 600,
-                    px: 3,
-                    py: 1,
-                    borderRadius: 2,
-                  }}
-                >
-                  Download Now
-                </Button>
-              </CardActions>
+              {downloading ? (
+                <Box sx={{ width: "100%", textAlign: "center", mb: 2 }}>
+                  <Typography variant="body2" color="text.secondary" mb={1}>
+                    Downloading... {downloadProgress}%
+                  </Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={downloadProgress}
+                    sx={{
+                      height: 10,
+                      borderRadius: 5,
+                      backgroundColor: "#e0e0e0",
+                      "& .MuiLinearProgress-bar": {
+                        borderRadius: 5,
+                      },
+                    }}
+                  />
+                </Box>
+              ) : (
+                <CardActions sx={{ justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<CloudDownloadIcon />}
+                    onClick={handleDownload}
+                    sx={{
+                      textTransform: "none",
+                      fontWeight: 600,
+                      px: 3,
+                      py: 1,
+                      borderRadius: 2,
+                    }}
+                  >
+                    Download Now
+                  </Button>
+                </CardActions>
+              )}
             </>
           ) : (
             <Typography color="error" mt={1}>
