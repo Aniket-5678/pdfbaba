@@ -58,7 +58,6 @@ const SourceCodeBuyNow = () => {
         amount: data.amount,
         currency: data.currency,
         name: service.title,
-        // ✅ FIX: Use only title (or short text) to avoid 255-char limit
         description:
           service.title.length > 100
             ? service.title.slice(0, 100) + "..."
@@ -69,6 +68,10 @@ const SourceCodeBuyNow = () => {
           name: auth.user?.name,
           email: auth.user?.email,
         },
+        theme: {
+          color: "#1976d2",
+        },
+        redirect: true,
         handler: async (response) => {
           try {
             const verifyRes = await axios.post(
@@ -129,7 +132,7 @@ const SourceCodeBuyNow = () => {
     <Layout>
       <Box
         sx={{
-          backgroundColor: "#f9fafc",
+          backgroundColor: "#f5f7fa",
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
@@ -141,36 +144,46 @@ const SourceCodeBuyNow = () => {
       >
         <Card
           sx={{
-            maxWidth: 1000,
+            maxWidth: 1100,
             width: "100%",
             borderRadius: 4,
-            boxShadow: "0px 6px 20px rgba(0,0,0,0.1)",
+            boxShadow: "0px 8px 25px rgba(0,0,0,0.1)",
             overflow: "hidden",
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
+            bgcolor: "#fff",
           }}
         >
-          {/* Left Side: Preview Images */}
-          <Box sx={{ flex: 1, bgcolor: "#fff" }}>
+          {/* Left Side - Image Gallery */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              bgcolor: "#fafafa",
+            }}
+          >
             <CardMedia
               component="img"
               image={service.thumbnail || "/placeholder.png"}
               alt={service.title}
               sx={{
                 width: "100%",
-                height: 350,
+                height: { xs: 250, sm: 300, md: 400 },
                 objectFit: "cover",
                 borderBottom: { xs: "1px solid #eee", md: "none" },
               }}
             />
+
             {service.multipleImages?.length > 0 && (
               <Box
                 sx={{
                   display: "flex",
-                  gap: 1,
+                  gap: 1.5,
                   p: 2,
                   overflowX: "auto",
-                  bgcolor: "#fafafa",
+                  justifyContent: { xs: "flex-start", md: "center" },
+                  bgcolor: "#f9f9f9",
                 }}
               >
                 {service.multipleImages.map((img, i) => (
@@ -179,9 +192,9 @@ const SourceCodeBuyNow = () => {
                     src={img}
                     alt={`Screenshot ${i}`}
                     style={{
-                      width: "80px",
-                      height: "60px",
-                      borderRadius: "6px",
+                      width: "90px",
+                      height: "70px",
+                      borderRadius: "8px",
                       objectFit: "cover",
                       border: "1px solid #ddd",
                     }}
@@ -191,14 +204,14 @@ const SourceCodeBuyNow = () => {
             )}
           </Box>
 
-          {/* Right Side: Purchase Info */}
+          {/* Right Side - Details */}
           <CardContent
             sx={{
               flex: 1,
+              p: { xs: 3, sm: 4 },
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              p: 4,
               bgcolor: "#fff",
             }}
           >
@@ -209,7 +222,8 @@ const SourceCodeBuyNow = () => {
                 gutterBottom
                 sx={{
                   color: "#111",
-                  fontSize: { xs: "0.9rem", md: "1.1rem" },
+                  fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
+                  fontFamily: "Poppins, sans-serif",
                   lineHeight: 1.3,
                 }}
               >
@@ -222,19 +236,27 @@ const SourceCodeBuyNow = () => {
                   color: "#444",
                   lineHeight: 1.6,
                   mb: 3,
-                  fontSize: { xs: "0.9rem", md: "1.1rem" },
+                  fontSize: { xs: "0.9rem", md: "1rem" },
+                  fontFamily: "Poppins, sans-serif",
                 }}
               >
                 {service.description}
               </Typography>
+
               <Divider sx={{ mb: 3 }} />
 
               <Typography
                 variant="h5"
-                sx={{ fontWeight: "bold", color: "#1976d2", mb: 1 }}
+                sx={{
+                  fontWeight: "bold",
+                  color: "#1976d2",
+                  mb: 1,
+                  fontFamily: "Poppins, sans-serif",
+                }}
               >
                 ₹{service.price}
               </Typography>
+
               <Typography sx={{ color: "#777", mb: 3 }}>
                 One-time payment • Instant download access
               </Typography>
@@ -243,15 +265,16 @@ const SourceCodeBuyNow = () => {
                 variant="contained"
                 onClick={handlePayment}
                 sx={{
-                  py: 1.5,
-                  fontSize: "0.9rem",
+                  py: 1.4,
+                  fontSize: "0.95rem",
                   background: "#1976d2",
                   borderRadius: 2,
+                  fontFamily: "Poppins, sans-serif",
                   "&:hover": { background: "#0d47a1" },
                 }}
                 fullWidth
               >
-                Pay Now & Get Source Code
+                💳 Pay Now & Get Source Code
               </Button>
             </Box>
 
@@ -259,15 +282,27 @@ const SourceCodeBuyNow = () => {
               <Divider sx={{ mb: 2 }} />
               <Typography
                 variant="subtitle2"
-                sx={{ color: "#555", fontWeight: 600, mb: 1 }}
+                sx={{
+                  color: "#555",
+                  fontWeight: 600,
+                  mb: 1,
+                  fontFamily: "Poppins, sans-serif",
+                }}
               >
                 What You’ll Get:
               </Typography>
-              <Typography sx={{ color: "#666", fontSize: "0.9rem" }}>
+              <Typography
+                sx={{
+                  color: "#666",
+                  fontSize: "0.9rem",
+                  fontFamily: "Poppins, sans-serif",
+                }}
+              >
                 ✅ Complete source code (.zip) <br />
                 ✅ Setup instructions <br />
-                ✅ Ready-to-use project files <br />✅ Lifetime access after
-                purchase
+                ✅ Ready-to-use project files <br />
+                ✅ Lifetime access after purchase<br />
+                🚫 No refunds after purchase (digital product)
               </Typography>
             </Box>
           </CardContent>

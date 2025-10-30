@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Divider } from "@mui/material";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/auth";
@@ -54,108 +54,129 @@ const ServiceDetails = () => {
       <Box
         sx={{
           px: { xs: 2, sm: 4 },
-          pt: { xs: 12, sm: 12 },
+          pt: { xs: 10, sm: 12 },
           minHeight: "100vh",
           bgcolor: theme === "dark" ? "#121212" : "#fff",
           color: theme === "dark" ? "#fff" : "#000",
           mt: 6,
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 4 }}>
-          {/* Left: Main Image + Thumbnails */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: 5,
+            alignItems: "flex-start",
+          }}
+        >
+          {/* Left: Image Section */}
           <Box sx={{ flex: 1 }}>
             {mainImage && (
-              <Box sx={{ mb: 2 }}>
+              <Box
+                sx={{
+                  mb: 2,
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 0 10px rgba(255,255,255,0.1)"
+                      : "0 2px 12px rgba(0,0,0,0.1)",
+                }}
+              >
                 <img
                   src={mainImage}
                   alt="Main"
                   style={{
                     width: "100%",
-                    maxHeight: "400px",
+                    height: "400px",
                     objectFit: "cover",
-                    borderRadius: 8,
+                    display: "block",
                   }}
                 />
               </Box>
             )}
 
             {/* Thumbnails */}
-            <Box sx={{ display: "flex", gap: 1, overflowX: "auto" }}>
-              {service.thumbnail && service.thumbnail !== mainImage && (
-                <img
-                  src={service.thumbnail}
-                  alt="thumbnail"
-                  style={{
-                    width: "80px",
-                    height: "60px",
-                    objectFit: "cover",
-                    borderRadius: 6,
-                    cursor: "pointer",
-                    border:
-                      mainImage === service.thumbnail
-                        ? "2px solid #1976d2"
-                        : "2px solid transparent",
-                  }}
-                  onClick={() => setMainImage(service.thumbnail)}
-                />
-              )}
-
-              {service.multipleImages?.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  alt={`img-${idx}`}
-                  style={{
-                    width: "80px",
-                    height: "60px",
-                    objectFit: "cover",
-                    borderRadius: 6,
-                    cursor: "pointer",
-                    border:
-                      mainImage === img
-                        ? "2px solid #1976d2"
-                        : "2px solid transparent",
-                  }}
-                  onClick={() => setMainImage(img)}
-                />
-              ))}
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                overflowX: "auto",
+                pb: 1,
+              }}
+            >
+              {[
+                service.thumbnail,
+                ...(service.multipleImages || []),
+              ]
+                .filter(Boolean)
+                .map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`thumb-${idx}`}
+                    style={{
+                      width: "90px",
+                      height: "70px",
+                      objectFit: "cover",
+                      borderRadius: 6,
+                      cursor: "pointer",
+                      border:
+                        mainImage === img
+                          ? "2px solid #1976d2"
+                          : "2px solid transparent",
+                      transition: "all 0.2s ease",
+                    }}
+                    onClick={() => setMainImage(img)}
+                  />
+                ))}
             </Box>
           </Box>
 
-          {/* Right: Details */}
-          <Box sx={{ flex: 1, display: "flex",  flexDirection: "column", gap: 3 }}>
+          {/* Right: Project Details */}
+          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
             <Typography
-    variant="h4"
-    fontWeight="700"
-    sx={{
-      fontSize: { xs: "1.1rem", sm: "1.1rem", md: "1.3rem" },
-      lineHeight: 1.3,
-    }}
-  >
-    {service.title}
-  </Typography>
+              variant="h4"
+              fontWeight="700"
+              sx={{
+                fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.5rem" },
+                lineHeight: 1.3,
+              }}
+            >
+              {service.title}
+            </Typography>
 
-  <Typography
-    sx={{
-      lineHeight: 1.6,
-      whiteSpace: "pre-line",
-      fontSize: { xs: "0.9rem", sm: "1rem", md: "1.05rem" },
-      color: "#444",
-    }}
-  >
-    {service.description}
-  </Typography>
+            <Typography
+              sx={{
+                lineHeight: 1.7,
+                whiteSpace: "pre-line",
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.05rem" },
+                color: theme === "dark" ? "#ccc" : "#444",
+              }}
+            >
+              {service.description}
+            </Typography>
 
-            <Typography fontWeight="bold">Price: ₹{service.price}</Typography>
+            <Typography
+              fontWeight="bold"
+              sx={{
+                fontSize: { xs: "1rem", sm: "1.1rem" },
+                color: "#1976d2",
+              }}
+            >
+              Price: ₹{service.price}
+            </Typography>
 
             <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
               <Button
                 variant="contained"
                 onClick={handleBuyNow}
                 sx={{
-                  py: 1.5,
+                  py: 1.3,
                   px: 4,
                   backgroundColor: "#1976d2",
+                  fontWeight: "600",
+                  borderRadius: 2,
                   "&:hover": { backgroundColor: "#0d47a1" },
                 }}
               >
@@ -166,36 +187,54 @@ const ServiceDetails = () => {
                 variant="outlined"
                 onClick={handleViewSource}
                 sx={{
-                  py: 1.5,
+                  py: 1.3,
                   px: 4,
                   color: "#1976d2",
                   borderColor: "#1976d2",
+                  fontWeight: "600",
+                  borderRadius: 2,
                   "&:hover": { borderColor: "#0d47a1", color: "#0d47a1" },
                 }}
               >
-                View website link
+                View Website Link
               </Button>
             </Box>
 
+            <Divider sx={{ my: 2 }} />
+
+            {/* What You'll Get Section */}
             <Box
               sx={{
-                mt: 4,
+                mt: 3,
                 p: 3,
                 borderRadius: 2,
-                backgroundColor: theme === "dark" ? "#1e1e1e" : "#f1f1f1",
+                backgroundColor: theme === "dark" ? "#1e1e1e" : "#f8f9fa",
+                boxShadow:
+                  theme === "dark"
+                    ? "0 0 10px rgba(255,255,255,0.05)"
+                    : "0 1px 8px rgba(0,0,0,0.1)",
               }}
             >
-              <Typography variant="subtitle1" fontWeight="bold" mb={1}>
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                mb={1}
+                sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+              >
                 What you'll get:
               </Typography>
-              <Typography>
-                ✅ Complete project source code in a zip file
-                <br />
-                ✅ All necessary files to run and practice the project
-                <br />
-                ✅ Ready-to-use project for learning, customization, or deployment
-                <br />
-                ✅ Perfect for students, developers, or anyone looking to explore the code
+
+              <Typography
+                sx={{
+                  fontSize: { xs: "0.85rem", sm: "0.95rem" },
+                  lineHeight: 1.8,
+                }}
+              >
+                ✅ Complete source code (.zip) <br />
+                ✅ Setup instructions <br />
+                ✅ Ready-to-use project files <br />
+                ✅ Lifetime access after purchase <br />
+                🚫 No refunds after purchase (digital product)
               </Typography>
             </Box>
           </Box>

@@ -66,12 +66,13 @@ const ServiceList = () => {
           mt: 10,
         }}
       >
+        {/* Header Section */}
         <Typography
           variant="h4"
           textAlign="center"
           fontWeight="bold"
           fontSize={"1.1rem"}
-          mb={3}
+          mb={1.5}
           sx={{
             fontFamily: "Poppins, sans-serif",
             color: theme === "dark" ? "#fff" : "#222",
@@ -87,16 +88,28 @@ const ServiceList = () => {
             mb: 4,
             color: theme === "dark" ? "#bbb" : "#555",
             fontFamily: "Poppins, sans-serif",
+            fontSize: "0.9rem",
           }}
         >
           Explore high-quality, ready-to-use website and app source codes.
         </Typography>
 
+        {/* Banner Ad */}
         <Box display="flex" justifyContent="center" mb={3}>
           <SmallBannerAd />
         </Box>
 
-        <Grid container spacing={4} justifyContent="center" ref={gridRef}>
+        {/* Cards Grid */}
+        <Grid
+          container
+          spacing={3}
+          justifyContent="center"
+          ref={gridRef}
+          sx={{
+            width: "100%",
+            margin: "0 auto",
+          }}
+        >
           {loading ? (
             <Box
               sx={{
@@ -121,9 +134,14 @@ const ServiceList = () => {
             </Typography>
           ) : (
             paginatedServices.map((service) => (
-              <Grid item xs={12} sm={6} md={4} key={service._id}>
+              <Grid item xs={6} sm={6} md={4} key={service._id}>
                 <Card
+                  onClick={() => navigate(`/service/${service._id}`)}
                   sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                     borderRadius: 4,
                     overflow: "hidden",
                     transition: "all 0.3s ease",
@@ -133,63 +151,66 @@ const ServiceList = () => {
                         : "#fff",
                     boxShadow:
                       theme === "dark"
-                        ? "0 8px 25px rgba(0,0,0,0.6)"
-                        : "0 4px 20px rgba(0,0,0,0.1)",
+                        ? "0 6px 18px rgba(255,255,255,0.08)"
+                        : "0 6px 18px rgba(0,0,0,0.1)",
                     "&:hover": {
-                      transform: "translateY(-6px)",
+                      transform: "translateY(-5px)",
                       boxShadow:
                         theme === "dark"
-                          ? "0 12px 30px rgba(255,255,255,0.08)"
-                          : "0 12px 30px rgba(0,0,0,0.15)",
+                          ? "0 10px 25px rgba(255,255,255,0.15)"
+                          : "0 10px 25px rgba(0,0,0,0.15)",
                     },
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/service/${service._id}`)}
                 >
-                  <img
+                  {/* Image */}
+                  <Box
+                    component="img"
                     src={
                       service.thumbnail
                         ? service.thumbnail
                         : "/default-thumbnail.png"
                     }
                     alt={service.title}
-                    style={{
+                    sx={{
                       width: "100%",
-                      height: "180px",
+                      height: { xs: 140, sm: 160, md: 180 },
                       objectFit: "cover",
+                      flexShrink: 0,
                     }}
                   />
+
+                  {/* Content */}
                   <CardContent
                     sx={{
+                      flexGrow: 1,
                       fontFamily: "Poppins, sans-serif",
                       color: theme === "dark" ? "#eee" : "#2c2c2c",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      p: { xs: 1.5, sm: 2 },
                     }}
                   >
                     <Typography
                       variant="h6"
-                      fontWeight="bold"
-                      fontSize={"0.9rem"}
-                      gutterBottom
-                      sx={{ mb: 1 }}
+                      fontWeight="200"
+                      sx={{
+                        mb: { xs: 0.5, sm: 1 },
+                        fontSize: { xs: "0.7rem", sm: "0.8rem" },
+                        lineHeight: 1.2,
+                        textAlign: "center",
+                      }}
                     >
                       {service.title}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        mb: 2,
-                        color: theme === "dark" ? "#ccc" : "#666",
-                        height: "40px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {service.description}
-                    </Typography>
+
                     <Typography
                       fontWeight="bold"
                       sx={{
                         color: theme === "dark" ? "#00e676" : "#007bff",
-                        fontSize: "1.1rem",
+                        fontSize: { xs: "0.9rem", sm: "1rem" },
+                        textAlign: "center",
                       }}
                     >
                       ₹{service.price}
@@ -201,6 +222,7 @@ const ServiceList = () => {
           )}
         </Grid>
 
+        {/* Pagination */}
         <Box display="flex" justifyContent="center" mt={5} mb={6}>
           <Pagination
             count={Math.ceil(services.length / itemsPerPage)}

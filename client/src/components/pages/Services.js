@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Box, IconButton } from "@mui/material";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/auth";
 import axios from "axios";
@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const Services = () => {
   const [theme] = useTheme();
@@ -33,56 +31,21 @@ const Services = () => {
     }
   };
 
-  const NextArrow = (props) => {
-    const { onClick } = props;
-    return (
-      <IconButton
-        onClick={onClick}
-        sx={{
-          position: "absolute",
-          right: 0,
-          top: "45%",
-          zIndex: 10,
-          bgcolor: theme === "dark" ? "#1e1e1e" : "#ffffff",
-          "&:hover": { bgcolor: theme === "dark" ? "#333" : "#e0e0e0" },
-        }}
-      >
-        <ArrowForwardIosIcon />
-      </IconButton>
-    );
-  };
-
-  const PrevArrow = (props) => {
-    const { onClick } = props;
-    return (
-      <IconButton
-        onClick={onClick}
-        sx={{
-          position: "absolute",
-          left: 0,
-          top: "45%",
-          zIndex: 10,
-          bgcolor: theme === "dark" ? "#1e1e1e" : "#ffffff",
-          "&:hover": { bgcolor: theme === "dark" ? "#333" : "#e0e0e0" },
-        }}
-      >
-        <ArrowBackIosIcon />
-      </IconButton>
-    );
-  };
-
+  // ✅ Responsive slider setup
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
-    speed: 500,
-    slidesToShow: 3,
+    autoplay: true,
+    autoplaySpeed: 2500,
+    pauseOnHover: true,
+    speed: 700,
+    slidesToShow: 3, // desktop
     slidesToScroll: 1,
-    arrows: true,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    arrows: false,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-      { breakpoint: 600, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+      { breakpoint: 1024, settings: { slidesToShow: 2 } }, // tablet
+      { breakpoint: 768, settings: { slidesToShow: 2 } },  // mobile (2 cards)
+      { breakpoint: 480, settings: { slidesToShow: 2 } },  // small mobile
     ],
   };
 
@@ -100,19 +63,12 @@ const Services = () => {
       </Typography>
     );
 
-  // ✅ Helper for short description
-  const getShortDescription = (text, maxLength = 100) => {
-    if (!text) return "";
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-  };
-
   return (
     <Box
       sx={{
         px: { xs: 2, sm: 4 },
         py: 6,
-        bgcolor: theme === "dark" ? "#121212" : "#fff",
-        position: "relative",
+        bgcolor: theme === "dark" ? "#121212" : "#fafafa",
       }}
     >
       <Typography
@@ -120,112 +76,95 @@ const Services = () => {
         textAlign="center"
         mb={4}
         fontSize="1.1rem"
-        sx={{ fontFamily: "Poppins, sans-serif" }}
+        sx={{ fontFamily: "Poppins, sans-serif", fontWeight: "600" }}
       >
         Website Projects
       </Typography>
 
-      {services.length > 1 ? (
-        <Slider {...sliderSettings}>
-          {services.map((service) => (
-            <Box key={service._id} px={1}>
-              <Card
-                sx={{
-                  cursor: "pointer",
-                  borderRadius: 3,
-                  backdropFilter: "blur(10px)",
-                  background:
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.05)"
-                      : "rgba(255,255,255,0.3)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-                  transition: "transform 0.3s ease",
-                  "&:hover": { transform: "scale(1.03)" },
-                }}
-                onClick={() => navigate(`/service/${service._id}`)}
-              >
-                <img
-                  src={service.thumbnail || "/default-thumbnail.png"}
-                  alt={service.title}
-                  style={{
-                    width: "100%",
-                    height: "180px",
-                    objectFit: "cover",
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
-                  }}
-                />
-                <CardContent
-                  sx={{
-                    color: theme === "dark" ? "#f5f5f5" : "#2c2c2c",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  <Typography variant="subtitle1"  fontWeight="bold">
-                    {service.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ my: 1 }}>
-                    {getShortDescription(service.description, 90)}
-                  </Typography>
-                  <Typography fontWeight="bold">
-                    Price: ₹{service.price}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Box>
-          ))}
-        </Slider>
-      ) : (
-        <Box display="flex" justifyContent="center">
-          {services.map((service) => (
+      <Slider {...sliderSettings}>
+        {services.map((service) => (
+          <Box
+            key={service._id}
+            px={1}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Card
-              key={service._id}
-              sx={{
-                maxWidth: 300,
-                cursor: "pointer",
-                borderRadius: 3,
-                backdropFilter: "blur(10px)",
-                background:
-                  theme === "dark"
-                    ? "rgba(255,255,255,0.05)"
-                    : "rgba(255,255,255,0.3)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-                transition: "transform 0.3s ease",
-                "&:hover": { transform: "scale(1.03)" },
-              }}
               onClick={() => navigate(`/service/${service._id}`)}
+              sx={{
+                borderRadius: 3,
+                overflow: "hidden",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                height: { xs: 230, sm: 260, md: 280 }, // consistent height
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 8px 24px rgba(255,255,255,0.1)"
+                      : "0 8px 24px rgba(0,0,0,0.15)",
+                },
+                bgcolor: theme === "dark" ? "#1e1e1e" : "#ffffff",
+              }}
             >
-              <img
+              <Box
+                component="img"
                 src={service.thumbnail || "/default-thumbnail.png"}
                 alt={service.title}
-                style={{
+                sx={{
                   width: "100%",
-                  height: "180px",
+                  height: { xs: 120, sm: 140, md: 160 },
                   objectFit: "cover",
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
+                  flexShrink: 0,
+                  transition: "transform 0.4s ease",
+                  "&:hover": { transform: "scale(1.05)" },
                 }}
               />
               <CardContent
                 sx={{
+                  flexGrow: 1,
                   color: theme === "dark" ? "#f5f5f5" : "#2c2c2c",
                   fontFamily: "Poppins, sans-serif",
+                  textAlign: "center",
+                  fontSize: "0.9rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  p: 1.5,
                 }}
               >
-                <Typography variant="subtitle1" fontWeight="bold">
+                {/* ✅ Compact title on mobile */}
+                <Typography
+                  variant="subtitle1"
+                 
+                  sx={{
+                    mb: { xs: 0.1, sm: 0.2 },
+                    fontSize: { xs: "0.8rem", sm: "0.9rem" }, // smaller on mobile
+                    lineHeight: { xs: "1rem", sm: "1.2rem" },
+                  }}
+                >
                   {service.title}
                 </Typography>
-                <Typography variant="body2" sx={{ my: 1 }}>
-                  {getShortDescription(service.description, 90)}
-                </Typography>
-                <Typography fontWeight="bold">
-                  Price: ₹{service.price}
+
+                <Typography
+                  fontWeight="bold"
+                  color="primary"
+                  sx={{
+                    fontSize: { xs: "0.8rem", sm: "0.9rem" },
+                    lineHeight: "1rem",
+                  }}
+                >
+                  ₹{service.price}
                 </Typography>
               </CardContent>
             </Card>
-          ))}
-        </Box>
-      )}
+          </Box>
+        ))}
+      </Slider>
     </Box>
   );
 };

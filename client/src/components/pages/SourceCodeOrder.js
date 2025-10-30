@@ -104,13 +104,13 @@ const [downloadingId, setDownloadingId] = useState(null);
 
   return (
     <Layout>
-      <Box sx={{ padding: "30px", maxWidth: "900px", margin: "auto", mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
+      <Box sx={{ padding: "30px", maxWidth: "900px",margin: "auto", mt: 15}}>
+        <Typography variant="h4" gutterBottom fontSize={"1.1rem"}>
           Your Purchased Source Codes
         </Typography>
 
         {orders.length === 0 && (
-          <Typography sx={{ marginBottom: "20px" }}>
+          <Typography sx={{ marginBottom: "20px"}  }>
             No purchases found.
           </Typography>
         )}
