@@ -7,7 +7,11 @@ import {
   Box,
   Pagination,
   CircularProgress,
+  TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import { Search } from "@mui/icons-material";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/auth";
@@ -21,6 +25,8 @@ const ServiceList = () => {
   const [theme] = useTheme();
   const [page, setPage] = useState(1);
   const [services, setServices] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const gridRef = useRef(null);
   const [auth] = useAuth();
@@ -36,11 +42,24 @@ const ServiceList = () => {
       setLoading(true);
       const res = await axios.get("/api/v1/sourcecode");
       setServices(res.data);
+      setFilteredServices(res.data);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
+  };
+
+  // ✅ Search filter logic
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filtered = services.filter((item) =>
+      item.title.toLowerCase().includes(query)
+    );
+    setFilteredServices(filtered);
+    setPage(1); // Reset pagination
   };
 
   const handlePageChange = (event, value) => {
@@ -50,7 +69,7 @@ const ServiceList = () => {
     }
   };
 
-  const paginatedServices = services.slice(
+  const paginatedServices = filteredServices.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -85,7 +104,7 @@ const ServiceList = () => {
           variant="subtitle1"
           textAlign="center"
           sx={{
-            mb: 4,
+            mb: 3,
             color: theme === "dark" ? "#bbb" : "#555",
             fontFamily: "Poppins, sans-serif",
             fontSize: "0.9rem",
@@ -93,6 +112,56 @@ const ServiceList = () => {
         >
           Explore high-quality, ready-to-use website and app source codes.
         </Typography>
+
+        {/* 🔍 Search Bar */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 4,
+            width: "100%",
+          }}
+        >
+          <TextField
+            placeholder="Search projects "
+            variant="outlined"
+            value={searchQuery}
+            onChange={handleSearch}
+            sx={{
+              width: { xs: "100%", sm: "60%", md: "40%" },
+              backgroundColor: theme === "dark" ? "#1e1e1e" : "#fff",
+              borderRadius: 2,
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: theme === "dark" ? "#333" : "#ccc",
+                },
+                "&:hover fieldset": {
+                  borderColor: theme === "dark" ? "#555" : "#888",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#1976d2",
+                },
+              },
+              "& input": {
+                color: theme === "dark" ? "#eee" : "#222",
+                fontFamily: "Poppins, sans-serif",
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton disabled>
+                    <Search
+                      sx={{
+                        color: theme === "dark" ? "#999" : "#666",
+                      }}
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
 
         {/* Banner Ad */}
         <Box display="flex" justifyContent="center" mb={3}>
@@ -130,7 +199,7 @@ const ServiceList = () => {
                 color: theme === "dark" ? "#aaa" : "#444",
               }}
             >
-              No source code projects available right now.
+              No projects found matching your search.
             </Typography>
           ) : (
             paginatedServices.map((service) => (
@@ -223,16 +292,18 @@ const ServiceList = () => {
         </Grid>
 
         {/* Pagination */}
-        <Box display="flex" justifyContent="center" mt={5} mb={6}>
-          <Pagination
-            count={Math.ceil(services.length / itemsPerPage)}
-            page={page}
-            onChange={handlePageChange}
-            color="primary"
-            shape="rounded"
-            size="large"
-          />
-        </Box>
+        {filteredServices.length > itemsPerPage && (
+          <Box display="flex" justifyContent="center" mt={5} mb={6}>
+            <Pagination
+              count={Math.ceil(filteredServices.length / itemsPerPage)}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+              shape="rounded"
+              size="large"
+            />
+          </Box>
+        )}
       </Box>
     </Layout>
   );
