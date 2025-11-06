@@ -1,64 +1,49 @@
 import { Link } from "react-router-dom";
-import { Container, Box, Typography, Button } from "@mui/material";
-import { useTheme } from "../context/ThemeContext"; // Import Theme Context
+import { useTheme } from "../context/ThemeContext";
 
 const RoadmapSection = () => {
-  const [theme] = useTheme(); // Get current theme
+  const [theme] = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <Container maxWidth="lg" sx={{ my: 8, textAlign: "center" }}>
-      <Box
-        sx={{
-          bgcolor: theme === "dark" ? "#121212" : "white",
-          color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
-          p: 5,
-          borderRadius: 3,
-          boxShadow: theme === "dark" ? 1 : 3,
-          transition: "0.3s",
-          fontFamily: "'Poppins', sans-serif",
-          "&:hover": { boxShadow: theme === "dark" ? 3 : 5 },
-        }}
+    <div className="flex justify-center my-8 px-3">
+      <div
+        className={`
+          w-full max-w-5xl text-center rounded-2xl p-6 sm:p-10 transition-all duration-300 font-[Poppins]
+          ${isDark ? "bg-[#121212] text-gray-200 shadow-md shadow-white/10" : "bg-white text-gray-800 shadow-lg"}
+        `}
       >
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          gutterBottom
-          sx={{
-            fontFamily: "'Poppins', sans-serif",
-            fontSize: { xs: "0.9rem", sm: "1.5rem" }, // 1rem for mobile, 1.5rem for desktop
-            color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
-          }}
+        <h2
+          className={`
+            font-bold mb-2 leading-snug
+            ${isDark ? "text-gray-200" : "text-gray-900"}
+            text-[1.1rem] sm:text-[1.6rem]
+          `}
         >
           Your Career Path Starts Here 🚀
-        </Typography>
-        <Typography
-          variant="h6"
-          color="textSecondary"
-          mb={3}
-          sx={{
-            fontSize: { xs: "0.8rem", sm: "1rem" }, // Adjusting subtitle for mobile
-            fontFamily: "'Poppins', sans-serif",
-            color: theme === "dark" ? "#BDBDBD" : "#2c2c2c",
-          }}
+        </h2>
+
+        <p
+          className={`
+            mb-6 leading-relaxed
+            ${isDark ? "text-gray-400" : "text-gray-700"}
+            text-[0.9rem] sm:text-[1.05rem]
+          `}
         >
           Master Full-Stack, AI, Cybersecurity & More with Expert Roadmaps!
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          component={Link}
+        </p>
+
+        <Link
           to="/roadmapdata"
-          sx={{
-            fontFamily: "'Poppins', sans-serif",
-            bgcolor: theme === "dark" ? "#1E88E5" : "#1976d2",
-            ":hover": { bgcolor: theme === "dark" ? "#1565C0" : "#115293" },
-          }}
+          className={`
+            inline-block font-semibold px-6 py-3 rounded-lg text-sm sm:text-base transition-all duration-200
+            ${isDark ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"}
+          `}
         >
           Explore Roadmaps →
-        </Button>
-      </Box>
-    </Container>
+        </Link>
+      </div>
+    </div>
   );
 };
 

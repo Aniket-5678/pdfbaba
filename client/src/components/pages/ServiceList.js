@@ -1,17 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  Box,
-  Pagination,
-  CircularProgress,
-  TextField,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import { Search } from "@mui/icons-material";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/auth";
@@ -50,7 +37,6 @@ const ServiceList = () => {
     }
   };
 
-  // ✅ Search filter logic
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -59,14 +45,7 @@ const ServiceList = () => {
       item.title.toLowerCase().includes(query)
     );
     setFilteredServices(filtered);
-    setPage(1); // Reset pagination
-  };
-
-  const handlePageChange = (event, value) => {
-    setPage(value);
-    if (gridRef.current) {
-      gridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setPage(1);
   };
 
   const paginatedServices = filteredServices.slice(
@@ -76,235 +55,94 @@ const ServiceList = () => {
 
   return (
     <Layout>
-      <Box
-        sx={{
-          px: { xs: 2, sm: 4 },
-          pt: 6,
-          minHeight: "100vh",
-          bgcolor: theme === "dark" ? "#0f0f0f" : "#f9f9f9",
-          mt: 10,
-        }}
+      <div
+        className={`pt-20 min-h-screen px-4 sm:px-8 ${
+          theme === "dark" ? "bg-[#0f0f0f] text-white" : "bg-gray-100 text-gray-900"
+        }`}
       >
-        {/* Header Section */}
-        <Typography
-          variant="h4"
-          textAlign="center"
-          fontWeight="bold"
-          fontSize={"1.1rem"}
-          mb={1.5}
-          sx={{
-            fontFamily: "Poppins, sans-serif",
-            color: theme === "dark" ? "#fff" : "#222",
-          }}
-        >
-          📂 Professional Source Code Projects
-        </Typography>
-
-        <Typography
-          variant="subtitle1"
-          textAlign="center"
-          sx={{
-            mb: 3,
-            color: theme === "dark" ? "#bbb" : "#555",
-            fontFamily: "Poppins, sans-serif",
-            fontSize: "0.9rem",
-          }}
-        >
+        <h2 className="text-center text-xl font-bold">📂 Professional Source Code Projects</h2>
+        <p className="text-center text-sm mt-1 mb-5">
           Explore high-quality, ready-to-use website and app source codes.
-        </Typography>
+        </p>
 
-        {/* 🔍 Search Bar */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            mb: 4,
-            width: "100%",
-          }}
-        >
-          <TextField
-            placeholder="Search projects "
-            variant="outlined"
+        {/* Search Bar */}
+        <div className="flex justify-center mb-6">
+          <input
+            type="text"
+            placeholder="Search projects..."
             value={searchQuery}
             onChange={handleSearch}
-            sx={{
-              width: { xs: "100%", sm: "60%", md: "40%" },
-              backgroundColor: theme === "dark" ? "#1e1e1e" : "#fff",
-              borderRadius: 2,
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: theme === "dark" ? "#333" : "#ccc",
-                },
-                "&:hover fieldset": {
-                  borderColor: theme === "dark" ? "#555" : "#888",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#1976d2",
-                },
-              },
-              "& input": {
-                color: theme === "dark" ? "#eee" : "#222",
-                fontFamily: "Poppins, sans-serif",
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconButton disabled>
-                    <Search
-                      sx={{
-                        color: theme === "dark" ? "#999" : "#666",
-                      }}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
+            className={`w-full sm:w-1/2 md:w-1/3 px-4 py-2 rounded-lg border ${
+              theme === "dark" ? "bg-[#1e1e1e] border-gray-700 text-gray-200" : "bg-white border-gray-400"
+            }`}
           />
-        </Box>
+        </div>
 
-        {/* Banner Ad */}
-        <Box display="flex" justifyContent="center" mb={3}>
+        {/* Banner */}
+        <div className="flex justify-center mb-6">
           <SmallBannerAd />
-        </Box>
+        </div>
 
-        {/* Cards Grid */}
-        <Grid
-          container
-          spacing={3}
-          justifyContent="center"
+        {/* Cards */}
+        <div
           ref={gridRef}
-          sx={{
-            width: "100%",
-            margin: "0 auto",
-          }}
+          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4"
         >
           {loading ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "50vh",
-              }}
-            >
-              <CircularProgress />
-            </Box>
+            <div className="col-span-full flex justify-center py-20">
+              <div className="loader"></div>
+            </div>
           ) : paginatedServices.length === 0 ? (
-            <Typography
-              textAlign="center"
-              sx={{
-                mt: 8,
-                fontSize: "1.2rem",
-                color: theme === "dark" ? "#aaa" : "#444",
-              }}
-            >
+            <p className="col-span-full text-center mt-10 text-lg opacity-70">
               No projects found matching your search.
-            </Typography>
+            </p>
           ) : (
             paginatedServices.map((service) => (
-              <Grid item xs={6} sm={6} md={4} key={service._id}>
-                <Card
-                  onClick={() => navigate(`/service/${service._id}`)}
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    borderRadius: 4,
-                    overflow: "hidden",
-                    transition: "all 0.3s ease",
-                    background:
-                      theme === "dark"
-                        ? "linear-gradient(145deg, #1a1a1a, #222)"
-                        : "#fff",
-                    boxShadow:
-                      theme === "dark"
-                        ? "0 6px 18px rgba(255,255,255,0.08)"
-                        : "0 6px 18px rgba(0,0,0,0.1)",
-                    "&:hover": {
-                      transform: "translateY(-5px)",
-                      boxShadow:
-                        theme === "dark"
-                          ? "0 10px 25px rgba(255,255,255,0.15)"
-                          : "0 10px 25px rgba(0,0,0,0.15)",
-                    },
-                    cursor: "pointer",
-                  }}
-                >
-                  {/* Image */}
-                  <Box
-                    component="img"
-                    src={
-                      service.thumbnail
-                        ? service.thumbnail
-                        : "/default-thumbnail.png"
-                    }
-                    alt={service.title}
-                    sx={{
-                      width: "100%",
-                      height: { xs: 140, sm: 160, md: 180 },
-                      objectFit: "cover",
-                      flexShrink: 0,
-                    }}
-                  />
-
-                  {/* Content */}
-                  <CardContent
-                    sx={{
-                      flexGrow: 1,
-                      fontFamily: "Poppins, sans-serif",
-                      color: theme === "dark" ? "#eee" : "#2c2c2c",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      p: { xs: 1.5, sm: 2 },
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      fontWeight="200"
-                      sx={{
-                        mb: { xs: 0.5, sm: 1 },
-                        fontSize: { xs: "0.7rem", sm: "0.8rem" },
-                        lineHeight: 1.2,
-                        textAlign: "center",
-                      }}
-                    >
-                      {service.title}
-                    </Typography>
-
-                    <Typography
-                      fontWeight="bold"
-                      sx={{
-                        color: theme === "dark" ? "#00e676" : "#007bff",
-                        fontSize: { xs: "0.9rem", sm: "1rem" },
-                        textAlign: "center",
-                      }}
-                    >
-                      ₹{service.price}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <div
+                key={service._id}
+                onClick={() => navigate(`/service/${service._id}`)}
+                className={`cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-xl transition ${
+                  theme === "dark" ? "bg-[#1b1b1b]" : "bg-white"
+                }`}
+              >
+                <img
+                  src={service.thumbnail || "/default-thumbnail.png"}
+                  alt={service.title}
+                  className="h-40 w-full object-cover"
+                />
+                <div className="p-3 text-center">
+                  <h3 className="text-sm">{service.title}</h3>
+                  <p className="font-bold text-blue-600 dark:text-green-400 text-lg">
+                    ₹{service.price}
+                  </p>
+                </div>
+              </div>
             ))
           )}
-        </Grid>
+        </div>
 
         {/* Pagination */}
         {filteredServices.length > itemsPerPage && (
-          <Box display="flex" justifyContent="center" mt={5} mb={6}>
-            <Pagination
-              count={Math.ceil(filteredServices.length / itemsPerPage)}
-              page={page}
-              onChange={handlePageChange}
-              color="primary"
-              shape="rounded"
-              size="large"
-            />
-          </Box>
+          <div className="flex justify-center py-10 space-x-2">
+            {Array.from(
+              { length: Math.ceil(filteredServices.length / itemsPerPage) },
+              (_, i) => (
+                <button
+                  key={i}
+                  className={`px-3 py-1 rounded-md border ${
+                    page === i + 1
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300 dark:bg-gray-700 dark:text-white"
+                  }`}
+                  onClick={() => setPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              )
+            )}
+          </div>
         )}
-      </Box>
+      </div>
     </Layout>
   );
 };

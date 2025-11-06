@@ -1,9 +1,7 @@
-import React from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'; // Import arrows from react-icons
+import React from "react";
+import Slider from "react-slick";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { useTheme } from "../context/ThemeContext";
 
 import earthImagefirst from "../images/earth1.png";
 import earthImagetwo from "../images/earth2.png";
@@ -20,9 +18,9 @@ import jupiterfirst from "../images/jupiter1.png";
 import jupitersecond from "../images/jupiter2.png";
 import jupiterthird from "../images/jupiter3.png";
 
-import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
-
 const PdfFormat = () => {
+  const [theme] = useTheme();
+
   const images = [
     earthImagefirst,
     earthImagetwo,
@@ -37,163 +35,77 @@ const PdfFormat = () => {
     chakraImagefour,
     jupiterfirst,
     jupitersecond,
-    jupiterthird
+    jupiterthird,
   ];
 
-  const [theme] = useTheme(); // Use the theme context to get the current theme
-
-  // Custom Arrows
   const CustomPrevArrow = ({ onClick }) => (
-    <IconButton
+    <button
       onClick={onClick}
-      sx={{
-        position: 'absolute',
-        top: '50%',
-        left: '-40px',
-        transform: 'translateY(-50%)',
-        zIndex: 1,
-        backgroundColor: '#fff',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-        '&:hover': { backgroundColor: '#e0e0e0' },
-        fontSize: '24px', // Arrow size
-      }}
+      className="absolute left-[-35px] top-1/2 -translate-y-1/2 bg-white shadow px-2 py-2 rounded-full hover:bg-gray-200 z-10"
     >
-      <AiOutlineLeft />
-    </IconButton>
+      <AiOutlineLeft size={22} />
+    </button>
   );
 
   const CustomNextArrow = ({ onClick }) => (
-    <IconButton
+    <button
       onClick={onClick}
-      sx={{
-        position: 'absolute',
-        top: '50%',
-        right: '-40px',
-        transform: 'translateY(-50%)',
-        zIndex: 1,
-        backgroundColor: '#fff',
-        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-        '&:hover': { backgroundColor: '#e0e0e0' },
-        fontSize: '24px', // Arrow size
-      }}
+      className="absolute right-[-35px] top-1/2 -translate-y-1/2 bg-white shadow px-2 py-2 rounded-full hover:bg-gray-200 z-10"
     >
-      <AiOutlineRight />
-    </IconButton>
+      <AiOutlineRight size={22} />
+    </button>
   );
 
   const sliderSettings = {
-    dots: false, // Remove dots
     infinite: true,
-    speed: 500,
+    autoplay: true,
+    autoplaySpeed: 2500,
+    pauseOnHover: false,
+    speed: 600,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: false,  // Prevents pausing on hover
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
   };
 
   return (
-    <Box
-      sx={{
-        padding: '2rem',
-        backgroundColor: theme === 'dark' ? '#121212' : '#ffffff', // Dark or light background
-        color: theme === 'dark' ? '#f5f5f5' : '#333', // Adjust text color
-        display: 'flex',
-        flexDirection: 'row',
-        gap: '2rem',
-        flexWrap: { xs: 'wrap', sm: 'nowrap' }, // Responsive for small screens
-        alignItems: 'center',
-        position: 'relative', // Ensure arrows stay on top of the content
-        fontFamily: "'Poppins', sans-serif", // Poppins font-family
-        marginTop: '30px',
-      }}
+    <div
+      className={`flex flex-col sm:flex-row items-center gap-6 p-6 font-[Poppins] mt-12 ${
+        theme === "dark" ? "bg-[#121212] text-white" : "bg-white text-gray-800"
+      }`}
     >
-      {/* Slider Section */}
-      <Box
-        sx={{
-          flex: 1,
-          maxWidth: { xs: '100%', sm: '50%' },
-          width: { xs: '300px', sm: 'auto' },
-          position: 'relative',
-          marginBottom: { xs: '1rem', sm: '0' },
-          '.slick-dots': {
-            bottom: '-20px', // Ensure dots stay below the slider
-            position: 'absolute',
-          },
-          '.slick-dots li button:before': {
-            fontSize: '12px', // Adjust dot size
-            color: theme === 'dark' ? '#f5f5f5' : '#555', // Dot color
-          },
-          '.slick-dots li.slick-active button:before': {
-            color: theme === 'dark' ? '#fff' : '#000', // Active dot color
-          },
-        }}
-      >
+      {/* Slider */}
+      <div className="w-full sm:w-1/2 relative">
         <Slider {...sliderSettings}>
-          {images.map((image, index) => (
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: '0px 35px'
-              }}
-            >
+          {images.map((img, i) => (
+            <div key={i} className="flex justify-center">
               <img
-                src={image}
-                alt={`PDF sample ${index + 1}`}
-                style={{
-                  width: '80%',
-                  maxHeight: '300px',
-                  objectFit: 'contain',
-                  borderRadius: '8px',
-                  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                }}
+                src={img}
+                alt={`Slide ${i + 1}`}
+                className="w-4/5 max-h-[300px] object-contain rounded-lg shadow"
               />
-            </Box>
+            </div>
           ))}
         </Slider>
-      </Box>
+      </div>
 
-      {/* Content Section */}
-      <Box
-        sx={{
-          flex: 1,
-          maxWidth: { xs: '100%', sm: '50%' },
-          textAlign: { xs: 'center', sm: 'left' },
-          marginTop: { xs: '1rem', sm: '0' },
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{
-            fontSize: { xs: '1.2rem', sm: '1.8rem' },
-            fontWeight: '600',
-            color: theme === 'dark' ? '#f5f5f5' : '#333',
-            marginBottom: '1rem',
-            fontFamily: "'Poppins', sans-serif",
-          }}
-        >
+      {/* Text Content */}
+      <div className="w-full sm:w-1/2 text-center sm:text-left px-3">
+        <h2 className="text-xl sm:text-3xl font-bold mb-4">
           Enhance Your Learning with Comprehensive PDF Resources
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            fontSize: { xs: '0.9rem', sm: '1rem' },
-            color: theme === 'dark' ? '#e0e0e0' : '#555',
-            lineHeight: 1.6,
-            marginBottom: '1.5rem',
-            fontFamily: "'Poppins', sans-serif",
-            margin: '0px 10px'
-          }}
+        </h2>
+
+        <p
+          className={`text-sm sm:text-base leading-relaxed ${
+            theme === "dark" ? "text-gray-300" : "text-gray-600"
+          }`}
         >
-          PDFs serve as a vital resource for any learner. With clear organization, easy navigation, and compatibility across all devices, PDF notes transform your study experience. Whether you're reviewing class lectures, solving practice papers, or preparing for exams, PDF files provide a structured and accessible format that ensures efficient learning. Explore a range of PDF resources through this interactive slider, designed to help you find the most useful materials for your academic journey.
-        </Typography>
-      </Box>
-    </Box>
+          PDFs serve as a vital resource for any learner. With clear organization,
+          easy navigation, and compatibility across all devices, PDF notes transform
+          your study experience.
+        </p>
+      </div>
+    </div>
   );
 };
 

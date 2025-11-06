@@ -1,103 +1,61 @@
-import React from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useTheme } from '../context/ThemeContext'; // Assuming you have a context to manage theme
+import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 const Faq = () => {
+  const [theme] = useTheme();
+
   const faqData = [
-    {
-      question: "What is PDFBaba?",
+    { question: "What is PDFBaba?",
       answer: "PDFBaba is a platform where you can directly access and download a variety of educational PDFs, including Board question papers, course PDFs, and more, without needing to create an account."
     },
-    {
-      question: "How can I download the PDFs?",
-      answer: "Simply click on the download Button for any PDF to access and download it. No payment or subscription is required for free PDFs."
+    { question: "How can I download the PDFs?",
+      answer: "Simply click on the Download button for any PDF. No account is required for free PDFs."
     },
-    {
-      question: "What PDFs are available?",
-      answer: "We provide a wide range of educational PDFs, including Maharashtra Board HSC, CBSE question papers, and various course materials, all available for direct access and download."
+    { question: "What PDFs are available?",
+      answer: "We provide Maharashtra Board HSC, CBSE question papers, and various course materials."
     },
-    {
-      question: "Do I need an account to access the PDFs?",
-      answer: "No, you don't need to create an account to download PDFs. You can access all the available PDFs without logging in."
+    { question: "Do I need an account to access the PDFs?",
+      answer: "No, downloading PDFs does not require any account."
     },
-    {
-      question: "Is the content updated regularly?",
-      answer: "Yes, our content is updated regularly to ensure you have access to the most recent educational materials."
+    { question: "Is the content updated regularly?",
+      answer: "Yes, we update our content frequently to provide the latest materials."
     },
-    {
-      question: "How do I contact support?",
-      answer: "If you need assistance, you can contact us through the 'Contact Us' section on the website or via our support email."
+    { question: "How do I contact support?",
+      answer: "Go to the Contact Us page or email our support team."
     }
   ];
 
-  const [theme] = useTheme(); // Use the theme context to get the current theme
-
   return (
-    <Box sx={{
-      margin: '40px auto',
-      padding: '30px',
-      maxWidth: '900px',
-      backgroundColor: theme === 'dark' ? '#121212' : '#f9f9f9', // Dark or light background
-      borderRadius: '10px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      overflow: 'hidden',
-      fontFamily: "'Poppins', sans-serif",
-      color: theme === 'dark' ? '#f5f5f5' : '#333', // Adjust text color
-    }}>
-      <Typography variant="h4" gutterBottom sx={{
-        textAlign: 'center',
-        color: theme === 'dark' ? '#f5f5f5' : '#333', // Adjust title color
-        fontWeight: 500,
-        letterSpacing: '0.5px',
-        fontSize: '1.5rem'
-      }}>FAQs</Typography>
-      {faqData.map((faq, index) => (
-        <Accordion key={index} sx={{
-          marginBottom: '12px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
-          '&:hover': {
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
-          },
-          backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff', // Dark or light background for accordion
-        }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon sx={{ color: theme === 'dark' ? '#f5f5f5' : '#1976d2' }} />}
-            aria-controls={`panel${index}-content`}
-            id={`panel${index}-header`}
-            sx={{
-              backgroundColor: theme === 'dark' ? '#1e1e1e' : '#fff',
-              borderBottom: '1px solid #ddd',
-              '&:hover': {
-                backgroundColor: theme === 'dark' ? '#333' : '#f0f0f0'
-              }
-            }}
+    <div className={`max-w-3xl mx-auto mt-24 p-6 sm:p-10 rounded-xl shadow-md transition-all duration-300 
+      ${theme === "dark" ? "bg-gray-900 text-gray-200" : "bg-white text-gray-800"}`}>
+
+      <h2 className="text-center text-3xl font-semibold mb-6 tracking-wide">
+        FAQs
+      </h2>
+
+      <div className="space-y-4">
+        {faqData.map((faq, index) => (
+          <details
+            key={index}
+            className={`group border rounded-lg cursor-pointer transition-all 
+             ${theme === "dark" ? "border-gray-700 bg-gray-800" : "border-gray-300 bg-gray-50"}`}
           >
-            <Typography variant="h6" sx={{
-              color: theme === 'dark' ? '#f5f5f5' : '#444',
-              fontWeight: 500,
-              fontSize: '18px',
-              letterSpacing: '0.2px',
-              fontFamily: "'Poppins', sans-serif",
-            }}>{faq.question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails sx={{
-            backgroundColor: theme === 'dark' ? '#2c2c2c' : '#fafafa',
-            borderTop: '1px solid #ddd',
-            padding: '20px',
-            fontFamily: "'Poppins', sans-serif",
-          }}>
-            <Typography sx={{
-              color: theme === 'dark' ? '#e0e0e0' : '#555',
-              fontSize: '16px',
-              lineHeight: '1.6',
-              fontWeight: 400,
-            }}>{faq.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </Box>
+            <summary className="flex justify-between items-center px-4 py-3 text-lg font-medium select-none">
+              {faq.question}
+              <span className="transition-transform group-open:rotate-180">
+                ▼
+              </span>
+            </summary>
+
+            <div className={`px-4 py-3 border-t 
+               ${theme === "dark" ? "border-gray-700 bg-gray-900 text-gray-300" : "border-gray-300 bg-white text-gray-600"}`}>
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+
+    </div>
   );
 };
 

@@ -35,23 +35,28 @@ const Signup = () => {
   }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormSubmitting(true); // Show spinner when submitting the form
+  e.preventDefault();
+  setFormSubmitting(true);
 
-    try {
-      const res = await axios.post('/api/v1/user/register', { fullName, email, password });
+  try {
+    const res = await axios.post('/api/v1/user/register', { fullName, email, password });
 
-      if (res.data.success) {
-        toast.success(res.data && res.data.message);
-        navigate('/login');
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    } finally {
-      setFormSubmitting(false); // Hide spinner after request is done
+    if (res.data.success) {
+      toast.success(res.data.message);
+      navigate('/login');
     }
-  };
+  } catch (error) {
+    console.log(error);
+    if (error.response && error.response.data && error.response.data.message) {
+      toast.error(error.response.data.message); // ✅ Real error message
+    } else {
+      toast.error("Something went wrong");
+    }
+  } finally {
+    setFormSubmitting(false);
+  }
+};
+
 
   return (
     <Layout>

@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Layout from '../Layout/Layout';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Grid,
-  Box,
-  TextField,
-  Autocomplete,
-  Pagination,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { useTheme } from '../context/ThemeContext';
-import NativeAd from './NativeAd';
-import SmallBannerAd from './SmallBannerAd';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Layout from "../Layout/Layout";
+import { useTheme } from "../context/ThemeContext";
+import NativeAd from "./NativeAd";
+import SmallBannerAd from "./SmallBannerAd";
 
 const QuizPlayList = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const [theme] = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,198 +22,100 @@ const QuizPlayList = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const response = await axios.get('/api/v1/quizzes/all');
+      const response = await axios.get("/api/v1/quizzes/all");
       setQuizzes(response.data);
     } catch (error) {
-      console.error('Error fetching quizzes:', error);
+      console.error("Error fetching quizzes:", error);
     }
   };
 
-  const handleSearchSelect = (event, value) => {
-    if (value) {
-      navigate(`/play/${value._id}`);
-    }
-  };
+  const filteredQuizzes = quizzes.filter((quiz) =>
+    quiz.title.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Pagination logic
   const indexOfLastQuiz = currentPage * itemsPerPage;
   const indexOfFirstQuiz = indexOfLastQuiz - itemsPerPage;
-  const currentQuizzes = quizzes.slice(indexOfFirstQuiz, indexOfLastQuiz);
+  const currentQuizzes = filteredQuizzes.slice(indexOfFirstQuiz, indexOfLastQuiz);
+
+  const totalPages = Math.ceil(filteredQuizzes.length / itemsPerPage);
 
   return (
     <Layout>
-      <Box
-        marginTop="100px"
-        sx={{
-          px: { xs: 2, sm: 4 },
-          py: 3,
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          bgcolor: theme === 'dark' ? '#121212' : '#f5f5f5',
-        }}
+      <div
+        className={`min-h-screen mt-[100px] px-4 py-6 flex flex-col items-center ${
+          isDark ? "bg-[#121212] text-white" : "bg-[#f5f5f5] text-black"
+        }`}
       >
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          sx={{
-            textAlign: 'center',
-            mb: 3,
-            fontFamily: 'Poppins, sans-serif',
-            fontSize: { xs: '1.2rem', sm: '1.5rem' },
-            color: theme === 'dark' ? 'white' : 'black',
-          }}
-        >
+        <h2 className="text-center font-bold font-[Poppins] mb-4 text-[1.3rem] sm:text-[1.6rem]">
           🧠 Available Quizzes
-        </Typography>
+        </h2>
 
-  <Box display="flex" justifyContent="center" mb={2}>
-    <SmallBannerAd />
-  </Box>
-        {/* Search Bar */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4, width: '100%' }}>
-          <Autocomplete
-            options={quizzes}
-            getOptionLabel={(option) => option.title}
-            onChange={handleSearchSelect}
-            sx={{
-              width: { xs: '100%', sm: '50%' },
-              backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff',
-              borderRadius: '5px',
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search Quiz"
-                variant="outlined"
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <>
-                      <SearchIcon sx={{ color: theme === 'dark' ? '#bbb' : '#000' }} />
-                      {params.InputProps.startAdornment}
-                    </>
-                  ),
-                }}
-                sx={{
-                  backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff',
-                  borderRadius: '5px',
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: theme === 'dark' ? '#555' : '#ccc',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: theme === 'dark' ? '#aaa' : '#000',
-                    },
-                  },
-                }}
-              />
-            )}
+        <div className="mb-4">
+          <SmallBannerAd />
+        </div>
+
+        {/* Search Input */}
+        <div className="w-full max-w-lg mb-6">
+          <input
+            type="text"
+            placeholder="Search Quiz..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className={`w-full px-4 py-3 rounded-lg font-[Poppins] outline-none border ${
+              isDark ? "bg-[#2a2a2a] border-gray-600 text-white" : "bg-white border-gray-300 text-black"
+            }`}
           />
-        </Box>
+        </div>
 
         {/* Quiz Cards */}
-        <Grid container spacing={3} justifyContent="center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-6xl">
           {currentQuizzes.map((quiz) => (
-            <Grid item xs={6} sm={6} md={4} key={quiz._id}>
-              <Card
-                sx={{
-                  borderRadius: 3,
-                  height: 200, // ✅ Fixed height for all cards
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  backdropFilter: 'blur(10px)',
-                  background:
-                    theme === 'dark'
-                      ? 'rgba(255, 255, 255, 0.05)'
-                      : 'rgba(255, 255, 255, 0.3)',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                  color: theme === 'dark' ? 'white' : 'black',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-6px)',
-                    boxShadow: '0 12px 36px rgba(0,0,0,0.25)',
-                  },
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    sx={{
-                      fontFamily: 'Poppins, sans-serif',
-                      fontSize: { xs: '0.9rem', md: '1rem' },
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {quiz.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      opacity: 0.7,
-                      mt: 1,
-                      fontFamily: 'Poppins, sans-serif',
-                      fontSize: '0.8rem',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {quiz.category}
-                  </Typography>
-                </CardContent>
+            <div
+              key={quiz._id}
+              className={`rounded-xl h-52 flex flex-col justify-between transition-all shadow-lg p-4 cursor-pointer ${
+                isDark
+                  ? "bg-white/5 backdrop-blur text-white hover:shadow-white/20"
+                  : "bg-white text-black hover:shadow-xl"
+              }`}
+            >
+              <div>
+                <h3 className="font-bold font-[Poppins] text-[1rem] truncate">
+                  {quiz.title}
+                </h3>
+                <p className="text-sm opacity-70 mt-1 truncate">{quiz.category}</p>
+              </div>
 
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={() => navigate(`/play/${quiz._id}`)}
-                  sx={{
-                    backgroundColor: theme === 'dark' ? '#1e88e5' : '#1976d2',
-                    borderRadius: '0 0 12px 12px',
-                    fontWeight: 'bold',
-                    fontFamily: 'Poppins, sans-serif',
-                    textTransform: 'none',
-                    '&:hover': {
-                      backgroundColor: theme === 'dark' ? '#1565c0' : '#125ea2',
-                    },
-                  }}
-                >
-                  Start Quiz
-                </Button>
-              </Card>
-            </Grid>
+              <button
+                onClick={() => navigate(`/play/${quiz._id}`)}
+                className="w-full py-2 rounded-lg font-semibold font-[Poppins] bg-blue-600 hover:bg-blue-700 text-white transition"
+              >
+                Start Quiz
+              </button>
+            </div>
           ))}
-        </Grid>
+        </div>
 
         {/* Pagination */}
-        <Box mt={5}>
-          <Pagination
-            count={Math.ceil(quizzes.length / itemsPerPage)}
-            page={currentPage}
-            onChange={handlePageChange}
-            color="primary"
-            sx={{
-              '& .MuiPaginationItem-root': {
-                fontFamily: 'Poppins, sans-serif',
-              },
-            }}
-          />
-        </Box>
-      </Box>
+        <div className="flex gap-2 mt-8">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              className={`px-4 py-2 rounded-md font-semibold font-[Poppins] ${
+                currentPage === index + 1
+                  ? "bg-blue-600 text-white"
+                  : isDark
+                  ? "bg-[#2a2a2a] text-white"
+                  : "bg-white text-black border"
+              }`}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <Box>
-        <NativeAd />
-      </Box>
+      <NativeAd />
     </Layout>
   );
 };

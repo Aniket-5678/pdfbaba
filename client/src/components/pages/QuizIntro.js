@@ -1,97 +1,52 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext"; // Assuming theme context
+import { useTheme } from "../context/ThemeContext";
 
 const QuizIntro = () => {
-  const [theme] = useTheme(); // Get current theme
+  const [theme] = useTheme();
+
+  const isDark = theme === "dark";
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        px: { xs: 1, sm: 2 },
-        my: { xs: 3, sm: 4 },
-      }}
-    >
-      <Card
-        sx={{
-          width: "100%",
-          maxWidth: { xs: "95vw", sm: "90vw" },
-          textAlign: "center",
-          p: { xs: 2, sm: 3 },
-          boxShadow: theme === "dark" ? 1 : 3,
-          borderRadius: 2,
-          bgcolor: theme === "dark" ? "#121212" : "#ffffff",
-        }}
+    <div className="flex justify-center px-2 sm:px-4 my-4 sm:my-6">
+      <div
+        className={`w-full max-w-[95vw] sm:max-w-[90vw] text-center p-4 sm:p-6 rounded-xl transition-all duration-300
+        ${isDark ? "bg-[#121212] shadow-md shadow-white/10" : "bg-white shadow-md"}`}
       >
-        <CardContent
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 3, // Spacing between text and button
-          }}
-        >
-          <Box
-            sx={{
-              textAlign: "left",
-              flex: 1,
-            }}
-          >
-            <Typography
-              variant="h4"
-              component="h2"
-              gutterBottom
-              sx={{
-                fontWeight: "bold",
-                fontFamily: "Poppins, sans-serif",
-                fontSize: { xs: "1.1rem", sm: "1.5rem" },
-                color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
-                textAlign: { xs: "center", sm: "left" },
-              }}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          
+          {/* Text Section */}
+          <div className="flex-1 text-center sm:text-left">
+            <h2
+              className={`font-bold font-[Poppins] leading-snug 
+              ${isDark ? "text-gray-200" : "text-gray-900"} 
+              text-lg sm:text-2xl`}
             >
               Start Your Quiz Journey
-            </Typography>
+            </h2>
 
-            <Typography
-              variant="body1"
-              paragraph
-              sx={{
-                fontSize: { xs: "0.9rem", sm: "1.1rem" },
-                fontFamily: "Poppins, sans-serif",
-                color: theme === "dark" ? "#BDBDBD" : "#2c2c2c",
-                maxWidth: "600px",
-                lineHeight: 1.6,
-                textAlign: { xs: "center", sm: "left" },
-              }}
+            <p
+              className={`mt-3 font-[Poppins] leading-relaxed max-w-xl mx-auto sm:mx-0
+              ${isDark ? "text-gray-400" : "text-gray-700"}
+              text-sm sm:text-base`}
             >
-              Explore a variety of quizzes designed to challenge and expand your knowledge. 
+              Explore a variety of quizzes designed to challenge and expand your knowledge.
               Test your skills, track your progress, and enjoy learning in an interactive way!
-            </Typography>
-          </Box>
+            </p>
+          </div>
 
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
+          {/* Button */}
+          <Link
             to="/quizplaylist"
-            sx={{
-              width: { xs: "100%", sm: "250px" },
-              fontFamily: "Poppins, sans-serif",
-              fontSize: { xs: "0.9rem", sm: "1rem" },
-              py: { xs: 1.2, sm: 1.5 },
-              bgcolor: theme === "dark" ? "#1E88E5" : "#1976d2",
-              ":hover": { bgcolor: theme === "dark" ? "#1565C0" : "#115293" },
-            }}
+            className={`w-full sm:w-[250px] text-center font-[Poppins] rounded-lg py-3 text-sm sm:text-base
+            transition-all duration-200 font-semibold
+            ${isDark ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
           >
             Practice Now
-          </Button>
-        </CardContent>
-      </Card>
-    </Box>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

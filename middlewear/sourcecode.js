@@ -28,7 +28,10 @@ const fileFilter = (req, file, cb) => {
 const sourcecodeUpload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 300 * 1024 * 1024 }, // 300 MB
+   limits: {
+    fileSize: 1024 * 1024 * 1024, // 1 GB max file size
+  },
+
 }).fields([
   { name: "zipFile", maxCount: 1 },
   { name: "thumbnail", maxCount: 1 },

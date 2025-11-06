@@ -1,53 +1,65 @@
-import React from 'react';
-import '../style/style.css'; // Ensure your CSS file is correctly imported
-import { FaReact, FaDatabase, FaLaptopCode } from 'react-icons/fa'; // Example icons, adjust as needed
-import exploreImage from '../images/explore.png';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { FaReact, FaDatabase, FaLaptopCode } from "react-icons/fa";
+import exploreImage from "../images/explore.png";
+import { useNavigate } from "react-router-dom";
 
 const PlatformInfoCard = () => {
   const navigate = useNavigate();
-
-  const handleExploreClick = () => {
-    navigate('/explore');
-  };
+  const handleExploreClick = () => navigate("/explore");
 
   return (
-    <div className="platform-info-card">
-      <div className="card-image">
+    <div className="max-w-6xl mx-auto my-12 p-6 bg-white/70 dark:bg-white/10 backdrop-blur-xl border border-gray-200 dark:border-white/20 rounded-2xl shadow-lg flex flex-col md:flex-row gap-8 transition">
+      
+      {/* Image Section */}
+      <div className="flex justify-center md:w-1/2">
         <img
           src={exploreImage}
           alt="Learning Platform"
-          className="info-image"
+          className="w-full h-auto rounded-xl shadow-md object-cover"
         />
       </div>
-      <div className="card-content">
-        <h2 className="info-title">Welcome to PDF Baba Learning Hub</h2>
-        <p className="info-description">
-          Discover a wide range of educational resources and notes on PDF Baba.
-          We provide study materials for various categories such as 12th Science, 
-          Tech Zone, Spiritual Insights, Space Studies, and more. Access high-quality 
-          PDF notes on subjects like React JS, Node JS, JavaScript, HTML, CSS, Earth 
-          Studies, Chakra Practices, and much more to enhance your learning experience.
+
+      {/* Content Section */}
+      <div className="md:w-1/2 flex flex-col justify-center">
+        <h2 className="text-2xl md:text-3xl font-bold font-[Poppins] text-gray-900 dark:text-white mb-4">
+          Welcome to PDF Baba Learning Hub
+        </h2>
+
+        <p className="text-gray-700 dark:text-gray-300 leading-relaxed font-[Poppins] mb-5">
+          Discover high-quality study materials, notes and educational PDFs.
+          Whether you're learning 12th Science subjects, exploring tech like
+          React or Node, or diving into Space & Spiritual knowledge — we’ve got
+          you covered.
         </p>
-        <div className="info-features">
-          <div className="feature">
-            <FaLaptopCode className="feature-icon" />
+
+        {/* Features */}
+        <div className="space-y-3 mb-6">
+          <div className="flex items-center gap-3 text-gray-800 dark:text-gray-200 font-[Poppins]">
+            <FaLaptopCode className="text-blue-500 dark:text-blue-300 text-xl" />
             <span>12th Science - Comprehensive Notes</span>
           </div>
-          <div className="feature">
-            <FaDatabase className="feature-icon" />
+
+          <div className="flex items-center gap-3 text-gray-800 dark:text-gray-200 font-[Poppins]">
+            <FaDatabase className="text-green-500 dark:text-green-300 text-xl" />
             <span>Tech Zone - React JS, Node JS, JavaScript</span>
           </div>
-          <div className="feature">
-            <FaReact className="feature-icon" />
+
+          <div className="flex items-center gap-3 text-gray-800 dark:text-gray-200 font-[Poppins]">
+            <FaReact className="text-purple-500 dark:text-purple-300 text-xl" />
             <span>Spiritual Insights - Chakra Practices</span>
           </div>
-          <div className="feature">
-            <FaReact className="feature-icon" />
+
+          <div className="flex items-center gap-3 text-gray-800 dark:text-gray-200 font-[Poppins]">
+            <FaReact className="text-orange-500 dark:text-orange-300 text-xl" />
             <span>Space Studies - Earth and Beyond</span>
           </div>
         </div>
-        <button className="info-button" onClick={handleExploreClick}>
+
+        {/* Button */}
+        <button
+          onClick={handleExploreClick}
+          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-[Poppins] rounded-lg shadow-md transition active:scale-95"
+        >
           Explore Now
         </button>
       </div>

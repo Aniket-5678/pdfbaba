@@ -35,33 +35,41 @@ const Login = () => {
   }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormSubmitting(true); // Show spinner when submitting the form
+  e.preventDefault();
+  setFormSubmitting(true);
 
-    try {
-      const res = await axios.post('/api/v1/user/login', { email, password });
+  try {
+    const res = await axios.post('/api/v1/user/login', { email, password });
 
-      if (res.data.success) {
-        toast.success(res.data && res.data.message);
+    if (res.data.success) {
+      toast.success(res.data.message);
 
-        setAuth({
-          ...auth,
-          user: res.data.user,
-          token: res.data.token
-        });
+      setAuth({
+        ...auth,
+        user: res.data.user,
+        token: res.data.token
+      });
 
-        localStorage.setItem('auth', JSON.stringify(res.data));
-        navigate(location.state || '/');
-      } else {
-        toast.error(res?.data && res.data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    } finally {
-      setFormSubmitting(false); // Hide spinner after request is done
+      localStorage.setItem('auth', JSON.stringify(res.data));
+
+      navigate(location.state || '/');
+    } else {
+      toast.error(res.data.message || "Login failed");
     }
-  };
+  } catch (error) {
+    console.log(error);
+
+    // ✅ Backend ka real message frontend par dikhayega
+    if (error.response && error.response.data && error.response.data.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Something went wrong");
+    }
+  } finally {
+    setFormSubmitting(false);
+  }
+};
+
 
   return (
     <Layout>

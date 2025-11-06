@@ -1,28 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Layout from '../Layout/Layout';
-import axios from 'axios';
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  CircularProgress,
-  Container,
-  Grid,
-  Pagination,
-} from '@mui/material';
-import { IoClose } from 'react-icons/io5';
-import { useTheme } from '../context/ThemeContext';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Layout from "../Layout/Layout";
+import axios from "axios";
+import { ClipLoader } from "react-spinners";
 import SmallBannerAd from "../pages/SmallBannerAd";
 import SocialBarAd from "./SocialBarAd";
-import NativeAd from './NativeAd';
+import NativeAd from "./NativeAd";
+import { useTheme } from "../context/ThemeContext";
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -31,201 +15,154 @@ const CategoryProduct = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [theme] = useTheme();
   const [downloading, setDownloading] = useState({});
   const [page, setPage] = useState(1);
-  const productsPerPage = 9; // ✅ 9 products per page
+  const [theme] = useTheme();
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { if (params.slug) getProductByCategory(); }, [params.slug]);
+  const productsPerPage = 9;
+  const paginatedProducts = products.slice((page - 1) * productsPerPage, page * productsPerPage);
+  const pageCount = Math.ceil(products.length / productsPerPage);
 
-  const getProductByCategory = async () => {
-    try {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const fetchData = async () => {
       setLoading(true);
       const { data } = await axios.get(`/api/v1/questionpaper/product-category/${params.slug}`);
       setProducts(data.products);
       setCategory(data.category);
-    } finally { setLoading(false); }
-  };
-
-  const openModal = (product) => { setSelectedProduct(product); setModalOpen(true); };
-  const closeModal = () => { setModalOpen(false); setSelectedProduct(null); };
+      setLoading(false);
+    };
+    fetchData();
+  }, [params.slug]);
 
   const handleDownload = async (url, filename) => {
     try {
+      setDownloading((prev) => ({ ...prev, [filename]: true }));
       const secureUrl = url.replace("http://", "https://");
-      setDownloading(prev => ({ ...prev, [filename]: true }));
       const response = await fetch(secureUrl);
       const blob = await response.blob();
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = filename;
-      document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Download failed:", error);
+    } catch (err) {
+      console.log("Download error:", err);
     } finally {
-      setDownloading(prev => ({ ...prev, [filename]: false }));
+      setDownloading((prev) => ({ ...prev, [filename]: false }));
     }
   };
-
-  const paginatedProducts = products.slice((page - 1) * productsPerPage, page * productsPerPage);
-  const pageCount = Math.ceil(products.length / productsPerPage);
 
   return (
     <Layout>
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-          <CircularProgress />
-        </Box>
+        <div className="flex justify-center items-center h-screen">
+          <ClipLoader size={70} color="#3b82f6" />
+        </div>
       ) : (
         <>
-          {/* Category Header */}
-          <Box sx={{ backgroundColor: theme === 'dark' ? '#222' : '#f5f5f5', py: 5, mt: '90px', textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ fontFamily: 'Poppins', color: theme === 'dark' ? '#fff' : '#000' }}>
-              {category.name || 'Category'}
-            </Typography>
-            <Typography sx={{ color: theme === 'dark' ? '#ccc' : '#666' }}>
-              Explore the best resources for {category.name}
-            </Typography>
-          </Box>
+          {/* HEADER */}
+          <div
+            className={`text-center py-10 mt-24 ${
+              theme === "dark" ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
+            }`}
+          >
+            <h2 className="text-2xl font-semibold">{category.name}</h2>
+            <p className="text-sm opacity-75">Explore resources for {category.name}</p>
+          </div>
 
-          {/* Product Grid */}
-          <Container sx={{ py: 5 }}>
-            <Grid container spacing={3}>
-              {paginatedProducts.map((product) => (
-                <Grid item xs={6} sm={6} md={4} key={product._id}>
-                  <Card
-                    sx={{
-                      backdropFilter: 'blur(12px)',
-                      WebkitBackdropFilter: 'blur(12px)',
-                      backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.85)',
-                      color: theme === 'dark' ? '#fff' : '#000',
-                      boxShadow: theme === 'dark'
-                        ? '0 8px 32px rgba(0,0,0,0.25)'
-                        : '0 8px 32px rgba(0,0,0,0.1)',
-                      borderRadius: '16px',
-                      transition: '0.3s',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        transform: 'scale(1.03)',
-                        boxShadow: theme === 'dark'
-                          ? '0 12px 40px rgba(0,0,0,0.35)'
-                          : '0 12px 40px rgba(0,0,0,0.15)',
-                      }
-                    }}
+          {/* PRODUCT GRID */}
+          <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {paginatedProducts.map((product) => (
+              <div
+                key={product._id}
+                onClick={() => setModalOpen(true) || setSelectedProduct(product)}
+                className={`cursor-pointer p-4 rounded-xl shadow transition-transform duration-300 hover:scale-105 ${
+                  theme === "dark"
+                    ? "bg-gray-700 text-white shadow-black/40"
+                    : "bg-white text-gray-900 shadow-gray-300"
+                }`}
+              >
+                <h3 className="font-semibold text-sm mb-1">{product.name}</h3>
+                <p className="text-xs opacity-70 line-clamp-2">{product.description}</p>
+
+                {product.pdfs?.length > 0 && (
+                  <button
+                    className={`mt-3 w-full py-1 text-sm rounded-md ${
+                      theme === "dark"
+                        ? "bg-blue-500 hover:bg-blue-600"
+                        : "bg-blue-700 hover:bg-blue-800 text-white"
+                    }`}
                   >
-                    <CardContent>
-                      <Typography fontWeight="bold" fontSize={{ xs: '0.9rem', sm: '1rem' }}>
-                        {product.name}
-                      </Typography>
-                      <Typography fontSize={{ xs: '0.8rem', sm: '0.875rem' }} sx={{ opacity: 0.8 }}>
-                        {product.description.slice(0, 60)}...
-                      </Typography>
-                    </CardContent>
-                    <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
-                      {product.pdfs?.length > 0 && (
-                        <Button
-                          size="small"
-                          variant="contained"
-                          onClick={() => openModal(product)}
-                          sx={{
-                            backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                            color: '#fff',
-                            textTransform: 'none',
-                            fontSize: { xs: '0.75rem', sm: '0.85rem' },
-                            px: 2,
-                            '&:hover': {
-                              backgroundColor: theme === 'dark' ? '#42a5f5' : '#2c387e',
-                            }
-                          }}
-                        >
-                          View PDFs
-                        </Button>
-                      )}
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                    View PDFs
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
 
-            {/* Pagination */}
-            {pageCount > 1 && (
-              <Box mt={4} display="flex" justifyContent="center">
-                <Pagination
-                  count={pageCount}
-                  page={page}
-                  onChange={(e, value) => setPage(value)}
-                  variant="outlined"
-                  shape="rounded"
-                  color="primary"
-                  size={window.innerWidth < 600 ? 'small' : 'medium'}
-                />
-              </Box>
-            )}
+          {/* PAGINATION */}
+          <div className="flex justify-center mt-6 gap-2">
+            {Array.from({ length: pageCount }).map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setPage(idx + 1)}
+                className={`px-3 py-1 rounded-md border ${
+                  page === idx + 1
+                    ? "bg-blue-600 text-white"
+                    : theme === "dark"
+                    ? "bg-gray-700 text-gray-300 border-gray-500"
+                    : "bg-white text-gray-700 border-gray-300"
+                }`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
 
-            {/* Small Banner Ad */}
-            <Box mt={5}>
-              <SmallBannerAd />
-            </Box>
-          </Container>
+          <SmallBannerAd />
 
-          {/* PDF Modal */}
-          <Dialog open={modalOpen} onClose={closeModal} fullWidth maxWidth="sm">
-            <DialogTitle sx={{ backgroundColor: '#3f51b5', color: 'white' }}>
-              {selectedProduct?.name}
-              <IoClose onClick={closeModal} style={{ float: 'right', cursor: 'pointer' }} />
-            </DialogTitle>
-            <DialogContent sx={{ backgroundColor: theme === 'dark' ? '#333' : '#f9f9f9' }}>
-              {selectedProduct?.pdfs.map((pdfUrl, index) => {
-                const filename = pdfUrl.split('/').pop();
-                return (
-                  <Box key={index} sx={{
-                    mb: 2,
-                    p: 2,
-                    border: `1px solid ${theme === 'dark' ? '#555' : '#ccc'}`,
-                    borderRadius: '10px',
-                    backgroundColor: theme === 'dark' ? '#424242' : '#fff'
-                  }}>
-                    <Typography
-                      component="a"
-                      href={pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        display: 'block',
-                        color: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                        textDecoration: 'none',
-                        mb: 1
-                      }}
-                    >
-                      {filename}
-                    </Typography>
-                    <Button
-                      fullWidth
-                      onClick={() => handleDownload(pdfUrl, filename)}
-                      disabled={downloading[filename]}
-                      sx={{
-                        backgroundColor: theme === 'dark' ? '#64b5f6' : '#3f51b5',
-                        color: 'white',
-                        textTransform: 'none',
-                        '&:hover': {
-                          backgroundColor: theme === 'dark' ? '#42a5f5' : '#2c387e',
-                        }
-                      }}
-                    >
-                      {downloading[filename] ? 'Downloading...' : '📥 Download'}
-                    </Button>
-                  </Box>
-                );
-              })}
-              <SocialBarAd />
-            </DialogContent>
-            <DialogActions sx={{ backgroundColor: '#3f51b5' }}>
-              <Button onClick={closeModal} sx={{ color: 'white' }}>Close</Button>
-            </DialogActions>
-          </Dialog>
+          {/* MODAL */}
+          {modalOpen && selectedProduct && (
+            <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-[9999]">
+              <div
+                className={`w-[90%] max-w-lg p-5 rounded-lg ${
+                  theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+                }`}
+              >
+                <div className="flex justify-between mb-3">
+                  <h3 className="font-semibold">{selectedProduct.name}</h3>
+                  <button className="text-xl" onClick={() => setModalOpen(false)}>
+                    ✖
+                  </button>
+                </div>
+
+                {selectedProduct.pdfs.map((pdf, i) => {
+                  const filename = pdf.split("/").pop();
+                  return (
+                    <div key={i} className="mb-3 p-3 border rounded-md flex flex-col gap-2">
+                      <a
+                        href={pdf}
+                        target="_blank"
+                        className="text-blue-500 underline text-sm break-all"
+                        rel="noreferrer"
+                      >
+                        {filename}
+                      </a>
+
+                      <button
+                        onClick={() => handleDownload(pdf, filename)}
+                        className="py-1 text-sm bg-blue-600 text-white rounded-md"
+                      >
+                        {downloading[filename] ? "Downloading..." : "Download"}
+                      </button>
+                    </div>
+                  );
+                })}
+
+                <SocialBarAd />
+              </div>
+            </div>
+          )}
 
           <NativeAd />
         </>
