@@ -46,9 +46,11 @@ export const verifyPayment = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid signature" });
     }
 
+    const sourceCode = await SourceCode.findById(sourceCodeId);
     // Set Expiry (24 hours download window)
     const expiryDate = new Date();
     expiryDate.setHours(expiryDate.getHours() + 24);
+
 
     // Create Order
     const order = await Order.create({
@@ -59,7 +61,7 @@ export const verifyPayment = async (req, res) => {
       expiry: expiryDate,
     });
 
-    return res.json({ success: true, orderId: order._id });
+    return res.json({ success: true, orderId: order._id ,fileUrl: sourceCode.file });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

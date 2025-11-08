@@ -21,27 +21,39 @@ const SuccessPayment = () => {
   const { id } = useParams();
   const [fileReady, setFileReady] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [orderDetails, setOrderDetails] = useState(null);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [downloading, setDownloading] = useState(false);
   const [auth] = useAuth();
 
   useEffect(() => {
-    if (auth?.token) checkFileAvailability();
-    else setLoading(false);
-    // eslint-disable-next-line
+    if (auth?.token) {
+      checkFileAvailability();
+      fetchOrderDetails();
+    } else {
+      setLoading(false);
+    }
   }, [auth]);
+
+  const fetchOrderDetails = async () => {
+    try {
+      const res = await axios.get(`/api/v1/sourcecode/my-orders`, {
+        headers: { Authorization: `Bearer ${auth.token}` },
+      });
+      const order = res.data.orders.find((o) => o._id === id);
+      setOrderDetails(order || null);
+    } catch (err) {
+      console.error("❌ Could not fetch order details:", err);
+    }
+  };
 
   const checkFileAvailability = async () => {
     try {
-      setLoading(true);
       const res = await axios.get(`/api/v1/sourcecode/download/check/${id}`, {
         headers: { Authorization: `Bearer ${auth.token}` },
       });
-
-      if (res.data.allowed) setFileReady(true);
-      else setFileReady(false);
-    } catch (err) {
-      console.error("🚫 Error checking file:", err.response?.data || err.message);
+      setFileReady(res.data.allowed);
+    } catch {
       setFileReady(false);
     } finally {
       setLoading(false);
@@ -51,15 +63,11 @@ const SuccessPayment = () => {
   const handleDownload = async () => {
     try {
       setDownloading(true);
-      setDownloadProgress(0);
-
       const res = await axios.get(`/api/v1/sourcecode/download/${id}`, {
         headers: { Authorization: `Bearer ${auth.token}` },
         responseType: "blob",
-        onDownloadProgress: (progressEvent) => {
-          const percent = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
+        onDownloadProgress: (e) => {
+          const percent = Math.round((e.loaded * 100) / e.total);
           setDownloadProgress(percent);
         },
       });
@@ -67,15 +75,16 @@ const SuccessPayment = () => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `sourcecode-${id}.zip`);
+      link.setAttribute(
+        "download",
+        `${orderDetails?.title || "sourcecode"}-${id}.zip`
+      );
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-      setDownloadProgress(100);
     } catch (err) {
-      console.error("🚫 Download failed:", err.response?.data || err.message);
-      alert("Download failed. File may have expired or you do not have access.");
+      alert("Download failed. Please try again.");
     } finally {
       setDownloading(false);
     }
@@ -85,9 +94,7 @@ const SuccessPayment = () => {
     return (
       <Box textAlign="center" mt={10}>
         <ErrorIcon color="error" sx={{ fontSize: 60 }} />
-        <Typography variant="h6" color="error" mt={2}>
-          Please login first to access this download.
-        </Typography>
+        <Typography>Please login first.</Typography>
       </Box>
     );
   }
@@ -99,63 +106,60 @@ const SuccessPayment = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "90vh",
-        backgroundColor: "#f4f6f8",
       }}
     >
       {loading ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <CircularProgress color="primary" size={50} />
-          <Typography variant="body1" color="textSecondary">
-            Checking your download status...
+        <Box textAlign="center">
+          <CircularProgress size={50} />
+          <Typography mt={2} fontWeight={500} color="text.secondary">
+            Verifying your payment...
           </Typography>
         </Box>
       ) : (
         <Card
-          elevation={4}
           sx={{
-            width: 400,
-            borderRadius: 3,
-            p: 3,
+            width: 440,
+            p: 4,
             textAlign: "center",
-            backgroundColor: "#fff",
+            borderRadius: 3,
+            boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
           }}
         >
-          <CheckCircleIcon color="success" sx={{ fontSize: 60, mb: 2 }} />
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Payment Successful!
-          </Typography>
-          <Typography variant="body1" color="text.secondary" mb={2}>
-            Thank you for your purchase. Your source code is ready to download.
+          <CheckCircleIcon color="success" sx={{ fontSize: 65, mb: 1 }} />
+
+          <Typography variant="h5" fontWeight="700" gutterBottom>
+            Payment Successful 🎉
           </Typography>
 
-          <Divider sx={{ mb: 2 }} />
+          <Typography variant="body1" color="text.secondary" mb={2}>
+            Your file is ready for download.
+          </Typography>
+
+          <Divider sx={{ my: 2 }} />
 
           {fileReady ? (
             <>
               <CardContent
                 sx={{
-                  backgroundColor: "#f1f5ff",
+                  backgroundColor: "#e9f3ff",
                   borderRadius: 2,
                   p: 2,
                   mb: 2,
+                  border: "1px solid #d0e4ff",
                 }}
               >
-                <Typography variant="body1" fontWeight="500" color="primary.main">
-                  sourcecode-{id}.zip
+                <Typography variant="body1" fontWeight="600" color="primary.main">
+                  {orderDetails?.title || "sourcecode"}-{id}.zip
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  ~ 1–50 MB File • ZIP Format
                 </Typography>
               </CardContent>
 
               {downloading ? (
-                <Box sx={{ width: "100%", textAlign: "center", mb: 2 }}>
+                <Box sx={{ width: "100%", textAlign: "center", mb: 1 }}>
                   <Typography variant="body2" color="text.secondary" mb={1}>
-                    Downloading... {downloadProgress}%
+                    Downloading... <strong>{downloadProgress}%</strong>
                   </Typography>
                   <LinearProgress
                     variant="determinate"
@@ -163,10 +167,6 @@ const SuccessPayment = () => {
                     sx={{
                       height: 10,
                       borderRadius: 5,
-                      backgroundColor: "#e0e0e0",
-                      "& .MuiLinearProgress-bar": {
-                        borderRadius: 5,
-                      },
                     }}
                   />
                 </Box>
@@ -180,19 +180,19 @@ const SuccessPayment = () => {
                     sx={{
                       textTransform: "none",
                       fontWeight: 600,
-                      px: 3,
-                      py: 1,
+                      px: 4,
+                      py: 1.2,
                       borderRadius: 2,
                     }}
                   >
-                    Download Now
+                    Download File
                   </Button>
                 </CardActions>
               )}
             </>
           ) : (
-            <Typography color="error" mt={1}>
-              ❌ File not available or expired.
+            <Typography color="error" mt={1} fontWeight={600}>
+              ❌ Download link expired or unavailable.
             </Typography>
           )}
         </Card>
