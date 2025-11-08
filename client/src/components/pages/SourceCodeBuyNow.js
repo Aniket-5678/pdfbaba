@@ -72,32 +72,36 @@ const SourceCodeBuyNow = () => {
         theme: {
           color: "#1976d2",
         },
-      redirect: false,
 
-     method: {
-          upi: true,
-          card: true,        // ✅ Card ON
-          netbanking: false,
-          wallet: false,
-        },
 
-        // ✅ Force UPI Collect (No external app popup)
-        config: {
-          display: {
-            sequence: ["upi", "card"],
-            blocks: {
-              upi: {
-                name: "Pay Using UPI",
-                instruments: [
-                  {
-                    method: "upi",
-                    flows: ["collect"], // ✅ Enter UPI ID inside Razorpay (No popup)
-                  },
-                ],
-              },
+  redirect: true, // ✅ Fix redirect glitch
+
+  method: {
+    upi: true,
+    card: true,
+    netbanking: true,
+    wallet: false,
+  },
+
+  config: {
+    display: {
+      sequence: ["upi", "card", "netbanking"],
+      blocks: {
+        upi: {
+          name: "Pay Using UPI",
+          instruments: [
+            {
+              method: "upi",
+              flows: ["intent"], // ✅ No permission popup → smooth redirect
             },
-          },
+          ],
         },
+      },
+    },
+  },
+
+  callback_url: "/api/v1/sourcecode/verify-upi",
+
         handler: async (response) => {
           try {
             const verifyRes = await axios.post(
@@ -112,7 +116,7 @@ const SourceCodeBuyNow = () => {
               { headers: { Authorization: `Bearer ${auth.token}` } }
             );
 
-            const downloadToken = verifyRes.data.order._id;
+            const downloadToken = verifyRes.data.orderId; 
            toast.success("✅ Payment successful! Redirecting to download...");
 
             window.location.href = `/success/${downloadToken}`;

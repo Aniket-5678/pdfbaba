@@ -33,19 +33,24 @@ export const startPayment = async (req, res) => {
 // Verify Payment
 export const verifyPayment = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, sourceCodeId, amount } =
-      req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, sourceCodeId, amount } = req.body;
 
-    const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
-    hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
-    const generatedSignature = hmac.digest("hex");
+    // Verify Signature
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSign = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(sign)
+      .digest("hex");
 
-    if (generatedSignature !== razorpay_signature)
-      return res.status(400).json({ message: "Invalid signature" });
+    if (expectedSign !== razorpay_signature) {
+      return res.status(400).json({ success: false, message: "Invalid signature" });
+    }
 
+    // Set Expiry (24 hours download window)
     const expiryDate = new Date();
     expiryDate.setHours(expiryDate.getHours() + 24);
 
+    // Create Order
     const order = await Order.create({
       user: req.user._id,
       sourceCode: sourceCodeId,
@@ -54,11 +59,12 @@ export const verifyPayment = async (req, res) => {
       expiry: expiryDate,
     });
 
-    res.json({ success: true, order });
+    return res.json({ success: true, orderId: order._id });
   } catch (error) {
-    res.status(500).json({ message: "Error verifying payment", error: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 // Download Source Code
 // ✅ Corrected Download Source Code Controller
