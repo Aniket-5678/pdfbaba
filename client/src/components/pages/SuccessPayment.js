@@ -27,6 +27,8 @@ const SuccessPayment = () => {
   const [auth] = useAuth();
 
   useEffect(() => {
+      console.log("🔐 AUTH =>", auth); // <-- CHECK TOKEN + USER ID
+  console.log("🆔 ORDER ID FROM URL =>", id);
     if (auth?.token) {
       checkFileAvailability();
       fetchOrderDetails();

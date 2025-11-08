@@ -1,45 +1,40 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+const AuthContext = createContext();
 
-const AuthContext = createContext()
+export const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({
+    user: null,
+    token: "",
+  });
 
-const AuthProvider = ({children}) => {
-     
-    const [auth, setAuth] = useState({
-        user: null,
-        token: ""
-    })
-   
-//defaults
-axios.defaults.headers.common['Authorization'] = auth?.token
+  // ✅ Page refresh → localStorage se auth restore
+  useEffect(() => {
+    const storedAuth = localStorage.getItem("auth");
+    if (storedAuth) {
+      const parsed = JSON.parse(storedAuth);
+      setAuth(parsed);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${parsed.token}`;
+    }
+  }, []);
 
-useEffect(()=> {
-  const data = localStorage.getItem('auth')
-  if (data) {
-    const parsedata = JSON.parse(data)
-    setAuth({
-      ...auth,
-      user: parsedata.user,
-      token: parsedata.token
-    })
-    // add Bearer prefix
-    axios.defaults.headers.common['Authorization'] = `Bearer ${parsedata.token}`
-  }
-},[])
+  // ✅ Jab bhi auth change ho → localStorage me save
+  useEffect(() => {
+    if (auth?.token) {
+      localStorage.setItem("auth", JSON.stringify(auth));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${auth.token}`;
+    } else {
+      localStorage.removeItem("auth");
+      delete axios.defaults.headers.common["Authorization"];
+    }
+  }, [auth]);
 
-
-   return (
+  return (
     <AuthContext.Provider value={[auth, setAuth]}>
-        {children}
-
+      {children}
     </AuthContext.Provider>
-   )
+  );
+};
 
-}
-
-// custom hook 
-
-const useAuth = () => useContext(AuthContext)
-
-export {useAuth, AuthProvider}
+export const useAuth = () => useContext(AuthContext);

@@ -61,7 +61,12 @@ export const verifyPayment = async (req, res) => {
       expiry: expiryDate,
     });
 
-    return res.json({ success: true, orderId: order._id ,fileUrl: sourceCode.file });
+     return res.json({
+      success: true,
+      message: "Payment verified successfully",
+      orderId: order._id, // ← FRONTEND success page yeh use karega
+    });
+
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -122,6 +127,7 @@ export const downloadSourceCode = async (req, res) => {
 export const checkFileAvailability = async (req, res) => {
   try {
     const { id } = req.params; // order._id
+   
     const order = await Order.findById(id);
 
     if (!order) {
@@ -137,6 +143,7 @@ export const checkFileAvailability = async (req, res) => {
     }
 
     const sourceCode = await SourceCode.findById(order.sourceCode);
+  
     if (!sourceCode || !sourceCode.zipFile) {
       return res.status(404).json({ allowed: false, message: "Source file missing" });
     }
