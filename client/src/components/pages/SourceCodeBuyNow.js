@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useAuth } from "../context/auth";
+import toast from "react-hot-toast";
 
 const SourceCodeBuyNow = () => {
   const { id } = useParams();
@@ -71,7 +72,13 @@ const SourceCodeBuyNow = () => {
         theme: {
           color: "#1976d2",
         },
-        redirect: true,
+      redirect: false,
+modal: {
+  ondismiss: function () {
+    alert("Payment popup closed.");
+  },
+},
+
         handler: async (response) => {
           try {
             const verifyRes = await axios.post(
@@ -87,14 +94,15 @@ const SourceCodeBuyNow = () => {
             );
 
             const downloadToken = verifyRes.data.order._id;
-            alert("✅ Payment successful! Redirecting to download page...");
+           toast.success("✅ Payment successful! Redirecting to download...");
+
             window.location.href = `/success/${downloadToken}`;
           } catch (verifyErr) {
             console.error(
               "Verification failed:",
               verifyErr.response?.data || verifyErr.message
             );
-            alert("Payment verification failed. Please contact support.");
+            toast.error("❌ Payment verification failed. Please contact support.");
           }
         },
       };

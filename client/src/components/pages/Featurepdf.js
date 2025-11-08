@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLaptopCode, FaBook, FaFreeCodeCamp, FaSearch } from "react-icons/fa";
+import { FaLaptopCode, FaBook,  FaSearch, FaChartLine } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 
@@ -11,20 +11,15 @@ const categories = [
     icon: <FaLaptopCode size={40} />,
     link: "categoryworks",
   },
-  {
-    title: "Space Studies",
-    description:
-      "Explore the universe with PDFs on space exploration, satellite technology, astronomy, and space missions.",
-    icon: <FaBook size={40} />,
-    link: "categoryworks",
-  },
-  {
-    title: "Spiritual Insights",
-    description:
-      "Dive into spiritual teachings, meditation practices, and wisdom for personal growth and inner peace.",
-    icon: <FaFreeCodeCamp size={40} />,
-    link: "categoryworks",
-  },
+{
+  title: "Business & Finance",
+  description:
+    "Learn Business strategies, finance fundamentals, investment knowledge, marketing concepts and entrepreneurship skills through easy-to-understand PDF notes.",
+  icon: <FaChartLine size={40} />, // better icon for business
+  link: "categoryworks",
+},
+
+
 ];
 
 const steps = [

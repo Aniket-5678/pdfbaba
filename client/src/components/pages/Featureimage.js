@@ -26,11 +26,9 @@ const Featureimage = () => {
         </p>
 
         <ul className="list-disc pl-6 text-sm sm:text-lg leading-relaxed mb-6">
-          <li>Space Notes and Exploration</li>
-          <li>Spiritual Insights and Guidance</li>
           <li>Tech Notes and Latest Innovations</li>
-          <li>Health Education and Wellness Resources</li>
           <li>Personal Development and Motivational PDFs</li>
+          <li>Business and Finance Learning PDFs (Marketing, Investment, Startup, etc.)</li>
         </ul>
 
         <Link to="/discover-more">

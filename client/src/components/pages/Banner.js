@@ -3,9 +3,6 @@ import Carousel from 'react-material-ui-carousel';
 import JavascriptnewImage from "../images/javascript.png"
 import techzoneImage from "../images/techzone.png"
 import reactjsImage from "../images/reactjs.png"
-import spaceImage from "../images/space.png"
-import spritualImage from "../images/spritual.png"
-import mysteryImage from "../images/mystery.png"
 import quizbannerImage from "../images/quiz.png"
 import serviceBannerImage from "../images/availableservice.png"
 
@@ -16,14 +13,8 @@ const data = [
   JavascriptnewImage,
   quizbannerImage,
   serviceBannerImage ,
-  spaceImage,
   techzoneImage,
   reactjsImage,
-  spritualImage,
-  mysteryImage
-
-
- 
   // Add more imported images to this array
 ];
 
