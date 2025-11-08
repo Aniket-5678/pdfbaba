@@ -73,12 +73,31 @@ const SourceCodeBuyNow = () => {
           color: "#1976d2",
         },
       redirect: false,
-modal: {
-  ondismiss: function () {
-    alert("Payment popup closed.");
-  },
-},
 
+     method: {
+          upi: true,
+          card: true,        // ✅ Card ON
+          netbanking: false,
+          wallet: false,
+        },
+
+        // ✅ Force UPI Collect (No external app popup)
+        config: {
+          display: {
+            sequence: ["upi", "card"],
+            blocks: {
+              upi: {
+                name: "Pay Using UPI",
+                instruments: [
+                  {
+                    method: "upi",
+                    flows: ["collect"], // ✅ Enter UPI ID inside Razorpay (No popup)
+                  },
+                ],
+              },
+            },
+          },
+        },
         handler: async (response) => {
           try {
             const verifyRes = await axios.post(
