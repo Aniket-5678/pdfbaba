@@ -100,7 +100,6 @@ const SourceCodeBuyNow = () => {
     },
   },
 
-  callback_url: "/api/v1/sourcecode/verify",
 
         handler: async (response) => {
           try {
