@@ -42,6 +42,7 @@ import SourceCodeBuyNow from "./components/pages/SourceCodeBuyNow";
 import SuccessPayment from "./components/pages/SuccessPayment";
 import SourceCodeOrder from "./components/pages/SourceCodeOrder";
 import AdminSourceCodeUpdateDelete from "./components/pages/admin/AdminSourceCodeUpdateDelete";
+import AdminUserSourceCodeOrder from "./components/pages/admin/AdminUserSourceCodeOrder";
 
 
 
@@ -111,6 +112,7 @@ const [theme] = useTheme()
           <Route path="admin/update/:id" element={<UpdateRoadmap/>} />
        <Route path="admin/sourcecode" element={<AdminCreateSourceCode/>} />
        <Route path="admin/sourcecodeupdatedelete" element={<AdminSourceCodeUpdateDelete/>} />
+       <Route path="admin/usersourcecodeorder" element={<AdminUserSourceCodeOrder/>} />
        
          </Route>
 

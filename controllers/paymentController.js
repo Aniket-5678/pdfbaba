@@ -188,3 +188,43 @@ export const getUserOrders = async (req, res) => {
       .json({ success: false, message: "Failed to fetch user orders" });
   }
 };
+
+
+// ✅ Get all user orders (Admin)
+// ✅ Get all user orders (Admin)
+export const getAllUserOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate({
+        path: "user", // ✅ correct field
+        select: "fullName email role", // ✅ your schema uses fullName
+        model: "Users", // ✅ must match your mongoose.model()
+        strictPopulate: false,
+      })
+      .populate({
+        path: "sourceCode",
+        select: "title price",
+        strictPopulate: false,
+      })
+      .sort({ createdAt: -1 });
+
+    const formattedOrders = orders.map((order) => ({
+      _id: order._id,
+      userName: order.user?.fullName || "Deleted User",
+      userEmail: order.user?.email || "N/A",
+      userRole: order.user?.role ?? "N/A",
+      title: order.sourceCode?.title || "Deleted Source Code",
+      price: order.sourceCode?.price || 0,
+      createdAt: order.createdAt,
+    }));
+
+    return res.status(200).json({ success: true, orders: formattedOrders });
+  } catch (error) {
+    console.error("Error fetching all user orders:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch user orders",
+      error: error.message,
+    });
+  }
+};
