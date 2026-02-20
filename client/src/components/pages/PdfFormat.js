@@ -1,112 +1,80 @@
 import React from "react";
-import Slider from "react-slick";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { useTheme } from "../context/ThemeContext";
+import { FaReact, FaDatabase, FaLaptopCode, FaGlobe } from "react-icons/fa";
+import exploreImage from "../images/explore.png";
+import { useNavigate } from "react-router-dom";
 
-import earthImagefirst from "../images/earth1.png";
-import earthImagetwo from "../images/earth2.png";
-import earthImagethird from "../images/earth3.png";
-import earthImagefourth from "../images/earth4.png";
-import earthImagefifth from "../images/earth5.png";
-import earthImagesixth from "../images/earth6.png";
-import earthImageseven from "../images/earth7.png";
-import chakraImageone from "../images/chakra1.png";
-import chakraImagetwo from "../images/chakra2.png";
-import chakraImagethree from "../images/chakra3.png";
-import chakraImagefour from "../images/chakra4.png";
-import jupiterfirst from "../images/jupiter1.png";
-import jupitersecond from "../images/jupiter2.png";
-import jupiterthird from "../images/jupiter3.png";
-
-const PdfFormat = () => {
-  const [theme] = useTheme();
-
-  const images = [
-    earthImagefirst,
-    earthImagetwo,
-    earthImagethird,
-    earthImagefourth,
-    earthImagefifth,
-    earthImagesixth,
-    earthImageseven,
-    chakraImageone,
-    chakraImagetwo,
-    chakraImagethree,
-    chakraImagefour,
-    jupiterfirst,
-    jupitersecond,
-    jupiterthird,
-  ];
-
-  const CustomPrevArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className="absolute left-[-35px] top-1/2 -translate-y-1/2 bg-white shadow px-2 py-2 rounded-full hover:bg-gray-200 z-10"
-    >
-      <AiOutlineLeft size={22} />
-    </button>
-  );
-
-  const CustomNextArrow = ({ onClick }) => (
-    <button
-      onClick={onClick}
-      className="absolute right-[-35px] top-1/2 -translate-y-1/2 bg-white shadow px-2 py-2 rounded-full hover:bg-gray-200 z-10"
-    >
-      <AiOutlineRight size={22} />
-    </button>
-  );
-
-  const sliderSettings = {
-    infinite: true,
-    autoplay: true,
-    autoplaySpeed: 2500,
-    pauseOnHover: false,
-    speed: 600,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    prevArrow: <CustomPrevArrow />,
-    nextArrow: <CustomNextArrow />,
-  };
+const PlatformInfoCard = () => {
+  const navigate = useNavigate();
+  const handleExploreClick = () => navigate("/explore");
 
   return (
-    <div
-      className={`flex flex-col sm:flex-row items-center gap-6 p-6 font-[Poppins] mt-12 ${
-        theme === "dark" ? "bg-[#121212] text-white" : "bg-white text-gray-800"
-      }`}
-    >
-      {/* Slider */}
-      <div className="w-full sm:w-1/2 relative">
-        <Slider {...sliderSettings}>
-          {images.map((img, i) => (
-            <div key={i} className="flex justify-center">
-              <img
-                src={img}
-                alt={`Slide ${i + 1}`}
-                className="w-4/5 max-h-[300px] object-contain rounded-lg shadow"
-              />
+    <section className="w-full py-20 px-4 sm:px-8 bg-gradient-to-b from-white to-gray-50 dark:from-[#0f0f0f] dark:to-[#121212] font-[Poppins]">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+
+        {/* IMAGE SIDE */}
+        <div className="relative flex justify-center">
+          <div className="absolute -z-10 w-72 h-72 bg-indigo-500/20 blur-3xl rounded-full"></div>
+
+          <img
+            src={exploreImage}
+            alt="Learning Platform"
+            className="w-full max-w-md rounded-3xl shadow-2xl hover:scale-105 transition duration-500"
+          />
+        </div>
+
+        {/* CONTENT SIDE */}
+        <div className="text-center lg:text-left">
+
+          {/* Badge */}
+          <span className="inline-block mb-5 px-4 py-1 text-xs font-semibold rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+            All-in-One Learning Platform
+          </span>
+
+          {/* Heading */}
+          <h2 className="text-2xl sm:text-3xl lg:text-[2.2rem] font-semibold leading-tight mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+            Welcome to PDF Baba Learning Hub
+          </h2>
+
+          {/* Description */}
+          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+            Access structured study materials, exam-ready notes and premium
+            educational PDFs. From academic subjects to modern technologies and
+            deep knowledge topics — everything is organized in one platform to
+            help you learn faster and smarter.
+          </p>
+
+          {/* Feature Pills */}
+          <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-10">
+
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-300 text-sm font-medium">
+              <FaLaptopCode /> 12th Science Notes
             </div>
-          ))}
-        </Slider>
-      </div>
 
-      {/* Text Content */}
-      <div className="w-full sm:w-1/2 text-center sm:text-left px-3">
-        <h2 className="text-xl sm:text-3xl font-bold mb-4">
-          Enhance Your Learning with Comprehensive PDF Resources
-        </h2>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-600 dark:text-green-300 text-sm font-medium">
+              <FaDatabase /> React • Node • JS
+            </div>
 
-        <p
-          className={`text-sm sm:text-base leading-relaxed ${
-            theme === "dark" ? "text-gray-300" : "text-gray-600"
-          }`}
-        >
-          PDFs serve as a vital resource for any learner. With clear organization,
-          easy navigation, and compatibility across all devices, PDF notes transform
-          your study experience.
-        </p>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-300 text-sm font-medium">
+              <FaReact /> Chakra Knowledge
+            </div>
+
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-300 text-sm font-medium">
+              <FaGlobe /> Space Studies
+            </div>
+
+          </div>
+
+          {/* CTA */}
+          <button
+            onClick={handleExploreClick}
+            className="px-8 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:scale-105 active:scale-95 transition shadow-lg"
+          >
+            Explore Learning Content
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default PdfFormat;
+export default PlatformInfoCard;

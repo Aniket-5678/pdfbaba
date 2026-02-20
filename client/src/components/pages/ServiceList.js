@@ -1,12 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
-import { useAuth } from "../context/auth";
 import axios from "axios";
 import SmallBannerAd from "./SmallBannerAd";
 import { useNavigate } from "react-router-dom";
+import { Search } from "lucide-react";
 
 const itemsPerPage = 6;
+
+/* ================= Skeleton Card ================= */
+const SkeletonCard = () => (
+  <div className="animate-pulse rounded-2xl overflow-hidden border bg-white/60 dark:bg-white/5">
+    <div className="h-40 w-full bg-gray-300 dark:bg-gray-700"></div>
+    <div className="p-4 space-y-3">
+      <div className="h-4 w-3/4 mx-auto bg-gray-300 dark:bg-gray-700 rounded"></div>
+      <div className="h-4 w-20 mx-auto bg-gray-300 dark:bg-gray-700 rounded"></div>
+    </div>
+  </div>
+);
 
 const ServiceList = () => {
   const [theme] = useTheme();
@@ -15,8 +26,6 @@ const ServiceList = () => {
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const gridRef = useRef(null);
-  const [auth] = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,102 +53,135 @@ const ServiceList = () => {
     const filtered = services.filter((item) =>
       item.title.toLowerCase().includes(query)
     );
+
     setFilteredServices(filtered);
     setPage(1);
   };
+
+  const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
 
   const paginatedServices = filteredServices.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
 
+  const changePage = (num) => {
+    setPage(num);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <Layout>
-      <div
-        className={`pt-20 min-h-screen px-4 sm:px-8 ${
-          theme === "dark" ? "bg-[#0f0f0f] text-white" : "bg-gray-100 text-gray-900"
-        }`}
-      >
-        <h2 className="text-center text-xl font-bold">📂 Professional Source Code Projects</h2>
-        <p className="text-center text-sm mt-1 mb-5">
-          Explore high-quality, ready-to-use website and app source codes.
-        </p>
+      <div className="pt-24 pb-16 px-4 max-w-7xl mx-auto">
 
-        {/* Search Bar */}
-        <div className="flex justify-center mb-6">
+        {/* ===== Header ===== */}
+        <div className="text-center mb-10">
+          <h1 className="text-[1.3rem] sm:text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+            Professional Source Code Marketplace
+          </h1>
+          <p className="mt-3 text-sm sm:text-base text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+            Explore high-quality ready-made projects. Save weeks of development time and launch faster 🚀
+          </p>
+        </div>
+
+        {/* ===== Search ===== */}
+        <div className="relative max-w-xl mx-auto mb-8">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search projects..."
+            placeholder="Search projects (Ecommerce, LMS, Admin Panel...)"
             value={searchQuery}
             onChange={handleSearch}
-            className={`w-full sm:w-1/2 md:w-1/3 px-4 py-2 rounded-lg border ${
-              theme === "dark" ? "bg-[#1e1e1e] border-gray-700 text-gray-200" : "bg-white border-gray-400"
-            }`}
+            className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-md focus:ring-2 focus:ring-indigo-500 outline-none"
           />
         </div>
 
         {/* Banner */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-10">
           <SmallBannerAd />
         </div>
 
-        {/* Cards */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4"
-        >
+        {/* ===== Cards ===== */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {loading ? (
-            <div className="col-span-full flex justify-center py-20">
-              <div className="loader"></div>
-            </div>
+            [...Array(6)].map((_, i) => <SkeletonCard key={i} />)
           ) : paginatedServices.length === 0 ? (
-            <p className="col-span-full text-center mt-10 text-lg opacity-70">
-              No projects found matching your search.
+            <p className="col-span-full text-center text-gray-500 text-lg">
+              No projects found
             </p>
           ) : (
             paginatedServices.map((service) => (
               <div
                 key={service._id}
                 onClick={() => navigate(`/service/${service._id}`)}
-                className={`cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-xl transition ${
-                  theme === "dark" ? "bg-[#1b1b1b]" : "bg-white"
-                }`}
+                className="group cursor-pointer rounded-2xl overflow-hidden border bg-white dark:bg-white/5 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
-                <img
-                  src={service.thumbnail || "/default-thumbnail.png"}
-                  alt={service.title}
-                  className="h-40 w-full object-cover"
-                />
-                <div className="p-3 text-center">
-                  <h3 className="text-sm">{service.title}</h3>
-                  <p className="font-bold text-blue-600 dark:text-green-400 text-lg">
+                {/* Thumbnail */}
+                <div className="relative overflow-hidden">
+                  <img
+                    src={service.thumbnail || "/default-thumbnail.png"}
+                    alt={service.title}
+                    className="h-40 w-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+
+                  {/* Price badge */}
+                  <div className="absolute top-3 right-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs px-3 py-1 rounded-full shadow">
                     ₹{service.price}
-                  </p>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-4 text-center">
+                  <h3 className="text-sm sm:text-base font-semibold line-clamp-2 text-gray-800 dark:text-gray-200">
+                    {service.title}
+                  </h3>
+
+                  <div className="mt-3 text-xs font-medium text-indigo-600 dark:text-indigo-400">
+                    View Details →
+                  </div>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        {/* Pagination */}
-        {filteredServices.length > itemsPerPage && (
-          <div className="flex justify-center py-10 space-x-2">
-            {Array.from(
-              { length: Math.ceil(filteredServices.length / itemsPerPage) },
-              (_, i) => (
-                <button
-                  key={i}
-                  className={`px-3 py-1 rounded-md border ${
-                    page === i + 1
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-300 dark:bg-gray-700 dark:text-white"
-                  }`}
-                  onClick={() => setPage(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              )
-            )}
+        {/* ===== Pagination ===== */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-12 flex-wrap">
+            
+            {/* Prev */}
+            <button
+              disabled={page === 1}
+              onClick={() => changePage(page - 1)}
+              className="px-4 py-2 rounded-lg border bg-white dark:bg-white/5 disabled:opacity-40"
+            >
+              Prev
+            </button>
+
+            {/* Numbers */}
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => changePage(i + 1)}
+                className={`min-w-[38px] h-10 rounded-lg font-semibold transition ${
+                  page === i + 1
+                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
+                    : "bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            {/* Next */}
+            <button
+              disabled={page === totalPages}
+              onClick={() => changePage(page + 1)}
+              className="px-4 py-2 rounded-lg border bg-white dark:bg-white/5 disabled:opacity-40"
+            >
+              Next
+            </button>
+
           </div>
         )}
       </div>

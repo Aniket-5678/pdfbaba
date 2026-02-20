@@ -1,27 +1,32 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import {
-  Container,
-  Typography,
-  Paper,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  Box,
-  Grid,
-} from "@mui/material";
-import { useTheme } from "../context/ThemeContext";
 import GoogleMultiplexAd from "./GoogleMultiplexAd";
 import GoogleDisplayAds from "./GoogleDisplayAds";
+
+/* ================= Skeleton Step ================= */
+const SkeletonStep = () => (
+  <div className="relative flex items-start">
+    <div className="absolute left-[14px] top-0 w-[2px] h-full bg-gray-300"></div>
+
+    <div className="relative z-10 w-8 h-8 rounded-full bg-indigo-300/40 animate-pulse"></div>
+
+    <div className="ml-6 w-full">
+      <div className="bg-white/70 border border-gray-200 rounded-xl p-4 animate-pulse space-y-3">
+        <div className="h-4 w-28 bg-gray-300 rounded"></div>
+        <div className="h-3 w-full bg-gray-300 rounded"></div>
+        <div className="h-3 w-5/6 bg-gray-300 rounded"></div>
+        <div className="h-3 w-3/4 bg-gray-300 rounded"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const RoadmapDetail = () => {
   const { id } = useParams();
   const [roadmap, setRoadmap] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [theme] = useTheme();
 
   useEffect(() => {
     axios
@@ -30,128 +35,102 @@ const RoadmapDetail = () => {
         setRoadmap(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("❌ Error fetching roadmap:", err.response ? err.response.data : err.message);
-        setError("Failed to fetch roadmap. Please try again.");
+      .catch(() => {
+        setError("Failed to fetch roadmap.");
         setLoading(false);
       });
   }, [id]);
 
-  if (loading) return <Typography variant="h5" textAlign="center" sx={{ mt: 5 }}>Loading...</Typography>;
-  if (error) return <Typography variant="h5" textAlign="center" color="error" sx={{ mt: 5 }}>{error}</Typography>;
-  if (!roadmap) return <Typography variant="h5" textAlign="center" sx={{ mt: 5 }}>No roadmap found!</Typography>;
+  /* ================= LOADING UI ================= */
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-10 px-4">
+        <div className="text-center max-w-xl mx-auto mb-12 animate-pulse">
+          <div className="h-6 w-52 mx-auto bg-gray-300 rounded mb-3"></div>
+          <div className="h-3 w-64 mx-auto bg-gray-200 rounded"></div>
+        </div>
 
-  const glassStyles = {
-    backdropFilter: "blur(14px)",
-    WebkitBackdropFilter: "blur(14px)",
-    background: theme === "dark" ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.65)",
-    border: theme === "dark" ? "1px solid rgba(255, 255, 255, 0.12)" : "1px solid rgba(0,0,0,0.1)",
-    boxShadow: theme === "dark" ? "0 10px 40px rgba(0,0,0,0.3)" : "0 10px 40px rgba(0,0,0,0.08)",
-    borderRadius: 3,
-    p: { xs: 3, sm: 5 },
-    fontFamily: "'Poppins', sans-serif",
-    color: theme === "dark" ? "#E0E0E0" : "#1c1c1c",
-    transition: "0.3s ease",
-  };
+        <div className="max-w-3xl mx-auto space-y-10">
+          {[...Array(7)].map((_, i) => (
+            <SkeletonStep key={i} />
+          ))}
+        </div>
+      </div>
+    );
 
+  if (error)
+    return <div className="text-center mt-20 text-red-500 font-semibold">{error}</div>;
+
+  if (!roadmap)
+    return <div className="text-center mt-20 font-semibold">No roadmap found</div>;
+
+  /* ================= REAL UI ================= */
   return (
-    <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 6 } }}>
-      {/* Roadmap Title */}
-      <Typography
-        variant="h4"
-        textAlign="center"
-        fontWeight="bold"
-        gutterBottom
-        sx={{
-          fontFamily: "'Poppins', sans-serif",
-          color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
-          fontSize: { xs: "1.4rem", sm: "2.2rem" },
-          mb: 4,
-        }}
-      >
-        {roadmap.category} Roadmap 🚀
-      </Typography>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-10 px-4">
 
-      <Grid container spacing={4}>
-        {/* Left Sidebar Ads */}
-        <Grid item xs={12} md={3}>
-          <Box sx={{ mb: 3 }}>
-            <GoogleDisplayAds />
-          </Box>
-        </Grid>
+      {/* Title */}
+      <div className="text-center max-w-2xl mx-auto mb-12">
+        <h1 className="font-bold text-gray-900 text-[1.1rem] sm:text-3xl lg:text-4xl">
+          {roadmap.category} Roadmap 🚀
+        </h1>
 
-        {/* Main Roadmap Content */}
-        <Grid item xs={12} md={6}>
-          <Paper elevation={0} sx={glassStyles}>
-            <Typography
-              variant="body1"
-              sx={{
-                mb: 4,
-                fontWeight: 500,
-                fontSize: { xs: "0.95rem", sm: "1.1rem" },
-                color: theme === "dark" ? "#BDBDBD" : "#333",
-              }}
-            >
-              Follow this step-by-step guide to master{" "}
-              <strong>{roadmap.category}</strong>.
-            </Typography>
+        <p className="text-gray-500 mt-2 text-xs sm:text-base leading-relaxed">
+          Follow this step-by-step path to master <b>{roadmap.category}</b>
+        </p>
+      </div>
 
-            <List sx={{ p: 0 }}>
-              {roadmap.steps.map((step, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    bgcolor: theme === "dark" ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.85)",
-                    borderRadius: 2,
-                    mb: 2,
-                    px: 3,
-                    py: 1.5,
-                    transition: "0.3s",
-                    "&:hover": {
-                      transform: { xs: "none", sm: "scale(1.02)" },
-                      boxShadow:
-                        theme === "dark"
-                          ? "0 8px 30px rgba(0,0,0,0.4)"
-                          : "0 8px 30px rgba(0,0,0,0.15)",
-                    },
-                  }}
-                >
-                  <ListItem disableGutters>
-                    <ListItemText
-                      primary={`${index + 1}. ${step}`}
-                      primaryTypographyProps={{
-                        fontSize: { xs: "0.9rem", sm: "1.05rem" },
-                        fontWeight: 500,
-                        fontFamily: "'Poppins', sans-serif",
-                        color: theme === "dark" ? "#E0E0E0" : "#1a1a1a",
-                      }}
-                    />
-                  </ListItem>
-                  {index !== roadmap.steps.length - 1 && (
-                    <Divider
-                      sx={{
-                        mx: 3,
-                        bgcolor: theme === "dark" ? "#444" : "#ccc",
-                      }}
-                    />
-                  )}
-                </Box>
-              ))}
-            </List>
-          </Paper>
-        </Grid>
+      <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8">
 
-        {/* Right Sidebar Ads */}
-        <Grid item xs={12} md={3}>
-          <Box sx={{ mb: 3 }}>
-            <GoogleDisplayAds />
-          </Box>
-          <Box sx={{ mt: 3 }}>
-            <GoogleMultiplexAd />
-          </Box>
-        </Grid>
-      </Grid>
-    </Container>
+        {/* Left Ads (Desktop only) */}
+        <div className="hidden lg:block col-span-3">
+          <GoogleDisplayAds />
+        </div>
+
+        {/* Timeline */}
+        <div className="col-span-12 lg:col-span-6">
+          <div className="relative max-w-3xl mx-auto space-y-10">
+
+            {/* Vertical Line */}
+            <div className="absolute left-[15px] sm:left-1/2 top-0 h-full w-[2px] bg-gradient-to-b from-indigo-400 to-blue-400"></div>
+
+            {roadmap.steps.map((step, index) => (
+              <div
+                key={index}
+                className={`relative flex items-start sm:items-center ${
+                  index % 2 === 0 ? "sm:flex-row" : "sm:flex-row-reverse"
+                }`}
+              >
+                {/* Number Circle */}
+                <div className="relative z-10 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-indigo-600 text-white text-xs sm:text-sm font-bold shadow-lg sm:mx-6">
+                  {index + 1}
+                </div>
+
+                {/* Card */}
+                <div className="ml-6 sm:ml-0 w-full sm:w-[45%]">
+                  <div className="bg-white/90 backdrop-blur-md border border-gray-200 shadow-md rounded-xl sm:rounded-2xl p-4 sm:p-5 transition hover:shadow-xl">
+                    <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
+                      Step {index + 1}
+                    </h3>
+
+                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                      {step}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+          </div>
+        </div>
+
+        {/* Right Ads (Desktop only) */}
+        <div className="hidden lg:block col-span-3 space-y-6">
+          <GoogleDisplayAds />
+          <GoogleMultiplexAd />
+        </div>
+
+      </div>
+    </div>
   );
 };
 

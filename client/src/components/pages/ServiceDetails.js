@@ -1,25 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Divider } from "@mui/material";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/auth";
 import axios from "axios";
+import { ShoppingCart, ExternalLink } from "lucide-react";
+
+/* ============ Skeleton ============ */
+const Skeleton = () => (
+  <div className="animate-pulse grid md:grid-cols-2 gap-10">
+    <div className="space-y-4">
+      <div className="h-[380px] rounded-xl bg-gray-300 dark:bg-gray-700"></div>
+      <div className="flex gap-3">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="w-24 h-20 bg-gray-300 dark:bg-gray-700 rounded"></div>
+        ))}
+      </div>
+    </div>
+    <div className="space-y-4">
+      <div className="h-6 w-2/3 bg-gray-300 dark:bg-gray-700 rounded"></div>
+      <div className="h-20 bg-gray-300 dark:bg-gray-700 rounded"></div>
+      <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded"></div>
+    </div>
+  </div>
+);
 
 const ServiceDetails = () => {
   const [theme] = useTheme();
   const [auth] = useAuth();
   const user = auth.user;
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [service, setService] = useState(null);
   const [mainImage, setMainImage] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     fetchService();
   }, []);
 
@@ -30,7 +47,7 @@ const ServiceDetails = () => {
       setService(data);
       setMainImage(data.thumbnail || data.multipleImages?.[0] || "");
     } catch (err) {
-      console.error("Error fetching service:", err);
+      console.error(err);
     }
   };
 
@@ -41,205 +58,108 @@ const ServiceDetails = () => {
 
   const handleViewSource = () => {
     if (!service?.viewLink) {
-      alert("No live demo or source link available for this project.");
+      alert("No demo link available");
       return;
     }
     window.open(service.viewLink, "_blank");
   };
 
-  if (!service) return <Typography>Loading...</Typography>;
-
   return (
     <Layout>
-      <Box
-        sx={{
-          px: { xs: 2, sm: 4 },
-          pt: { xs: 10, sm: 12 },
-          minHeight: "100vh",
-          bgcolor: theme === "dark" ? "#121212" : "#fff",
-          color: theme === "dark" ? "#fff" : "#000",
-          mt: 6,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: 5,
-            alignItems: "flex-start",
-          }}
-        >
-          {/* Left: Image Section */}
-          <Box sx={{ flex: 1 }}>
-            {mainImage && (
-              <Box
-                sx={{
-                  mb: 2,
-                  borderRadius: 3,
-                  overflow: "hidden",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 0 10px rgba(255,255,255,0.1)"
-                      : "0 2px 12px rgba(0,0,0,0.1)",
-                }}
-              >
+      <div className="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+
+        {!service ? (
+          <Skeleton />
+        ) : (
+          <div className="grid md:grid-cols-2 gap-10">
+
+            {/* ===== LEFT IMAGE GALLERY ===== */}
+            <div>
+              <div className="rounded-2xl overflow-hidden border dark:border-white/10 shadow-lg">
                 <img
                   src={mainImage}
-                  alt="Main"
-                  style={{
-                    width: "100%",
-                    height: "400px",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
+                  alt="preview"
+                  className="w-full h-[380px] object-cover"
                 />
-              </Box>
-            )}
+              </div>
 
-            {/* Thumbnails */}
-            <Box
-              sx={{
-                display: "flex",
-                gap: 1,
-                overflowX: "auto",
-                pb: 1,
-              }}
-            >
-              {[
-                service.thumbnail,
-                ...(service.multipleImages || []),
-              ]
-                .filter(Boolean)
-                .map((img, idx) => (
-                  <img
-                    key={idx}
-                    src={img}
-                    alt={`thumb-${idx}`}
-                    style={{
-                      width: "90px",
-                      height: "70px",
-                      objectFit: "cover",
-                      borderRadius: 6,
-                      cursor: "pointer",
-                      border:
-                        mainImage === img
-                          ? "2px solid #1976d2"
-                          : "2px solid transparent",
-                      transition: "all 0.2s ease",
-                    }}
-                    onClick={() => setMainImage(img)}
-                  />
-                ))}
-            </Box>
-          </Box>
+              {/* thumbnails */}
+              <div className="flex gap-3 mt-4 overflow-x-auto">
+                {[service.thumbnail, ...(service.multipleImages || [])]
+                  .filter(Boolean)
+                  .map((img, i) => (
+                    <img
+                      key={i}
+                      src={img}
+                      alt="thumb"
+                      onClick={() => setMainImage(img)}
+                      className={`w-24 h-20 object-cover rounded-lg cursor-pointer border-2 transition
+                        ${
+                          mainImage === img
+                            ? "border-indigo-600 scale-105"
+                            : "border-transparent opacity-70 hover:opacity-100"
+                        }`}
+                    />
+                  ))}
+              </div>
+            </div>
 
-          {/* Right: Project Details */}
-          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 3 }}>
-            <Typography
-              variant="h4"
-              fontWeight="700"
-              sx={{
-                fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.5rem" },
-                lineHeight: 1.3,
-              }}
-            >
-              {service.title}
-            </Typography>
+            {/* ===== RIGHT CONTENT ===== */}
+            <div className="md:sticky md:top-24 h-fit">
 
-            <Typography
-              sx={{
-                lineHeight: 1.7,
-                whiteSpace: "pre-line",
-                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.05rem" },
-                color: theme === "dark" ? "#ccc" : "#444",
-              }}
-            >
-              {service.description}
-            </Typography>
+              {/* Title */}
+              <h1 className="text-[1.3rem] sm:text-2xl font-bold leading-snug">
+                {service.title}
+              </h1>
 
-            <Typography
-              fontWeight="bold"
-              sx={{
-                fontSize: { xs: "1rem", sm: "1.1rem" },
-                color: "#1976d2",
-              }}
-            >
-              Price: ₹{service.price}
-            </Typography>
+              {/* Description */}
+              <p className="mt-4 text-gray-600 dark:text-gray-400 whitespace-pre-line text-sm sm:text-base">
+                {service.description}
+              </p>
 
-            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-              <Button
-                variant="contained"
-                onClick={handleBuyNow}
-                sx={{
-                  py: 1.3,
-                  px: 4,
-                  backgroundColor: "#1976d2",
-                  fontWeight: "600",
-                  borderRadius: 2,
-                  "&:hover": { backgroundColor: "#0d47a1" },
-                }}
-              >
-                Buy Now
-              </Button>
+              {/* Price */}
+              <div className="mt-6 flex items-center gap-4">
+                <span className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                  ₹{service.price}
+                </span>
+                <span className="text-sm text-gray-500">One-time purchase</span>
+              </div>
 
-              <Button
-                variant="outlined"
-                onClick={handleViewSource}
-                sx={{
-                  py: 1.3,
-                  px: 4,
-                  color: "#1976d2",
-                  borderColor: "#1976d2",
-                  fontWeight: "600",
-                  borderRadius: 2,
-                  "&:hover": { borderColor: "#0d47a1", color: "#0d47a1" },
-                }}
-              >
-                View Website Link
-              </Button>
-            </Box>
+              {/* Buttons */}
+              <div className="mt-6 flex gap-3 flex-wrap">
+                <button
+                  onClick={handleBuyNow}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-[1.03] transition shadow-lg"
+                >
+                  <ShoppingCart size={18} />
+                  Buy Now
+                </button>
 
-            <Divider sx={{ my: 2 }} />
+                <button
+                  onClick={handleViewSource}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl border font-semibold hover:bg-gray-100 dark:hover:bg-white/10 transition"
+                >
+                  <ExternalLink size={18} />
+                  Live Preview
+                </button>
+              </div>
 
-            {/* What You'll Get Section */}
-            <Box
-              sx={{
-                mt: 3,
-                p: 3,
-                borderRadius: 2,
-                backgroundColor: theme === "dark" ? "#1e1e1e" : "#f8f9fa",
-                boxShadow:
-                  theme === "dark"
-                    ? "0 0 10px rgba(255,255,255,0.05)"
-                    : "0 1px 8px rgba(0,0,0,0.1)",
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={1}
-                sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
-              >
-                What you'll get:
-              </Typography>
+              {/* What you get */}
+              <div className="mt-8 rounded-2xl border dark:border-white/10 p-5 bg-gray-50 dark:bg-white/5">
+                <h3 className="font-semibold mb-3">What you’ll get</h3>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                  <li>✔ Complete source code (.zip)</li>
+                  <li>✔ Setup documentation</li>
+                  <li>✔ Lifetime access</li>
+                  <li>✔ Ready production structure</li>
+                  <li className="text-red-500">✖ No refunds (digital product)</li>
+                </ul>
+              </div>
 
-              <Typography
-                sx={{
-                  fontSize: { xs: "0.85rem", sm: "0.95rem" },
-                  lineHeight: 1.8,
-                }}
-              >
-                ✅ Complete source code (.zip) <br />
-                ✅ Setup instructions <br />
-                ✅ Ready-to-use project files <br />
-                ✅ Lifetime access after purchase <br />
-                🚫 No refunds after purchase (digital product)
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+            </div>
+          </div>
+        )}
+      </div>
     </Layout>
   );
 };

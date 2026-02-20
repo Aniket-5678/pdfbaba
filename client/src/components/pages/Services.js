@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Box } from "@mui/material";
-import { useTheme } from "../context/ThemeContext";
-import { useAuth } from "../context/auth";
 import axios from "axios";
+import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -12,7 +11,6 @@ const Services = () => {
   const [theme] = useTheme();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [auth] = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,141 +29,95 @@ const Services = () => {
     }
   };
 
-  // ✅ Responsive slider setup
-  const sliderSettings = {
+  // arrows
+  const NextArrow = ({ onClick }) => (
+    <div
+      onClick={onClick}
+      className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full backdrop-blur-md bg-black/10 dark:bg-white/10 hover:scale-110 transition items-center justify-center cursor-pointer"
+    >
+      <ChevronRight size={22} />
+    </div>
+  );
+
+  const PrevArrow = ({ onClick }) => (
+    <div
+      onClick={onClick}
+      className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full backdrop-blur-md bg-black/10 dark:bg-white/10 hover:scale-110 transition items-center justify-center cursor-pointer"
+    >
+      <ChevronLeft size={22} />
+    </div>
+  );
+
+  const settings = {
     dots: false,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 2500,
-    pauseOnHover: true,
+    autoplaySpeed: 2600,
     speed: 700,
-    slidesToShow: 3, // desktop
+    slidesToShow: 3,
     slidesToScroll: 1,
-    arrows: false,
+    arrows: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } }, // tablet
-      { breakpoint: 768, settings: { slidesToShow: 2 } },  // mobile (2 cards)
-      { breakpoint: 480, settings: { slidesToShow: 2 } },  // small mobile
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 640, settings: { slidesToShow: 2 } },
     ],
   };
 
   if (loading)
-    return (
-      <Typography textAlign="center" mt={5}>
-        Loading...
-      </Typography>
-    );
+    return <p className="text-center mt-10 text-gray-500">Loading...</p>;
 
-  if (services.length === 0)
-    return (
-      <Typography textAlign="center" mt={5}>
-        No projects available
-      </Typography>
-    );
+  if (!services.length)
+    return <p className="text-center mt-10 text-gray-500">No projects available</p>;
 
   return (
-    <Box
-      sx={{
-        px: { xs: 2, sm: 4 },
-        py: 6,
-        bgcolor: theme === "dark" ? "#121212" : "#fafafa",
-      }}
-    >
-      <Typography
-        variant="h4"
-        textAlign="center"
-        mb={4}
-        fontSize="1.1rem"
-        sx={{ fontFamily: "Poppins, sans-serif", fontWeight: "600" }}
-      >
-        Website Projects
-      </Typography>
+    <section className={`py-14 px-3 sm:px-8 ${theme === "dark" ? "bg-[#121212]" : "bg-gray-50"}`}>
 
-      <Slider {...sliderSettings}>
-        {services.map((service) => (
-          <Box
-            key={service._id}
-            px={1}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Card
-              onClick={() => navigate(`/service/${service._id}`)}
-              sx={{
-                borderRadius: 3,
-                overflow: "hidden",
-                cursor: "pointer",
-                display: "flex",
-                flexDirection: "column",
-                height: { xs: 230, sm: 260, md: 280 }, // consistent height
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 8px 24px rgba(255,255,255,0.1)"
-                      : "0 8px 24px rgba(0,0,0,0.15)",
-                },
-                bgcolor: theme === "dark" ? "#1e1e1e" : "#ffffff",
-              }}
-            >
-              <Box
-                component="img"
-                src={service.thumbnail || "/default-thumbnail.png"}
-                alt={service.title}
-                sx={{
-                  width: "100%",
-                  height: { xs: 120, sm: 140, md: 160 },
-                  objectFit: "cover",
-                  flexShrink: 0,
-                  transition: "transform 0.4s ease",
-                  "&:hover": { transform: "scale(1.05)" },
-                }}
-              />
-              <CardContent
-                sx={{
-                  flexGrow: 1,
-                  color: theme === "dark" ? "#f5f5f5" : "#2c2c2c",
-                  fontFamily: "Poppins, sans-serif",
-                  textAlign: "center",
-                  fontSize: "0.9rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  p: 1.5,
-                }}
+      {/* Heading */}
+<h2 className="text-center font-semibold sm:font-medium mb-10 text-[1.1rem] sm:text-2xl lg:text-3xl tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+  Ready-Made Website Projects
+</h2>
+      {/* Slider */}
+      <div className="relative">
+        <Slider {...settings}>
+          {services.map((service) => (
+            <div key={service._id} className="px-2">
+              
+              <div
+                onClick={() => navigate(`/service/${service._id}`)}
+                className={`rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 group
+                ${theme === "dark"
+                  ? "bg-[#1e1e1e] hover:shadow-[0_10px_40px_rgba(255,255,255,0.08)]"
+                  : "bg-white hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]"}
+                hover:-translate-y-1`}
               >
-                {/* ✅ Compact title on mobile */}
-                <Typography
-                  variant="subtitle1"
-                 
-                  sx={{
-                    mb: { xs: 0.1, sm: 0.2 },
-                    fontSize: { xs: "0.8rem", sm: "0.9rem" }, // smaller on mobile
-                    lineHeight: { xs: "1rem", sm: "1.2rem" },
-                  }}
-                >
-                  {service.title}
-                </Typography>
+                {/* Image */}
+                <div className="overflow-hidden">
+                  <img
+                    src={service.thumbnail || "/default-thumbnail.png"}
+                    alt={service.title}
+                    className="w-full h-[150px] sm:h-[170px] object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
 
-                <Typography
-                  fontWeight="bold"
-                  color="primary"
-                  sx={{
-                    fontSize: { xs: "0.8rem", sm: "0.9rem" },
-                    lineHeight: "1rem",
-                  }}
-                >
-                  ₹{service.price}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Box>
-        ))}
-      </Slider>
-    </Box>
+                {/* Content */}
+                <div className="p-3 text-center">
+                  <h3 className="text-[0.85rem] sm:text-[0.95rem] font-semibold leading-tight line-clamp-2">
+                    {service.title}
+                  </h3>
+
+                  <p className="text-indigo-600 font-bold mt-1 text-sm sm:text-base">
+                    ₹{service.price}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </section>
   );
 };
 

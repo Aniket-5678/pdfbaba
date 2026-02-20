@@ -1,47 +1,106 @@
-import React from 'react';
+import React from "react";
+
+const Step = ({ number, title, children }) => (
+  <div className="flex gap-4 p-4 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm">
+    <div className="flex items-center justify-center min-w-[38px] h-[38px] rounded-full bg-blue-600 text-white font-semibold">
+      {number}
+    </div>
+    <div>
+      <h5 className="font-semibold text-gray-900 dark:text-white mb-1">
+        {title}
+      </h5>
+      <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+        {children}
+      </div>
+    </div>
+  </div>
+);
 
 const PdfSearchGuide = () => {
   return (
-    <div className="max-w-3xl mx-auto mt-24 p-6 sm:p-10 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:text-gray-200 text-gray-800">
-      
-      <h3 className="text-2xl font-semibold mb-4 text-center">
-        How to Find and Download PDFs on PDF Baba
-      </h3>
+    <section className="min-h-screen mt-20 px-4 py-10 bg-gray-50 dark:bg-[#0b0f19]">
+      <div className="max-w-4xl mx-auto">
 
-      <p className="mb-6 leading-relaxed">
-        Welcome to PDF Baba! Our platform offers a vast collection of high-quality PDFs across various subjects, including technology, science, exams, and more. Here’s how you can easily find and download the PDFs:
-      </p>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+            Find & Download PDFs Easily
+          </h1>
+          <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Learn how to search, open and download study materials from PDF Baba
+            in seconds — works on Android, iOS and PC.
+          </p>
+        </div>
 
-      <h4 className="text-xl font-medium mt-6 mb-2">For Android Users:</h4>
-      <p className="mb-3">On your Android device, follow these simple steps:</p>
-      <ol className="list-decimal ml-6 space-y-1 mb-6">
-        <li>Browse through the website and find the subject or category you're interested in.</li>
-        <li>Once you find the PDF, simply click on the Download button.</li>
-        <li>The PDF will be saved to your device for offline access.</li>
-      </ol>
+        {/* Android */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+            📱 Android Users
+          </h2>
 
-      <h4 className="text-xl font-medium mt-6 mb-2">For PC and iOS Users:</h4>
-      <p className="mb-3">Follow these steps to view or download PDFs:</p>
-      <ol className="list-decimal ml-6 space-y-1 mb-6">
-        <li>Click on the PDF link to open it in your browser or PDF viewer.</li>
-        <li>You can also click the <strong>Download</strong> button to save it to your device.</li>
-      </ol>
+          <div className="space-y-4">
+            <Step number="1" title="Browse Categories">
+              Open any subject like Tech, Exams or Notes from homepage.
+            </Step>
 
-      <h4 className="text-xl font-medium mt-6 mb-2">Categories of PDFs Available:</h4>
-      <p className="mb-3">We offer PDFs in the following categories:</p>
-      <ul className="list-disc ml-6 space-y-2 mb-6">
-        <li><strong>Tech Zone:</strong> Tutorials on React JS, Node JS, JavaScript, HTML, CSS, etc.</li>
-      
-      </ul>
+            <Step number="2" title="Open the PDF">
+              Tap the PDF card and press the download button.
+            </Step>
 
-      <p className="mb-6">
-        To search for specific PDFs, use the search bar at the top. Example: type <span className="font-medium">"React JS"</span> to find React JS notes.
-      </p>
+            <Step number="3" title="Saved Offline">
+              The file automatically saves to your device storage.
+            </Step>
+          </div>
+        </div>
 
-      <div className="mt-8 p-4 border border-gray-300 dark:border-gray-700 rounded-md text-center">
-        <p>If you need help or have questions, feel free to contact our support team. We are here to assist you! 😊</p>
+        {/* PC / iOS */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+            💻 PC & iOS Users
+          </h2>
+
+          <div className="space-y-4">
+            <Step number="1" title="Open in Browser">
+              Click the PDF to preview it instantly.
+            </Step>
+
+            <Step number="2" title="Download">
+              Press the download icon to save it permanently.
+            </Step>
+          </div>
+        </div>
+
+        {/* Categories */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+            📚 Available Categories
+          </h2>
+
+          <div className="flex flex-wrap gap-3">
+            <span className="px-4 py-2 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 text-sm font-medium">
+            Tech Zone
+            </span>
+            <span className="px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300 text-sm font-medium">
+             Buissness
+            </span>
+         
+          </div>
+        </div>
+
+        {/* Search Tip */}
+        <div className="p-6 rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-white dark:bg-white/5 text-center">
+          <p className="text-gray-700 dark:text-gray-300">
+            🔎 Tip: Use the search bar and type <b>React JS</b> to quickly find notes.
+          </p>
+        </div>
+
+        {/* Help */}
+        <div className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">
+          Need help? Our support team is always ready to assist you 😊
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 };
 

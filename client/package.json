@@ -18,6 +18,7 @@
     "axios": "^1.7.2",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.3.18",
+    "lucide-react": "^0.575.0",
     "pdfjs-dist": "^4.4.168",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
