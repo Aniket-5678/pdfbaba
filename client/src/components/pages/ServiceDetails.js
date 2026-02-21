@@ -66,7 +66,7 @@ const ServiceDetails = () => {
 
   return (
     <Layout>
-      <div className="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+      <div className="pt-24 pb-16 mt-7 px-4 max-w-7xl mx-auto">
 
         {!service ? (
           <Skeleton />

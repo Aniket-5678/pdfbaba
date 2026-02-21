@@ -72,7 +72,7 @@ const ServiceList = () => {
 
   return (
     <Layout>
-      <div className="pt-24 pb-16 px-4 max-w-7xl mx-auto">
+      <div className="pt-24 mt-6 pb-16 px-4 max-w-7xl mx-auto">
 
         {/* ===== Header ===== */}
         <div className="text-center mb-10">
