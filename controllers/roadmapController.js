@@ -1,56 +1,77 @@
-// controllers/roadmapController.js
 import Roadmap from "../models/roadmap.model.js";
 
-// Get all roadmaps
+/* GET ALL ROADMAPS */
 export const getRoadmaps = async (req, res) => {
   try {
-    const roadmaps = await Roadmap.find();
+    const roadmaps = await Roadmap.find().select("category slug level");
     res.json(roadmaps);
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Get a single roadmap by ID
+/* GET SINGLE ROADMAP */
 export const getRoadmapById = async (req, res) => {
   try {
     const roadmap = await Roadmap.findById(req.params.id);
-    if (!roadmap) return res.status(404).json({ message: "Roadmap not found" });
+
+    if (!roadmap)
+      return res.status(404).json({ message: "Roadmap not found" });
+
     res.json(roadmap);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching roadmap" });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Add a new roadmap
+/* CREATE ROADMAP */
 export const addRoadmap = async (req, res) => {
   try {
-    const newRoadmap = new Roadmap(req.body);
-    await newRoadmap.save();
-    res.json({ message: "Roadmap Added Successfully" });
+    const { category, slug, level, description, nodes, edges } = req.body;
+
+    const roadmap = await Roadmap.create({
+      category,
+      slug,
+      level,
+      description,
+      nodes,
+      edges
+    });
+
+    res.json({ message: "Roadmap Added Successfully", roadmap });
   } catch (error) {
-    res.status(500).json({ message: "Error adding roadmap" });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Update a roadmap
+/* UPDATE ROADMAP */
 export const updateRoadmap = async (req, res) => {
   try {
-    const updatedRoadmap = await Roadmap.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedRoadmap) return res.status(404).json({ message: "Roadmap not found" });
-    res.json({ message: "Roadmap Updated Successfully" });
+    const roadmap = await Roadmap.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!roadmap)
+      return res.status(404).json({ message: "Roadmap not found" });
+
+    res.json({ message: "Roadmap Updated Successfully", roadmap });
   } catch (error) {
-    res.status(500).json({ message: "Error updating roadmap" });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Delete a roadmap
+/* DELETE ROADMAP */
 export const deleteRoadmap = async (req, res) => {
   try {
-    const deletedRoadmap = await Roadmap.findByIdAndDelete(req.params.id);
-    if (!deletedRoadmap) return res.status(404).json({ message: "Roadmap not found" });
+    const roadmap = await Roadmap.findByIdAndDelete(req.params.id);
+
+    if (!roadmap)
+      return res.status(404).json({ message: "Roadmap not found" });
+
     res.json({ message: "Roadmap Deleted Successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting roadmap" });
+    res.status(500).json({ message: error.message });
   }
 };

@@ -1,99 +1,104 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useTheme } from "../context/ThemeContext";
 
-const QuizIntro = () => {
+const QuizIntroSlider = () => {
   const [theme] = useTheme();
   const isDark = theme === "dark";
-
+  const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const sliderRef = useRef(null);
+  const navigate = useNavigate();
 
-  // Fake load for premium feel
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 700);
-    return () => clearTimeout(t);
+    const fetchQuizzes = async () => {
+      try {
+        const res = await axios.get("/api/v1/quizzes/all");
+        setQuizzes(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizzes();
   }, []);
 
-  // ================= Skeleton UI =================
-  if (loading) {
-    return (
-      <section className="flex justify-center px-3 sm:px-6 my-6 sm:my-10">
-        <div
-          className={`w-full max-w-6xl rounded-2xl p-6 sm:p-10 animate-pulse
-          ${isDark ? "bg-[#0f172a]" : "bg-white shadow-xl"}`}
-        >
-          <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
-            
-            <div className="flex-1 space-y-4 w-full">
-              <div className={`h-6 w-52 rounded ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
-              <div className={`h-4 w-full max-w-md rounded ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
-              <div className={`h-4 w-4/5 rounded ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
+  const SkeletonCard = () => (
+    <div
+      className={`flex-shrink-0 w-64 sm:w-72 md:w-80 rounded-2xl p-5 animate-pulse ${
+        isDark ? "bg-white/5 border border-white/10" : "bg-white shadow border-gray-200"
+      }`}
+    >
+      <div className="h-5 w-32 rounded bg-gray-300/40 mb-3"></div>
+      <div className="h-4 w-full rounded bg-gray-300/40 mb-2"></div>
+      <div className="h-4 w-3/4 rounded bg-gray-300/40"></div>
+      <div className="mt-4 h-10 w-full rounded bg-gray-300/40"></div>
+    </div>
+  );
 
-              <div className="flex gap-3 mt-6">
-                <div className={`h-6 w-24 rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
-                <div className={`h-6 w-24 rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
-                <div className={`h-6 w-24 rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
-              </div>
-            </div>
-
-            <div className={`h-12 w-40 rounded-xl ${isDark ? "bg-white/10" : "bg-gray-200"}`}></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // ================= Real UI =================
   return (
-    <section className="flex justify-center px-3 sm:px-6 my-6 sm:my-10">
-      <div
-        className={`relative w-full max-w-6xl overflow-hidden rounded-2xl transition-all duration-500
-        ${
-          isDark
-            ? "bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#020617] border border-white/10 shadow-2xl shadow-black/40"
-            : "bg-gradient-to-br from-blue-50 via-white to-indigo-50 border border-gray-200 shadow-xl"
-        }`}
+    <section className="w-full max-w-7xl mx-auto my-12 px-4">
+      {/* Heading */}
+      <h2
+        className={`mb-6 font-light tracking-tight ${
+          isDark ? "text-white" : "text-gray-900"
+        } text-[0.9rem] sm:text-[1.5rem] md:text-[2rem]`}
       >
-        <div className="absolute -top-20 -right-20 w-72 h-72 bg-blue-500/20 blur-3xl rounded-full"></div>
-        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-indigo-500/20 blur-3xl rounded-full"></div>
+        🧠 Sharpen Your Knowledge with Quizzes
+      </h2>
 
-        <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 p-6 sm:p-10">
-          
-          <div className="flex-1 text-center md:text-left">
-            <h2 className={`font-[Poppins] font-bold leading-tight ${isDark ? "text-white" : "text-gray-900"} text-xl sm:text-3xl`}>
-              Start Your Quiz Journey 🚀
-            </h2>
-
-            <p className={`mt-4 max-w-xl font-[Poppins] leading-relaxed ${isDark ? "text-gray-300" : "text-gray-600"} text-sm sm:text-base`}>
-              Explore interactive quizzes designed to sharpen your knowledge and
-              boost confidence. Track your performance, improve daily, and learn smarter — not harder.
-            </p>
-
-            <div className="flex flex-wrap gap-3 mt-6 justify-center md:justify-start text-xs sm:text-sm">
-              <span className={`px-3 py-1 rounded-full ${isDark ? "bg-white/10" : "bg-white shadow"}`}>📊 Track Progress</span>
-              <span className={`px-3 py-1 rounded-full ${isDark ? "bg-white/10" : "bg-white shadow"}`}>⚡ Instant Results</span>
-              <span className={`px-3 py-1 rounded-full ${isDark ? "bg-white/10" : "bg-white shadow"}`}>🎯 Real Exam Practice</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-3">
-            <Link
-              to="/quizplaylist"
-              className="inline-flex items-center justify-center px-8 py-3 font-semibold text-white rounded-xl
-              bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700
-              shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95"
-            >
-              Practice Now →
-            </Link>
-
-            <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>
-              Free • No Registration Required
-            </span>
-          </div>
+      {/* Slider */}
+      {loading ? (
+        <div className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
+          {[...Array(6)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
-      </div>
+      ) : (
+        <div
+          ref={sliderRef}
+          className="flex gap-4 overflow-x-auto pb-4 scroll-smooth hide-scrollbar"
+        >
+          {quizzes.map((quiz) => (
+            <div
+              key={quiz._id}
+              className={`flex-shrink-0 w-64 sm:w-72 md:w-80 rounded-2xl p-5 cursor-pointer transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl border ${
+                isDark
+                  ? "bg-white/5 border-white/10 hover:bg-white/10 text-gray-200"
+                  : "bg-white border-gray-200 hover:border-indigo-400 text-gray-900"
+              }`}
+              onClick={() => navigate(`/play/${quiz._id}`)}
+            >
+              <div className="text-xs font-semibold mb-2 text-indigo-500">QUIZ</div>
+              <h3 className="font-semibold text-lg sm:text-xl truncate">{quiz.title}</h3>
+              <p className="mt-2 text-sm sm:text-base text-gray-500 line-clamp-3">
+                {quiz.category}
+              </p>
+              <button className="mt-4 w-full py-2.5 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md">
+                Start Quiz →
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Custom CSS to hide scrollbar */}
+      <style>
+        {`
+          .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}
+      </style>
     </section>
   );
 };
 
-export default QuizIntro;
+export default QuizIntroSlider;

@@ -65,21 +65,12 @@ const Roadmap = () => {
 
         {/* Header */}
         <div className="text-center mb-10">
-        <h1
-  className={`text-[1.1rem] sm:text-4xl font-bold tracking-tight ${
-    dark ? "text-white" : "text-gray-900"
-  }`}
->
-  Developer Learning Roadmaps
-</h1>
-
-<p
-  className={`mt-3 max-w-2xl mx-auto text-[1.1rem] sm:text-base ${
-    dark ? "text-gray-400" : "text-gray-600"
-  }`}
->
-  Step-by-step structured paths to master technologies faster with clear learning direction.
-</p>
+          <h1 className={`text-[1.1rem] sm:text-4xl font-bold tracking-tight ${dark ? "text-white" : "text-gray-900"}`}>
+            Developer Learning Roadmaps
+          </h1>
+          <p className={`mt-3 max-w-2xl mx-auto text-[1.1rem] sm:text-base ${dark ? "text-gray-400" : "text-gray-600"}`}>
+            Step-by-step structured paths to master technologies faster with clear learning direction.
+          </p>
         </div>
 
         <div className="flex justify-center mb-6">
@@ -106,12 +97,10 @@ const Roadmap = () => {
           />
         </div>
 
-        {/* GRID */}
+        {/* Grid */}
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            {[...Array(12)].map((_, i) => (
-              <SkeletonCard key={i} dark={dark} />
-            ))}
+            {[...Array(cardsPerPage)].map((_, i) => <SkeletonCard key={i} dark={dark} />)}
           </div>
         ) : currentRoadmaps.length === 0 ? (
           <p className="text-center text-gray-400 text-lg mt-10">No roadmaps found</p>
@@ -157,8 +146,8 @@ const Roadmap = () => {
                   currentPage === idx + 1
                     ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
                     : dark
-                    ? "bg-white/5 text-gray-300 hover:bg-white/10"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-white/5 text-gray-300 hover:bg-white/10"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 {idx + 1}
