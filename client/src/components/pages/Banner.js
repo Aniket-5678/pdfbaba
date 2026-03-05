@@ -1,58 +1,87 @@
-import React from 'react';
-import Carousel from 'react-material-ui-carousel';
-import JavascriptnewImage from "../images/javascript.png"
-import techzoneImage from "../images/techzone.png"
-import reactjsImage from "../images/reactjs.png"
-import quizbannerImage from "../images/quiz.png"
-import serviceBannerImage from "../images/availableservice.png"
+import React, { useEffect, useState } from "react";
+import JavascriptnewImage from "../images/javascript.png";
+import reactjsImage from "../images/reactjs.png";
 
-
-// Import more images as needed
-
-const data = [
+const slides = [
   JavascriptnewImage,
-  quizbannerImage,
-  serviceBannerImage ,
-  techzoneImage,
   reactjsImage,
-  // Add more imported images to this array
 ];
 
 const Banner = () => {
+  const [current, setCurrent] = useState(0);
+  const length = slides.length;
+
+  // ✅ Auto Slide
+  useEffect(() => {
+    const slider = setInterval(() => {
+      setCurrent((prev) => (prev === length - 1 ? 0 : prev + 1));
+    }, 4000);
+
+    return () => clearInterval(slider);
+  }, [length]);
+
+  const nextSlide = () => {
+    setCurrent(current === length - 1 ? 0 : current + 1);
+  };
+
+  const prevSlide = () => {
+    setCurrent(current === 0 ? length - 1 : current - 1);
+  };
+
   return (
-    <Carousel
-    className="coursel-container"
-      autoPlay={true} // Enable autoplay
-      animation="slide" // Slide animation for smoother transitions
-      indicators={false} // Remove indicators
-      navButtonsAlwaysVisible={true} // Always show navigation buttons
-      cycleNavigation={true} // Enable infinite loop
-      interval={3000} // Duration each slide stays on screen (in milliseconds)
-      timeout={800} // Transition duration (in milliseconds)
-      navButtonsProps={{
-        style: {
-          backgroundColor: 'white',
-          color: 'black',
-          height: '50px', // Circle size
-          width: '50px', // Circle size
-          borderRadius: '50%', // Makes it circular
-          fontSize: '1.5rem', // Adjusted font size for the arrows
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Shadow effect
-          transition: 'background-color 0.3s ease, color 0.3s ease', // Smooth color transition
-          cursor: 'pointer',
-        }
-      }}
-    >
-      {data.map((image, index) => (
-        <div className='banner-main' key={index}>
-          <img className='banner-image' src={image} alt={`banner-${index}`} />
-        </div>
-      ))}
-    </Carousel>
+    <div className="relative w-full overflow-hidden mt-14" >
+
+      {/* Slides */}
+      <div className="relative h-[180px] sm:h-[300px] md:h-[420px] lg:h-[500px] w-full">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute w-full h-full transition-opacity duration-700 ease-in-out ${
+              index === current ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
+            <img
+              src={slide}
+              alt={`slide-${index}`}
+              className="w-full h-full object-cover rounded-none"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Left Arrow */}
+      <button
+        onClick={prevSlide}
+        className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-black p-3 rounded-full shadow-lg transition hidden sm:flex"
+      >
+        ❮
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={nextSlide}
+        className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-black p-3 rounded-full shadow-lg transition hidden sm:flex"
+      >
+        ❯
+      </button>
+
+      {/* Dots Indicator */}
+      <div className="absolute bottom-4 w-full flex justify-center gap-2">
+        {slides.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => setCurrent(index)}
+            className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
+              index === current
+                ? "w-6 bg-blue-600"
+                : "w-2 bg-white/70"
+            }`}
+          ></div>
+        ))}
+      </div>
+
+    </div>
   );
-}
+};
 
 export default Banner;

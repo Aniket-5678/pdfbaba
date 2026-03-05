@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../Layout/Layout";
 import Banner from "./Banner";
-import "../style/style.css";
 import axios from "axios";
 import Modal from "react-modal";
 import { IoClose } from "react-icons/io5";
-import { IoIosArrowDropleftCircle } from "react-icons/io";
-import { IoIosArrowDroprightCircle } from "react-icons/io";
-import Slider from "react-slick"; // Import react-slick
+import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
+
 import Featurepdf from "./Featurepdf";
 import PdfSearchGuide from "./PdfSearchGuide";
 import PlatformInfoCard from "./PlatformInfoCard";
-import { Link } from "react-router-dom";
-import { Box, Typography, Pagination } from "@mui/material";
 import PdfFormat from "./PdfFormat";
-import { useTheme } from "../context/ThemeContext";
 import Faq from "./Faq";
 import Featureimage from "./Featureimage";
 import Services from "./Services";
@@ -22,44 +18,35 @@ import QuizIntro from "./QuizIntro";
 import SocialBarAd from "./SocialBarAd";
 import RoadmapSection from "./RoadmapSection";
 
+Modal.setAppElement("#root");
+
 const HomePage = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [downloading, setDownloading] = useState({});
-  const [categories, setCategories] = useState([]);
   const [theme] = useTheme();
 
-  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
 
   useEffect(() => {
-    const getAllcategory = async () => {
-      try {
-        const { data } = await axios.get("/api/v1/category/get-category");
-        setCategories(data.category); // Correctly set category array
-      } catch (error) {
-        console.error("Error fetching categories: ", error);
-      }
-    };
-    getAllcategory();
-  }, []);
+    window.scrollTo(0, 0);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get("/api/v1/questionpaper/all-questions");
-        if (data.success) {
-          setProducts(data.data);
-        } else {
-          console.error("Failed to fetch products");
-        }
-      } catch (error) {
-        console.error("Error fetching products", error);
+    const fetchData = async () => {
+      const catRes = await axios.get("/api/v1/category/get-category");
+      setCategories(catRes.data.category);
+
+      const prodRes = await axios.get(
+        "/api/v1/questionpaper/all-questions"
+      );
+      if (prodRes.data.success) {
+        setProducts(prodRes.data.data);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   const openModal = (product) => {
@@ -68,423 +55,240 @@ const HomePage = () => {
   };
 
   const closeModal = () => {
-    setModalIsOpen(false);
     setSelectedProduct(null);
+    setModalIsOpen(false);
   };
 
-  // Next Arrow
-  const NextArrow = ({ onClick }) => (
-    <div className="custom-arrow next-arrow" onClick={onClick}>
-      <IoIosArrowDroprightCircle size={30} />
-    </div>
-  );
+  // ✅ DIRECT DOWNLOAD LOGIC
+  const handleDownload = async (url, filename) => {
+    try {
+      setDownloading((prev) => ({ ...prev, [filename]: true }));
 
-  // Previous Arrow
-  const PrevArrow = ({ onClick }) => (
-    <div className="custom-arrow prev-arrow" onClick={onClick}>
-      <IoIosArrowDropleftCircle size={30} />
-    </div>
-  );
+      const secureUrl = url.replace("http://", "https://");
+      const response = await fetch(secureUrl);
+      const blob = await response.blob();
 
-  // Add a new slider settings object specifically for categories
-  const categorySlider = {
-    dots: false, // Disable dots
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4, // Display 4 categories at once
-    slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2, // Show 2 categories on smaller screens
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1, // Show 1 category on very small screens
-          slidesToScroll: 1,
-        },
-      },
-    ],
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.log("Download error:", err);
+    } finally {
+      setDownloading((prev) => ({ ...prev, [filename]: false }));
+    }
   };
+
+  // ✅ PAGINATION LOGIC
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
+  const paginatedProducts = products.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
 
   return (
     <Layout>
-      <div className="Home-container">
-        <div className="home-banner">
-          <Banner />
-        </div>
+      <div
+        className={`${
+          theme === "dark"
+            ? "bg-gray-900 text-white"
+            : "bg-gray-50 text-gray-800"
+        } min-h-screen`}
+      >
+        <Banner />
 
-        <div className="Board-content">
-          <h3 className="board-title">Learning Platform</h3>
-        </div>
+        {/* ================= CATEGORY SECTION ================= */}
+{/* ================= NETFLIX STYLE CATEGORY SECTION ================= */}
+<div className="max-w-7xl mx-auto px-4 py-12">
 
-        <Box
-          sx={{
-            padding: { xs: "10px", sm: "20px" },
-            background: theme === "dark" ? "#1a1a1a" : "#f9fcfc", // Dark background for dark mode
-            textAlign: "center",
-            fontFamily: "Poppins, sans-serif", // Apply Poppins font family,
-            backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
-          }}
+  {/* Heading */}
+  <h3 className="text-[1.1rem] sm:text-2xl font-light mb-6 tracking-wide">
+    Browse Categories
+  </h3>
+
+  {/* Horizontal Scroll */}
+  <div className="relative">
+    <div className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4">
+
+      {categories.map((category) => (
+        <Link
+          key={category._id}
+          to={`/category/${category.slug}`}
+          className="flex-shrink-0 w-[160px] sm:w-[190px] md:w-[210px] group"
         >
-          <Slider
-            {...categorySlider}
-            autoplay={true} // Enable automatic sliding
-            autoplaySpeed={2500} // Set the speed of sliding (in milliseconds)
-            infinite={true} // Enable infinite loop
-            cssEase="linear" // Smooth linear sliding
-            speed={800} // Set the speed of the transition (in milliseconds)
-            sx={{
-              ".slick-slide": {
-                display: "flex",
-                justifyContent: "center",
-                padding: { xs: "5px", sm: "10px" },
-              },
-              ".slick-track": {
-                display: "flex",
-                justifyContent: "center",
-              },
-            }}
-            responsive={[
-              {
-                breakpoint: 600,
-                settings: {
-                  slidesToShow: 3,
-                  slidesToScroll: 3,
-                  infinite: true,
-                  arrows: false, // Disable arrows on mobile
-                },
-              },
-              {
-                breakpoint: 1024,
-                settings: {
-                  slidesToShow: 5,
-                  slidesToScroll: 1,
-                  arrows: true, // Enable arrows for tablet and desktop
-                },
-              },
-              {
-                breakpoint: 1440,
-                settings: {
-                  slidesToShow: 6,
-                  slidesToScroll: 1,
-                  arrows: true,
-                },
-              },
-            ]}
+          <div
+            className={`
+              h-[90px] sm:h-[110px]
+              flex items-center justify-center
+              rounded-xl transition-all duration-300
+              hover:scale-105 hover:shadow-xl
+              ${
+                theme === "dark"
+                  ? "bg-gray-800 hover:bg-blue-600"
+                  : "bg-white hover:bg-blue-600 shadow-md"
+              }
+            `}
           >
-            {categories.map((category) => (
-              <Box
-                className="catbox"
-                key={category._id}
-                sx={{
-                  width: "100%",
-                  margin: "0 auto",
-                  padding: { xs: "5px", sm: "10px" },
-                  textAlign: "center",
-                  fontFamily: "Poppins, sans-serif", // Apply Poppins font family to each category box
-                }}
-              >
-                <Link
-                  to={`/category/${category.slug}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Box
-                    sx={{
-                      boxShadow:
-                        theme === "dark"
-                          ? "0px 4px 10px rgba(255, 255, 255, 0.1)"
-                          : "0px 4px 10px rgba(0, 0, 0, 0.1)", // Darker box shadow for dark mode
-                      padding: { xs: "8px", sm: "12px" },
-                      borderRadius: "10px",
-                      background: theme === "dark" ? "#333" : "#fff", // Dark background for dark mode
-                      transition: "all 0.3s ease-in-out",
-                      ":hover": {
-                        boxShadow:
-                          theme === "dark"
-                            ? "0px 8px 20px rgba(255, 255, 255, 0.15)"
-                            : "0px 8px 20px rgba(0, 0, 0, 0.15)",
-                        transform: "scale(1.05)",
-                      },
-                      cursor: "pointer",
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontSize: { xs: "0.7rem", sm: "0.8rem" },
-                        color: theme === "dark" ? "#fff" : "#333", // White text for dark mode
-                        fontWeight: "bold",
-                        marginBottom: "5px",
-                        fontFamily: "Poppins, sans-serif", // Apply Poppins font family to category name
-                        maxWidth: "150px", // Set a maximum width
-                        overflow: "hidden", // Hide any content that exceeds the width
-                        textOverflow: "ellipsis", // Add ellipsis if the text is too long
-                        whiteSpace: "nowrap", // Prevent text from wrapping into multiple lines
-                        margin: "0 auto", // Center align the text
-                      }}
-                    >
-                      {category.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontSize: { xs: "0.7rem", sm: "0.9rem" },
-                        color: theme === "dark" ? "#bbb" : "#777", // Lighter text color for dark mode
-                        fontFamily: "Poppins, sans-serif", // Apply Poppins font family to description
-                      }}
-                    >
-                      Explore now
-                    </Typography>
-                  </Box>
-                </Link>
-              </Box>
-            ))}
-          </Slider>
-        </Box>
-        <div>
-          <Services />
-        </div>
-        <div>
-          <RoadmapSection />
-        </div>
+            <h4 className="text-sm sm:text-base font-medium text-center group-hover:text-white transition px-2">
+              {category.name}
+            </h4>
+          </div>
+        </Link>
+      ))}
 
-        <div>
-          <QuizIntro />
-        </div>
+    </div>
+  </div>
+</div>
 
-        <div className="products-container">
-          {products.length === 0 ? (
-            <Typography
-              variant="h6"
-              sx={{
-                fontFamily: "Poppins",
-                color: theme === "dark" ? "#BDBDBD" : "#444",
-                textAlign: "center",
-                mt: 4,
-              }}
-            >
+        <Services />
+        <RoadmapSection />
+        <QuizIntro />
+
+        {/* ================= PRODUCTS ================= */}
+        <div className="max-w-6xl mx-auto px-4 py-12">
+          {paginatedProducts.length === 0 ? (
+            <p className="text-center text-lg opacity-70">
               No PDFs found.
-            </Typography>
+            </p>
           ) : (
-            products
-              .slice(
-                (currentPage - 1) * productsPerPage,
-                currentPage * productsPerPage
-              )
-              .map((product) => (
-                <div
-                  key={product._id}
-                  className="product-card"
-                  style={{
-                    background:
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {paginatedProducts.map((product) => (
+                  <div
+                    key={product._id}
+                    className={`p-6 rounded-2xl shadow-lg border transition hover:shadow-2xl ${
                       theme === "dark"
-                        ? "rgba(255, 255, 255, 0.06)"
-                        : "rgba(255, 255, 255, 0.6)",
-                    backdropFilter: "blur(15px)",
-                    WebkitBackdropFilter: "blur(15px)",
-                    border:
-                      theme === "dark"
-                        ? "1px solid rgba(255, 255, 255, 0.1)"
-                        : "1px solid rgba(0, 0, 0, 0.1)",
-                    borderRadius: "12px",
-                    padding: "20px",
-                    marginBottom: "20px",
-                    boxShadow:
-                      theme === "dark"
-                        ? "0 8px 32px rgba(0,0,0,0.35)"
-                        : "0 8px 32px rgba(31, 38, 135, 0.25)",
-                    color: theme === "dark" ? "#E0E0E0" : "#2c2c2c",
-                    fontFamily: "Poppins",
-                  }}
-                >
-                  <h3 className="product-title">{product.name}</h3>
-                  <p className="product-description">{product.description}</p>
-                  <button
-                    className="product-dropdown-button"
-                    onClick={() => openModal(product)}
-                    style={{
-                      padding: "10px 18px",
-                      backgroundColor: "#1976d2",
-                      color: "white",
-                      borderRadius: "8px",
-                      border: "none",
-                      cursor: "pointer",
-                      fontFamily: "Poppins",
-                      fontWeight: "bold",
-                      marginTop: "10px",
-                    }}
+                        ? "bg-gray-800 border-gray-700"
+                        : "bg-white border-gray-200"
+                    }`}
                   >
-                    View PDFs
-                  </button>
+                    <h3 className="text-lg font-bold mb-3">
+                      {product.name}
+                    </h3>
+
+                    <p className="text-sm opacity-80 mb-6 line-clamp-3">
+                      {product.description}
+                    </p>
+
+                    <button
+                      onClick={() => openModal(product)}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-semibold transition"
+                    >
+                      View PDFs
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* ================= PAGINATION ================= */}
+              {totalPages > 1 && (
+                <div className="flex justify-center mt-10 gap-3 flex-wrap">
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setCurrentPage(index + 1);
+                        window.scrollTo({ top: 500, behavior: "smooth" });
+                      }}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                        currentPage === index + 1
+                          ? "bg-blue-600 text-white shadow-md"
+                          : theme === "dark"
+                          ? "bg-gray-700 text-gray-300 hover:bg-blue-500 hover:text-white"
+                          : "bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
                 </div>
-              ))
+              )}
+            </>
           )}
         </div>
-        {products.length > productsPerPage && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "30px 0",
-            }}
-          >
-            <Pagination
-              count={Math.ceil(products.length / productsPerPage)}
-              page={currentPage}
-              onChange={(event, value) => {
-                setCurrentPage(value);
-              }}
-              color="primary"
-              sx={{
-                "& .MuiPaginationItem-root": {
-                  fontFamily: "Poppins",
-                  color: theme === "dark" ? "#fff" : "#2c2c2c",
-                },
-              }}
-            />
-          </div>
-        )}
 
-        {/* Modal for displaying PDF links */}
+        {/* ================= MODAL ================= */}
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
-          contentLabel="PDF Links"
-          className="modal-content"
-          overlayClassName="modal-overlay"
+          shouldCloseOnOverlayClick={true}
+          shouldCloseOnEsc={true}
+          className="relative bg-white dark:bg-gray-800 p-8 max-w-xl w-full mx-auto rounded-2xl shadow-2xl outline-none"
+          overlayClassName="fixed inset-0 bg-black/70 flex justify-center items-center z-50 px-4"
         >
-          <button onClick={closeModal} className="modal-close-button">
-            <IoClose size={20} />
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+          >
+            <IoClose size={24} />
           </button>
-          {selectedProduct && (
-            <div className="modal-body">
-              <h3>{selectedProduct.name} - PDFs</h3>
-              <ul>
-                {selectedProduct.pdfs.map((pdfUrl, pdfIndex) => {
-                  const filename = pdfUrl.split("/").pop();
-                  const securePdfUrl = pdfUrl.replace("http://", "https://");
 
-                  const handleDownload = async (url, filename) => {
-                    try {
-                      const secureUrl = url.replace("http://", "https://");
-                      setDownloading((prev) => ({ ...prev, [filename]: true })); // Set downloading state
-                      const response = await fetch(secureUrl);
-                      const blob = await response.blob();
-                      const link = document.createElement("a");
-                      link.href = URL.createObjectURL(blob);
-                      link.download = filename;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                    } catch (error) {
-                      console.error("Error downloading the file:", error);
-                    } finally {
-                      setDownloading((prev) => ({
-                        ...prev,
-                        [filename]: false,
-                      })); // Reset downloading state
-                    }
-                  };
+          {selectedProduct && (
+            <>
+              <h3 className="text-xl font-bold mb-6 border-b pb-3">
+                {selectedProduct.name} - PDFs
+              </h3>
+
+              <div className="space-y-4 max-h-72 overflow-y-auto pr-2">
+                {selectedProduct.pdfs.map((pdfUrl, index) => {
+                  const filename = pdfUrl.split("/").pop();
 
                   return (
-                    <li key={pdfIndex}>
-                      <a
-                        href={pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                    <div
+                      key={index}
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 rounded-lg border bg-gray-50 dark:bg-gray-700"
+                    >
+                      <span className="text-sm truncate break-all">
                         {filename}
-                      </a>
-                      <button
-                        onClick={() => handleDownload(securePdfUrl, filename)}
-                        disabled={downloading[filename]}
-                        style={{
-                          backgroundColor: "#28a745", // Green color
-                          color: "#fff",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "6px",
-                          fontSize: "14px",
-                          cursor: downloading[filename]
-                            ? "not-allowed"
-                            : "pointer",
-                          transition: "0.3s",
-                          fontWeight: "bold",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                          margin: "10px 0px",
-                        }}
-                        onMouseEnter={(e) =>
-                          (e.target.style.backgroundColor = "#218838")
-                        } // Dark green on hover
-                        onMouseLeave={(e) =>
-                          (e.target.style.backgroundColor = "#28a745")
-                        }
-                      >
-                        {downloading[filename] ? (
-                          <span
-                            style={{ color: "#FFD700", fontWeight: "bold" }}
-                          >
-                            Downloading...
-                          </span> // Golden Color
-                        ) : (
-                          "📥 Download"
-                        )}
-                      </button>
-                    </li>
+                      </span>
+
+                      <div className="flex gap-2">
+                        <a
+                          href={pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-xs font-semibold"
+                        >
+                          View
+                        </a>
+
+                        <button
+                          onClick={() =>
+                            handleDownload(pdfUrl, filename)
+                          }
+                          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-xs font-semibold"
+                        >
+                          {downloading[filename]
+                            ? "Downloading..."
+                            : "Download"}
+                        </button>
+                      </div>
+                    </div>
                   );
                 })}
-              </ul>
-              {/* Instructions for Android users */}
-              <div className="android-instructions">
-                <p>
-                  For PC and iOS users, simply click on the link to access the
-                  PDF directly.
-                </p>
-                <p>
-                  <strong>For Android users:</strong> Simply click on the
-                  download button, and the file will be downloaded.
-                </p>
               </div>
-              <SocialBarAd />
-            </div>
+
+              <div className="mt-6 text-xs opacity-70">
+                <p>PC/iOS: Click View to open PDF.</p>
+                <p>Android: Use Download button.</p>
+              </div>
+
+              <div className="mt-6">
+                <SocialBarAd />
+              </div>
+            </>
           )}
         </Modal>
 
-        <div>
-          <PdfFormat />
-        </div>
-
-        <div className="feature-pdf">
-          <Featurepdf />
-        </div>
-
-        <div className="platform-info-section">
-          <PlatformInfoCard />
-        </div>
-
-        <div className="platformhiglights-main"></div>
-
-        <div>
-          <PdfSearchGuide />
-        </div>
-
-        <div>
-          <Faq />
-        </div>
-
-        <div>
-          <Featureimage />
-        </div>
+        <PdfFormat />
+        <Featurepdf />
+        <PlatformInfoCard />
+        <PdfSearchGuide />
+        <Faq />
+        <Featureimage />
       </div>
     </Layout>
   );
