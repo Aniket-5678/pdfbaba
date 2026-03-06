@@ -102,44 +102,52 @@ const HomePage = () => {
 
         {/* ================= CATEGORY SECTION ================= */}
 {/* ================= NETFLIX STYLE CATEGORY SECTION ================= */}
+{/* ================= GLASS CATEGORY SECTION ================= */}
 <div className="max-w-7xl mx-auto px-4 py-12">
 
   {/* Heading */}
-  <h3 className="text-[1.1rem] sm:text-2xl font-light mb-6 tracking-wide">
+  <h3 className="text-[0.9rem] sm:text-2xl font-light mb-6 tracking-wide">
     Browse Categories
   </h3>
 
   {/* Horizontal Scroll */}
-  <div className="relative">
-    <div className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4">
+  <div className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4">
 
-      {categories.map((category) => (
-        <Link
-          key={category._id}
-          to={`/category/${category.slug}`}
-          className="flex-shrink-0 w-[160px] sm:w-[190px] md:w-[210px] group"
+    {categories.map((category) => (
+      <Link
+        key={category._id}
+        to={`/category/${category.slug}`}
+        className="flex-shrink-0 w-[130px] sm:w-[160px] group"
+      >
+        <div
+          className={`
+          h-[80px] sm:h-[95px]
+          rounded-xl
+          backdrop-blur-lg
+          border
+          flex flex-col items-center justify-center
+          transition-all duration-300
+          hover:scale-105 hover:shadow-2xl
+          ${
+            theme === "dark"
+              ? "bg-white/10 border-white/20 hover:bg-blue-600"
+              : "bg-white/60 border-gray-200 hover:bg-blue-600"
+          }
+        `}
         >
-          <div
-            className={`
-              h-[90px] sm:h-[110px]
-              flex items-center justify-center
-              rounded-xl transition-all duration-300
-              hover:scale-105 hover:shadow-xl
-              ${
-                theme === "dark"
-                  ? "bg-gray-800 hover:bg-blue-600"
-                  : "bg-white hover:bg-blue-600 shadow-md"
-              }
-            `}
-          >
-            <h4 className="text-sm sm:text-base font-medium text-center group-hover:text-white transition px-2">
-              {category.name}
-            </h4>
-          </div>
-        </Link>
-      ))}
+          {/* Category Name */}
+          <h4 className="text-[0.85rem] sm:text-sm font-medium text-center group-hover:text-white transition px-2 whitespace-nowrap overflow-hidden text-ellipsis w-full">
+            {category.name}
+          </h4>
 
-    </div>
+          {/* View Notes */}
+          <p className="text-[10px] sm:text-[11px] mt-1 opacity-70 group-hover:text-white transition">
+            View Notes →
+          </p>
+        </div>
+      </Link>
+    ))}
+
   </div>
 </div>
 
