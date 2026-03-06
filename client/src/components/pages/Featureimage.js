@@ -7,119 +7,91 @@ const Featureimage = () => {
   const isDark = theme === "dark";
 
   return (
-    <section className="px-4 sm:px-8 py-20 font-[Poppins]">
+    <section className="px-4 sm:px-8 py-14 font-[Poppins]">
       <div
-        className={`relative max-w-7xl mx-auto rounded-3xl overflow-hidden transition-all duration-500
+        className={`max-w-6xl mx-auto rounded-2xl p-8 sm:p-12 transition
         ${
           isDark
-            ? "bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#020617] border border-white/10 shadow-2xl shadow-black/40"
-            : "bg-gradient-to-br from-blue-50 via-white to-indigo-50 border border-gray-200 shadow-xl"
+            ? "bg-[#0f172a] border border-gray-800"
+            : "bg-white border border-gray-200 shadow-sm"
         }`}
       >
-        {/* Soft Glow Effects */}
-        <div className="absolute -top-24 -left-24 w-72 h-72 bg-indigo-500/20 blur-3xl rounded-full"></div>
-        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-blue-500/20 blur-3xl rounded-full"></div>
-
-        <div className="relative grid md:grid-cols-2 gap-16 items-center p-8 sm:p-16">
-
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          
           {/* LEFT CONTENT */}
-          <div className="text-center md:text-left">
+          <div>
             <h2
-              className={`text-3xl sm:text-5xl font-semibold leading-tight mb-6 ${
+              className={`text-2xl sm:text-3xl font-light leading-snug mb-4 ${
                 isDark ? "text-white" : "text-gray-900"
               }`}
             >
-              Your Gateway to{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Smart Learning
-              </span>
+              Smart Learning Resources in One Place
             </h2>
 
             <p
-              className={`mb-8 text-sm sm:text-lg leading-relaxed max-w-xl ${
-                isDark ? "text-gray-300" : "text-gray-600"
+              className={`text-sm sm:text-base mb-6 leading-relaxed ${
+                isDark ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              Structured study resources designed to accelerate your learning.
-              Explore categorized PDFs, tech notes, business materials and
-              self-growth content — all in one place.
+              Access organized study materials, technology notes, business
+              guides and personal growth resources designed to help you learn
+              faster and build real skills.
             </p>
 
-            {/* FEATURES LIST */}
-            <div className="space-y-4 mb-10 text-sm sm:text-base">
-              {[
-                "Tech Notes & Development Concepts",
-                "Personal Growth & Motivation PDFs",
-                "Business, Finance & Startup Resources",
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 justify-center md:justify-start"
-                >
-                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
             <Link to="/discover-more">
-              <button className="relative inline-flex items-center justify-center px-8 py-3 font-semibold text-white rounded-xl
-              bg-gradient-to-r from-blue-600 to-indigo-600
-              hover:from-blue-700 hover:to-indigo-700
-              shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95">
-                Discover More →
+              <button className="px-6 py-2.5 text-sm font-medium text-white rounded-lg
+              bg-blue-600 hover:bg-blue-700 transition">
+                Explore Resources
               </button>
             </Link>
           </div>
 
-          {/* RIGHT VISUAL UI DESIGN (NO IMAGE) */}
-          <div className="relative flex justify-center items-center">
-
-            {/* Floating Card 1 */}
-            <div className={`absolute top-0 left-8 w-44 h-28 rounded-2xl backdrop-blur-lg border 
-              ${isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200 shadow-lg"}
-              flex items-center justify-center text-sm font-medium animate-float`}
-            >
-              📘 1200+ PDFs
-            </div>
-
-            {/* Floating Card 2 */}
-            <div className={`absolute bottom-0 right-8 w-52 h-32 rounded-2xl backdrop-blur-lg border 
-              ${isDark ? "bg-white/5 border-white/10" : "bg-white border-gray-200 shadow-lg"}
-              flex items-center justify-center text-sm font-medium animate-float delay-200`}
-            >
-              🚀 Smart Categorization
-            </div>
-
-            {/* Main Center Card */}
+          {/* RIGHT FEATURES */}
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            
             <div
-              className={`relative w-72 sm:w-96 h-56 sm:h-64 rounded-3xl flex items-center justify-center text-center text-lg font-semibold
-              ${
+              className={`p-4 rounded-lg ${
                 isDark
-                  ? "bg-gradient-to-br from-blue-600/30 to-indigo-600/30 border border-white/10 backdrop-blur-xl"
-                  : "bg-white shadow-2xl border border-gray-200"
+                  ? "bg-gray-800 text-gray-300"
+                  : "bg-gray-50 text-gray-700"
               }`}
             >
-              📚 Learn • Grow • Build
+              📘 1200+ Study PDFs
+            </div>
+
+            <div
+              className={`p-4 rounded-lg ${
+                isDark
+                  ? "bg-gray-800 text-gray-300"
+                  : "bg-gray-50 text-gray-700"
+              }`}
+            >
+              🚀 Tech & Career Guides
+            </div>
+
+            <div
+              className={`p-4 rounded-lg ${
+                isDark
+                  ? "bg-gray-800 text-gray-300"
+                  : "bg-gray-50 text-gray-700"
+              }`}
+            >
+              💼 Business Resources
+            </div>
+
+            <div
+              className={`p-4 rounded-lg ${
+                isDark
+                  ? "bg-gray-800 text-gray-300"
+                  : "bg-gray-50 text-gray-700"
+              }`}
+            >
+              🌱 Self Growth Materials
             </div>
 
           </div>
         </div>
       </div>
-
-      {/* Floating Animation */}
-      <style>
-        {`
-          @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-          }
-          .animate-float {
-            animation: float 4s ease-in-out infinite;
-          }
-        `}
-      </style>
     </section>
   );
 };

@@ -1,46 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ClipLoader } from 'react-spinners';
-import Modal from 'react-modal';
-import { Box, Typography, Button, Grid, Card, CardContent, Rating, useMediaQuery } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import Layout from '../Layout/Layout';
-import { useTheme } from '../context/ThemeContext';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Layout from "../Layout/Layout";
+import Modal from "react-modal";
 import { IoClose } from "react-icons/io5";
-import SmallBannerAd from './SmallBannerAd';
-import SocialBarAd from "../pages/SocialBarAd"
-import NativeAd from "./NativeAd"
-import PopunderAd from './PopunderAd';
+import { FiDownload, FiExternalLink } from "react-icons/fi";
+import { ClipLoader } from "react-spinners";
+import { useTheme } from "../context/ThemeContext";
+import SmallBannerAd from "./SmallBannerAd";
+import SocialBarAd from "../pages/SocialBarAd";
+import NativeAd from "./NativeAd";
 
+Modal.setAppElement("#root");
 
 const ExplorePage = () => {
   const [pdfs, setPdfs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(8);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(8);
-  const isMobile = useMediaQuery('(max-width:600px)');
-  const [theme] = useTheme(); // Use the theme context
   const [downloading, setDownloading] = useState({});
+  const [theme] = useTheme();
+
+  const isDark = theme === "dark";
 
   useEffect(() => {
     const fetchPdfs = async () => {
       try {
-        const response = await axios.get('/api/v1/questionpaper/all-questions');
-        if (response.data.success) {
-          setPdfs(response.data.data);
-        } else {
-          setError('Unable to fetch PDF notes. Please try again later.');
+        const res = await axios.get("/api/v1/questionpaper/all-questions");
+        if (res.data.success) {
+          setPdfs(res.data.data);
         }
       } catch (err) {
-        setError('An error occurred while fetching PDFs.');
-        console.error(err);
+        console.log(err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchPdfs();
   }, []);
 
@@ -56,266 +53,215 @@ const ExplorePage = () => {
 
   const handleLoadMore = () => {
     setLoadingMore(true);
+
     setTimeout(() => {
-      setVisibleCount((prevCount) => prevCount + 6);
+      setVisibleCount((prev) => prev + 6);
       setLoadingMore(false);
     }, 1000);
   };
 
-  // Theme setup with Poppins font
-  const themeStyles = createTheme({
-    palette: {
-      mode: theme === 'dark' ? 'dark' : 'light',
-      background: {
-        default: theme === 'dark' ? '#121212' : '#fff',
-      },
-      text: {
-        primary: theme === 'dark' ? '#fff' : '#333',
-        fontFamily: '"Poppins", sans-serif', 
-      },
-    },
-    typography: {
-      fontFamily: '"Poppins", sans-serif', // Apply Poppins font globally
-    },
-  });
+  const handleDownload = async (url, filename) => {
+    try {
+      setDownloading((prev) => ({ ...prev, [filename]: true }));
+
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setDownloading((prev) => ({ ...prev, [filename]: false }));
+    }
+  };
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="80vh" fontFamily= '"Poppins", sans-serif'>
-        <ClipLoader color="#007bff" size={50} />
-        <Typography sx={{ marginLeft: 2 }}>Loading PDF notes...</Typography>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" height="80vh">
-        <Typography color="error" variant="h6">
-          {error}
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => window.location.reload()}
-          sx={{ marginTop: 2 }}
-        >
-          Retry
-        </Button>
-      </Box>
+      <div className="flex justify-center items-center h-[70vh] gap-3">
+        <ClipLoader size={40} color="#2563eb" />
+        <span className="text-gray-600">Loading PDF Notes...</span>
+      </div>
     );
   }
 
   return (
     <Layout>
-      <Box sx={{ padding: 3 , margin: '100px 0px'}}>
-       
-      <Box marginTop={'5px'} >
-          <SmallBannerAd/>
-        </Box>
-        <Box>
-          <SocialBarAd/>
-        </Box>
 
-        {/* Title Section */}
-        <Box sx={{ marginBottom: 4, textAlign: 'center' }}>
-          <Typography 
-            variant="h4" 
-            sx={{
-              fontSize: isMobile ? '1.1rem' : '1.5rem', 
-              fontFamily: 'Poppins, sans-serif',
-              fontWeight: '300', 
-              marginTop: '10px',
-              color: themeStyles.palette.text.primary
-            }}
-          >
+      <section className="max-w-7xl mx-auto px-4 py-16 mt-12">
+
+        <SmallBannerAd />
+        <SocialBarAd />
+
+        {/* HEADER */}
+
+        <div className="text-center mb-10">
+
+          <h1 className="text-[1.1rem] sm:text-2xl md:text-3xl font-light tracking-wide mb-3">
             Explore Our PDF Collection
-          </Typography>
-          <Typography 
-            variant="body1" 
-            sx={{
-              fontSize: isMobile ? '0.9rem' : '1rem', 
-              fontFamily: 'Poppins, sans-serif',
-              color: themeStyles.palette.text.primary,
-              marginTop: 1
-            }}
-          >
-            Browse through various study materials, including question papers, notes, and more.
-          </Typography>
-        </Box>
+          </h1>
 
-        <Grid container spacing={2}>
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base max-w-2xl mx-auto">
+            Browse structured study materials including question papers,
+            notes and educational resources to improve your learning.
+          </p>
+
+        </div>
+
+        {/* GRID */}
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+
           {pdfs.slice(0, visibleCount).map((pdf) => (
-            <Grid
-              item
-              xs={6} // 2 cards per row on mobile
-              sm={4} // 3 cards per row on small devices
-              md={3} // 4 cards per row on medium devices
-              lg={3} // 4 cards per row on large devices
+            <div
               key={pdf._id}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center', // Center the card horizontally
-              }}
+              className={`p-4 rounded-xl transition hover:shadow-xl hover:-translate-y-1
+              ${isDark ? "bg-gray-800 text-white" : "bg-white shadow-md"}
+              `}
             >
-              <Card
-                sx={{
-                  height: '100%',
-                  backgroundColor: themeStyles.palette.background.default,
-                  color: themeStyles.palette.text.primary,
-                  boxShadow: theme === 'dark' ? '0 4px 6px rgba(0,0,0,0.8)' : '0 4px 6px rgba(0,0,0,0.1)',
-                  transition: 'background-color 0.3s, color 0.3s',
-                  fontFamily: '"Poppins", sans-serif',
-                  width: '100%'
-                }}
+
+              <h3 className="text-sm sm:text-base font-medium mb-2 line-clamp-2">
+                {pdf.name}
+              </h3>
+
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-300 line-clamp-3 mb-4">
+                {pdf.description}
+              </p>
+
+              <button
+                onClick={() => openModal(pdf)}
+                className="w-full text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
               >
-                <CardContent>
-                  <Typography variant="h6" gutterBottom  sx={{
-                      fontSize: isMobile ? '0.8rem' : '1.1rem',
-                    }}  >
-                    {pdf.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color={theme === 'dark' ? 'white' : 'textSecondary'}
-                    gutterBottom
-                    sx={{
-                      fontSize: isMobile ? '0.7rem' : '0.9rem',
-                    }}
-                  >
-                    {pdf.description}
-                  </Typography>
-                  <Rating value={Math.floor(Math.random() * 5) + 1} readOnly size="small" sx={{ marginBottom: 1 }} />
-                  <Box
-                    display="flex"
-                    flexDirection={isMobile ? 'column' : 'row'}
-                    justifyContent="space-between"
-                    alignItems="center"
-                    gap={isMobile ? 1 : 0} // Adds spacing between buttons for column layout
-                  >
-                    <Button
-                      variant="outlined"
-                      onClick={() => openModal(pdf)}
-                      size="small"
-                      sx={{
-                        fontSize: isMobile ? '0.7rem' : '0.9rem',
-                        padding: isMobile ? '4px 8px' : '6px 12px',
-                        width: isMobile ? '100%' : 'auto', // Full-width on mobile
-                      }}
-                    >
-                      View PDFs
-                    </Button>
-                    
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
+                View PDFs
+              </button>
+
+            </div>
           ))}
-        </Grid>
+        </div>
+
+        {/* LOAD MORE */}
 
         {visibleCount < pdfs.length && (
-          <Box display="flex" justifyContent="center" marginTop={3}>
-            <Button
-              variant="contained"
-              color="primary"
+
+          <div className="flex justify-center mt-10">
+
+            <button
               onClick={handleLoadMore}
-              disabled={loadingMore}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2"
             >
-              {loadingMore ? <ClipLoader color="#fff" size={20} /> : 'Load More'}
-            </Button>
-          </Box>
+              {loadingMore ? (
+                <ClipLoader size={18} color="#fff" />
+              ) : (
+                "Load More"
+              )}
+            </button>
+
+          </div>
+
         )}
 
-      </Box>
+      </section>
+
+      {/* MODAL */}
 
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        contentLabel="PDF Links"
-        className="modal-content"
-        overlayClassName="modal-overlay"
+        className="relative bg-white dark:bg-gray-900 max-w-lg mx-auto mt-32 p-6 rounded-xl shadow-xl outline-none"
+        overlayClassName="fixed inset-0 bg-black/50 flex justify-center items-start"
       >
-        <button onClick={closeModal} className="modal-close-button"><IoClose size={20} /></button>
-        
+
+        <button
+          onClick={closeModal}
+          className="absolute right-4 top-4 text-gray-500 hover:text-red-500"
+        >
+          <IoClose size={22} />
+        </button>
+
         {selectedPdf && (
-          <div className="modal-body">
-            <h3>{selectedPdf.name} - PDFs</h3>
-            <ul>
-              {selectedPdf.pdfs.map((pdfUrl, pdfIndex) => {
-                const filename = pdfUrl.split('/').pop();  // Extract file name from URL
-                const securePdfUrl = pdfUrl.replace("http://", "https://");
-                const handleDownload = async (url, filename) => {
-                  try {
-                    const secureUrl = url.replace("http://", "https://"); 
-                    setDownloading(prev => ({ ...prev, [filename]: true })); // Set downloading state
-                    const response = await fetch(secureUrl);
-                    const blob = await response.blob();
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  } catch (error) {
-                    console.error("Error downloading the file:", error);
-                  } finally {
-                    setDownloading(prev => ({ ...prev, [filename]: false })); // Reset downloading state
-                  }
-                };
-                
+
+          <div>
+
+            <h3 className="text-lg font-semibold mb-5">
+              {selectedPdf.name} PDFs
+            </h3>
+
+            <ul className="space-y-4">
+
+              {selectedPdf.pdfs.map((pdfUrl, index) => {
+
+                const filename = pdfUrl.split("/").pop();
 
                 return (
-                  <li key={pdfIndex}>
-                    <a href={pdfUrl} target='_blank' rel='noopener noreferrer'>
-                      {filename}  {/* Display the file name */}
-                    </a>
-                    <button
-    onClick={() => handleDownload(securePdfUrl, filename)}
-    disabled={downloading[filename]} 
-    style={{
-      backgroundColor: '#28a745', // Green color
-      color: '#fff',
-      border: 'none',
-      padding: '8px 16px',
-      borderRadius: '6px',
-      fontSize: '14px',
-      cursor: downloading[filename] ? 'not-allowed' : 'pointer',
-      transition: '0.3s',
-      fontWeight: 'bold',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      margin: '10px 0px',
-    }}
-    onMouseEnter={(e) => (e.target.style.backgroundColor = '#218838')} // Dark green on hover
-    onMouseLeave={(e) => (e.target.style.backgroundColor = '#28a745')}
-  >
-      {downloading[filename] ? (
-    <span style={{ color: '#FFD700', fontWeight: 'bold' }}>Downloading...</span> // Golden Color
-  ) : (
-    '📥 Download'
-  )}
-  </button>
+
+                  <li
+                    key={index}
+                    className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg flex flex-col gap-3"
+                  >
+
+                    <span className="text-sm truncate">
+                      {filename}
+                    </span>
+
+                    <div className="flex gap-2">
+
+                      {/* VIEW BUTTON */}
+
+                      <a
+                        href={pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-xs"
+                      >
+                        <FiExternalLink size={14} />
+                        View
+                      </a>
+
+                      {/* DOWNLOAD BUTTON */}
+
+                      <button
+                        onClick={() =>
+                          handleDownload(pdfUrl, filename)
+                        }
+                        className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-xs"
+                      >
+
+                        <FiDownload size={14} />
+
+                        {downloading[filename]
+                          ? "Downloading..."
+                          : "Download"}
+
+                      </button>
+
+                    </div>
 
                   </li>
+
                 );
               })}
+
             </ul>
 
-            {/* Instructions for Android users */}
-            <div className="android-instructions">
-            <p>For PC and iOS users, simply click on the link to access the PDF directly.</p>
-            <p><strong>For Android users:</strong> Simply click on the download button, and the file will be downloaded.</p>
+            <div className="text-xs text-gray-500 mt-5 space-y-1">
+              <p>PC / iOS users: click "View" to open PDF.</p>
+              <p>Android users: use Download button.</p>
             </div>
+
           </div>
+
         )}
+
       </Modal>
-      
-      <>
-  <NativeAd />
-  <PopunderAd />
-</>
+
+      <NativeAd />
+
     </Layout>
   );
 };

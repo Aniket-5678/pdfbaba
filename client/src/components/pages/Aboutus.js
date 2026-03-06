@@ -1,151 +1,279 @@
 // src/components/Aboutus.js
 
-import React, { useState, useEffect } from 'react';
-import "../style/style.css";
-import Layout from '../Layout/Layout';
-import { ClipLoader } from 'react-spinners'; 
-import bannerImage from '../images/aboutusbanner.png'; // Ensure you have a banner image in your assets
-import AboutownerImage from "../images/aniketsingh.jpg"
-import graphicdesignerImage from "../images/ajit.jpg"
-import joshuaImage from "../images/joshua.jpg"
-import goldyImage from "../images/goldy.jpg"
-import SocialBarAd from './SocialBarAd';
-import PopunderAd from './PopunderAd';
+import React, { useState, useEffect } from "react";
+import Layout from "../Layout/Layout";
+import { ClipLoader } from "react-spinners";
+import { useTheme } from "../context/ThemeContext";
 
+import bannerImage from "../images/aboutusbanner.png";
+import AboutownerImage from "../images/aniketsingh.jpg";
+import graphicdesignerImage from "../images/ajit.jpg";
+import joshuaImage from "../images/joshua.jpg";
+import goldyImage from "../images/goldy.jpg";
+
+import SocialBarAd from "./SocialBarAd";
 
 const Aboutus = () => {
-  const [loading, setLoading] = useState(true); // State for managing loading
+  const [loading, setLoading] = useState(true);
+  const [theme] = useTheme();
+  const isDark = theme === "dark";
 
-  // Simulate loading with a timeout (You can adjust this or replace it with real loading logic)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false); // Stop loading after 1 second
+      setLoading(false);
     }, 1000);
 
-    return () => clearTimeout(timer); // Clean up timer
+    return () => clearTimeout(timer);
   }, []);
 
-  // Show spinner while loading
   if (loading) {
     return (
-      <div className="spinner-container">
-        <ClipLoader color="#007bff" size={50} /> {/* Spinner Color and Size */}
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#2563eb" size={50} />
       </div>
     );
   }
 
+  const team = [
+    {
+      name: "Aniket Singh",
+      role: "Founder & MERN Developer",
+      image: AboutownerImage,
+      desc: "Founder of PDF Baba. Passionate about building learning platforms and providing digital products like study PDFs, quizzes, roadmaps and website source codes.",
+    },
+    {
+      name: "Ajit Yadav",
+      role: "Graphic Designer",
+      image: graphicdesignerImage,
+      desc: "Creates engaging banners, thumbnails and graphics for the platform.",
+    },
+    {
+      name: "Gaurav Karkera",
+      role: "UI/UX Designer",
+      image: goldyImage,
+      desc: "Designs smooth and modern user experiences to make learning simple.",
+    },
+    {
+      name: "Joshua",
+      role: "PDF & Content Expert",
+      image: joshuaImage,
+      desc: "Manages and verifies study materials including notes, guides and educational PDFs.",
+    },
+  ];
+
   return (
     <Layout>
-      <div className="aboutus-container">
-        {/* Banner Section */}
-        <div className="banner">
-          <img src={bannerImage} alt="Banner" className="about-banner-image" />
-          <div className="banner-text">
-            <h1>Welcome to PDFBABA</h1>
-            <p>Your Gateway to Comprehensive Learning Resources</p>
+      <div
+        className={`transition-colors duration-500 ${
+          isDark ? "bg-[#0b0f19]" : "bg-gray-50"
+        }`}
+      >
+        {/* HERO */}
+
+        <div className="relative h-[320px] sm:h-[420px] flex items-center justify-center text-center mt-24">
+
+          <img
+            src={bannerImage}
+            alt="PDF Baba Banner"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+
+          <div className="absolute inset-0 bg-black/50"></div>
+
+          <div className="relative z-10 px-6">
+            <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4">
+              Welcome to PDF Baba
+            </h1>
+
+            <p className="text-white/90 text-sm sm:text-lg max-w-2xl mx-auto">
+              A complete learning platform for PDFs, quizzes, career roadmaps,
+              tech tutorials and affordable website source code projects.
+            </p>
           </div>
         </div>
 
-        {/* About the Website */}
-        <section className="section">
-          <h2 className="subtitle">About PDFBABA</h2>
-          <p className="paragraph">
-            Welcome to <strong>PDFBABA</strong>, a platform dedicated to enhancing learning through accessible PDFs, tutorials, and other valuable resources. Designed specifically for 12th-grade IT/Computer Science students and aspiring website developers, LearnLedger provides a centralized hub where you can find all the materials you need to excel in your studies and projects.
+        {/* ABOUT */}
+
+        <section className="max-w-5xl mx-auto px-4 py-16">
+
+          <h2
+            className={`text-2xl sm:text-3xl font-semibold mb-6 text-center ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
+          >
+            About PDF Baba
+          </h2>
+
+          <p
+            className={`text-center leading-relaxed max-w-3xl mx-auto ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
+            PDF Baba is an online platform designed to provide students,
+            developers and learners with high quality study materials.
+            Our website offers educational PDFs, technology notes, business
+            and finance resources, quizzes and career roadmaps to help people
+            improve their knowledge and skills.
           </p>
+
         </section>
 
-        {/* Our Mission */}
-        <section className="section">
-          <h2 className="subtitle">Our Mission</h2>
-          <p className="paragraph">
-            At PDFBABA, our mission is to democratize access to quality educational content and provide a comprehensive learning experience for everyone. We believe in continuous learning and strive to make it easier for learners to access valuable resources and knowledge, empowering them to achieve their academic and professional goals.
+        {/* MISSION */}
+
+        <section className="max-w-5xl mx-auto px-4 py-10">
+
+          <h2
+            className={`text-2xl sm:text-3xl font-semibold mb-6 text-center ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Our Mission
+          </h2>
+
+          <p
+            className={`text-center leading-relaxed max-w-3xl mx-auto ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
+            Our mission is to make learning easy and accessible for everyone.
+            We provide free and premium resources including notes, study
+            materials, career guidance and digital tools that help students
+            grow faster in academics and professional careers.
           </p>
+
         </section>
 
-        {/* What We Offer */}
-        <section className="section">
-          <h2 className="subtitle">What We Offer</h2>
-          <ul className="list">
-            <li className="listItem">Extensive collection of PDFs across all subjects</li>
-            <li className="listItem">Detailed tutorials to help you grasp complex topics</li>
-            <li className="listItem">Regular updates with the latest study materials</li>
-            <li className="listItem">Advanced search functionality for easy access</li>
-            <li className="listItem">User-friendly interface tailored for students and developers</li>
-          </ul>
-        </section>
+        {/* WHAT WE OFFER */}
 
-        {/* Search Functionality Highlight */}
-        <section className="section">
-          <h2 className="subtitle">Powerful Search Functionality</h2>
-          <p className="paragraph">
-            Our platform features an advanced search functionality that allows you to quickly find the PDFs and notes you need. Whether you're looking for specific topics, subjects, or resources related to website development, our intuitive search ensures you spend less time searching and more time learning.
-          </p>
-        </section>
+        <section className="max-w-6xl mx-auto px-4 py-16">
 
-        {/* Contact Us */}
-        <section className="section">
-          <h2 className="subtitle">Contact Us</h2>
-          <p className="paragraph">
-            If you have any questions, suggestions, or feedback, feel free to reach out to us at:
-          </p>
-          <p className="contactInfo">📧 ani23june@gmail.com</p>
-          <p className="contactInfo">📞+918830730929</p>
-        </section>
+          <h2
+            className={`text-2xl sm:text-3xl font-semibold mb-12 text-center ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
+          >
+            What You Will Find On PDF Baba
+          </h2>
 
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <section className="team-section">
-          <h2 className="subtitle">Meet the Team</h2>
-          <div className="team-cards">
-
-            {/* Owner Card */}
-            <div className="team-card">
-              <img src={AboutownerImage} alt="Owner" className="team-image" />
-              <h3 className="team-name">Aniket (Owner)</h3>
-              <p className="team-role">MERN Stack Developer</p>
-              <p className="team-description">
-                Hi, I'm Aniket, the creator of PDFBABA. With a passion for full-stack development, I built this platform to help students and developers access essential resources effortlessly.
-              </p>
-            </div>
-
-            {/* Graphic Designer */}
-            <div className="team-card">
-              <img src={graphicdesignerImage} alt="Graphic Designer" className="team-image" />
-              <h3 className="team-name">Ajit Yadav</h3>
-              <p className="team-role">Graphic Designer</p>
-              <p className="team-description">
-                Ajit creates visually engaging content, ensuring all designs are attractive and aligned with the platform’s brand.
-              </p>
-            </div>
-
-            {/* UX Designer */}
-            <div className="team-card">
-              <img src={goldyImage} alt="UX Designer" className="team-image" />
-              <h3 className="team-name">Guarav karkera</h3>
-              <p className="team-role">UI/UX Designer</p>
-              <p className="team-description">
-                gaurav designs intuitive interfaces to make sure the user journey is effortless and visually appealing.
-              </p>
-            </div>
-
-            {/* PDF Expert */}
-            <div className="team-card">
-              <img  src={joshuaImage} alt="PDF Expert" className="team-image" />
-              <h3 className="team-name">joshua </h3>
-              <p className="team-role">PDF Expert</p>
-              <p className="team-description">
-                Mark ensures all PDF materials are of high quality and accessible for all learners.
-              </p>
-            </div>
+            {[
+              "Educational PDF Notes for multiple subjects",
+              "Technology and programming learning resources",
+              "Business, finance and career development materials",
+              "Practice quizzes for technology, UPSC and general knowledge",
+              "Career roadmaps for digital skills and online careers",
+              "Affordable website source code projects for developers",
+            ].map((item, i) => (
+              <div
+                key={i}
+                className={`p-6 rounded-2xl border transition hover:shadow-lg ${
+                  isDark
+                    ? "bg-white/5 border-white/10 text-gray-300"
+                    : "bg-white border-gray-200 text-gray-700"
+                }`}
+              >
+                {item}
+              </div>
+            ))}
 
           </div>
+
         </section>
-        <SocialBarAd/>
-      </div>
-      <div>
-        <PopunderAd/>
+
+        {/* TEAM */}
+
+        <section className="max-w-7xl mx-auto px-4 py-16">
+
+          <h2
+            className={`text-2xl sm:text-3xl font-semibold mb-12 text-center ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Meet Our Team
+          </h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            {team.map((member, i) => (
+              <div
+                key={i}
+                className={`rounded-2xl overflow-hidden border transition hover:shadow-xl ${
+                  isDark
+                    ? "bg-white/5 border-white/10"
+                    : "bg-white border-gray-200"
+                }`}
+              >
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-56 object-cover"
+                />
+
+                <div className="p-6 text-center">
+
+                  <h3
+                    className={`font-semibold text-lg ${
+                      isDark ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    {member.name}
+                  </h3>
+
+                  <p className="text-blue-600 text-sm mb-3">
+                    {member.role}
+                  </p>
+
+                  <p
+                    className={`text-sm ${
+                      isDark ? "text-gray-300" : "text-gray-600"
+                    }`}
+                  >
+                    {member.desc}
+                  </p>
+
+                </div>
+              </div>
+            ))}
+
+          </div>
+
+        </section>
+
+        {/* CONTACT */}
+
+        <section className="max-w-4xl mx-auto px-4 py-16 text-center">
+
+          <h2
+            className={`text-2xl sm:text-3xl font-semibold mb-6 ${
+              isDark ? "text-white" : "text-gray-900"
+            }`}
+          >
+            Contact Us
+          </h2>
+
+          <p
+            className={`mb-4 ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
+            If you have any questions, suggestions or business inquiries feel
+            free to contact us.
+          </p>
+
+          <p className="text-blue-600 font-medium">
+            📧pdfbaba07@gmail.com
+          </p>
+
+        
+
+        </section>
+
+        <SocialBarAd />
+
       </div>
     </Layout>
   );
-}
+};
 
 export default Aboutus;

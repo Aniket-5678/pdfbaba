@@ -1,193 +1,209 @@
-import React, { useEffect } from 'react';
-import { Container, Typography, Button, Card, CardContent, Grid, useMediaQuery, Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { useTheme as useCustomTheme } from '../context/ThemeContext'; // Import theme context for dark mode
-import SchoolIcon from '@mui/icons-material/School';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
-import PeopleIcon from '@mui/icons-material/People';
-import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import React, { useEffect } from "react";
 import Layout from "../Layout/Layout";
-import { Link } from 'react-router-dom';
-import SmallBannerAd from "../pages/SmallBannerAd"
-import NativeAd from "../pages/NativeAd"
-import SocialBarAd from "./SocialBarAd"
-import PopunderAd from './PopunderAd';
+import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
+
+import SmallBannerAd from "../pages/SmallBannerAd";
+import NativeAd from "../pages/NativeAd";
+import SocialBarAd from "./SocialBarAd";
+
+import {
+  GraduationCap,
+  BookOpen,
+  Clock,
+  TrendingUp,
+  Lightbulb,
+  Users,
+  FileText
+} from "lucide-react";
 
 const Discovermore = () => {
-  const [theme] = useCustomTheme(); // Get theme from context
+  const [theme] = useTheme();
+  const isDark = theme === "dark";
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const muiTheme = useTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('sm'));
+  const cards = [
+    {
+      icon: <GraduationCap size={40} />,
+      title: "Effective Study Tips",
+      desc: "Learn smart techniques to manage time and retain concepts better."
+    },
+    {
+      icon: <BookOpen size={40} />,
+      title: "Best Learning PDFs",
+      desc: "Access high quality study PDFs including technology, business and finance resources."
+    },
+    {
+      icon: <Clock size={40} />,
+      title: "Smart Time Management",
+      desc: "Master scheduling and productivity techniques for better learning."
+    }
+  ];
+
+  const growthCards = [
+    {
+      icon: <TrendingUp size={40} />,
+      title: "Growth Mindset",
+      desc: "Develop a powerful mindset to improve learning and career success."
+    },
+    {
+      icon: <Lightbulb size={40} />,
+      title: "Learning Hacks",
+      desc: "Discover powerful tips to enhance comprehension and knowledge retention."
+    }
+  ];
+
+  const insights = [
+    {
+      icon: <FileText size={40} />,
+      title: "Expert Guides",
+      desc: "Read detailed guides curated by experts to improve your skills."
+    },
+    {
+      icon: <Users size={40} />,
+      title: "Community Learning",
+      desc: "Connect with other learners and explore valuable discussions."
+    }
+  ];
 
   return (
     <Layout>
-      <Container maxWidth="md" sx={{ textAlign: 'center', py: 4, mt: 15 }}>
-        <Box marginBottom={'30px'} >
-          <SmallBannerAd/>
-        </Box>
-        <Typography 
-          variant={isMobile ? "h5" : "h4"} 
-          fontWeight="bold"
-          sx={{ color: theme === 'dark' ? 'white' : 'black' }} // Apply conditional text color based on theme
-        >
-          Smart Learning Starts Here!
-        </Typography>
-        <Typography 
-          variant="body1" 
-          paragraph 
-          fontSize={isMobile ? "0.9rem" : "1rem"}
-          sx={{ color: theme === 'dark' ? 'white' : 'black' }} // Apply conditional text color based on theme
-        >
-          Explore the best resources to enhance your learning experience with PDF Baba.
-        </Typography>
 
-        <Grid container spacing={2} justifyContent="center" mt={2}>
-          {/* Learning Strategy */}
-          <Grid item xs={12} sm={4}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <SchoolIcon fontSize="large" color="primary" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Effective Study Tips
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Learn smart techniques to manage time and retain concepts better.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+      <div
+        className={`max-w-5xl mx-auto px-4 pt-32 pb-10 text-center ${
+          isDark ? "text-white" : "text-gray-900"
+        }`}
+      >
+        <div className="mb-8">
+          <SmallBannerAd />
+        </div>
 
-          {/* Recommended PDFs */}
-          <Grid item xs={12} sm={4}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <LibraryBooksIcon fontSize="large" color="secondary" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Best Learning PDFs
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Get access to top-rated PDFs for space studies, spiritual insights, techzone, and mysteries.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        <h1 className="text-2xl sm:text-4xl font-semibold mb-3">
+          Smart Learning Starts Here
+        </h1>
 
-          {/* Time Management */}
-          <Grid item xs={12} sm={4}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <AccessTimeIcon fontSize="large" color="success" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Smart Time Management
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Master the art of scheduling for better productivity.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
+        <p className="text-sm sm:text-base max-w-2xl mx-auto opacity-80">
+          Explore the best resources to enhance your learning experience with
+          PDF Baba including study notes, quizzes, career roadmaps and digital
+          learning materials.
+        </p>
 
-        {/* Growth & Learning Hacks */}
-        <Typography variant="h5" fontWeight="bold" mt={5} fontSize={isMobile ? "1.1rem" : "1.5rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
+        {/* FIRST SECTION */}
+
+        <div className="grid md:grid-cols-3 gap-6 mt-10">
+
+          {cards.map((item, i) => (
+            <div
+              key={i}
+              className={`p-6 rounded-xl border transition hover:shadow-lg ${
+                isDark
+                  ? "bg-white/5 border-white/10"
+                  : "bg-white border-gray-200"
+              }`}
+            >
+              <div className="flex justify-center mb-4 text-blue-500">
+                {item.icon}
+              </div>
+
+              <h3 className="text-lg font-medium mb-2">{item.title}</h3>
+
+              <p className="text-sm opacity-80">{item.desc}</p>
+            </div>
+          ))}
+
+        </div>
+
+        {/* GROWTH SECTION */}
+
+        <h2 className="text-xl sm:text-2xl font-semibold mt-16 mb-6">
           Enhance Your Learning Journey
-        </Typography>
-        <Grid container spacing={2} justifyContent="center" mt={2}>
-          <Grid item xs={12} sm={6}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <TrendingUpIcon fontSize="large" color="primary" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Growth Mindset
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Develop a growth mindset and unlock your full learning potential.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <TipsAndUpdatesIcon fontSize="large" color="secondary" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Learning Hacks
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Discover powerful tips to enhance comprehension and retention.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
+        </h2>
 
-        {/* Explore Button */}
-        <Button 
-          component={Link}
-          to="/explore"
-          variant="contained"
-          color="primary"
-          size="large"
-          sx={{ mt: 3, fontSize: isMobile ? "0.9rem" : "1rem", px: 3 }}
-        >
-          Explore More Notes
-        </Button>
+        <div className="grid md:grid-cols-2 gap-6">
 
-        {/* Exclusive Learning Insights */}
-        <Typography variant="h5" fontWeight="bold" mt={5} fontSize={isMobile ? "1.1rem" : "1.5rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
+          {growthCards.map((item, i) => (
+            <div
+              key={i}
+              className={`p-6 rounded-xl border transition hover:shadow-lg ${
+                isDark
+                  ? "bg-white/5 border-white/10"
+                  : "bg-white border-gray-200"
+              }`}
+            >
+              <div className="flex justify-center mb-4 text-blue-500">
+                {item.icon}
+              </div>
+
+              <h3 className="text-lg font-medium mb-2">{item.title}</h3>
+
+              <p className="text-sm opacity-80">{item.desc}</p>
+            </div>
+          ))}
+
+        </div>
+
+        {/* BUTTON */}
+
+        <div className="mt-8">
+
+          <Link
+            to="/explore"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm sm:text-base transition"
+          >
+            Explore More Notes
+          </Link>
+
+        </div>
+
+        {/* INSIGHTS */}
+
+        <h2 className="text-xl sm:text-2xl font-semibold mt-16 mb-4">
           Exclusive Learning Insights
-        </Typography>
-        <Typography variant="body1" paragraph fontSize={isMobile ? "0.9rem" : "1rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-          Gain deeper knowledge from expert guides and join discussions with a vibrant community.
-        </Typography>
+        </h2>
 
-        <Grid container spacing={2} justifyContent="center" mt={2}>
-          {/* Expert Guides */}
-          <Grid item xs={12} sm={6}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <ImportContactsIcon fontSize="large" color="primary" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Expert Guides
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Read high-quality guides curated by professionals to enhance your skills.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        <p className="text-sm sm:text-base opacity-80 max-w-2xl mx-auto mb-8">
+          Gain deeper knowledge from expert guides and learn with a growing
+          community of students and professionals.
+        </p>
 
-          {/* Community Discussions */}
-          <Grid item xs={12} sm={6}>
-            <Card sx={{ backgroundColor: theme === 'dark' ? '#333' : '#fff' }}>
-              <CardContent>
-                <PeopleIcon fontSize="large" color="secondary" />
-                <Typography variant="h6" fontSize={isMobile ? "1rem" : "1.2rem"} gutterBottom sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Community Discussions
-                </Typography>
-                <Typography variant="body2" fontSize={isMobile ? "0.8rem" : "0.9rem"} sx={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  Connect with fellow learners and discuss key topics that interest you.
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      <Box>
-        <NativeAd/>
-      </Box>
-      <Box>
-        <SocialBarAd/>
-      </Box>
-      <Box>
-        <PopunderAd/>
-      </Box>
+        <div className="grid md:grid-cols-2 gap-6">
+
+          {insights.map((item, i) => (
+            <div
+              key={i}
+              className={`p-6 rounded-xl border transition hover:shadow-lg ${
+                isDark
+                  ? "bg-white/5 border-white/10"
+                  : "bg-white border-gray-200"
+              }`}
+            >
+              <div className="flex justify-center mb-4 text-blue-500">
+                {item.icon}
+              </div>
+
+              <h3 className="text-lg font-medium mb-2">{item.title}</h3>
+
+              <p className="text-sm opacity-80">{item.desc}</p>
+            </div>
+          ))}
+
+        </div>
+
+      </div>
+
+      {/* ADS */}
+
+      <div className="max-w-5xl mx-auto px-4">
+        <NativeAd />
+      </div>
+
+      <div>
+        <SocialBarAd />
+      </div>
+
     </Layout>
   );
 };

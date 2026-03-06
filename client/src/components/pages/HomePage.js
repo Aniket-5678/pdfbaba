@@ -10,7 +10,6 @@ import { useTheme } from "../context/ThemeContext";
 import Featurepdf from "./Featurepdf";
 import PdfSearchGuide from "./PdfSearchGuide";
 import PlatformInfoCard from "./PlatformInfoCard";
-import PdfFormat from "./PdfFormat";
 import Faq from "./Faq";
 import Featureimage from "./Featureimage";
 import Services from "./Services";
@@ -163,33 +162,33 @@ const HomePage = () => {
             </p>
           ) : (
             <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {paginatedProducts.map((product) => (
-                  <div
-                    key={product._id}
-                    className={`p-6 rounded-2xl shadow-lg border transition hover:shadow-2xl ${
-                      theme === "dark"
-                        ? "bg-gray-800 border-gray-700"
-                        : "bg-white border-gray-200"
-                    }`}
-                  >
-                    <h3 className="text-lg font-bold mb-3">
-                      {product.name}
-                    </h3>
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+  {paginatedProducts.map((product) => (
+    <div
+      key={product._id}
+      className={`p-4 sm:p-6 rounded-2xl shadow-lg border transition hover:shadow-2xl ${
+        theme === "dark"
+          ? "bg-gray-800 border-gray-700"
+          : "bg-white border-gray-200"
+      }`}
+    >
+      <h3 className="text-sm sm:text-lg font-bold mb-2 sm:mb-3">
+        {product.name}
+      </h3>
 
-                    <p className="text-sm opacity-80 mb-6 line-clamp-3">
-                      {product.description}
-                    </p>
+      <p className="text-xs sm:text-sm opacity-80 mb-4 sm:mb-6 line-clamp-3">
+        {product.description}
+      </p>
 
-                    <button
-                      onClick={() => openModal(product)}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-semibold transition"
-                    >
-                      View PDFs
-                    </button>
-                  </div>
-                ))}
-              </div>
+      <button
+        onClick={() => openModal(product)}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs sm:text-sm font-semibold transition"
+      >
+        View PDFs
+      </button>
+    </div>
+  ))}
+</div>
 
               {/* ================= PAGINATION ================= */}
               {totalPages > 1 && (
@@ -291,7 +290,7 @@ const HomePage = () => {
           )}
         </Modal>
 
-        <PdfFormat />
+        
         <Featurepdf />
         <PlatformInfoCard />
         <PdfSearchGuide />

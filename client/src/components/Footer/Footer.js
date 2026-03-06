@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../style/style.css";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { RingLoader } from "react-spinners";
+
 import facbookImage from "../images/facebook.png";
 import linkdinImage from "../images/linkdin.png";
 import instagramImage from "../images/instagram.png";
@@ -11,12 +11,11 @@ import twitterImage from "../images/twitter.png";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false); // State to manage loading
+  const [loading, setLoading] = useState(false);
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
+    setLoading(true);
 
     try {
       const response = await axios.post("/api/v1/email/send-email", { email });
@@ -24,129 +23,171 @@ const Footer = () => {
       toast.success(response.data.message);
       setEmail("");
     } catch (error) {
-      console.error("Error:", error);
-
-      if (error.response && error.response.data && error.response.data.error) {
+      if (error.response?.data?.error) {
         toast.error(error.response.data.error);
       } else {
-        toast.error("An error occurred. Please try again.");
+        toast.error("Something went wrong");
       }
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        {/* About Section */}
-        <div className="footer-about">
-          <h3>About PDFBaba</h3>
-          <p>
-            PDFBaba is a platform dedicated to providing quality educational
-            materials and resources for learners worldwide. Join us and start
-            your learning journey today!
+    <footer className="bg-gray-900 text-gray-300 mt-20">
+
+      {/* MAIN FOOTER */}
+
+      <div className="max-w-7xl mx-auto px-6 py-12 grid gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+
+        {/* ABOUT */}
+
+        <div className="lg:col-span-2">
+          <h3 className="text-white text-lg font-semibold mb-4">
+            About PDFBaba
+          </h3>
+
+          <p className="text-sm leading-relaxed">
+            PDFBaba is a learning platform where students can explore quality
+            study materials, PDFs, career roadmaps, quizzes and educational
+            resources designed to help learners grow faster.
           </p>
         </div>
 
-        {/* Quick Links Section */}
-        <div className="footer-links">
-          <h3>Quick Links</h3>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About Us</Link>
-            </li>
-            <li>
-              <Link to="/contact">Contact Us</Link>
-            </li>
-            <li>
-              <Link to="/privacy">
-              
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link to="/termcondition"  >
-                Terms & Conditions
-              </Link>
-            </li>
-            <li>
-              <Link to="/register">signup</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-           
+        {/* QUICK LINKS */}
+
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-4">
+            Quick Links
+          </h3>
+
+          <ul className="space-y-2 text-sm">
+
+            <li><Link className="hover:text-white transition" to="/">Home</Link></li>
+            <li><Link className="hover:text-white transition" to="/about">About</Link></li>
+            <li><Link className="hover:text-white transition" to="/contact">Contact</Link></li>
+            <li><Link className="hover:text-white transition" to="/privacy">Privacy Policy</Link></li>
+            <li><Link className="hover:text-white transition" to="/termcondition">Terms</Link></li>
+            <li><Link className="hover:text-white transition" to="/register">Signup</Link></li>
+            <li><Link className="hover:text-white transition" to="/login">Login</Link></li>
+
           </ul>
         </div>
 
-        {/* Contact Information Section */}
-        <div className="footer-contact">
-          <h3>Contact Us</h3>
-          <p>Email: ani23june@gmail.com</p>
-          <p>Phone: +918830730929</p>
+        {/* CONTACT */}
+
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-4">
+            Contact
+          </h3>
+
+          <p className="text-sm">Email: pdfbaba07@gmail.com</p>
+         
         </div>
 
-        {/* Social Media Section */}
-        <div className="footer-social">
-          <h3>Follow Us</h3>
-          <div className="social-icons">
+        {/* SOCIAL */}
+
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-4">
+            Follow Us
+          </h3>
+
+          <div className="flex gap-4">
+
             <a
               href="https://www.facebook.com/share/18Ynq6wtQX/?mibextid=LQQJ4d"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img className="social" src={facbookImage} alt="Facebook" />
+              <img
+                src={facbookImage}
+                alt="facebook"
+                className="w-8 hover:scale-110 transition"
+              />
             </a>
+
+            <a href="https://www.twitter.com" target="_blank" rel="noreferrer">
+              <img
+                src={twitterImage}
+                alt="twitter"
+                className="w-8 hover:scale-110 transition"
+              />
+            </a>
+
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+              <img
+                src={linkdinImage}
+                alt="linkedin"
+                className="w-8 hover:scale-110 transition"
+              />
+            </a>
+
             <a
-              href="https://www.twitter.com"
+              href="https://www.instagram.com/pdf_baba"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noreferrer"
             >
-              <img className="social" src={twitterImage} alt="Twitter" />
+              <img
+                src={instagramImage}
+                alt="instagram"
+                className="w-8 hover:scale-110 transition"
+              />
             </a>
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img className="social" src={linkdinImage} alt="LinkedIn" />
-            </a>
-            <a
-              href="https://www.instagram.com/pdf_baba?igsh=YzN3ZThjcW1wbmds"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img className="social" src={instagramImage} alt="Instagram" />
-            </a>
+
           </div>
         </div>
 
-        {/* Newsletter Subscription Section */}
-        <div className="footer-subscribe">
-          <h3>Subscribe to Our Newsletter</h3>
-          <form className="subscribe-form" onSubmit={handleSubmit}>
+      </div>
+
+      {/* NEWSLETTER */}
+
+      <div className="border-t border-gray-700">
+
+        <div className="max-w-4xl mx-auto px-6 py-10 text-center">
+
+          <h3 className="text-white text-lg font-semibold mb-3">
+            Subscribe to Our Newsletter
+          </h3>
+
+          <p className="text-sm mb-6">
+            Get latest PDFs, notes, quizzes and learning resources directly in
+            your inbox.
+          </p>
+
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row gap-3 justify-center"
+          >
+
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="px-4 py-2 rounded-md text-black w-full sm:w-72"
             />
-            <button type="submit" disabled={loading}>
-              {loading ? <RingLoader size={24} color="#ffffff" /> : "Subscribe"}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md flex justify-center items-center"
+            >
+              {loading ? <RingLoader size={22} color="#fff" /> : "Subscribe"}
             </button>
+
           </form>
+
         </div>
+
       </div>
 
-      {/* Footer Bottom Section */}
-      <div className="footer-bottom">
-        <p>© 2024 PDFBaba. All Rights Reserved.</p>
+      {/* COPYRIGHT */}
+
+      <div className="border-t border-gray-800 text-center text-sm py-4 text-gray-400">
+        © 2026 PDFBaba. All Rights Reserved.
       </div>
+
     </footer>
   );
 };
