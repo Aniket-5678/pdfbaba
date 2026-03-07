@@ -1,227 +1,321 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaSearch } from 'react-icons/fa';
-import ClipLoader from 'react-spinners/ClipLoader';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
+import ClipLoader from "react-spinners/ClipLoader";
+
 import {
   useMediaQuery,
   TextField,
   IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText
-} from '@mui/material';
-import { useTheme } from '../context/ThemeContext';
-import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
-import "../style/style.css";
+  Drawer
+} from "@mui/material";
+
+import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { useTheme } from "../context/ThemeContext";
 
 const normalizeText = (text) => {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " "); // multiple spaces ko single space banata hai
+  return text.toLowerCase().trim().replace(/\s+/g, " ");
 };
 
 const SearchInput = () => {
-  const [query, setQuery] = useState('');
+
+  const navigate = useNavigate();
+
+  const [query, setQuery] = useState("");
+
   const [noteResults, setNoteResults] = useState([]);
   const [roadmapResults, setRoadmapResults] = useState([]);
+  const [quizResults, setQuizResults] = useState([]);
+  const [sourceCodeResults, setSourceCodeResults] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const isMobile = useMediaQuery('(max-width: 600px)');
+  const isMobile = useMediaQuery("(max-width:480px)");
+
   const { theme } = useTheme();
 
   useEffect(() => {
+
     const search = async () => {
+
       const normalizedQuery = normalizeText(query);
 
       if (!normalizedQuery) {
         setNoteResults([]);
         setRoadmapResults([]);
+        setQuizResults([]);
+        setSourceCodeResults([]);
         return;
       }
 
       setLoading(true);
+
       try {
-        const [notesRes, roadmapRes] = await Promise.all([
-          axios.get('/api/v1/keyword/search', { params: { query: normalizedQuery } }),
-          axios.get('/api/v1/roadmaps')
+
+        const [notesRes, roadmapRes, quizRes, sourceRes] = await Promise.all([
+          axios.get("/api/v1/keyword/search", { params: { query: normalizedQuery } }),
+          axios.get("/api/v1/roadmaps"),
+          axios.get("/api/v1/quizzes/all"),
+          axios.get("/api/v1/sourcecode")
         ]);
 
-        // ✅ Notes results
         const notes = notesRes.data.success ? notesRes.data.data : [];
 
-        // ✅ Roadmaps fuzzy filter
-        const filteredRoadmaps = roadmapRes.data.filter((r) =>
+        const roadmaps = roadmapRes.data.filter((r) =>
           normalizeText(r.category).includes(normalizedQuery)
         );
 
+        const quizzes = quizRes.data.filter((q) =>
+          normalizeText(q.title).includes(normalizedQuery)
+        );
+
+        const sourceCodes = sourceRes.data.filter((s) =>
+          normalizeText(s.title).includes(normalizedQuery)
+        );
+
         setNoteResults(notes);
-        setRoadmapResults(filteredRoadmaps);
+        setRoadmapResults(roadmaps);
+        setQuizResults(quizzes);
+        setSourceCodeResults(sourceCodes);
+
       } catch (error) {
-        console.error('Error searching:', error);
-        setNoteResults([]);
-        setRoadmapResults([]);
+        console.log("Search error:", error);
       } finally {
         setLoading(false);
       }
+
     };
 
-    const debounceTimer = setTimeout(() => {
-      search();
-    }, 400);
+    const timer = setTimeout(search, 350);
 
-    return () => clearTimeout(debounceTimer);
+    return () => clearTimeout(timer);
+
   }, [query]);
 
-  const handleSearch = () => {
-    if (noteResults.length > 0) {
-      window.location.href = `/question/${noteResults[0]._id}`;
-    } else if (roadmapResults.length > 0) {
-      window.location.href = `/roadmap/${roadmapResults[0]._id}`;
-    } else {
-      window.location.href = '/not-found';
-    }
+  const handleNavigate = (url) => {
+    setQuery("");
+    setNoteResults([]);
+    setRoadmapResults([]);
+    setQuizResults([]);
+    setSourceCodeResults([]);
+    setDrawerOpen(false);
+    navigate(url);
   };
 
-  return (
-    <>
-      {isMobile ? (
-        <>
-          <IconButton
-            onClick={() => setDrawerOpen(true)}
-            style={{ color: theme === 'dark' ? 'white' : 'gray' }}
-          >
-            <SearchIcon style={{ position: 'relative', left: '30px', fontSize: '1.6rem' }} />
-          </IconButton>
+  const handleSearch = () => {
 
-          <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-            <div className="mobile-search-container">
-              <IconButton
-                style={{ float: 'right', margin: '10px' }}
-                onClick={() => setDrawerOpen(false)}
-              >
-                <CloseIcon />
-              </IconButton>
+    if (noteResults.length > 0) {
+      navigate(`/question/${noteResults[0]._id}`);
+    }
 
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="Search notes or roadmaps"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSearch();
-                }}
-                autoFocus
-                style={{ margin: '20px' }}
-              />
+    else if (roadmapResults.length > 0) {
+      navigate(`/roadmap/${roadmapResults[0]._id}`);
+    }
 
-              {loading && <ClipLoader color="#007bff" size={20} />}
-              {!loading && query && noteResults.length === 0 && roadmapResults.length === 0 && (
-                <div className="no-results show">No results found</div>
-              )}
+    else if (quizResults.length > 0) {
+      navigate(`/play/${quizResults[0]._id}`);
+    }
 
-              <List>
-                {noteResults.length > 0 && (
-                  <ListItem className="result-heading">📖 Notes</ListItem>
-                )}
-                {noteResults.map((note) => (
-                  <ListItem
-                    button
-                    key={note._id}
-                    onClick={() => (window.location.href = `/question/${note._id}`)}
-                  >
-                    <IoSearchOutline
-                      size={20}
-                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
-                      style={{ marginRight: '10px' }}
-                    />
-                    <ListItemText primary={note.description} />
-                  </ListItem>
-                ))}
+    else if (sourceCodeResults.length > 0) {
+      navigate(`/service/${sourceCodeResults[0]._id}`);
+    }
 
-                {roadmapResults.length > 0 && (
-                  <ListItem className="result-heading">🛣 Roadmaps</ListItem>
-                )}
-                {roadmapResults.map((roadmap) => (
-                  <ListItem
-                    button
-                    key={roadmap._id}
-                    onClick={() => (window.location.href = `/roadmap/${roadmap._id}`)}
-                  >
-                    <IoSearchOutline
-                      size={20}
-                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
-                      style={{ marginRight: '10px' }}
-                    />
-                    <ListItemText primary={roadmap.category} />
-                  </ListItem>
-                ))}
-              </List>
-            </div>
-          </Drawer>
-        </>
-      ) : (
-        <div className="search-container">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search notes or roadmaps"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleSearch();
-            }}
-          />
-          <button
-            className="search-button"
-            disabled={loading}
-            onClick={handleSearch}
-          >
-            {loading ? <ClipLoader color="#007bff" size={10} /> : <FaSearch />}
-          </button>
+    else {
+      navigate("/not-found");
+    }
 
-          {!loading && query && noteResults.length === 0 && roadmapResults.length === 0 && (
-            <div className="no-results show">No results found</div>
-          )}
+    setDrawerOpen(false);
+  };
 
-          {(noteResults.length > 0 || roadmapResults.length > 0) && (
-            <ul className="search-results">
-              {noteResults.length > 0 && <li className="result-heading">📖 Notes</li>}
+  /* ---------------- MOBILE SEARCH ---------------- */
+
+  if (isMobile) {
+
+    return (
+
+      <>
+
+        <IconButton
+          onClick={() => setDrawerOpen(true)}
+          style={{ color: theme === "dark" ? "white" : "gray" }}
+        >
+          <SearchIcon />
+        </IconButton>
+
+        <Drawer
+          anchor="top"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        >
+
+          <div className="p-5">
+
+            <IconButton
+              style={{ float: "right" }}
+              onClick={() => setDrawerOpen(false)}
+            >
+              <CloseIcon />
+            </IconButton>
+
+            <TextField
+              fullWidth
+              placeholder="Search notes, quizzes, roadmaps..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
+            />
+
+            {loading && (
+              <div className="mt-3">
+                <ClipLoader size={20} />
+              </div>
+            )}
+
+            <div className="mt-4">
+
               {noteResults.map((note) => (
-                <li key={note._id} className="search-result-item">
-                  <a href={`/question/${note._id}`} target="_self" rel="noopener noreferrer">
-                    <IoSearchOutline
-                      size={20}
-                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
-                    />{" "}
-                    {note.description}
-                  </a>
-                </li>
+                <div
+                  key={note._id}
+                  className="py-2 cursor-pointer"
+                  onClick={() => handleNavigate(`/question/${note._id}`)}
+                >
+                  📘 {note.description}
+                </div>
               ))}
 
-              {roadmapResults.length > 0 && <li className="result-heading">🛣 Roadmaps</li>}
-              {roadmapResults.map((roadmap) => (
-                <li key={roadmap._id} className="search-result-item">
-                  <a href={`/roadmap/${roadmap._id}`} target="_self" rel="noopener noreferrer">
-                    <IoSearchOutline
-                      size={20}
-                      color={theme === 'dark' ? '#ffffff' : '#2c8edf'}
-                    />{" "}
-                    {roadmap.category}
-                  </a>
-                </li>
+              {roadmapResults.map((r) => (
+                <div
+                  key={r._id}
+                  className="py-2 cursor-pointer"
+                  onClick={() => handleNavigate(`/roadmap/${r._id}`)}
+                >
+                  🛣 {r.category}
+                </div>
               ))}
-            </ul>
-          )}
+
+              {quizResults.map((q) => (
+                <div
+                  key={q._id}
+                  className="py-2 cursor-pointer"
+                  onClick={() => handleNavigate(`/play/${q._id}`)}
+                >
+                  🧠 {q.title}
+                </div>
+              ))}
+
+              {sourceCodeResults.map((s) => (
+                <div
+                  key={s._id}
+                  className="py-2 cursor-pointer"
+                  onClick={() => handleNavigate(`/service/${s._id}`)}
+                >
+                  💻 {s.title}
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+        </Drawer>
+
+      </>
+
+    );
+
+  }
+
+  /* ---------------- DESKTOP SEARCH ---------------- */
+
+  return (
+
+    <div className="relative w-full max-w-2xl">
+
+      <div className="flex items-center bg-white border rounded-full shadow-md overflow-hidden px-4">
+
+        <FaSearch className="text-gray-400 mr-3" />
+
+        <input
+          type="text"
+          placeholder="Search notes, quizzes, roadmaps or source code..."
+          className="flex-1 py-3 outline-none text-sm"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
+        />
+
+        {loading && <ClipLoader size={18} />}
+
+      </div>
+
+      {(noteResults.length ||
+        roadmapResults.length ||
+        quizResults.length ||
+        sourceCodeResults.length) > 0 && (
+
+        <div className="absolute w-full bg-white border rounded-xl shadow-2xl mt-2 max-h-96 overflow-y-auto z-50">
+
+          {noteResults.map((note) => (
+            <div
+              key={note._id}
+              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+              onClick={() => handleNavigate(`/question/${note._id}`)}
+            >
+              <IoSearchOutline />
+              {note.description}
+            </div>
+          ))}
+
+          {roadmapResults.map((r) => (
+            <div
+              key={r._id}
+              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+              onClick={() => handleNavigate(`/roadmap/${r._id}`)}
+            >
+              <IoSearchOutline />
+              {r.category}
+            </div>
+          ))}
+
+          {quizResults.map((q) => (
+            <div
+              key={q._id}
+              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+              onClick={() => handleNavigate(`/play/${q._id}`)}
+            >
+              <IoSearchOutline />
+              {q.title}
+            </div>
+          ))}
+
+          {sourceCodeResults.map((s) => (
+            <div
+              key={s._id}
+              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+              onClick={() => handleNavigate(`/service/${s._id}`)}
+            >
+              <IoSearchOutline />
+              {s.title}
+            </div>
+          ))}
+
         </div>
+
       )}
-    </>
+
+    </div>
+
   );
+
 };
 
 export default SearchInput;
