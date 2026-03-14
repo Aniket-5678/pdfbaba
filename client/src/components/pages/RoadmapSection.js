@@ -11,19 +11,27 @@ const RoadmapSection = () => {
   const sliderRef = useRef(null);
   const navigate = useNavigate();
 
+  // Fetch roadmaps from backend
   useEffect(() => {
     axios
       .get("/api/v1/roadmaps")
       .then((res) => {
-
-        // only show 10 roadmaps
+        // Only show first 10 roadmaps
         setRoadmaps(res.data.slice(0, 10));
-
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error("Error fetching roadmaps:", err))
       .finally(() => setLoading(false));
   }, []);
 
+  // Helper to get roadmap title
+  const getRoadmapTitle = (roadmap) => {
+    if (roadmap.title) return roadmap.title; // top-level title
+    if (roadmap.nodes && roadmap.nodes.length > 0) return roadmap.nodes[0].title; // first node title
+    if (roadmap.slug) return roadmap.slug.replace(/-/g, " "); // fallback slug
+    return roadmap.category || "Untitled Roadmap"; // fallback category
+  };
+
+  // Skeleton loader while roadmaps load
   const SkeletonCard = () => (
     <div
       className={`flex-shrink-0 w-64 sm:w-72 md:w-80 lg:w-80 rounded-2xl p-5 animate-pulse ${
@@ -40,10 +48,8 @@ const RoadmapSection = () => {
 
   return (
     <section className="w-full max-w-7xl mx-auto my-12 px-4">
-
       {/* Header */}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-
         <h2
           className={`font-light tracking-tight ${
             isDark ? "text-white" : "text-gray-900"
@@ -59,7 +65,6 @@ const RoadmapSection = () => {
         >
           View All
         </button>
-
       </div>
 
       {/* Slider */}
@@ -88,14 +93,14 @@ const RoadmapSection = () => {
                 ROADMAP
               </div>
 
+              {/* Show proper roadmap title */}
               <h3 className="font-semibold text-lg sm:text-xl capitalize">
-                {roadmap.category}
+                {getRoadmapTitle(roadmap)}
               </h3>
 
               <p className="mt-2 text-sm sm:text-base text-gray-500 line-clamp-3">
                 {roadmap.description?.slice(0, 120)}...
               </p>
-
             </Link>
           ))}
         </div>

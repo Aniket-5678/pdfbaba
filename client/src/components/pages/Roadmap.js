@@ -48,80 +48,63 @@ const Roadmap = () => {
   }, []);
 
   /* ================= Slider Controls ================= */
-
-  const scrollLeft = () => {
-    sliderRef.current.scrollBy({ left: -250, behavior: "smooth" });
-  };
-
-  const scrollRight = () => {
-    sliderRef.current.scrollBy({ left: 250, behavior: "smooth" });
-  };
+  const scrollLeft = () => sliderRef.current.scrollBy({ left: -250, behavior: "smooth" });
+  const scrollRight = () => sliderRef.current.scrollBy({ left: 250, behavior: "smooth" });
 
   /* ================= Unique Categories ================= */
-
   const categories = ["All", ...new Set(roadmaps.map((r) => r.category))];
 
   /* ================= Filtering ================= */
-
   const filteredRoadmaps = useMemo(() => {
     return roadmaps
       .filter((roadmap) =>
         roadmap.category.toLowerCase().includes(searchQuery.toLowerCase())
       )
       .filter((roadmap) =>
-        selectedCategory === "All"
-          ? true
-          : roadmap.category === selectedCategory
+        selectedCategory === "All" ? true : roadmap.category === selectedCategory
       );
   }, [roadmaps, searchQuery, selectedCategory]);
 
   const totalPages = Math.ceil(filteredRoadmaps.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentRoadmaps = filteredRoadmaps.slice(
-    indexOfFirstCard,
-    indexOfLastCard
-  );
+  const currentRoadmaps = filteredRoadmaps.slice(indexOfFirstCard, indexOfLastCard);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  /* ================= Helper to get card title ================= */
+  const getRoadmapTitle = (roadmap) => {
+    // If top-level title exists, use it
+    if (roadmap.title) return roadmap.title;
+    // Otherwise, use first node's title if exists
+    if (roadmap.nodes && roadmap.nodes.length > 0) return roadmap.nodes[0].title;
+    // Fallback to slug (formatted) or category
+    return roadmap.slug ? roadmap.slug.replace(/-/g, " ") : roadmap.category;
+  };
+
   return (
     <Layout>
       <div className="pt-24 mt-5 pb-16 px-4 max-w-7xl mx-auto">
         {/* Header */}
-
         <div className="text-center mb-10">
-        <h1
-  className={`text-[1.1rem] sm:text-4xl font-medium tracking-tight ${
-    dark ? "text-white" : "text-gray-900"
-  }`}
->
-  Learning Roadmaps
-</h1>
-
-
-       <p
-  className={`mt-3 max-w-2xl mx-auto text-[1rem] sm:text-base ${
-    dark ? "text-gray-400" : "text-gray-600"
-  }`}
->
-  Structured learning roadmaps designed to guide your journey and help you build skills step by step.
-</p>
-
+          <h1 className={`text-[1.1rem] sm:text-4xl font-medium tracking-tight ${dark ? "text-white" : "text-gray-900"}`}>
+            Learning Roadmaps
+          </h1>
+          <p className={`mt-3 max-w-2xl mx-auto text-[1rem] sm:text-base ${dark ? "text-gray-400" : "text-gray-600"}`}>
+            Structured learning roadmaps designed to guide your journey and help you build skills step by step.
+          </p>
         </div>
 
+        {/* Small Banner */}
         <div className="flex justify-center mb-6">
           <SmallBannerAd />
         </div>
 
-        {/* ================= Category Slider ================= */}
-
+        {/* Category Slider */}
         <div className="relative w-full mb-8">
-          {/* Left Arrow */}
-
           <button
             onClick={scrollLeft}
             className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center hover:bg-gray-100"
@@ -129,19 +112,11 @@ const Roadmap = () => {
             ←
           </button>
 
-          {/* Slider */}
-
-          <div
-            ref={sliderRef}
-            className="flex gap-3 overflow-x-auto scrollbar-hide whitespace-nowrap pb-2 px-8"
-          >
+          <div ref={sliderRef} className="flex gap-3 overflow-x-auto scrollbar-hide whitespace-nowrap pb-2 px-8">
             {categories.map((cat, index) => (
               <button
                 key={index}
-                onClick={() => {
-                  setSelectedCategory(cat);
-                  setCurrentPage(1);
-                }}
+                onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition flex-shrink-0 ${
                   selectedCategory === cat
                     ? "bg-indigo-600 text-white"
@@ -155,8 +130,6 @@ const Roadmap = () => {
             ))}
           </div>
 
-          {/* Right Arrow */}
-
           <button
             onClick={scrollRight}
             className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center hover:bg-gray-100"
@@ -166,43 +139,27 @@ const Roadmap = () => {
         </div>
 
         {/* Search */}
-
         <div className="relative max-w-xl mx-auto mb-10">
-          <Search
-            className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${
-              dark ? "text-gray-400" : "text-gray-500"
-            }`}
-          />
-
+          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${dark ? "text-gray-400" : "text-gray-500"}`} />
           <input
             disabled={loading}
             type="text"
             placeholder="Search roadmap (React, Node, Java, Python...)"
             className={`w-full pl-12 pr-4 py-3 rounded-xl border backdrop-blur-md focus:ring-2 focus:ring-indigo-500 outline-none transition-all ${
-              dark
-                ? "bg-white/5 border-white/10 text-gray-200 placeholder:text-gray-500"
-                : "bg-white border-gray-300 text-gray-700"
+              dark ? "bg-white/5 border-white/10 text-gray-200 placeholder:text-gray-500" : "bg-white border-gray-300 text-gray-700"
             }`}
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
           />
         </div>
 
         {/* Grid */}
-
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            {[...Array(cardsPerPage)].map((_, i) => (
-              <SkeletonCard key={i} dark={dark} />
-            ))}
+            {[...Array(cardsPerPage)].map((_, i) => <SkeletonCard key={i} dark={dark} />)}
           </div>
         ) : currentRoadmaps.length === 0 ? (
-          <p className="text-center text-gray-400 text-lg mt-10">
-            No roadmaps found
-          </p>
+          <p className="text-center text-gray-400 text-lg mt-10">No roadmaps found</p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
             {currentRoadmaps.map((roadmap, i) => (
@@ -210,34 +167,19 @@ const Roadmap = () => {
                 key={roadmap._id}
                 onClick={() => navigate(`/roadmap/${roadmap._id}`)}
                 className={`group relative cursor-pointer rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl border ${
-                  dark
-                    ? "bg-white/5 border-white/10 hover:bg-white/10"
-                    : "bg-white border-gray-200 hover:border-indigo-400"
+                  dark ? "bg-white/5 border-white/10 hover:bg-white/10" : "bg-white border-gray-200 hover:border-indigo-400"
                 }`}
               >
                 <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10" />
-
                 <div className="text-xs font-semibold mb-3 text-indigo-500">
                   ROADMAP {String(i + 1).padStart(2, "0")}
                 </div>
-
-                <h3
-                  className={`font-semibold capitalize text-base sm:text-lg leading-snug ${
-                    dark ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {roadmap.category}
+                <h3 className={`font-semibold capitalize text-base sm:text-lg leading-snug ${dark ? "text-white" : "text-gray-900"}`}>
+                  {getRoadmapTitle(roadmap)}
                 </h3>
-
-                <div
-                  className={`mt-6 text-xs font-medium flex items-center justify-between ${
-                    dark ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
+                <div className={`mt-6 text-xs font-medium flex items-center justify-between ${dark ? "text-gray-400" : "text-gray-500"}`}>
                   <span>View Path</span>
-                  <span className="group-hover:translate-x-1 transition">
-                    →
-                  </span>
+                  <span className="group-hover:translate-x-1 transition">→</span>
                 </div>
               </div>
             ))}
@@ -245,7 +187,6 @@ const Roadmap = () => {
         )}
 
         {/* Pagination */}
-
         {!loading && totalPages > 1 && (
           <div className="flex flex-wrap justify-center gap-2 mt-12">
             {[...Array(totalPages)].map((_, idx) => (
