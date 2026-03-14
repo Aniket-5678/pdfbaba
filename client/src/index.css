@@ -18,3 +18,13 @@
     background-color: #000000;
 
 }
+
+/* Hide horizontal scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
@@ -27,6 +27,10 @@ const Roadmap = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const sliderRef = useRef(null);
+
   const [theme] = useTheme();
   const navigate = useNavigate();
 
@@ -43,16 +47,41 @@ const Roadmap = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  /* ================= Slider Controls ================= */
+
+  const scrollLeft = () => {
+    sliderRef.current.scrollBy({ left: -250, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    sliderRef.current.scrollBy({ left: 250, behavior: "smooth" });
+  };
+
+  /* ================= Unique Categories ================= */
+
+  const categories = ["All", ...new Set(roadmaps.map((r) => r.category))];
+
+  /* ================= Filtering ================= */
+
   const filteredRoadmaps = useMemo(() => {
-    return roadmaps.filter((roadmap) =>
-      roadmap.category.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [roadmaps, searchQuery]);
+    return roadmaps
+      .filter((roadmap) =>
+        roadmap.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .filter((roadmap) =>
+        selectedCategory === "All"
+          ? true
+          : roadmap.category === selectedCategory
+      );
+  }, [roadmaps, searchQuery, selectedCategory]);
 
   const totalPages = Math.ceil(filteredRoadmaps.length / cardsPerPage);
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentRoadmaps = filteredRoadmaps.slice(indexOfFirstCard, indexOfLastCard);
+  const currentRoadmaps = filteredRoadmaps.slice(
+    indexOfFirstCard,
+    indexOfLastCard
+  );
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -62,24 +91,89 @@ const Roadmap = () => {
   return (
     <Layout>
       <div className="pt-24 mt-5 pb-16 px-4 max-w-7xl mx-auto">
-
         {/* Header */}
+
         <div className="text-center mb-10">
-          <h1 className={`text-[1.1rem] sm:text-4xl font-bold tracking-tight ${dark ? "text-white" : "text-gray-900"}`}>
-            Developer Learning Roadmaps
-          </h1>
-          <p className={`mt-3 max-w-2xl mx-auto text-[1.1rem] sm:text-base ${dark ? "text-gray-400" : "text-gray-600"}`}>
-            Step-by-step structured paths to master technologies faster with clear learning direction.
-          </p>
+        <h1
+  className={`text-[1.1rem] sm:text-4xl font-medium tracking-tight ${
+    dark ? "text-white" : "text-gray-900"
+  }`}
+>
+  Learning Roadmaps
+</h1>
+
+
+       <p
+  className={`mt-3 max-w-2xl mx-auto text-[1rem] sm:text-base ${
+    dark ? "text-gray-400" : "text-gray-600"
+  }`}
+>
+  Structured learning roadmaps designed to guide your journey and help you build skills step by step.
+</p>
+
         </div>
 
         <div className="flex justify-center mb-6">
           <SmallBannerAd />
         </div>
 
+        {/* ================= Category Slider ================= */}
+
+        <div className="relative w-full mb-8">
+          {/* Left Arrow */}
+
+          <button
+            onClick={scrollLeft}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center hover:bg-gray-100"
+          >
+            ←
+          </button>
+
+          {/* Slider */}
+
+          <div
+            ref={sliderRef}
+            className="flex gap-3 overflow-x-auto scrollbar-hide whitespace-nowrap pb-2 px-8"
+          >
+            {categories.map((cat, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setCurrentPage(1);
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition flex-shrink-0 ${
+                  selectedCategory === cat
+                    ? "bg-indigo-600 text-white"
+                    : dark
+                    ? "bg-white/5 hover:bg-white/10 text-gray-300"
+                    : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+
+          <button
+            onClick={scrollRight}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md rounded-full w-9 h-9 items-center justify-center hover:bg-gray-100"
+          >
+            →
+          </button>
+        </div>
+
         {/* Search */}
+
         <div className="relative max-w-xl mx-auto mb-10">
-          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${dark ? "text-gray-400" : "text-gray-500"}`} />
+          <Search
+            className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${
+              dark ? "text-gray-400" : "text-gray-500"
+            }`}
+          />
+
           <input
             disabled={loading}
             type="text"
@@ -98,12 +192,17 @@ const Roadmap = () => {
         </div>
 
         {/* Grid */}
+
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
-            {[...Array(cardsPerPage)].map((_, i) => <SkeletonCard key={i} dark={dark} />)}
+            {[...Array(cardsPerPage)].map((_, i) => (
+              <SkeletonCard key={i} dark={dark} />
+            ))}
           </div>
         ) : currentRoadmaps.length === 0 ? (
-          <p className="text-center text-gray-400 text-lg mt-10">No roadmaps found</p>
+          <p className="text-center text-gray-400 text-lg mt-10">
+            No roadmaps found
+          </p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
             {currentRoadmaps.map((roadmap, i) => (
@@ -122,13 +221,23 @@ const Roadmap = () => {
                   ROADMAP {String(i + 1).padStart(2, "0")}
                 </div>
 
-                <h3 className={`font-semibold capitalize text-base sm:text-lg leading-snug ${dark ? "text-white" : "text-gray-900"}`}>
+                <h3
+                  className={`font-semibold capitalize text-base sm:text-lg leading-snug ${
+                    dark ? "text-white" : "text-gray-900"
+                  }`}
+                >
                   {roadmap.category}
                 </h3>
 
-                <div className={`mt-6 text-xs font-medium flex items-center justify-between ${dark ? "text-gray-400" : "text-gray-500"}`}>
+                <div
+                  className={`mt-6 text-xs font-medium flex items-center justify-between ${
+                    dark ? "text-gray-400" : "text-gray-500"
+                  }`}
+                >
                   <span>View Path</span>
-                  <span className="group-hover:translate-x-1 transition">→</span>
+                  <span className="group-hover:translate-x-1 transition">
+                    →
+                  </span>
                 </div>
               </div>
             ))}
@@ -136,6 +245,7 @@ const Roadmap = () => {
         )}
 
         {/* Pagination */}
+
         {!loading && totalPages > 1 && (
           <div className="flex flex-wrap justify-center gap-2 mt-12">
             {[...Array(totalPages)].map((_, idx) => (
@@ -146,8 +256,8 @@ const Roadmap = () => {
                   currentPage === idx + 1
                     ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg"
                     : dark
-                      ? "bg-white/5 text-gray-300 hover:bg-white/10"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-white/5 text-gray-300 hover:bg-white/10"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 {idx + 1}

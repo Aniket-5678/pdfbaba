@@ -183,10 +183,19 @@ useEffect(() => {
               </>
     )}
     
-  <ListItem button component={Link} to="/roadmapdata" className="menu-item">Career Paths</ListItem>
+    
+
+    <Divider />
+  <ListItem button component={Link} to="/roadmapdata" className="menu-item">Roadmaps</ListItem>
   <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
-  <ListItem button component={Link} to="/service" className="menu-item">Website Projects</ListItem>
-    <ListItem button component={Link} to="/sourcecode-order" className="menu-item">sourcecodeOrder</ListItem>
+  <ListItem button component={Link} to="/service" className="menu-item">Website Templates</ListItem>
+    <ListItem button component={Link} to="/sourcecode-order" className="menu-item">MyOrders</ListItem>
+        {/* Display all categories directly */}
+    {categories.map((paper) => (
+      <ListItem key={paper._id} button component={Link} to={`/category/${paper.slug}`} className="menu-item">
+        <p className="nav-h2">{paper.name}</p>
+      </ListItem>
+    ))}
     <ListItem button component={Link} to="/contact" className="menu-item">Contact us</ListItem>
     <ListItem button component={Link} to="/privacy" className="menu-item">Privacy Policy</ListItem>
     <ListItem button component={Link} to="/termcondition" className="menu-item">Terms & Conditions</ListItem>
@@ -194,14 +203,7 @@ useEffect(() => {
 
     <Divider />
 
-    {/* Display all categories directly */}
-    {categories.map((paper) => (
-      <ListItem key={paper._id} button component={Link} to={`/category/${paper.slug}`} className="menu-item">
-        <p className="nav-h2">{paper.name}</p>
-      </ListItem>
-    ))}
 
-    <Divider />
 
 
   </List>
@@ -210,43 +212,10 @@ useEffect(() => {
         {/* Desktop Menu */}
         <div className="nav-link-main">
 
-        <div className='contactus'>
-            <Link className='contact-nav' to='/roadmapdata'>CareerPaths </Link>
-          </div>
-
-        <div className='contactus'>
-            <Link className='contact-nav' to='/quizplaylist'>Quiz </Link>
-          </div>
-          
-        <div className='contactus'>
-            <Link className='contact-nav' to='/service'>WebsiteProjects</Link>
-          </div>
-   
-         
-          <div className='aboutus'>
-            <Link className='about-nav' to='/sourcecode-order'>sourcecodeOrder</Link>
-          </div>
-
-         
-<div className="dropdown" ref={toolDropdownRef}>
-  <button onClick={toggleToolDropdown} className="dropdown-btn">
-    Tools <CgChevronDown />
-  </button>
-  <div className={`dropdown-menu ${isToolDropdownOpen ? 'show' : ''}`}>
-   
-    <Link to="/domain-suggestor" className="nav-link">
-      <p className="nav-h2">Domain Suggestor</p>
-    </Link>
-  </div>
-</div>
-
-
-         
-
-
+      
           <div className="dropdown" ref={questionDropdownRef}>
             <button onClick={toggleQuestionDropdown} className="dropdown-btn">
-              PDFs <CgChevronDown />
+              Study Library <CgChevronDown />
             </button>
             <div className={`dropdown-menu ${isQuestionDropdownOpen ? 'show' : ''}`}>
               {categories.map((paper) => (
@@ -256,6 +225,29 @@ useEffect(() => {
               ))}
             </div>
           </div>
+
+        <div className='contactus'>
+            <Link className='contact-nav' to='/quizplaylist'>Quiz </Link>
+          </div>
+          
+            <div className='contactus'>
+            <Link className='contact-nav' to='/roadmapdata'>Roadmaps </Link>
+          </div>
+
+        <div className='contactus'>
+            <Link className='contact-nav' to='/service'>Website Templates</Link>
+          </div>
+   
+         
+          <div className='aboutus'>
+            <Link className='about-nav' to='/sourcecode-order'>MyOrders</Link>
+          </div>
+
+         
+
+
+
+         
 
           {!auth.user ? (
             <>

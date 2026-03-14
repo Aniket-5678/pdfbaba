@@ -16,7 +16,10 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         const res = await axios.get("/api/v1/sourcecode");
-        setServices(res.data);
+
+        // show only 10 services
+        setServices(res.data.slice(0, 10));
+
       } catch (err) {
         console.error(err);
       } finally {
@@ -29,7 +32,9 @@ const Services = () => {
   const SkeletonCard = () => (
     <div
       className={`flex-shrink-0 w-64 sm:w-72 md:w-80 rounded-2xl p-4 animate-pulse ${
-        isDark ? "bg-white/5 border border-white/10" : "bg-white shadow border-gray-200"
+        isDark
+          ? "bg-white/5 border border-white/10"
+          : "bg-white shadow border-gray-200"
       }`}
     >
       <div className="h-32 rounded bg-gray-300/40 mb-3"></div>
@@ -45,21 +50,37 @@ const Services = () => {
   };
 
   return (
-    <section className={`py-14 px-3 sm:px-8 ${isDark ? "bg-[#121212]" : "bg-gray-50"}`}>
-      {/* Heading - left aligned */}
- <h2 className="text-left font-light sm:font-light mb-10 text-[1.1rem] sm:text-2xl lg:text-3xl tracking-tight text-gray-900 dark:text-white">
-  Ready-Made Website Projects
-</h2>
+    <section
+      className={`py-14 px-3 sm:px-8 ${
+        isDark ? "bg-[#121212]" : "bg-gray-50"
+      }`}
+    >
+      {/* Heading + View All */}
+      <div className="flex items-center justify-between mb-10">
+
+        <h2 className="text-left font-light text-[1.1rem] sm:text-2xl lg:text-3xl tracking-tight text-gray-900 dark:text-white">
+          Ready-Made Website Projects
+        </h2>
+
+        <button
+          onClick={() => navigate("/service")}
+          className="px-3 sm:px-4 py-1.5 sm:py-2 text-[0.7rem] sm:text-sm md:text-base rounded-lg font-medium bg-blue-500 text-white hover:bg-blue-600 transition whitespace-nowrap"
+        >
+          View All
+        </button>
+
+      </div>
 
       {/* Slider container */}
       <div className="relative">
-        {/* Optional arrows for desktop */}
+        {/* Arrows */}
         <div
           className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center cursor-pointer bg-black/10 dark:bg-white/10 rounded-full hover:scale-110 transition"
           onClick={() => scrollSlider("left")}
         >
           <ChevronLeft size={22} />
         </div>
+
         <div
           className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center cursor-pointer bg-black/10 dark:bg-white/10 rounded-full hover:scale-110 transition"
           onClick={() => scrollSlider("right")}
@@ -96,10 +117,12 @@ const Services = () => {
                     className="w-full h-40 sm:h-44 object-cover transition-transform duration-500 hover:scale-110"
                   />
                 </div>
+
                 <div className="p-3 text-center">
                   <h3 className="text-[0.85rem] sm:text-[0.95rem] font-semibold line-clamp-2">
                     {service.title}
                   </h3>
+
                   <p className="text-indigo-600 font-bold mt-1 text-sm sm:text-base">
                     ₹{service.price}
                   </p>
@@ -110,7 +133,7 @@ const Services = () => {
         )}
       </div>
 
-      {/* Hide scrollbar CSS */}
+      {/* Hide scrollbar */}
       <style>
         {`
           .hide-scrollbar::-webkit-scrollbar {

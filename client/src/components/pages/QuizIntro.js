@@ -15,7 +15,10 @@ const QuizIntroSlider = () => {
     const fetchQuizzes = async () => {
       try {
         const res = await axios.get("/api/v1/quizzes/all");
-        setQuizzes(res.data);
+
+        // only 10 quizzes
+        setQuizzes(res.data.slice(0, 10));
+
       } catch (err) {
         console.error(err);
       } finally {
@@ -29,7 +32,9 @@ const QuizIntroSlider = () => {
   const SkeletonCard = () => (
     <div
       className={`flex-shrink-0 w-64 sm:w-72 md:w-80 rounded-2xl p-5 animate-pulse ${
-        isDark ? "bg-white/5 border border-white/10" : "bg-white shadow border-gray-200"
+        isDark
+          ? "bg-white/5 border border-white/10"
+          : "bg-white shadow border-gray-200"
       }`}
     >
       <div className="h-5 w-32 rounded bg-gray-300/40 mb-3"></div>
@@ -41,14 +46,27 @@ const QuizIntroSlider = () => {
 
   return (
     <section className="w-full max-w-7xl mx-auto my-12 px-4">
-      {/* Heading */}
-      <h2
-        className={`mb-6 font-light tracking-tight ${
-          isDark ? "text-white" : "text-gray-900"
-        } text-[0.9rem] sm:text-[1.5rem] md:text-[2rem]`}
-      >
-        🧠 Sharpen Your Knowledge with Quizzes
-      </h2>
+
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+
+  <h2
+    className={`font-light tracking-tight ${
+      isDark ? "text-white" : "text-gray-900"
+    } text-[0.85rem] sm:text-[1.4rem] md:text-[1.9rem]`}
+  >
+    Sharpen Your Knowledge with Quizzes
+  </h2>
+
+  <button
+    onClick={() => navigate("/quizplaylist")}
+    className="px-3 sm:px-4 py-1.5 sm:py-2 text-[0.7rem] sm:text-sm md:text-base rounded-lg font-medium bg-blue-500 text-white hover:bg-blue-600 transition whitespace-nowrap"
+  >
+    View All
+  </button>
+
+</div>
+
 
       {/* Slider */}
       {loading ? (
@@ -72,11 +90,18 @@ const QuizIntroSlider = () => {
               }`}
               onClick={() => navigate(`/play/${quiz._id}`)}
             >
-              <div className="text-xs font-semibold mb-2 text-indigo-500">QUIZ</div>
-              <h3 className="font-semibold text-lg sm:text-xl truncate">{quiz.title}</h3>
+              <div className="text-xs font-semibold mb-2 text-indigo-500">
+                QUIZ
+              </div>
+
+              <h3 className="font-semibold text-lg sm:text-xl truncate">
+                {quiz.title}
+              </h3>
+
               <p className="mt-2 text-sm sm:text-base text-gray-500 line-clamp-3">
                 {quiz.category}
               </p>
+
               <button className="mt-4 w-full py-2.5 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md">
                 Start Quiz →
               </button>
@@ -85,7 +110,7 @@ const QuizIntroSlider = () => {
         </div>
       )}
 
-      {/* Custom CSS to hide scrollbar */}
+      {/* Hide Scrollbar */}
       <style>
         {`
           .hide-scrollbar::-webkit-scrollbar {
@@ -97,6 +122,7 @@ const QuizIntroSlider = () => {
           }
         `}
       </style>
+
     </section>
   );
 };

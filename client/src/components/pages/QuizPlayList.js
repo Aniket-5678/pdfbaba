@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../Layout/Layout";
@@ -29,11 +29,14 @@ const QuizPlayList = () => {
   const [loading, setLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const [theme] = useTheme();
   const isDark = theme === "dark";
+
+  const scrollRef = useRef();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -51,15 +54,30 @@ const QuizPlayList = () => {
     }
   };
 
+  /* ---------------- Unique Categories ---------------- */
+  const categories = ["All", ...new Set(quizzes.map((q) => q.category))];
+
   /* ---------------- Filtering ---------------- */
-  const filteredQuizzes = quizzes.filter((quiz) =>
-    quiz.title.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const filteredQuizzes = quizzes
+    .filter((quiz) =>
+      quiz.title.toLowerCase().includes(searchValue.toLowerCase())
+    )
+    .filter((quiz) =>
+      selectedCategory === "All" ? true : quiz.category === selectedCategory
+    );
 
   const indexOfLastQuiz = currentPage * itemsPerPage;
   const indexOfFirstQuiz = indexOfLastQuiz - itemsPerPage;
   const currentQuizzes = filteredQuizzes.slice(indexOfFirstQuiz, indexOfLastQuiz);
   const totalPages = Math.ceil(filteredQuizzes.length / itemsPerPage);
+
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+  };
 
   return (
     <Layout>
@@ -69,12 +87,58 @@ const QuizPlayList = () => {
         }`}
       >
         {/* Heading */}
-        <h2 className="text-center font-bold font-[Poppins] mb-4 text-[1.3rem] sm:text-[1.7rem]">
-          🧠 Practice Quizzes
-        </h2>
+      <h2 className="text-center font-medium font-[Poppins] mb-4 text-[1.3rem] sm:text-[1.7rem]">
+  Practice MCQ Quizzes to Improve Your Skills
+</h2>
+
 
         <div className="mb-5 w-full max-w-5xl">
           <SmallBannerAd />
+        </div>
+
+        {/* Category Slider */}
+        <div className="w-full max-w-6xl mb-6 relative flex items-center">
+
+          {/* Left Arrow */}
+          <button
+            onClick={scrollLeft}
+            className="absolute left-0 z-10 bg-white shadow-md rounded-full w-8 h-8 flex items-center justify-center"
+          >
+            ◀
+          </button>
+
+          {/* Categories */}
+          <div
+            ref={scrollRef}
+            className="flex gap-3 overflow-x-hidden px-10"
+          >
+            {categories.map((cat, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setCurrentPage(1);
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-[Poppins] whitespace-nowrap transition ${
+                  selectedCategory === cat
+                    ? "bg-blue-600 text-white"
+                    : isDark
+                    ? "bg-[#1e1e1e] hover:bg-[#2a2a2a]"
+                    : "bg-white border hover:bg-gray-100"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Right Arrow */}
+          <button
+            onClick={scrollRight}
+            className="absolute right-0 z-10 bg-white shadow-md rounded-full w-8 h-8 flex items-center justify-center"
+          >
+            ▶
+          </button>
         </div>
 
         {/* Search Bar */}

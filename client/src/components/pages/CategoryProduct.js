@@ -67,7 +67,10 @@ const CategoryProduct = () => {
             }`}
           >
             <h2 className="text-2xl font-semibold">{category.name}</h2>
-            <p className="text-sm opacity-75">Explore resources for {category.name}</p>
+            <p className="text-[0.95rem] opacity-75 leading-relaxed">
+Discover curated learning resources and guides for {category.name}
+</p>
+
           </div>
 
           {/* PRODUCT GRID */}
