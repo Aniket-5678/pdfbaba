@@ -9,6 +9,8 @@ const Adminmenu = () => {
     <Link  className='admin-menu-link'to='/dashboard/admin/create-category'>create category</Link>
     <Link  className='admin-menu-link'to='/dashboard/admin/create-quiz'>create QUiz</Link>
     <Link  className='admin-menu-link'to='/dashboard/admin/all-quiz'>All QUiz</Link>
+       <Link  className='admin-menu-link'to='/dashboard/admin/notes'>create notes</Link>
+       <Link  className='admin-menu-link'to='/dashboard/admin/notesmanage'>manage notes</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/create-question'>create pdf</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/all-question'>All pdf</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/createroadmap'>createroadmap</Link>
@@ -16,7 +18,7 @@ const Adminmenu = () => {
          <Link  className='admin-menu-link'to='/dashboard/admin/sourcecode'>createsourcecode</Link>
           <Link  className='admin-menu-link'to='/dashboard/admin/usersourcecodeorder'>usersourcecodeorder</Link>
         <Link  className='admin-menu-link'to='/dashboard/admin/sourcecodeupdatedelete'>sourcecodeupdatedelete</Link>
-      
+     
         
 
         

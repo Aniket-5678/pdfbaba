@@ -12,6 +12,7 @@ import  quizRoutes from "./routes/quizRoutes.js"
 import roadmapRoutes from "./routes/roadmapRoutes.js"
 import domainRoutes from "./routes/domainRoutes.js"
 import sourceCodeRoutes from "./routes/sourceCodeRoutes.js"
+import noteRoutes from "./routes/note.routes.js";
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -99,7 +100,7 @@ app.use("/api/v1/roadmaps",  roadmapRoutes );
 
 app.use("/api/v1/domain",  domainRoutes );
 
-
+app.use("/api/notes", noteRoutes);
 
 // Mount source code routes
 app.use("/api/v1/sourcecode", sourceCodeRoutes);

@@ -43,6 +43,11 @@ import SuccessPayment from "./components/pages/SuccessPayment";
 import SourceCodeOrder from "./components/pages/SourceCodeOrder";
 import AdminSourceCodeUpdateDelete from "./components/pages/admin/AdminSourceCodeUpdateDelete";
 import AdminUserSourceCodeOrder from "./components/pages/admin/AdminUserSourceCodeOrder";
+import AdminNoteCreate from "./components/pages/admin/AdminNoteCreate";
+import NoteManage from "./components/pages/admin/NoteManage";
+import Categories from "./components/pages/Categories";
+import CategoryNotes from "./components/pages/CategoryNotes";
+import NoteDetail from "./components/pages/NoteDetail";
 
 
 
@@ -90,7 +95,9 @@ const [theme] = useTheme()
      <Route path="/service/:id" element={<ServiceDetails />} />
    <Route path="/sourcecode/buy/:id" element={<SourceCodeBuyNow />} />
    <Route path="/success/:id" element={<SuccessPayment />} />
-
+    <Route path="/notes" element={<Categories />} />
+        <Route path="/notes-category/:category" element={<CategoryNotes />} />
+        <Route path="/note/:slug" element={<NoteDetail />} />
      <Route path="/sourcecode-order" element={<SourceCodeOrder />} />
          <Route path="/dashboard" element={<PrivateRoutes/>} >
           <Route path="user" element={<Dashboard/>} /> 
@@ -113,7 +120,8 @@ const [theme] = useTheme()
        <Route path="admin/sourcecode" element={<AdminCreateSourceCode/>} />
        <Route path="admin/sourcecodeupdatedelete" element={<AdminSourceCodeUpdateDelete/>} />
        <Route path="admin/usersourcecodeorder" element={<AdminUserSourceCodeOrder/>} />
-       
+       <Route path="admin/notes" element={<AdminNoteCreate/>} />
+         <Route path="admin/notesmanage" element={<NoteManage/>} />
          </Route>
 
 

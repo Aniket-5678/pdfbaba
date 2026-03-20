@@ -23,12 +23,38 @@ const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useTheme(); 
   const [categories, setCategories] = useState([]);
-
+const [notesCategories, setNotesCategories] = useState([]);
   const [showTopContentSlider, setShowTopContentSlider] = useState(true);
   const lastScrollY = useRef(0);
 const [isToolDropdownOpen, setToolDropdownOpen] = useState(false);
 const toolDropdownRef = useRef(null);
+const [isNotesDropdownOpen, setNotesDropdownOpen] = useState(false);
+const notesDropdownRef = useRef(null);
 
+const toggleNotesDropdown = () => {
+  setNotesDropdownOpen(!isNotesDropdownOpen);
+};
+useEffect(() => {
+  const getNotesCategories = async () => {
+    try {
+      const { data } = await axios.get("/api/notes");
+      const uniqueCategories = [
+        ...new Set(
+          (data.notes || []).map((note) => note?.category).filter(Boolean)
+        ),
+      ];
+      // Create an array of objects to match the structure for nav links
+      setNotesCategories(uniqueCategories.map((cat) => ({
+        name: cat,
+        slug: cat.toLowerCase().replace(/\s+/g, "-")
+      })));
+    } catch (error) {
+      console.error("Error fetching notes categories:", error);
+    }
+  };
+
+  getNotesCategories();
+}, []);
 
 // Track scroll direction
 useEffect(() => {
@@ -53,7 +79,27 @@ useEffect(() => {
   };
 }, []);
 
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+    if (questionDropdownRef.current && !questionDropdownRef.current.contains(event.target)) {
+      setQuestionDropdownOpen(false);
+    }
+    if (toolDropdownRef.current && !toolDropdownRef.current.contains(event.target)) {
+      setToolDropdownOpen(false);
+    }
+    if (notesDropdownRef.current && !notesDropdownRef.current.contains(event.target)) {
+      setNotesDropdownOpen(false);
+    }
+  };
 
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
 
 
   useEffect(() => {
@@ -191,6 +237,27 @@ useEffect(() => {
   <ListItem button component={Link} to="/service" className="menu-item">Website Templates</ListItem>
     <ListItem button component={Link} to="/sourcecode-order" className="menu-item">MyOrders</ListItem>
         {/* Display all categories directly */}
+        {/* Display all categories directly */}
+{/* Notes Library Dropdown for Mobile */}
+{/* Notes Library in Drawer */}
+{/* Notes Library in Drawer */}
+<div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
+  <p style={{ fontWeight: 'bold', marginBottom: '5px', paddingLeft: '16px' }}>
+   Study Library
+  </p>
+  {notesCategories.map((note) => (
+    <ListItem
+      key={note.slug}
+      button
+      component={Link}
+      to={`/notes-category/${note.slug}`}
+      className="menu-item"
+      sx={{ pl: 4 }} // indentation for sub-items
+    >
+      {note.name}
+    </ListItem>
+  ))}
+</div>
     {categories.map((paper) => (
       <ListItem key={paper._id} button component={Link} to={`/category/${paper.slug}`} className="menu-item">
         <p className="nav-h2">{paper.name}</p>
@@ -211,11 +278,22 @@ useEffect(() => {
 
         {/* Desktop Menu */}
         <div className="nav-link-main">
-
+<div className="dropdown" ref={notesDropdownRef}>
+  <button onClick={toggleNotesDropdown} className="dropdown-btn">
+     Study Library  <CgChevronDown />
+  </button>
+  <div className={`dropdown-menu ${isNotesDropdownOpen ? 'show' : ''}`}>
+    {notesCategories.map((note) => (
+      <Link key={note.slug} to={`/notes-category/${note.slug}`} className="nav-link">
+        <p className='nav-h2'>{note.name}</p>
+      </Link>
+    ))}
+  </div>
+</div>
       
           <div className="dropdown" ref={questionDropdownRef}>
             <button onClick={toggleQuestionDropdown} className="dropdown-btn">
-              Study Library <CgChevronDown />
+             PDF Notes <CgChevronDown />
             </button>
             <div className={`dropdown-menu ${isQuestionDropdownOpen ? 'show' : ''}`}>
               {categories.map((paper) => (
@@ -234,9 +312,7 @@ useEffect(() => {
             <Link className='contact-nav' to='/roadmapdata'>Roadmaps </Link>
           </div>
 
-        <div className='contactus'>
-            <Link className='contact-nav' to='/service'>Website Templates</Link>
-          </div>
+       
    
          
           <div className='aboutus'>

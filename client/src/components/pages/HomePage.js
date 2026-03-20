@@ -16,6 +16,7 @@ import Services from "./Services";
 import QuizIntro from "./QuizIntro";
 import SocialBarAd from "./SocialBarAd";
 import RoadmapSection from "./RoadmapSection";
+import Categories from "./Categories";
 
 Modal.setAppElement("#root");
 
@@ -103,6 +104,11 @@ const HomePage = () => {
 {/* ================= NETFLIX STYLE CATEGORY SECTION ================= */}
 {/* ================= GLASS CATEGORY SECTION ================= */}
 <div className="max-w-7xl mx-auto px-4 py-12">
+
+  {/* ================= CATEGORY SECTION ================= */}
+<section className=" py-12">
+  <Categories />
+</section>
 
   {/* Heading */}
   <h3 className="text-[0.9rem] sm:text-2xl font-light mb-6 tracking-wide">

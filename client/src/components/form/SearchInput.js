@@ -2,163 +2,186 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-import { IoSearchOutline } from "react-icons/io5";
 import ClipLoader from "react-spinners/ClipLoader";
-
-import {
-  useMediaQuery,
-  TextField,
-  IconButton,
-  Drawer
-} from "@mui/material";
-
+import { useMediaQuery, TextField, IconButton, Drawer } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-
 import { useTheme } from "../context/ThemeContext";
 
-const normalizeText = (text) => {
-  return text.toLowerCase().trim().replace(/\s+/g, " ");
-};
+// Normalize text for search comparison
+const normalizeText = (text) =>
+  text?.toLowerCase().trim().replace(/\s+/g, " ") || "";
 
 const SearchInput = () => {
-
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isMobile = useMediaQuery("(max-width:480px)");
 
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [noteResults, setNoteResults] = useState([]);
   const [roadmapResults, setRoadmapResults] = useState([]);
   const [quizResults, setQuizResults] = useState([]);
   const [sourceCodeResults, setSourceCodeResults] = useState([]);
+  const [studyNotesResults, setStudyNotesResults] = useState([]);
 
-  const [loading, setLoading] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const isMobile = useMediaQuery("(max-width:480px)");
-
-  const { theme } = useTheme();
-
+  // ---------- SEARCH ----------
   useEffect(() => {
+    if (!query.trim()) {
+      setNoteResults([]);
+      setRoadmapResults([]);
+      setQuizResults([]);
+      setSourceCodeResults([]);
+      setStudyNotesResults([]);
+      return;
+    }
 
-    const search = async () => {
+    const normalizedQuery = normalizeText(query);
+    setLoading(true);
 
-      const normalizedQuery = normalizeText(query);
-
-      if (!normalizedQuery) {
-        setNoteResults([]);
-        setRoadmapResults([]);
-        setQuizResults([]);
-        setSourceCodeResults([]);
-        return;
-      }
-
-      setLoading(true);
-
+    const fetchData = async () => {
       try {
-
-        const [notesRes, roadmapRes, quizRes, sourceRes] = await Promise.all([
-          axios.get("/api/v1/keyword/search", { params: { query: normalizedQuery } }),
-          axios.get("/api/v1/roadmaps"),
-          axios.get("/api/v1/quizzes/all"),
-          axios.get("/api/v1/sourcecode")
+        const [
+          notesRes,
+          roadmapsRes,
+          quizzesRes,
+          sourceRes,
+          studyNotesRes,
+        ] = await Promise.all([
+          axios
+            .get("/api/v1/keyword/search", { params: { query: normalizedQuery } })
+            .catch(() => ({ data: { success: false, data: [] } })),
+          axios.get("/api/v1/roadmaps").catch(() => ({ data: [] })),
+          axios.get("/api/v1/quizzes/all").catch(() => ({ data: [] })),
+          axios.get("/api/v1/sourcecode").catch(() => ({ data: [] })),
+          axios
+            .get("/api/notes", { params: { search: normalizedQuery } })
+            .catch(() => ({ data: { notes: [] } })),
         ]);
 
-        const notes = notesRes.data.success ? notesRes.data.data : [];
-
-        const roadmaps = roadmapRes.data.filter((r) =>
-          normalizeText(r.category).includes(normalizedQuery)
+        setNoteResults(notesRes.data.success ? notesRes.data.data : []);
+        setRoadmapResults(
+          (roadmapsRes.data || []).filter((r) =>
+            normalizeText(r.category).includes(normalizedQuery)
+          )
         );
-
-        const quizzes = quizRes.data.filter((q) =>
-          normalizeText(q.title).includes(normalizedQuery)
+        setQuizResults(
+          (quizzesRes.data || []).filter((q) =>
+            normalizeText(q.title).includes(normalizedQuery)
+          )
         );
-
-        const sourceCodes = sourceRes.data.filter((s) =>
-          normalizeText(s.title).includes(normalizedQuery)
+        setSourceCodeResults(
+          (sourceRes.data || []).filter((s) =>
+            normalizeText(s.title).includes(normalizedQuery)
+          )
         );
-
-        setNoteResults(notes);
-        setRoadmapResults(roadmaps);
-        setQuizResults(quizzes);
-        setSourceCodeResults(sourceCodes);
-
-      } catch (error) {
-        console.log("Search error:", error);
+        setStudyNotesResults(
+          (studyNotesRes.data.notes || []).filter((s) =>
+            normalizeText(s.title).includes(normalizedQuery)
+          )
+        );
+      } catch (err) {
+        console.error("Search error:", err);
       } finally {
         setLoading(false);
       }
-
     };
 
-    const timer = setTimeout(search, 350);
-
+    const timer = setTimeout(fetchData, 350); // debounce
     return () => clearTimeout(timer);
-
   }, [query]);
 
+  // ---------- NAVIGATION ----------
   const handleNavigate = (url) => {
     setQuery("");
     setNoteResults([]);
     setRoadmapResults([]);
     setQuizResults([]);
     setSourceCodeResults([]);
+    setStudyNotesResults([]);
     setDrawerOpen(false);
     navigate(url);
   };
 
   const handleSearch = () => {
-
-    if (noteResults.length > 0) {
-      navigate(`/question/${noteResults[0]._id}`);
-    }
-
-    else if (roadmapResults.length > 0) {
-      navigate(`/roadmap/${roadmapResults[0]._id}`);
-    }
-
-    else if (quizResults.length > 0) {
-      navigate(`/play/${quizResults[0]._id}`);
-    }
-
-    else if (sourceCodeResults.length > 0) {
-      navigate(`/service/${sourceCodeResults[0]._id}`);
-    }
-
-    else {
-      navigate("/not-found");
-    }
+    if (noteResults.length) navigate(`/question/${noteResults[0]._id}`);
+    else if (roadmapResults.length) navigate(`/roadmap/${roadmapResults[0]._id}`);
+    else if (quizResults.length) navigate(`/play/${quizResults[0]._id}`);
+    else if (sourceCodeResults.length) navigate(`/service/${sourceCodeResults[0]._id}`);
+    else if (studyNotesResults.length) navigate(`/note/${studyNotesResults[0].slug}`); // ✅ updated slug route
+    else navigate("/not-found");
 
     setDrawerOpen(false);
   };
 
-  /* ---------------- MOBILE SEARCH ---------------- */
-
-  if (isMobile) {
-
-    return (
-
-      <>
-
-        <IconButton
-          onClick={() => setDrawerOpen(true)}
-          style={{ color: theme === "dark" ? "white" : "gray" }}
+  // ----------- RENDER SEARCH ITEMS -----------
+  const renderResults = () => (
+    <>
+      {studyNotesResults.map((item) => (
+        <div
+          key={item._id}
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          onClick={() => handleNavigate(`/note/${item.slug}`)} // ✅ updated
         >
+          📒 {item.title}
+        </div>
+      ))}
+
+      {noteResults.map((item) => (
+        <div
+          key={item._id}
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          onClick={() => handleNavigate(`/question/${item._id}`)}
+        >
+          📘 {item.description}
+        </div>
+      ))}
+
+      {roadmapResults.map((item) => (
+        <div
+          key={item._id}
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          onClick={() => handleNavigate(`/roadmap/${item._id}`)}
+        >
+          🛣 {item.category}
+        </div>
+      ))}
+
+      {quizResults.map((item) => (
+        <div
+          key={item._id}
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          onClick={() => handleNavigate(`/play/${item._id}`)}
+        >
+          🧠 {item.title}
+        </div>
+      ))}
+
+      {sourceCodeResults.map((item) => (
+        <div
+          key={item._id}
+          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          onClick={() => handleNavigate(`/service/${item._id}`)}
+        >
+          💻 {item.title}
+        </div>
+      ))}
+    </>
+  );
+
+  // ----------- MOBILE SEARCH -----------
+  if (isMobile) {
+    return (
+      <>
+        <IconButton onClick={() => setDrawerOpen(true)} style={{ color: theme === "dark" ? "white" : "gray" }}>
           <SearchIcon />
         </IconButton>
 
-        <Drawer
-          anchor="top"
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-        >
-
+        <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
           <div className="p-5">
-
-            <IconButton
-              style={{ float: "right" }}
-              onClick={() => setDrawerOpen(false)}
-            >
+            <IconButton style={{ float: "right" }} onClick={() => setDrawerOpen(false)}>
               <CloseIcon />
             </IconButton>
 
@@ -167,155 +190,45 @@ const SearchInput = () => {
               placeholder="Search notes, quizzes, roadmaps..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSearch();
-              }}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
 
-            {loading && (
-              <div className="mt-3">
-                <ClipLoader size={20} />
-              </div>
-            )}
+            {loading && <div className="mt-3"><ClipLoader size={20} /></div>}
 
-            <div className="mt-4">
-
-              {noteResults.map((note) => (
-                <div
-                  key={note._id}
-                  className="py-2 cursor-pointer"
-                  onClick={() => handleNavigate(`/question/${note._id}`)}
-                >
-                  📘 {note.description}
-                </div>
-              ))}
-
-              {roadmapResults.map((r) => (
-                <div
-                  key={r._id}
-                  className="py-2 cursor-pointer"
-                  onClick={() => handleNavigate(`/roadmap/${r._id}`)}
-                >
-                  🛣 {r.category}
-                </div>
-              ))}
-
-              {quizResults.map((q) => (
-                <div
-                  key={q._id}
-                  className="py-2 cursor-pointer"
-                  onClick={() => handleNavigate(`/play/${q._id}`)}
-                >
-                  🧠 {q.title}
-                </div>
-              ))}
-
-              {sourceCodeResults.map((s) => (
-                <div
-                  key={s._id}
-                  className="py-2 cursor-pointer"
-                  onClick={() => handleNavigate(`/service/${s._id}`)}
-                >
-                  💻 {s.title}
-                </div>
-              ))}
-
-            </div>
-
+            <div className="mt-4">{renderResults()}</div>
           </div>
-
         </Drawer>
-
       </>
-
     );
-
   }
 
-  /* ---------------- DESKTOP SEARCH ---------------- */
-
+  // ----------- DESKTOP SEARCH -----------
   return (
-
     <div className="relative w-full max-w-2xl">
-
       <div className="flex items-center bg-white border rounded-full shadow-md overflow-hidden px-4">
-
         <FaSearch className="text-gray-400 mr-3" />
-
         <input
           type="text"
           placeholder="Search notes, quizzes, roadmaps or source code..."
           className="flex-1 py-3 outline-none text-sm"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearch();
-          }}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
-
         {loading && <ClipLoader size={18} />}
-
       </div>
 
       {(noteResults.length ||
         roadmapResults.length ||
         quizResults.length ||
-        sourceCodeResults.length) > 0 && (
-
+        sourceCodeResults.length ||
+        studyNotesResults.length) > 0 && (
         <div className="absolute w-full bg-white border rounded-xl shadow-2xl mt-2 max-h-96 overflow-y-auto z-50">
-
-          {noteResults.map((note) => (
-            <div
-              key={note._id}
-              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-              onClick={() => handleNavigate(`/question/${note._id}`)}
-            >
-              <IoSearchOutline />
-              {note.description}
-            </div>
-          ))}
-
-          {roadmapResults.map((r) => (
-            <div
-              key={r._id}
-              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-              onClick={() => handleNavigate(`/roadmap/${r._id}`)}
-            >
-              <IoSearchOutline />
-              {r.category}
-            </div>
-          ))}
-
-          {quizResults.map((q) => (
-            <div
-              key={q._id}
-              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-              onClick={() => handleNavigate(`/play/${q._id}`)}
-            >
-              <IoSearchOutline />
-              {q.title}
-            </div>
-          ))}
-
-          {sourceCodeResults.map((s) => (
-            <div
-              key={s._id}
-              className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-              onClick={() => handleNavigate(`/service/${s._id}`)}
-            >
-              <IoSearchOutline />
-              {s.title}
-            </div>
-          ))}
-
+          {renderResults()}
         </div>
-
       )}
-
     </div>
-
   );
-
 };
 
 export default SearchInput;
