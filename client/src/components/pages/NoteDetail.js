@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 
-/* 🔹 SKELETON */
+/* 🔹 Skeleton loader */
 const Skeleton = () => (
   <div className="animate-pulse space-y-4">
     <div className="h-6 w-24 bg-gray-300 rounded"></div>
@@ -43,22 +43,22 @@ const NoteDetail = () => {
   return (
     <Layout>
       <div
-        className={`min-h-screen py-8 px-3 md:px-6 mt-28 ${
+        className={`min-h-screen py-8 px-4 sm:px-6 md:px-8 mt-28 ${
           theme === "dark" ? "bg-gray-900" : "bg-gray-100"
         }`}
       >
-        <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-5">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 lg:gap-10">
 
-          {/* MAIN */}
+          {/* MAIN CONTENT */}
           <div
-            className={`md:col-span-3 rounded-2xl shadow p-5 md:p-10 ${
+            className={`flex-1 rounded-2xl shadow-lg p-6 md:p-10 ${
               theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
             }`}
           >
             {loading ? (
               <Skeleton />
             ) : !note ? (
-              <div className="text-center text-gray-400">
+              <div className="text-center text-gray-400 text-lg">
                 Note not found 😢
               </div>
             ) : (
@@ -69,20 +69,25 @@ const NoteDetail = () => {
                 </span>
 
                 {/* TITLE */}
-                <h1 className="text-[1.2rem] md:text-3xl font-bold mb-3 leading-snug">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-snug break-words">
                   {note?.title}
                 </h1>
 
-                {/* META (ONLY DATE NOW) */}
-                <div className="text-xs md:text-sm mb-5 border-b pb-3 text-gray-400">
+                {/* DATE */}
+                <div className="text-xs md:text-sm mb-6 border-b pb-3 text-gray-400">
                   {new Date(note?.createdAt).toLocaleDateString()}
                 </div>
 
                 {/* CONTENT */}
                 <div
-                  className={`prose prose-sm md:prose-base max-w-none ${
+                  className={`prose max-w-full sm:prose-sm md:prose-base lg:prose-lg ${
                     theme === "dark" ? "prose-invert text-white" : ""
-                  }`}
+                  } break-words`}
+                  style={{
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
+                    whiteSpace: "pre-wrap",
+                  }}
                   dangerouslySetInnerHTML={{
                     __html: note?.content
                       ?.replace(/&lt;/g, "<")
@@ -94,45 +99,36 @@ const NoteDetail = () => {
           </div>
 
           {/* SIDEBAR */}
-          <div className="md:col-span-1 space-y-4">
-
+          <div className="w-full md:w-80 flex-shrink-0 space-y-5">
             {/* ABOUT */}
             <div
-              className={`p-4 rounded-xl shadow ${
-                theme === "dark"
-                  ? "bg-gray-800 text-white"
-                  : "bg-white"
+              className={`p-4 rounded-xl shadow-md ${
+                theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
               }`}
             >
               <h3 className="font-semibold text-sm mb-1">About</h3>
-              <p className="text-xs text-gray-400">
-                Learn faster with structured notes
+              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                Learn faster with structured, well-designed notes. Fully responsive and readable on any device.
               </p>
             </div>
 
-            {/* STATS (REMOVED VIEWS) */}
+            {/* DETAILS */}
             <div
-              className={`p-4 rounded-xl shadow ${
-                theme === "dark"
-                  ? "bg-gray-800 text-white"
-                  : "bg-white"
+              className={`p-4 rounded-xl shadow-md ${
+                theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
               }`}
             >
               <h3 className="font-semibold text-sm mb-1">Details</h3>
-
               {loading ? (
                 <div className="space-y-2 animate-pulse">
                   <div className="h-3 bg-gray-300 rounded w-2/3"></div>
                 </div>
               ) : (
-                <>
-                  <p className="text-xs text-gray-400">
-                    Category: {note?.category}
-                  </p>
-                </>
+                <p className="text-xs sm:text-sm text-gray-400">
+                  Category: {note?.category}
+                </p>
               )}
             </div>
-
           </div>
         </div>
       </div>
