@@ -106,7 +106,6 @@ export const  registerController  = async(req, res) => {
             user: {
                 _id: user._id,
                 email: user.email,
-                password: user.password,
                 role: user.role
             },
             token
@@ -122,45 +121,55 @@ export const  registerController  = async(req, res) => {
        }
     }
     
-    
-    export const forgetController = async(req, res) => {
-        try {
-          const {email, newpassword} = req.body
-       
-          //validation
-          if (!email) {
-            return res.status(400).json({message: "email is Required"})
-          }
-          if (!newpassword) {
-           return res.status(400).json({message: "new Password is Required"})
-         }
-          //check
-          const user = await userModel.findOne({email})
-          if (!user) {
-             return res.status(400).json({
-               success:false,
-               message: "wrong  email "
-             })
-          }
-           
-          const hash = await hashedPassword(newpassword)
-          await userModel.findByIdAndUpdate(user._id, {password: hash})
-          
-          res.status(200).json({
-           success: true,
-           message: " Password Reset successfully"
-          })
-          
-        } catch (error) {
-         console.log(error);
-         res.status(500).json({
-           success: false,
-           message: "error in Reset password"
-         })
-        }
-       
-       
-       }
+    export const forgetController = async (req, res) => {
+  try {
+    const { email, newpassword } = req.body;
+
+    // 🔹 validation
+    if (!email) {
+      return res.status(400).json({ message: "email is Required" });
+    }
+
+    if (!newpassword) {
+      return res.status(400).json({ message: "new Password is Required" });
+    }
+
+    // 🔹 check user
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email",
+      });
+    }
+
+    // 🔴 ADMIN BLOCK (MAIN CHANGE 🔥)
+    if (user.role === 1) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin cannot reset password",
+      });
+    }
+
+    // 🔐 hash password
+    const hash = await hashedPassword(newpassword);
+
+    await userModel.findByIdAndUpdate(user._id, { password: hash });
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error in reset password",
+    });
+  }
+};
     
 
        

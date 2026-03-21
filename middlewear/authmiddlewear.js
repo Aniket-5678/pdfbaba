@@ -1,47 +1,71 @@
-import JWT from "jsonwebtoken"
-import userModel from "../models/user.model.js"
+import JWT from "jsonwebtoken";
+import userModel from "../models/user.model.js";
 
+// 🔐 Require Sign In
 export const requireSignIn = async (req, res, next) => {
   try {
-    // Expecting token as "Bearer <token>"
-    const token = req.headers.authorization?.split(" ")[1] || req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
-      return res.status(401).json({ success: false, message: "No token provided" });
+    // ✅ Token check
+    if (!authHeader) {
+      return res.status(401).json({
+        success: false,
+        message: "Authorization token required",
+      });
     }
 
+    // ✅ Extract token
+    const token = authHeader.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : authHeader;
+
+    // ✅ Verify token
     const decoded = JWT.verify(token, process.env.JWT_SECRET);
 
-    // Attach user from DB
-    const user = await userModel.findById(decoded._id).select("-password");
+    // ✅ Fetch user (exclude sensitive fields)
+    const user = await userModel
+      .findById(decoded._id)
+      .select("-password -secretKey");
+
     if (!user) {
-      return res.status(401).json({ success: false, message: "User not found" });
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
-    req.user = user; // now req.user._id is always available
+    // ✅ Attach user to request
+    req.user = user;
+
     next();
   } catch (error) {
     console.error("Auth middleware error:", error);
-    res.status(401).json({ success: false, message: "Auth failed" });
+
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token",
+    });
   }
 };
-    
-    export const isAdmin = async (req, res, next) => {
-        try {
-          const user = await userModel.findById(req.user._id);
-          if (user.role !== 1) {
-            return res.status(403).json({
-              success: false,
-              message: 'Admin access denied',
-            });
-          } else {
-            next();
-          }
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({
-            success: false,
-            message: 'Admin check failed',
-          });
-        }
-      };
+
+// 🔐 Admin Middleware (OPTIMIZED 🚀)
+export const isAdmin = (req, res, next) => {
+  try {
+    // ✅ Direct check (no DB call needed)
+    if (req.user.role !== 1) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin access denied",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.log("Admin middleware error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Admin check failed",
+    });
+  }
+};
