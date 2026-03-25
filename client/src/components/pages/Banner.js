@@ -25,7 +25,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="w-full relative overflow-hidden mt-28">
+   <div className="w-full relative overflow-hidden mt-24 sm:mt-20 md:mt-24 lg:mt-28">
 
       {/* Banner Container */}
       <div className="relative w-full h-[160px] sm:h-[220px] md:h-[320px] lg:h-[400px] xl:h-[420px]">

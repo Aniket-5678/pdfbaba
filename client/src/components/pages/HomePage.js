@@ -110,50 +110,111 @@ const HomePage = () => {
   <Categories />
 </section>
 
+{/* Heading */}
+{/* Categories Section */}
+<div className="mt-12 sm:mt-14 md:mt-16">
   {/* Heading */}
-  <h3 className="text-[0.9rem] sm:text-2xl font-light mb-6 tracking-wide">
-    Browse Categories
-  </h3>
+  <div className="mb-6 sm:mb-8">
+    <p className="text-blue-600 font-light tracking-[2px] uppercase text-[11px] sm:text-xs mb-2">
+      Study Resources
+    </p>
+
+    <h3
+      className={`text-[1rem] sm:text-2xl md:text-3xl font-light tracking-wide leading-tight ${
+        theme === "dark" ? "text-white" : "text-slate-900"
+      }`}
+    >
+      Browse Study PDF Notes by Category
+    </h3>
+
+    <p
+      className={`mt-2 text-[12px] sm:text-sm md:text-base max-w-2xl leading-relaxed ${
+        theme === "dark" ? "text-gray-400" : "text-slate-500"
+      }`}
+    >
+      Explore well-organized study PDF notes, learning materials, and academic
+      resources across multiple subjects and technical categories.
+    </p>
+  </div>
 
   {/* Horizontal Scroll */}
-  <div className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4">
-
-    {categories.map((category) => (
+  <div className="flex gap-4 sm:gap-5 overflow-x-auto overflow-y-hidden scroll-smooth no-scrollbar pb-2">
+    {categories.map((category, index) => (
       <Link
         key={category._id}
         to={`/category/${category.slug}`}
-        className="flex-shrink-0 w-[130px] sm:w-[160px] group"
+        className="flex-shrink-0 w-[145px] sm:w-[180px] md:w-[210px] group"
       >
         <div
-          className={`
-          h-[80px] sm:h-[95px]
-          rounded-xl
-          backdrop-blur-lg
-          border
-          flex flex-col items-center justify-center
-          transition-all duration-300
-          hover:scale-105 hover:shadow-2xl
-          ${
+          className={`h-[100px] sm:h-[120px] md:h-[130px] rounded-2xl border px-4 py-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
             theme === "dark"
-              ? "bg-white/10 border-white/20 hover:bg-blue-600"
-              : "bg-white/60 border-gray-200 hover:bg-blue-600"
-          }
-        `}
+              ? "bg-gray-900 border-gray-800 hover:bg-blue-600"
+              : "bg-white border-gray-200 hover:bg-blue-600"
+          }`}
         >
-          {/* Category Name */}
-          <h4 className="text-[0.85rem] sm:text-sm font-medium text-center group-hover:text-white transition px-2 whitespace-nowrap overflow-hidden text-ellipsis w-full">
-            {category.name}
-          </h4>
+          {/* Top Tag */}
+          <div className="flex items-center justify-between">
+            <span
+              className={`text-[10px] sm:text-[11px] tracking-[1.5px] uppercase transition ${
+                theme === "dark"
+                  ? "text-blue-400 group-hover:text-white"
+                  : "text-blue-600 group-hover:text-white"
+              }`}
+            >
+              Category
+            </span>
 
-          {/* View Notes */}
-          <p className="text-[10px] sm:text-[11px] mt-1 opacity-70 group-hover:text-white transition">
-            View Notes →
-          </p>
+            <span
+              className={`text-[10px] sm:text-xs transition ${
+                theme === "dark"
+                  ? "text-gray-500 group-hover:text-blue-100"
+                  : "text-slate-400 group-hover:text-blue-100"
+              }`}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+
+          {/* Category Name */}
+          <div>
+          <h4
+  className={`text-[0.78rem] sm:text-[0.85rem] md:text-[0.9rem] font-light tracking-wide leading-snug transition line-clamp-2 ${
+    theme === "dark"
+      ? "text-white group-hover:text-white"
+      : "text-slate-900 group-hover:text-white"
+  }`}
+>
+  {category.name}
+</h4>
+
+            <p
+              className={`text-[10px] sm:text-[11px] mt-2 transition ${
+                theme === "dark"
+                  ? "text-gray-400 group-hover:text-blue-100"
+                  : "text-slate-500 group-hover:text-blue-100"
+              }`}
+            >
+              Explore notes and PDFs →
+            </p>
+          </div>
         </div>
       </Link>
     ))}
-
   </div>
+
+  {/* Mobile Hint */}
+  {categories.length > 0 && (
+    <div className="md:hidden mt-4 text-center">
+      <p
+        className={`text-[11px] sm:text-xs ${
+          theme === "dark" ? "text-gray-500" : "text-slate-500"
+        }`}
+      >
+        Swipe to explore more categories →
+      </p>
+    </div>
+  )}
+</div>
 </div>
 
         <RoadmapSection />

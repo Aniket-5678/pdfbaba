@@ -3,8 +3,9 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
+import { HiOutlineCalendar } from "react-icons/hi";
 
-/* 🔹 Skeleton loader */
+/* 🔹 Skeleton Loader */
 const Skeleton = () => (
   <div className="animate-pulse space-y-4">
     <div className="h-6 w-24 bg-gray-300 rounded"></div>
@@ -19,7 +20,6 @@ const Skeleton = () => (
 const NoteDetail = () => {
   const { slug } = useParams();
   const [theme] = useTheme();
-
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,39 +43,48 @@ const NoteDetail = () => {
   return (
     <Layout>
       <div
-        className={`min-h-screen py-8 px-4 sm:px-6 md:px-8 mt-28 ${
-          theme === "dark" ? "bg-gray-900" : "bg-gray-100"
+        className={`min-h-screen py-10 px-4 sm:px-6 md:px-10 lg:px-16 mt-28 ${
+          theme === "dark" ? "bg-gray-950 text-white" : "bg-slate-50 text-slate-900"
         }`}
       >
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 lg:gap-10">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
 
           {/* MAIN CONTENT */}
           <div
-            className={`flex-1 rounded-2xl shadow-lg p-6 md:p-10 ${
-              theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
+            className={`flex-1 rounded-2xl shadow-lg p-6 md:p-10 transition-all duration-300 ${
+              theme === "dark"
+                ? "bg-gray-900 text-white hover:shadow-2xl"
+                : "bg-white hover:shadow-xl"
             }`}
           >
             {loading ? (
               <Skeleton />
             ) : !note ? (
-              <div className="text-center text-gray-400 text-lg">
+              <div className="text-center text-gray-400 text-lg py-20">
                 Note not found 😢
               </div>
             ) : (
               <>
                 {/* CATEGORY */}
-                <span className="inline-block mb-3 text-xs md:text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+                <span
+                  className={`inline-block mb-4 text-xs md:text-sm px-3 py-1 rounded-full font-medium transition ${
+                    theme === "dark"
+                      ? "bg-blue-900 text-blue-300"
+                      : "bg-blue-100 text-blue-700"
+                  }`}
+                >
                   {note?.category || "General"}
                 </span>
 
                 {/* TITLE */}
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-snug break-words">
+                <h1 className="text-[1.5rem] sm:text-2xl md:text-3xl font-semibold mb-5 leading-snug break-words">
                   {note?.title}
                 </h1>
 
                 {/* DATE */}
-                <div className="text-xs md:text-sm mb-6 border-b pb-3 text-gray-400">
-                  {new Date(note?.createdAt).toLocaleDateString()}
+                <div className="flex items-center text-xs md:text-sm mb-6 text-gray-400 gap-2">
+                  <HiOutlineCalendar />
+                  <span>{new Date(note?.createdAt).toLocaleDateString()}</span>
                 </div>
 
                 {/* CONTENT */}
@@ -99,36 +108,47 @@ const NoteDetail = () => {
           </div>
 
           {/* SIDEBAR */}
-          <div className="w-full md:w-80 flex-shrink-0 space-y-5">
-            {/* ABOUT */}
+          <div className="w-full lg:w-80 flex-shrink-0 space-y-6">
+
+            {/* ABOUT CARD */}
             <div
-              className={`p-4 rounded-xl shadow-md ${
-                theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
+              className={`p-5 rounded-xl shadow-md transition-all duration-300 ${
+                theme === "dark" ? "bg-gray-900 text-white hover:shadow-lg" : "bg-white hover:shadow-lg"
               }`}
             >
-              <h3 className="font-semibold text-sm mb-1">About</h3>
+              <h3 className="font-semibold text-sm mb-2 border-b pb-2">About</h3>
               <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                Learn faster with structured, well-designed notes. Fully responsive and readable on any device.
+                Access structured, readable, and well-organized notes. Fully responsive for mobile, tablet, and desktop.
               </p>
             </div>
 
-            {/* DETAILS */}
+            {/* DETAILS CARD */}
             <div
-              className={`p-4 rounded-xl shadow-md ${
-                theme === "dark" ? "bg-gray-800 text-white" : "bg-white"
+              className={`p-5 rounded-xl shadow-md transition-all duration-300 ${
+                theme === "dark" ? "bg-gray-900 text-white hover:shadow-lg" : "bg-white hover:shadow-lg"
               }`}
             >
-              <h3 className="font-semibold text-sm mb-1">Details</h3>
+              <h3 className="font-semibold text-sm mb-2 border-b pb-2">Details</h3>
               {loading ? (
                 <div className="space-y-2 animate-pulse">
                   <div className="h-3 bg-gray-300 rounded w-2/3"></div>
+                  <div className="h-3 bg-gray-300 rounded w-1/2"></div>
                 </div>
               ) : (
-                <p className="text-xs sm:text-sm text-gray-400">
-                  Category: {note?.category}
-                </p>
+                <>
+                  <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                    Category: <span className="font-medium">{note?.category}</span>
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-400 mb-1">
+                    Notes length: <span className="font-medium">{note?.content?.length || 0} characters</span>
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-400">
+                    Created: <span className="font-medium">{new Date(note?.createdAt).toLocaleDateString()}</span>
+                  </p>
+                </>
               )}
             </div>
+
           </div>
         </div>
       </div>
