@@ -78,7 +78,7 @@ const [theme] = useTheme()
         <Route path="/question/:id" element={<QuestionpaperDetails/>} />
         <Route path="/about" element={<Aboutus/>} />
         <Route path="/contact" element={<Contact/>} />
-        <Route path="/explore" element={<ExplorePage/>} />
+        <Route path="/exam-pdf-explore" element={<ExplorePage/>} />
         <Route path="*" element={<NotFoundComponent/>} />
         <Route path="/category/:slug" element={<CategoryProduct/>} />
         <Route path="/howitworks"  element={<Howsearchworks/>} />
@@ -87,9 +87,9 @@ const [theme] = useTheme()
        <Route path="/termcondition" element={<TermCondition/>} />
        <Route path="/discover-more"  element={<Discovermore/>} />
        <Route path="/service" element={<ServiceList/>} />
-       <Route path="/quizplaylist" element={<QuizPlayList/>}/>
+       <Route path="/practice-quiz" element={<QuizPlayList/>}/>
        <Route path="/play/:id" element={<PlayQuiz/>} />
-       <Route path="/roadmapdata" element={<Roadmap/>} />
+       <Route path="/exam-roadmap" element={<Roadmap/>} />
        <Route path="/roadmap/:id" element={<RoadmapDetail/>} />
        <Route path="/domain-suggestor" element={<DomainSearch/>}/>
      <Route path="/service/:id" element={<ServiceDetails />} />

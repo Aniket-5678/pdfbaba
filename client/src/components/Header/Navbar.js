@@ -232,8 +232,8 @@ useEffect(() => {
     
 
     <Divider />
-  <ListItem button component={Link} to="/roadmapdata" className="menu-item">Roadmaps</ListItem>
-  <ListItem button component={Link} to="/quizplaylist" className="menu-item">Quiz</ListItem>
+  <ListItem button component={Link} to="/exam-roadmap" className="menu-item">Roadmaps</ListItem>
+  <ListItem button component={Link} to="/practice-quiz" className="menu-item">Quiz</ListItem>
   <ListItem button component={Link} to="/service" className="menu-item">Website Templates</ListItem>
     <ListItem button component={Link} to="/sourcecode-order" className="menu-item">MyOrders</ListItem>
         {/* Display all categories directly */}
@@ -305,11 +305,11 @@ useEffect(() => {
           </div>
 
         <div className='contactus'>
-            <Link className='contact-nav' to='/quizplaylist'>Quiz </Link>
+            <Link className='contact-nav' to='/practice-quiz'>Quiz </Link>
           </div>
           
             <div className='contactus'>
-            <Link className='contact-nav' to='/roadmapdata'>Roadmaps </Link>
+            <Link className='contact-nav' to='/exam-roadmap'>Roadmaps </Link>
           </div>
 
        

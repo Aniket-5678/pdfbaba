@@ -150,7 +150,7 @@ const Discovermore = () => {
         <div className="mt-8">
 
           <Link
-            to="/explore"
+            to="/exam-pdf-explore"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm sm:text-base transition"
           >
             Explore More Notes

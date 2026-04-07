@@ -83,7 +83,7 @@ const RoadmapSection = () => {
           </div>
 
           <button
-            onClick={() => navigate("/roadmapdata")}
+            onClick={() => navigate("/exam-roadmap")}
             className="w-fit px-4 sm:px-5 py-2.5 text-sm sm:text-base rounded-xl font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md"
           >
             View All Roadmaps

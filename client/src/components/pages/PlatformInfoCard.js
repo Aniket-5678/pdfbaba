@@ -8,7 +8,7 @@ const PlatformInfoCard = () => {
   const navigate = useNavigate();
 
   const handleExploreClick = () => {
-    navigate("/explore");
+    navigate("/exam-pdf-explore");
   };
 
   return (
