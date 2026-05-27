@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bannerpro from "../images/bannerpro.png";
+import bannerpro from "../images/bannerpro.webp";
 
 const slides = [bannerpro];
 
