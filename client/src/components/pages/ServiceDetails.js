@@ -75,13 +75,13 @@ const ServiceDetails = () => {
 
             {/* ===== LEFT IMAGE GALLERY ===== */}
             <div>
-              <div className="rounded-2xl overflow-hidden border dark:border-white/10 shadow-lg">
-                <img
-                  src={mainImage}
-                  alt="preview"
-                  className="w-full h-[380px] object-cover"
-                />
-              </div>
+              <div className="relative w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#171717] shadow-lg">
+  <img
+    src={mainImage}
+    alt={service.title || "Preview"}
+    className="w-full h-full object-contain object-center"
+  />
+</div>
 
               {/* thumbnails */}
               <div className="flex gap-3 mt-4 overflow-x-auto">
