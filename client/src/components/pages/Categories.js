@@ -251,18 +251,17 @@ const Categories = () => {
     <section
       ref={sectionRef}
       className={`
-        relative
-        w-full
-        py-14
-        sm:py-16
-        md:py-20
-        lg:py-24
-        px-4
-        sm:px-6
-        lg:px-8
-        overflow-hidden
-        transition-colors
-        duration-500
+      relative
+    w-full
+    py-14
+    sm:py-16
+    md:py-20
+    lg:py-24
+    px-4
+    sm:px-6
+    lg:px-8
+    transition-colors
+    duration-500
         ${
           isDark
             ? "bg-[#0b1120] text-white"
