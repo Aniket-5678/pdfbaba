@@ -33,18 +33,24 @@ const ServiceList = () => {
     fetchServices();
   }, []);
 
-  const fetchServices = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get("/api/v1/sourcecode");
-      setServices(res.data);
-      setFilteredServices(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchServices = async () => {
+  try {
+    setLoading(true);
+
+    const res = await axios.get("/api/v1/sourcecode");
+
+    const sortedServices = [...res.data].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+    setServices(sortedServices);
+    setFilteredServices(sortedServices);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -121,7 +127,7 @@ const ServiceList = () => {
                   <img
                     src={service.thumbnail || "/default-thumbnail.png"}
                     alt={service.title}
-                    className="h-40 w-full object-cover group-hover:scale-105 transition duration-500"
+                    className="h-40 w-full object-contain bg-gray-100 dark:bg-gray-900 group-hover:scale-105 transition duration-500"
                   />
 
                   {/* Price badge */}

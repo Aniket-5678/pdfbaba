@@ -200,7 +200,7 @@ const SourceCodeBuyNow = () => {
               sx={{
                 width: "100%",
                 height: { xs: 250, sm: 300, md: 400 },
-                objectFit: "cover",
+                objectFit: "contain",
                 borderBottom: { xs: "1px solid #eee", md: "none" },
               }}
             />

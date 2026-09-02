@@ -34,10 +34,13 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         const res = await axios.get("/api/v1/sourcecode");
+if (isMounted) {
+  const sortedServices = [...res.data].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
-        if (isMounted) {
-          setServices(res.data.slice(0, 10));
-        }
+  setServices(sortedServices.slice(0, 10));
+}
       } catch (err) {
         console.error("Error fetching services:", err);
       } finally {
