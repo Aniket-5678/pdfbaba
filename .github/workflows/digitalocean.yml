@@ -28,7 +28,7 @@ jobs:
       - name: Check backend and deployment scripts
         run: |
           node scripts/check-syntax.mjs
-          node --test scripts/seo.test.mjs scripts/nginx-seo.test.mjs scripts/notes.test.mjs
+          node --test scripts/seo.test.mjs scripts/nginx-seo.test.mjs scripts/notes.test.mjs scripts/download-status.test.mjs
           node scripts/smoke-backend.mjs
           bash -n deploy/*.sh
           shellcheck deploy/*.sh

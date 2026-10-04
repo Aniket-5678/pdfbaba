@@ -7,10 +7,10 @@ import {
   GraduationCap,
   Laptop,
   ArrowRight,
-  CheckCircle,
-  Lightbulb,
 } from "lucide-react";
 import Layout from "../Layout/Layout";
+import Seo from "../Seo";
+import { PageHero, Reveal, panel, primary } from "./PageKit";
 export const learningTopics = [
   {
     slug: "technology",
@@ -106,7 +106,7 @@ export default function LearningCategories({ standalone = false }) {
       className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/40 to-violet-50/50 px-5 py-14 sm:px-10"
     >
       <div className="mx-auto max-w-[1360px]">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
             <p className="mb-4 inline-flex items-center gap-3 rounded-full bg-blue-50 px-5 py-2 text-xs font-semibold tracking-[3px] text-blue-600">
               <BookOpen size={19} />
@@ -149,59 +149,19 @@ export default function LearningCategories({ standalone = false }) {
           </div>
           <motion.div
             aria-hidden="true"
-            animate={reduced ? {} : { y: [0, -8, 0] }}
-            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-            className="relative mx-auto flex h-[310px] w-full max-w-[430px] flex-col items-center justify-end pb-4"
+            animate={reduced ? {} : { y: [0, -7, 0] }}
+            transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
+            className="relative mx-auto w-full max-w-[660px]"
           >
-            <div className="absolute inset-5 rounded-full border border-dashed border-violet-200 bg-gradient-to-br from-orange-100/50 to-violet-200/40" />
-            <GraduationCap
-              size={140}
-              strokeWidth={1.1}
-              className="absolute -top-4 z-10 -rotate-12 fill-slate-900 text-slate-900 drop-shadow-xl"
+            <img
+              src="/images/learning-chapters.png"
+              alt=""
+              width="1536"
+              height="1024"
+              loading={standalone ? "eager" : "lazy"}
+              decoding="async"
+              className="h-auto w-full rounded-[32px] mix-blend-multiply"
             />
-            {[
-              [
-                "Programming",
-                "bg-gradient-to-r from-orange-500 to-orange-400",
-                "-rotate-3",
-              ],
-              [
-                "Technology",
-                "bg-gradient-to-r from-violet-600 to-violet-400",
-                "rotate-2",
-              ],
-              [
-                "Practice & Learn",
-                "bg-gradient-to-r from-blue-600 to-blue-400",
-                "-rotate-1",
-              ],
-              [
-                "Your next chapter",
-                "bg-gradient-to-r from-slate-200 to-white",
-                "rotate-1",
-              ],
-            ].map(([title, color, rotate], i) => (
-              <div
-                key={title}
-                className={
-                  "relative mb-1 flex h-14 w-[78%] items-center justify-between rounded-l-xl rounded-r-md border-b-[5px] border-black/15 pl-5 text-[17px] font-bold shadow-lg " +
-                  color +
-                  " " +
-                  rotate +
-                  " " +
-                  (i === 3 ? "text-slate-700" : "text-white")
-                }
-              >
-                <span>{title}</span>
-                <span className="mr-1 h-10 w-14 rounded-l-xl border-y-4 border-white/80 bg-[repeating-linear-gradient(0deg,#f8fafc_0px,#f8fafc_3px,#e2e8f0_4px)]" />
-              </div>
-            ))}
-            <span className="absolute -left-2 top-14 -rotate-12 rounded-2xl bg-white p-4 shadow-lg">
-              <Code2 size={32} className="text-violet-500" />
-            </span>
-            <span className="absolute right-0 top-24 rotate-12 rounded-2xl bg-white p-4 shadow-lg">
-              <Lightbulb size={32} className="text-orange-400" />
-            </span>
           </motion.div>
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -217,7 +177,7 @@ export default function LearningCategories({ standalone = false }) {
                 <Link
                   to={"/learn/" + slug}
                   className={
-                    "group relative block h-full overflow-hidden rounded-3xl border bg-gradient-to-br p-6 shadow-[0_12px_32px_-24px_rgba(35,50,90,.3)] transition hover:-translate-y-2 hover:shadow-xl " +
+                    "group relative block h-full overflow-hidden rounded-3xl border bg-gradient-to-br p-6 shadow-[0_12px_32px_-24px_rgba(35,50,90,.3)] transition duration-300 motion-safe:hover:-translate-y-2 hover:shadow-xl " +
                     palettes[color]
                   }
                 >
@@ -256,57 +216,108 @@ export default function LearningCategories({ standalone = false }) {
 }
 export function LearningPage() {
   const { topic } = useParams();
-  const data = learningTopics.find((x) => x.slug === topic);
+  const data = learningTopics.find((item) => item.slug === topic);
+  const Icon = data?.icon || BookOpen;
   return (
     <Layout>
       {data ? (
-        <section className="mx-auto max-w-4xl px-5 py-16">
-          <Link
-            to="/categories"
-            className="text-sm font-medium text-violet-600"
+        <>
+          <Seo
+            title={data.title + " Learning Guide"}
+            description={data.description}
+          />
+          <PageHero
+            eyebrow="CURIOUS MINDS START HERE"
+            title={data.title}
+            accent="Made approachable."
+            description={data.description}
           >
-            ← All learning categories
-          </Link>
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight">
-            {data.title}
-          </h1>
-          <p className="mt-4 text-lg leading-relaxed text-slate-500">
-            {data.description}
-          </p>
-          <div className="my-9 space-y-4">
-            {data.lessons.map((text, i) => (
-              <div
-                key={text}
-                className="flex gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-6"
-              >
-                <CheckCircle className="shrink-0 text-violet-500" />
-                <div>
-                  <h2 className="mb-1 text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Step {i + 1}
-                  </h2>
-                  <p className="text-sm leading-relaxed">{text}</p>
-                </div>
+            <Link
+              to="/categories"
+              className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-violet-600"
+            >
+              ← All learning categories
+            </Link>
+          </PageHero>
+          <section className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:px-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+            <div>
+              <h2 className="mb-2 text-2xl font-extrabold tracking-tight">
+                A little structure. A lot of possibility.
+              </h2>
+              <p className="mb-7 text-sm leading-7 text-slate-500">
+                Start with these foundations, then explore a project or
+                challenge to bring them to life.
+              </p>
+              <ol className="space-y-4">
+                {data.lessons.map((text, index) => (
+                  <li key={text}>
+                    <Reveal>
+                      <div
+                        className={
+                          panel +
+                          " group flex gap-4 transition duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-lg"
+                        }
+                      >
+                        <span
+                          className={
+                            "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-extrabold " +
+                            ink[data.color]
+                          }
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <p className="mb-2 text-[10px] font-bold uppercase tracking-[2px] text-slate-400">
+                            Your next foundation
+                          </p>
+                          <h3 className="text-sm font-semibold leading-7 text-slate-700">
+                            {text}
+                          </h3>
+                        </div>
+                      </div>
+                    </Reveal>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <aside>
+              <div className="rounded-3xl bg-slate-950 p-7 text-white lg:sticky lg:top-6">
+                <span className="mb-6 inline-flex rounded-2xl bg-white/10 p-3 text-violet-300">
+                  <Icon size={28} />
+                </span>
+                <h2 className="text-xl font-bold">Make learning hands-on.</h2>
+                <p className="mb-6 mt-3 text-xs leading-7 text-slate-400">
+                  Reading is a starting point. Build something, test your
+                  understanding, and keep exploring.
+                </p>
+                {data.links.map(([title, path]) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold transition hover:border-violet-400 hover:bg-violet-600"
+                  >
+                    {title}
+                    <ArrowRight size={16} />
+                  </Link>
+                ))}
+                <Link
+                  to="/notes"
+                  className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold transition hover:border-violet-400 hover:bg-violet-600"
+                >
+                  Explore study notes
+                  <ArrowRight size={16} />
+                </Link>
               </div>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-4">
-            {data.links.map(([title, path]) => (
-              <Link
-                key={path}
-                to={path}
-                className="flex items-center gap-3 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white"
-              >
-                {title}
-                <ArrowRight size={16} />
-              </Link>
-            ))}
-          </div>
-        </section>
+            </aside>
+          </section>
+        </>
       ) : (
-        <section className="p-16 text-center">
+        <section className="mx-auto max-w-xl px-5 py-20 text-center">
+          <BookOpen className="mx-auto mb-5 text-violet-400" size={40} />
           <h1 className="text-3xl font-bold">Topic not found</h1>
-          <Link to="/categories" className="mt-5 block text-violet-600">
+          <Link to="/categories" className={primary + " mt-6"}>
             Browse learning categories
+            <ArrowRight size={16} />
           </Link>
         </section>
       )}
