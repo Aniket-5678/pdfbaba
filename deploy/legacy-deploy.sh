@@ -55,6 +55,10 @@ rollback() {
       mv "$backup/node_modules" "$app/node_modules"
     fi
     rsync -ac --delete --exclude=.well-known --exclude='google*.html' "$backup/frontend/" "$frontend/"
+    if [[ -f "$backup/nginx/manifest.jsonl" ]]; then
+      node "$release/deploy/restore-nginx.mjs" "$backup/nginx/manifest.jsonl"
+      nginx -t && nginx -s reload
+    fi
     NODE_ENV=production pm2 restart "$pm2_id" --update-env
     pm2 save
     echo "::error::Deployment failed; previous app restored. Backup: $backup"
@@ -94,6 +98,9 @@ fi
 rsync -ac --delete --exclude=.well-known --exclude='google*.html' "$release/client/build/" "$frontend/"
 cmp "$release/client/build/index.html" "$frontend/index.html" || fail 'Frontend publication verification failed.'
 curl --fail --silent --max-time 5 "http://127.0.0.1:$port/" >/dev/null || fail 'Backend frontend response check failed.'
+if [[ -f "$release/deploy/nginx-static-seo.mjs" ]]; then
+  node "$release/deploy/nginx-static-seo.mjs" /etc/nginx/sites-enabled "$backup/nginx"
+fi
 pm2 save
 echo "Deployed $release_id using the existing PM2 backend and Nginx frontend."
 echo "Previous release backup: $backup"
