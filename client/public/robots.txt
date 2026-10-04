@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pdf-baba.com/sitemap.xml
+Sitemap: https://codebricket.com/sitemap.xml
