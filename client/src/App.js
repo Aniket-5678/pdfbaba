@@ -1,3 +1,6 @@
+import NotesLibrary, { NoteDetail } from "./components/pages/NotesLibrary";
+import NotesWorkspace from "./components/pages/admin/NotesWorkspace";
+import CreateCategory from "./components/pages/admin/CreateCategory";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Seo from "./components/Seo";
@@ -58,6 +61,9 @@ function App() {
           />
           <Route path="/learn/:topic" element={<LearningPage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/notes" element={<NotesLibrary />} />
+          <Route path="/notes-category/:category" element={<NotesLibrary />} />
+          <Route path="/note/:slug" element={<NoteDetail />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgetpass" element={<Forgetpass />} />
@@ -82,6 +88,9 @@ function App() {
 
           <Route path="/dashboard" element={<AdminRoutes />}>
             <Route path="admin" element={<Admindashboard />} />
+            <Route path="admin/notes" element={<NotesWorkspace create />} />
+            <Route path="admin/notesmanage" element={<NotesWorkspace />} />
+            <Route path="admin/create-category" element={<CreateCategory />} />
             <Route path="admin/create-quiz" element={<CreateQuiz />} />
             <Route path="admin/all-quiz" element={<QuizList />} />
             <Route path="admin/createroadmap" element={<CreateRoadmap />} />

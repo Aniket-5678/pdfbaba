@@ -3,7 +3,9 @@ import Roadmap from "../models/roadmap.model.js";
 /* GET ALL ROADMAPS */
 export const getRoadmaps = async (req, res) => {
   try {
-    const roadmaps = await Roadmap.find().select("category slug level");
+    const roadmaps = await Roadmap.find().select(
+      "category slug level description nodes.id nodes.title",
+    );
     res.json(roadmaps);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -15,8 +17,7 @@ export const getRoadmapById = async (req, res) => {
   try {
     const roadmap = await Roadmap.findById(req.params.id);
 
-    if (!roadmap)
-      return res.status(404).json({ message: "Roadmap not found" });
+    if (!roadmap) return res.status(404).json({ message: "Roadmap not found" });
 
     res.json(roadmap);
   } catch (error) {
@@ -35,7 +36,7 @@ export const addRoadmap = async (req, res) => {
       level,
       description,
       nodes,
-      edges
+      edges,
     });
 
     res.json({ message: "Roadmap Added Successfully", roadmap });
@@ -47,14 +48,12 @@ export const addRoadmap = async (req, res) => {
 /* UPDATE ROADMAP */
 export const updateRoadmap = async (req, res) => {
   try {
-    const roadmap = await Roadmap.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const roadmap = await Roadmap.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-    if (!roadmap)
-      return res.status(404).json({ message: "Roadmap not found" });
+    if (!roadmap) return res.status(404).json({ message: "Roadmap not found" });
 
     res.json({ message: "Roadmap Updated Successfully", roadmap });
   } catch (error) {
@@ -67,8 +66,7 @@ export const deleteRoadmap = async (req, res) => {
   try {
     const roadmap = await Roadmap.findByIdAndDelete(req.params.id);
 
-    if (!roadmap)
-      return res.status(404).json({ message: "Roadmap not found" });
+    if (!roadmap) return res.status(404).json({ message: "Roadmap not found" });
 
     res.json({ message: "Roadmap Deleted Successfully" });
   } catch (error) {

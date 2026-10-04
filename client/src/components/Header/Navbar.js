@@ -20,6 +20,7 @@ export default function Navbar() {
     ["Home", "/"],
     ["Projects", "/service"],
     ["Categories", "/categories"],
+    ["Notes", "/notes"],
     ["Roadmaps", "/exam-roadmap"],
     ["Practice", "/practice-quiz"],
   ];
@@ -67,7 +68,7 @@ export default function Navbar() {
         </Link>
         <nav
           aria-label="Main navigation"
-          className="hidden items-center gap-6 xl:flex"
+          className="hidden items-center gap-5 min-[1360px]:flex"
         >
           {links.map(([label, path]) => (
             <NavLink
@@ -141,7 +142,7 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-navigation"
           onClick={() => setOpen(!open)}
-          className="rounded-xl border border-slate-200 p-2 xl:hidden"
+          className="rounded-xl border border-slate-200 p-2 min-[1360px]:hidden"
         >
           {open ? <X /> : <Menu />}
         </button>
@@ -150,7 +151,7 @@ export default function Navbar() {
         <nav
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className="border-t border-slate-100 bg-white px-5 pb-5 xl:hidden"
+          className="border-t border-slate-100 bg-white px-5 pb-5 min-[1360px]:hidden"
         >
           <form
             onSubmit={search}

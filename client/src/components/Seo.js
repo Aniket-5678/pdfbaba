@@ -3,6 +3,10 @@ import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 const origin = "https://codebricket.com";
 const pages = {
+  "/notes": [
+    "Study Notes & Learning Library",
+    "Explore study notes, practical examples and learning resources on Codebricket.",
+  ],
   "/domain-suggestor": [
     "Domain Name Ideas",
     "Explore domain name ideas for your next project on Codebricket.",
@@ -50,7 +54,7 @@ const pages = {
   ],
 };
 const publicPatterns =
-  /^\/(service\/[a-f0-9]{24}|learn\/(technology|code-errors|bachelors|exam-prep)|roadmap\/[^/]+|play\/[^/]+)$/;
+  /^\/(service\/[a-f0-9]{24}|note\/[^/]+|notes-category\/[^/]+|learn\/(technology|code-errors|bachelors|exam-prep)|roadmap\/[^/]+|play\/[^/]+)$/;
 export default function Seo({ title, description, product }) {
   const { pathname: rawPathname } = useLocation();
   const pathname = rawPathname === "/" ? "/" : rawPathname.replace(/\/+$/, "");

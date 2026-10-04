@@ -24,6 +24,7 @@ export default function Footer() {
             [
               ["Projects", "/service"],
               ["Categories", "/categories"],
+              ["Study Notes", "/notes"],
               ["Roadmaps", "/exam-roadmap"],
               ["Practice", "/practice-quiz"],
             ],

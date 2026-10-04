@@ -1,3 +1,5 @@
+import noteRoutes from "./routes/note.routes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
@@ -62,6 +64,8 @@ app.use(
   }),
 );
 
+app.use("/api/notes", noteRoutes);
+app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/user", userRoutes);
 
 app.use("/api/v1/email", sendmailRoutes);
@@ -85,13 +89,7 @@ app.get("/ads.txt", (req, res) => {
 });
 
 app.use(
-  [
-    "/api/notes",
-    "/api/v1/questionpaper",
-    "/api/v1/category",
-    "/api/v1/keyword",
-    "/uploads/pdfs",
-  ],
+  ["/api/v1/questionpaper", "/api/v1/keyword", "/uploads/pdfs"],
   (req, res) =>
     res
       .status(410)
@@ -100,15 +98,16 @@ app.use(
 app.use("/api", (req, res) =>
   res.status(404).json({ message: "API endpoint not found" }),
 );
-app.use(express.static(path.join(__dirname, "client/build"), { index: false, redirect: false }));
+app.use(
+  express.static(path.join(__dirname, "client/build"), {
+    index: false,
+    redirect: false,
+  }),
+);
 app.get("*", async (req, res) => {
   if (req.hostname === "www.codebricket.com")
     return res.redirect(301, SITE_URL + req.originalUrl);
-  if (
-    /^\/(notes|note|notes-category|question|category|exam-pdf-explore)(\/|$)/.test(
-      req.path,
-    )
-  )
+  if (/^\/(question|category|exam-pdf-explore)(\/|$)/.test(req.path))
     return res.status(410).send("This resource is no longer available.");
   const seo = seoForPath(req.path);
   if (

@@ -42,3 +42,20 @@ export const deleteQuiz = async (req, res) => {
     res.status(500).json({ message: "Error deleting quiz", error });
   }
 };
+
+export const updateQuiz = async (req, res) => {
+  try {
+    const title = String(req.body.title || "").trim();
+    if (!title)
+      return res.status(400).json({ message: "Quiz title is required." });
+    const quiz = await Quiz.findByIdAndUpdate(
+      req.params.id,
+      { title },
+      { new: true, runValidators: true },
+    );
+    if (!quiz) return res.status(404).json({ message: "Quiz not found" });
+    res.json(quiz);
+  } catch {
+    res.status(400).json({ message: "Could not update quiz." });
+  }
+};

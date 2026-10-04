@@ -1,5 +1,9 @@
 export const SITE_URL = "https://codebricket.com";
 export const staticSeo = {
+  "/notes": [
+    "Study Notes & Learning Library",
+    "Explore study notes, practical examples and learning resources on Codebricket.",
+  ],
   "/": [
     "Build Faster. Create Bigger.",
     "Discover ready-made website projects, source codes, developer roadmaps and practical learning resources. Build your next idea with Codebricket.",
@@ -43,7 +47,9 @@ export function seoForPath(pathname) {
   const known = staticSeo[pathname];
   const learning =
     /^\/learn\/(technology|code-errors|bachelors|exam-prep)$/.test(pathname);
-  const dynamic = /^\/(service|roadmap|play)\/[^/]+$/.test(pathname);
+  const dynamic = /^\/(service|roadmap|play|note|notes-category)\/[^/]+$/.test(
+    pathname,
+  );
   const privatePage =
     /^\/(dashboard|login|register|forgetpass|sourcecode-order|sourcecode|success)(\/|$)/.test(
       pathname,
@@ -99,5 +105,8 @@ export function injectSeo(html, seo) {
     '"/><meta property="og:image" content="' +
     SITE_URL +
     '/social-card.png"/><meta name="twitter:card" content="summary_large_image"/>';
-  return clean.replace("</head>", tags.replace(/\/>/g, ' data-rh="true"/>' ) + "</head>");
+  return clean.replace(
+    "</head>",
+    tags.replace(/\/>/g, ' data-rh="true"/>') + "</head>",
+  );
 }

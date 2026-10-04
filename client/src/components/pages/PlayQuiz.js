@@ -1,301 +1,234 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Layout from "../Layout/Layout";
+import Seo from "../Seo";
+import { panel, primary, Status } from "./PageKit";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Container,
-  Box,
-  LinearProgress,
-  CircularProgress,
-  Chip,
-} from "@mui/material";
-import { useTheme } from "../context/ThemeContext";
-import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
-import SmallBannerAd from "./SmallBannerAd";
-
-const PlayQuiz = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [quiz, setQuiz] = useState(null);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [showResult, setShowResult] = useState(false);
-  const [answers, setAnswers] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
-  const [timeOver, setTimeOver] = useState(false);
-  const timerRef = useRef(null);
-  const [theme] = useTheme();
-
+  Clock3,
+  ArrowRight,
+  Trophy,
+  RotateCcw,
+  Check,
+  ChevronLeft,
+} from "lucide-react";
+export default function PlayQuiz() {
+  const { id } = useParams(),
+    [quiz, setQuiz] = useState(null),
+    [error, setError] = useState(""),
+    [index, setIndex] = useState(0),
+    [selected, setSelected] = useState(""),
+    [answers, setAnswers] = useState([]),
+    [finished, setFinished] = useState(false),
+    [seconds, setSeconds] = useState(1800),
+    [attempt, setAttempt] = useState(0);
   useEffect(() => {
-    fetchQuiz();
-  }, []);
-
-  const fetchQuiz = async () => {
-    try {
-      const response = await axios.get(`/api/v1/quizzes/${id}`);
-      const shuffled = response.data.questions.sort(() => Math.random() - 0.5);
-      setQuiz({ ...response.data, questions: shuffled });
-    } catch (error) {
-      console.error("Error fetching quiz:", error);
-    }
-  };
-
-  useEffect(() => {
-    // Start 30-minute timer
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current);
-          setTimeOver(true);
-          return 0;
+    const c = new AbortController();
+    setQuiz(null);
+    setError("");
+    setIndex(0);
+    setSelected("");
+    setAnswers([]);
+    setFinished(false);
+    setSeconds(1800);
+    axios
+      .get("/api/v1/quizzes/" + id, { signal: c.signal })
+      .then(({ data }) => {
+        if (!data.questions?.length) {
+          setError("This quiz has no questions yet.");
+          return;
         }
-        return prev - 1;
+        const questions = [...data.questions];
+        for (let i = questions.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [questions[i], questions[j]] = [questions[j], questions[i]];
+        }
+        setQuiz({ ...data, questions });
+      })
+      .catch((e) => {
+        if (e.code !== "ERR_CANCELED")
+          setError("Couldn't load this quiz. Please try again.");
       });
-    }, 1000);
-
-    return () => clearInterval(timerRef.current);
-  }, []);
-
-  const handleNextQuestion = () => {
-    const correctAnswer = quiz.questions[currentQuestion].correctAnswer;
-    const isCorrect =
-      selectedOption.trim().toLowerCase() ===
-      correctAnswer.trim().toLowerCase();
-
-    setAnswers((prev) => [
-      ...prev,
+    return () => c.abort();
+  }, [id, attempt]);
+  useEffect(() => {
+    if (!quiz || finished) return;
+    const timer = setInterval(
+      () => setSeconds((s) => Math.max(0, s - 1)),
+      1000,
+    );
+    return () => clearInterval(timer);
+  }, [quiz, finished]);
+  useEffect(() => {
+    if (quiz && seconds === 0) setFinished(true);
+  }, [seconds, quiz]);
+  function next(e) {
+    e.preventDefault();
+    if (!selected || finished) return;
+    setAnswers((a) => [
+      ...a,
       {
-        question: quiz.questions[currentQuestion].questionText,
-        selectedOption,
-        correctAnswer,
-        isCorrect,
+        question: quiz.questions[index],
+        selected,
+        correct:
+          selected.trim().toLowerCase() ===
+          String(quiz.questions[index].correctAnswer).trim().toLowerCase(),
       },
     ]);
-
-    if (isCorrect) {
-      setScore((prevScore) => prevScore + 1);
-    }
-
-    if (currentQuestion + 1 < quiz.questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedOption("");
-    } else {
-      clearInterval(timerRef.current);
-      setShowResult(true);
-    }
-  };
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-
+    setSelected("");
+    if (index + 1 === quiz.questions.length) setFinished(true);
+    else setIndex(index + 1);
+  }
+  const score = answers.filter((a) => a.correct).length;
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 5 }}>
-      <Box display="flex" justifyContent="center" mb={2}>
-        <SmallBannerAd />
-      </Box>
-
-      {quiz ? (
-        <Card
-          sx={{
-            boxShadow: 4,
-            borderRadius: 4,
-            p: { xs: 2, md: 3 },
-            backgroundColor: theme === "dark" ? "#222" : "#fff",
-            color: theme === "dark" ? "white" : "black",
-          }}
-        >
-          <CardContent>
-            <Typography
-              variant="h5"
-              fontWeight="bold"
-              textAlign="center"
-              sx={{ mb: 2 }}
-            >
-              {quiz.title}
-            </Typography>
-
-            {timeOver ? (
-              <Box textAlign="center" mt={3}>
-                <Typography variant="h5" color="error">
-                  ⏰ Time Over!
-                </Typography>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 2 }}
-                  onClick={() => window.location.reload()}
+    <Layout>
+      <section className="min-h-[70vh] bg-gradient-to-br from-violet-50/70 via-white to-orange-50/50 px-5 py-10 sm:py-16">
+        <div className="mx-auto max-w-3xl">
+          <Link
+            to="/practice-quiz"
+            className="mb-7 inline-flex items-center gap-2 text-xs font-bold text-violet-600"
+          >
+            <ChevronLeft size={16} />
+            All quizzes
+          </Link>
+          <Status loading={!quiz && !error} error={error} />
+          {quiz && (
+            <>
+              <Seo
+                title={quiz.title + " Quiz"}
+                description={
+                  "Practise " + quiz.category + " with this Codebricket quiz."
+                }
+              />
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-violet-600">
+                    {quiz.category}
+                  </p>
+                  <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+                    {quiz.title}
+                  </h1>
+                </div>
+                <div
+                  aria-label="Time remaining"
+                  className="flex items-center gap-2 rounded-full border border-violet-100 bg-white px-4 py-2 text-sm font-bold text-violet-700"
                 >
-                  Play Again
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  sx={{ mt: 2 }}
-                  onClick={() => navigate("/quizplaylist")}
-                >
-                  Back to Quizzes
-                </Button>
-              </Box>
-            ) : !showResult ? (
-              <Box mt={2}>
-                {/* Progress + Timer */}
-                <Box display="flex" justifyContent="space-between" mb={1}>
-                  <Typography variant="subtitle1">
-                    Question {currentQuestion + 1} of {quiz.questions.length}
-                  </Typography>
-                  <Chip
-                    label={`⏱ ${minutes}m ${seconds}s`}
-                    color={timeLeft <= 300 ? "error" : "primary"} // red if <5min
-                  />
-                </Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={(timeLeft / (30 * 60)) * 100}
-                  sx={{ mb: 3, height: 10, borderRadius: 5 }}
-                />
-
-                {/* Question */}
-                <Typography
-                  variant="h6"
-                  fontWeight="bold"
-                  sx={{ mb: 2, fontSize: { xs: "1rem", md: "1.2rem" } }}
-                >
-                  {quiz.questions[currentQuestion].questionText}
-                </Typography>
-
-                {/* Options */}
-                <RadioGroup
-                  value={selectedOption}
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                >
-                  {quiz.questions[currentQuestion].options.map(
-                    (option, index) => (
-                      <FormControlLabel
-                        key={index}
-                        value={option}
-                        control={<Radio />}
-                        label={option}
-                        sx={{
-                          border: "1px solid #ccc",
-                          borderRadius: "10px",
-                          px: 2,
-                          py: 1,
-                          mb: 1,
-                          width: "100%",
-                          "&:hover": {
-                            backgroundColor: "#f9f9f9",
-                          },
-                          ...(selectedOption === option && {
-                            backgroundColor: "#e3f2fd",
-                            borderColor: "#1976d2",
-                            fontWeight: "bold",
-                          }),
-                        }}
-                      />
-                    )
-                  )}
-                </RadioGroup>
-
-                <Box textAlign="center" mt={3}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    size="large"
-                    onClick={handleNextQuestion}
-                    disabled={!selectedOption}
-                  >
-                    {currentQuestion + 1 < quiz.questions.length
-                      ? "Next Question"
-                      : "Submit Quiz"}
-                  </Button>
-                </Box>
-              </Box>
-            ) : (
-              /* Results */
-              <Box textAlign="center" mt={3}>
-                <Typography variant="h5" fontWeight="bold">
-                  🎉 Quiz Completed!
-                </Typography>
-                <Typography variant="h6" sx={{ mt: 1 }}>
-                  Your Score: {score} / {quiz.questions.length}
-                </Typography>
-
-                <Box mt={3}>
-                  {answers.map((answer, index) => (
-                    <Box
-                      key={index}
-                      p={2}
-                      mt={2}
-                      sx={{
-                        backgroundColor: answer.isCorrect
-                          ? "#c8e6c9"
-                          : "#ffcdd2",
-                        borderRadius: "12px",
-                        textAlign: "left",
-                        boxShadow: 1,
-                      }}
+                  <Clock3 size={17} />
+                  {Math.floor(seconds / 60)}:
+                  {String(seconds % 60).padStart(2, "0")}
+                </div>
+              </div>
+              {finished ? (
+                <>
+                  <div className={panel + " text-center"}>
+                    <Trophy
+                      className="mx-auto mb-5 text-orange-500"
+                      size={48}
+                    />
+                    <p className="text-xs font-bold uppercase tracking-widest text-violet-600">
+                      {seconds === 0 ? "TIME IS UP" : "QUIZ COMPLETE"}
+                    </p>
+                    <h2 className="mt-3 text-3xl font-extrabold">
+                      {score} / {quiz.questions.length}
+                    </h2>
+                    <p className="mt-4 text-sm text-slate-500">
+                      {answers.length} questions answered. Review your answers
+                      below and keep learning.
+                    </p>
+                    <button
+                      onClick={() => setAttempt((a) => a + 1)}
+                      className={primary + " mt-6"}
                     >
-                      <Box display="flex" alignItems="center" gap={1}>
-                        {answer.isCorrect ? (
-                          <AiOutlineCheckCircle color="green" size={24} />
-                        ) : (
-                          <AiOutlineCloseCircle color="red" size={24} />
-                        )}
-                        <Typography fontWeight="bold">
-                          Q{index + 1}: {answer.question}
-                        </Typography>
-                      </Box>
-                      <Typography sx={{ mt: 1 }}>
-                        ✅ Correct:{" "}
-                        <strong style={{ color: "green" }}>
-                          {answer.correctAnswer}
-                        </strong>
-                      </Typography>
-                      <Typography>
-                        📝 Your Answer:{" "}
-                        <strong style={{ color: "blue" }}>
-                          {answer.selectedOption || "Not Answered"}
-                        </strong>
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-
-                <Box mt={3} display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={() => window.location.reload()}
-                  >
-                    Play Again
-                  </Button>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    onClick={() => navigate("/quizplaylist")}
-                  >
-                    Back to Quizzes
-                  </Button>
-                </Box>
-              </Box>
-            )}
-          </CardContent>
-        </Card>
-      ) : (
-        <Box textAlign="center" mt={5}>
-          <CircularProgress />
-        </Box>
-      )}
-    </Container>
+                      <RotateCcw size={17} />
+                      Try again
+                    </button>
+                  </div>
+                  <h2 className="my-6 text-xl font-bold">Your answer review</h2>
+                  <div className="space-y-4">
+                    {answers.map((a, i) => (
+                      <div key={i} className={panel}>
+                        <p className="mb-3 text-sm font-bold">
+                          {i + 1}. {a.question.questionText}
+                        </p>
+                        <p
+                          className={
+                            "text-xs " +
+                            (a.correct ? "text-emerald-600" : "text-red-600")
+                          }
+                        >
+                          Your answer: {a.selected}
+                        </p>
+                        <p className="mt-2 text-xs text-slate-500">
+                          Correct answer: {a.question.correctAnswer}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <form onSubmit={next} className={panel + " sm:p-8"}>
+                  <div className="mb-4 flex justify-between text-xs font-semibold text-slate-500">
+                    <span>
+                      Question {index + 1} of {quiz.questions.length}
+                    </span>
+                    <span>
+                      {Math.round((index / quiz.questions.length) * 100)}%
+                      complete
+                    </span>
+                  </div>
+                  <div className="mb-8 h-1.5 overflow-hidden rounded-full bg-violet-100">
+                    <div
+                      className="h-full bg-violet-600 transition-all"
+                      style={{
+                        width: (index / quiz.questions.length) * 100 + "%",
+                      }}
+                    />
+                  </div>
+                  <fieldset>
+                    <legend className="mb-7 text-xl font-bold leading-8">
+                      {quiz.questions[index].questionText}
+                    </legend>
+                    <div className="space-y-3">
+                      {quiz.questions[index].options.map((option, i) => (
+                        <label
+                          key={i}
+                          className={
+                            "flex cursor-pointer items-center gap-4 rounded-2xl border p-4 text-sm transition " +
+                            (selected === option
+                              ? "border-violet-500 bg-violet-50 text-violet-900"
+                              : "border-slate-200 hover:border-violet-300")
+                          }
+                        >
+                          <input
+                            type="radio"
+                            name="answer"
+                            value={option}
+                            checked={selected === option}
+                            onChange={() => setSelected(option)}
+                            className="h-4 w-4 accent-violet-600"
+                          />
+                          <span className="flex-1">{option}</span>
+                          {selected === option && (
+                            <Check size={16} className="text-violet-600" />
+                          )}
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <div className="mt-8 flex justify-end">
+                    <button disabled={!selected} className={primary}>
+                      {index + 1 === quiz.questions.length
+                        ? "Finish quiz"
+                        : "Next question"}
+                      <ArrowRight size={17} />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </>
+          )}
+        </div>
+      </section>
+    </Layout>
   );
-};
-
-export default PlayQuiz;
+}

@@ -91,8 +91,8 @@ To roll back manually, select a retained release directory, repoint /opt/pdfbaba
 
 References: [GitHub artifacts](https://docs.github.com/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts) and [DigitalOcean systemd/Nginx deployment](https://www.digitalocean.com/community/tutorials/how-to-deploy-node-js-applications-using-systemd-and-nginx).
 
-## Codebricket frontend and notes retirement
+## Codebricket frontend and learning library
 
-The release includes React source and a Tailwind production build. Public routes get unique canonical, description and social metadata for https://codebricket.com; deployment also generates project detail metadata and sitemap entries from the backend API. React Helmet handles client navigation.
+The release includes React source and a Tailwind production build. Public routes get unique canonical, description and social metadata for https://codebricket.com; deployment also generates project, note, quiz and roadmap metadata and sitemap entries from the backend API. React Helmet handles client navigation.
 
-PDF notes/category/question-paper APIs and administration screens have been retired. Removed code files are explicitly listed in deploy/removed-files.txt; legacy deployments remove only those files after creating the app backup. Existing upload data and production .env are preserved. Nginx Google verification files and .well-known challenges are also preserved during publish and rollback.
+Text study notes, categories and protected admin CRUD are available again. PDF upload/question-paper APIs remain retired. Removed code files are explicitly listed in deploy/removed-files.txt; legacy deployments remove only those files after creating the app backup. Existing upload data and production .env are preserved. Nginx Google verification files and .well-known challenges are also preserved during publish and rollback.

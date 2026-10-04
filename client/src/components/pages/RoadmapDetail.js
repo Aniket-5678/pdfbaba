@@ -1,269 +1,210 @@
-import { useEffect, useState, lazy, Suspense } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { HiArrowSmDown } from "react-icons/hi";
-
-/* ================= LAZY LOAD ADS ================= */
-const GoogleMultiplexAd = lazy(() => import("./GoogleMultiplexAd"));
-const GoogleDisplayAds = lazy(() => import("./GoogleDisplayAds"));
-
-/* ================= SKELETON ================= */
-const SkeletonLoader = () => (
-  <div className="min-h-screen bg-gray-100 py-12 px-6 animate-pulse">
-    <div className="max-w-4xl mx-auto text-center mb-16 space-y-4">
-      <div className="h-8 bg-gray-300 rounded w-2/3 mx-auto"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
-    </div>
-    <div className="max-w-3xl mx-auto space-y-8">
-      {[...Array(4)].map((_, i) => (
-        <div key={i} className="bg-white p-6 rounded-2xl shadow space-y-3">
-          <div className="h-5 bg-gray-300 rounded w-1/3"></div>
-          <div className="h-4 bg-gray-300 rounded"></div>
-          <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-const RoadmapDetail = () => {
-  const { id } = useParams();
-  const [roadmap, setRoadmap] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+import Layout from "../Layout/Layout";
+import Seo from "../Seo";
+import { PageHero, Status, panel } from "./PageKit";
+import { Check, ArrowRight, Route, ChevronLeft } from "lucide-react";
+export default function RoadmapDetail() {
+  const { id } = useParams(),
+    [roadmap, setRoadmap] = useState(null),
+    [error, setError] = useState(""),
+    [done, setDone] = useState([]);
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  
-  useEffect(() => {
-    const fetchRoadmap = async () => {
-      try {
-        const res = await axios.get(`/api/v1/roadmaps/${id}`);
-        setRoadmap(res.data);
-      } catch (err) {
-        setError("Failed to fetch roadmap");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRoadmap();
+    const c = new AbortController();
+    setRoadmap(null);
+    setError("");
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("roadmap-progress-" + id) || "[]",
+      );
+      setDone(Array.isArray(saved) ? saved : []);
+    } catch {
+      setDone([]);
+    }
+    axios
+      .get("/api/v1/roadmaps/" + id, { signal: c.signal })
+      .then((r) => setRoadmap(r.data))
+      .catch((e) => {
+        if (e.code !== "ERR_CANCELED")
+          setError(
+            e.response?.status === 404
+              ? "This roadmap could not be found."
+              : "Couldn't load this roadmap.",
+          );
+      });
+    return () => c.abort();
   }, [id]);
-
-  if (loading) return <SkeletonLoader />;
-
-  if (error)
-    return (
-      <div className="min-h-screen flex items-center justify-center text-red-500 font-semibold">
-        {error}
-      </div>
-    );
-
-  if (!roadmap)
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        No roadmap found
-      </div>
-    );
-
-  const nodes = Array.isArray(roadmap.nodes) ? roadmap.nodes : [];
-  const edges = Array.isArray(roadmap.edges) ? roadmap.edges : [];
-
+  function toggle(key) {
+    const next = done.includes(key)
+      ? done.filter((x) => x !== key)
+      : [...done, key];
+    setDone(next);
+    try {
+      localStorage.setItem("roadmap-progress-" + id, JSON.stringify(next));
+    } catch {}
+  }
+  const nodes = roadmap?.nodes || [],
+    completed = nodes.filter((n, i) =>
+      done.includes(n.id || n._id || String(i)),
+    ).length;
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6">
-
-      {/* ================= HEADER ================= */}
-      <div className="max-w-4xl mx-auto text-center mb-14">
-      <h1 className="text-[1.1rem] sm:text-3xl md:text-5xl font-light text-gray-900 mb-4 leading-snug">
-  {roadmap.category || "Untitled"} Roadmap
-</h1>
-
-        <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
-          {roadmap.description || "No description available"}
-        </p>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs sm:text-sm text-gray-500">
-          <span><strong>Level:</strong> {roadmap.level || "N/A"}</span>
-          <span><strong>category:</strong> {roadmap.slug || "N/A"}</span>
-         
-         
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8">
-
-        {/* LEFT ADS */}
-        <div className="hidden lg:block col-span-3 space-y-6">
-          <Suspense fallback={<div className="h-40 bg-gray-200 rounded animate-pulse" />}>
-            <GoogleDisplayAds />
-            <GoogleMultiplexAd />
-          </Suspense>
-        </div>
-
-        {/* ================= TIMELINE ================= */}
-        <div className="col-span-12 lg:col-span-6 relative">
-
-          <div className="border-l-4 border-indigo-500 pl-8 space-y-14">
-
-            {nodes.length === 0 && (
-              <p className="text-gray-400 text-center">No nodes available</p>
-            )}
-
-            {nodes.map((node, index) => (
-              <div key={node._id || index} className="relative">
-
-                <div className="absolute -left-7 w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md">
-                  {index + 1}
-                </div>
-
-                <div className="bg-white shadow-md rounded-2xl p-6 hover:shadow-xl transition">
-                  <h3 className="text-lg font-semibold mb-2 text-gray-900">
-                    {node.title || "Untitled Node"}
-                  </h3>
-
-                  <p className="text-gray-600 text-sm mb-3">
-                    {node.description || "No description provided"}
-                  </p>
-
-                  <div className="flex flex-wrap gap-4 text-xs text-gray-500">
-                    <span><strong>Type:</strong> {node.type || "normal"}</span>
-                    <span><strong>Node ID:</strong> {node.id || "N/A"}</span>
-                  </div>
-                </div>
-
-                {index < nodes.length - 1 && (
-                  <div className="flex justify-center mt-6">
-                    <HiArrowSmDown className="text-indigo-400 w-6 h-6 animate-bounce" />
-                  </div>
-                )}
-              </div>
-            ))}
-
-          </div>
-        </div>
-
-        {/* RIGHT ADS */}
-        <div className="hidden lg:block col-span-3 space-y-6">
-          <Suspense fallback={<div className="h-40 bg-gray-200 rounded animate-pulse" />}>
-            <GoogleDisplayAds />
-            <GoogleMultiplexAd />
-          </Suspense>
-        </div>
-      </div>
-
-      {/* ================= LEARNING FLOW ================= */}
-     {/* ================= LEARNING FLOW ================= */}
-{edges.length > 0 && (
-  <div className="max-w-6xl mx-auto mt-24 px-2 sm:px-0">
-
-    <h2 className="text-[1.1rem] sm:text-2xl font-bold text-center mb-10 text-gray-900">
-      Learning Flow Structure
-    </h2>
-
-    <div className="space-y-8">
-
-      {edges.map((edge, i) => {
-        const sourceNode = nodes.find(n => n.id === edge.source);
-        const targetNode = nodes.find(n => n.id === edge.target);
-
-        return (
-          <div
-            key={edge._id || i}
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 sm:p-8"
+    <Layout>
+      {roadmap ? (
+        <>
+          <Seo
+            title={(roadmap.title || roadmap.category) + " Roadmap"}
+            description={roadmap.description}
+          />
+          <PageHero
+            eyebrow="ONE STEP AT A TIME"
+            title={roadmap.title || roadmap.category || "Your learning"}
+            accent="roadmap."
+            description={
+              roadmap.description ||
+              "A structured path to help you grow your skills."
+            }
           >
-
-            {/* ===== MOBILE VIEW (STACKED) ===== */}
-            <div className="flex flex-col sm:hidden items-center text-center space-y-4">
-
-              {/* FROM */}
-              <div className="w-full bg-gray-50 rounded-xl p-4 border">
-                <p className="text-xs text-gray-400 mb-1">FROM</p>
-                <h3 className="font-semibold text-gray-800 text-sm">
-                  {sourceNode?.title || edge.source || "N/A"}
-                </h3>
-                <p className="text-xs text-indigo-500">
-                  Type: {sourceNode?.type || "N/A"}
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="rounded-full bg-white px-4 py-2 text-xs text-violet-700">
+                {nodes.length} learning steps
+              </span>
+              {roadmap.level && (
+                <span className="rounded-full bg-white px-4 py-2 text-xs text-slate-500">
+                  {roadmap.level}
+                </span>
+              )}
+            </div>
+          </PageHero>
+          <section className="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-10 lg:grid-cols-[280px_minmax(0,1fr)]">
+            <aside>
+              <Link
+                to="/exam-roadmap"
+                className="mb-5 inline-flex items-center gap-2 text-xs font-bold text-violet-600"
+              >
+                <ChevronLeft size={16} />
+                All roadmaps
+              </Link>
+              <div className={panel + " lg:sticky lg:top-6"}>
+                <Route className="mb-5 text-violet-600" size={30} />
+                <h2 className="font-bold">Your progress</h2>
+                <p className="mt-3 text-3xl font-extrabold">
+                  {nodes.length
+                    ? Math.round((completed / nodes.length) * 100)
+                    : 0}
+                  %
                 </p>
+                <div
+                  role="progressbar"
+                  aria-label="Roadmap completion"
+                  aria-valuemin={0}
+                  aria-valuemax={nodes.length}
+                  aria-valuenow={completed}
+                  className="my-4 h-2 overflow-hidden rounded-full bg-violet-100"
+                >
+                  <div
+                    className="h-full bg-gradient-to-r from-orange-500 to-violet-600 transition-all"
+                    style={{
+                      width:
+                        (nodes.length ? (completed / nodes.length) * 100 : 0) +
+                        "%",
+                    }}
+                  />
+                </div>
+                <p className="text-xs leading-6 text-slate-500">
+                  {completed} of {nodes.length} steps completed. Progress is
+                  saved on this device.
+                </p>
+                <Link
+                  to="/practice-quiz"
+                  className="mt-6 flex items-center gap-2 text-xs font-bold text-violet-600"
+                >
+                  Put it into practice
+                  <ArrowRight size={16} />
+                </Link>
               </div>
-
-              {/* DOWN ARROW */}
-              <div className="text-indigo-500 text-xl animate-bounce">
-                ↓
-              </div>
-
-              {/* RELATION */}
-              {edge.label && (
-                <div className="text-xs text-gray-400">
-                  <strong>Relation:</strong> {edge.label}
+            </aside>
+            <div>
+              {!nodes.length && (
+                <p className={panel + " text-sm text-slate-500"}>
+                  This roadmap has no steps yet.
+                </p>
+              )}
+              <ol className="space-y-5">
+                {nodes.map((n, i) => {
+                  const key = n.id || n._id || String(i),
+                    checked = done.includes(key);
+                  return (
+                    <li key={key} className={panel + " relative"}>
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <span className="text-[10px] font-bold tracking-widest text-violet-600">
+                          STEP {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <button
+                          aria-pressed={checked}
+                          onClick={() => toggle(key)}
+                          className={
+                            "flex items-center gap-2 rounded-full px-3 py-2 text-xs font-bold " +
+                            (checked
+                              ? "bg-emerald-50 text-emerald-700"
+                              : "bg-slate-50 text-slate-500")
+                          }
+                        >
+                          {checked && <Check size={14} />}{" "}
+                          {checked ? "Completed" : "Mark complete"}
+                        </button>
+                      </div>
+                      <h2 className="text-xl font-bold">
+                        {n.title || "Learning step"}
+                      </h2>
+                      <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-500">
+                        {n.description ||
+                          n.data?.description ||
+                          "Explore this topic and practise what you learn."}
+                      </p>
+                      {n.type && (
+                        <span className="mt-4 inline-block rounded-full bg-violet-50 px-3 py-1 text-[10px] font-semibold text-violet-600">
+                          {n.type}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+              {roadmap.edges?.length > 0 && (
+                <div className={panel + " mt-8"}>
+                  <h2 className="mb-5 font-bold">How the steps connect</h2>
+                  <div className="space-y-3">
+                    {roadmap.edges.map((e, i) => (
+                      <p
+                        key={e._id || i}
+                        className="flex flex-wrap items-center gap-3 rounded-xl bg-slate-50 p-3 text-xs"
+                      >
+                        <span>
+                          {nodes.find((n) => n.id === e.source)?.title ||
+                            e.source}
+                        </span>
+                        <ArrowRight size={14} className="text-violet-500" />
+                        <span>
+                          {nodes.find((n) => n.id === e.target)?.title ||
+                            e.target}
+                        </span>
+                        {e.label && (
+                          <span className="text-slate-400">{e.label}</span>
+                        )}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               )}
-
-              {/* DOWN ARROW */}
-              <div className="text-indigo-500 text-xl animate-bounce">
-                ↓
-              </div>
-
-              {/* TO */}
-              <div className="w-full bg-gray-50 rounded-xl p-4 border">
-                <p className="text-xs text-gray-400 mb-1">TO</p>
-                <h3 className="font-semibold text-gray-800 text-sm">
-                  {targetNode?.title || edge.target || "N/A"}
-                </h3>
-                <p className="text-xs text-indigo-500">
-                  Type: {targetNode?.type || "N/A"}
-                </p>
-              </div>
-
             </div>
-
-            {/* ===== DESKTOP VIEW (HORIZONTAL) ===== */}
-            <div className="hidden sm:flex items-center gap-6">
-
-              {/* SOURCE */}
-              <div className="flex-1 bg-gray-50 rounded-xl p-4 border">
-                <p className="text-xs text-gray-400 mb-1">FROM</p>
-                <h3 className="font-semibold text-gray-800 text-sm sm:text-base">
-                  {sourceNode?.title || edge.source || "N/A"}
-                </h3>
-                <p className="text-xs text-indigo-500">
-                  Type: {sourceNode?.type || "N/A"}
-                </p>
-              </div>
-
-              {/* ARROW */}
-              <div className="flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white flex items-center justify-center shadow-md">
-                  →
-                </div>
-              </div>
-
-              {/* TARGET */}
-              <div className="flex-1 bg-gray-50 rounded-xl p-4 border">
-                <p className="text-xs text-gray-400 mb-1">TO</p>
-                <h3 className="font-semibold text-gray-800 text-sm sm:text-base">
-                  {targetNode?.title || edge.target || "N/A"}
-                </h3>
-                <p className="text-xs text-indigo-500">
-                  Type: {targetNode?.type || "N/A"}
-                </p>
-              </div>
-
-            </div>
-
-          </div>
-        );
-      })}
-
-    </div>
-  </div>
-)}
-      {/* FOOTER */}
-      <div className="text-center mt-20 text-gray-400 text-xs sm:text-sm">
-        © {new Date().getFullYear()} Roadmap Portal
-      </div>
-
-    </div>
+          </section>
+        </>
+      ) : (
+        <div className="mx-auto max-w-6xl p-10">
+          <Status loading={!error} error={error} />
+        </div>
+      )}
+    </Layout>
   );
-};
-
-export default RoadmapDetail;
+}
