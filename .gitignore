@@ -5,3 +5,8 @@ node_modules/
 .env
 
 
+
+client/build-ci/
+release.tar.gz*
+
+.ci-tmp/

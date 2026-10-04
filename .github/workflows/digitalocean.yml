@@ -1,0 +1,96 @@
+name: CI and DigitalOcean deployment
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: digitalocean-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+      - name: Install backend dependencies
+        run: npm ci
+      - name: Check backend and deployment scripts
+        run: |
+          node scripts/check-syntax.mjs
+          bash -n deploy/deploy.sh deploy/setup.sh deploy/test-deploy.sh
+          shellcheck deploy/deploy.sh deploy/setup.sh deploy/test-deploy.sh
+          bash deploy/test-deploy.sh
+      - name: Install frontend dependencies
+        run: npm ci --prefix client
+      - name: Build production frontend
+        # Existing CRA lint warnings are printed without blocking the build.
+        env:
+          CI: 'false'
+          GENERATE_SOURCEMAP: 'false'
+        run: npm run build --prefix client
+      - name: Package release without credentials or user uploads
+        run: |
+          tar -czf release.tar.gz index.js package.json package-lock.json .npmrc controllers db helper middlewear models routes public client/build deploy
+          sha256sum release.tar.gz > release.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          name: release
+          path: |
+            release.tar.gz
+            release.tar.gz.sha256
+          retention-days: 7
+          if-no-files-found: error
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+      - name: Configure SSH
+        env:
+          DO_HOST: ${{ secrets.DO_HOST }}
+          DO_PORT: ${{ secrets.DO_PORT }}
+          DO_USERNAME: ${{ secrets.DO_USERNAME }}
+          DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
+          DO_KNOWN_HOSTS: ${{ secrets.DO_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          for name in DO_HOST DO_PORT DO_USERNAME DO_SSH_KEY DO_KNOWN_HOSTS; do
+            test -n "${!name}" || { echo "Missing secret: $name"; exit 1; }
+          done
+          [[ "$DO_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
+          [[ "$DO_PORT" =~ ^[0-9]+$ ]]
+          [[ "$DO_USERNAME" =~ ^[a-zA-Z0-9_-]+$ ]]
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DO_SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$DO_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+          printf 'Host droplet\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/id_ed25519\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n  BatchMode yes\n  ConnectTimeout 20\n' "$DO_HOST" "$DO_PORT" "$DO_USERNAME" > ~/.ssh/config
+      - name: Upload and activate release
+        env:
+          RELEASE_ID: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          sha256sum -c release.tar.gz.sha256
+          ssh droplet "mkdir -p /opt/pdfbaba/incoming/$RELEASE_ID"
+          scp release.tar.gz release.tar.gz.sha256 "droplet:/opt/pdfbaba/incoming/$RELEASE_ID/"
+          ssh droplet "cd /opt/pdfbaba/incoming/$RELEASE_ID && sha256sum -c release.tar.gz.sha256 && tar -xzf release.tar.gz deploy/deploy.sh && bash deploy/deploy.sh '$RELEASE_ID'"
+      - name: Remove SSH credentials
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519 ~/.ssh/config ~/.ssh/known_hosts

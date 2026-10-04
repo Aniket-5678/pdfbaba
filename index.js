@@ -1,5 +1,6 @@
 import express from "express"
-import dotenv from "dotenv"
+import mongoose from "mongoose"
+import "dotenv/config"
 import cors from "cors"
 import connectionDB from "./db/db.js"
 import userRoutes from "./routes/userRoutes.js"
@@ -19,13 +20,17 @@ import { fileURLToPath } from 'url';
 
 
 
-//dotenv configuration
-dotenv.config()
+// Environment is loaded before route modules initialize.
 
 //mongodb connection
 connectionDB()
 
-const app = express() 
+const app = express()
+app.set("trust proxy", "loopback");
+app.get("/healthz", (req, res) => {
+  const ready = mongoose.connection.readyState === 1;
+  res.status(ready ? 200 : 503).json({ status: ready ? "ok" : "unavailable" });
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -608,7 +613,7 @@ app.get("*", async (req, res) => {
 
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8000, process.env.HOST || "127.0.0.1", () => {
   console.log(`Server is running on PORT ${process.env.PORT}`)
 })
 
