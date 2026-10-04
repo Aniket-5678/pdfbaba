@@ -18,7 +18,13 @@ for directory in uploads filetopdf_uploads sourcecodes; do
   ln -s "$base/shared/$directory" "$directory"
 done
 npm ci --omit=dev --no-audit --no-fund
-previous=$(readlink -f "$base/current" || true)
+previous=
+if [[ -L "$base/current" ]]; then
+  previous=$(readlink -f "$base/current" || true)
+elif [[ -e "$base/current" ]]; then
+  echo "Current deployment path must be a symlink; migrate it before deploying."
+  exit 1
+fi
 switched=false
 # Invoked indirectly by the EXIT trap.
 # shellcheck disable=SC2317

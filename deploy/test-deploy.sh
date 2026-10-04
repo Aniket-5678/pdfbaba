@@ -22,12 +22,19 @@ if ! command -v flock >/dev/null; then
 fi
 export PATH="$fixture/bin:$PATH"
 export RESTART_LOG="$fixture/restarts"
+id0=cccccccccccccccccccccccccccccccccccccccc-0-1
 id1=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1-1
 id2=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-2-1
 mkdir -p "$fixture/package" "$base/incoming/$id1" "$base/incoming/$id2"
 printf '{"name":"fixture"}\n' > "$fixture/package/package.json"
 tar -czf "$base/incoming/$id1/release.tar.gz" -C "$fixture/package" package.json
 cp "$base/incoming/$id1/release.tar.gz" "$base/incoming/$id2/release.tar.gz"
+mkdir -p "$base/incoming/$id0"
+cp "$base/incoming/$id1/release.tar.gz" "$base/incoming/$id0/release.tar.gz"
+if HEALTH_FAIL=1 bash "$fixture/deploy.sh" "$id0" > "$fixture/first-failure.log" 2>&1; then
+  echo "Expected first deployment health-check failure"; exit 1
+fi
+[[ $(readlink -f "$base/current") == "$base/releases/$id0" ]]
 bash "$fixture/deploy.sh" "$id1"
 [[ $(readlink -f "$base/current") == "$base/releases/$id1" ]]
 [[ $(readlink -f "$base/current/uploads") == "$base/shared/uploads" ]]
@@ -36,8 +43,8 @@ if HEALTH_FAIL=1 bash "$fixture/deploy.sh" "$id2" > "$fixture/failure.log" 2>&1;
   echo 'Expected health-check failure'; exit 1
 fi
 [[ $(readlink -f "$base/current") == "$base/releases/$id1" ]]
-[[ $(wc -l < "$RESTART_LOG") -eq 3 ]]
+[[ $(wc -l < "$RESTART_LOG") -eq 4 ]]
 if bash "$fixture/deploy.sh" '../../escape' > "$fixture/invalid.log" 2>&1; then
   echo 'Expected invalid release ID rejection'; exit 1
 fi
-echo 'Deployment checks passed: activation, persistent files, rollback and invalid ID rejection.'
+echo 'Deployment checks passed: activation, persistent files, first deployment failure, rollback and invalid ID rejection.'
