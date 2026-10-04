@@ -36,8 +36,8 @@ read -r pm2_id port <<< "$metadata"
 excludes=(--exclude=.env --exclude='.env.*' --exclude=.git --exclude=node_modules
   --exclude=uploads --exclude=filetopdf_uploads --exclude=sourcecodes
   --exclude=client/node_modules --exclude=.well-known)
-rsync -a "${excludes[@]}" "$app/" "$backup/app/"
-rsync -a --exclude=.well-known "$frontend/" "$backup/frontend/"
+rsync -ac "${excludes[@]}" "$app/" "$backup/app/"
+rsync -ac --exclude=.well-known "$frontend/" "$backup/frontend/"
 [[ -e "$app/node_modules" || -L "$app/node_modules" ]] || fail 'Existing backend node_modules is missing.'
 switched=false
 modules_moved=false
@@ -47,14 +47,14 @@ rollback() {
   code=$?
   if [[ "$switched" == true && $code -ne 0 ]]; then
     echo 'Restoring the previous backend and frontend.'
-    if ! rsync -a --delete "${excludes[@]}" "$backup/app/" "$app/"; then
+    if ! rsync -ac --delete "${excludes[@]}" "$backup/app/" "$app/"; then
       echo "::error::Backend rollback copy failed. Backup: $backup"; return 1
     fi
     if [[ "$modules_moved" == true ]]; then
       if [[ -L "$app/node_modules" ]]; then unlink "$app/node_modules"; fi
       mv "$backup/node_modules" "$app/node_modules"
     fi
-    rsync -a --delete --exclude=.well-known "$backup/frontend/" "$frontend/"
+    rsync -ac --delete --exclude=.well-known "$backup/frontend/" "$frontend/"
     NODE_ENV=production pm2 restart "$pm2_id" --update-env
     pm2 save
     echo "::error::Deployment failed; previous app restored. Backup: $backup"
@@ -67,7 +67,7 @@ pm2 stop "$pm2_id"
 mv "$app/node_modules" "$backup/node_modules"
 modules_moved=true
 ln -s "$release/node_modules" "$app/node_modules"
-rsync -a "${excludes[@]}" "$release/" "$app/"
+rsync -ac "${excludes[@]}" "$release/" "$app/"
 NODE_ENV=production pm2 restart "$pm2_id" --update-env
 ready=false
 for attempt in {1..30}; do
@@ -78,7 +78,7 @@ for attempt in {1..30}; do
   sleep 2
 done
 [[ "$ready" == true ]] || fail 'New backend did not become healthy; restoring the previous deployment.'
-rsync -a --delete --exclude=.well-known "$release/client/build/" "$frontend/"
+rsync -ac --delete --exclude=.well-known "$release/client/build/" "$frontend/"
 cmp "$release/client/build/index.html" "$frontend/index.html" || fail 'Frontend publication verification failed.'
 curl --fail --silent --max-time 5 "http://127.0.0.1:$port/" >/dev/null || fail 'Backend frontend response check failed.'
 pm2 save
