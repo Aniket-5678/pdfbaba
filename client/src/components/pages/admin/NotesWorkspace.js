@@ -23,7 +23,13 @@ export default function NotesWorkspace({ create = false }) {
         axios.get("/api/v1/category/get-category"),
       ]);
       setNotes(n.data.notes || []);
-      setCategories(c.data.category || []);
+      setCategories([
+        ...new Map(
+          [...(c.data.noteCategories || []), ...(c.data.category || [])].map(
+            (c) => [c.slug, c],
+          ),
+        ).values(),
+      ]);
       setError("");
     } catch (e) {
       setError(e.response?.data?.message || "Couldn't load notes.");
@@ -160,7 +166,7 @@ export default function NotesWorkspace({ create = false }) {
               />
               <datalist id="note-categories">
                 {categories.map((c) => (
-                  <option key={c._id} value={c.name} />
+                  <option key={c.slug} value={c.name} />
                 ))}
               </datalist>
             </label>

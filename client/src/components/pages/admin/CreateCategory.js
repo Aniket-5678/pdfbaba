@@ -4,7 +4,8 @@ import AdminShell from "../AdminShell";
 import { field, primary, panel, Status } from "../PageKit";
 import { Folder, Pencil, Trash2 } from "lucide-react";
 export default function CreateCategory() {
-  const [items, setItems] = useState([]),
+  const [suggestions, setSuggestions] = useState([]),
+    [items, setItems] = useState([]),
     [name, setName] = useState(""),
     [id, setId] = useState(null),
     [busy, setBusy] = useState(false),
@@ -15,6 +16,7 @@ export default function CreateCategory() {
     try {
       const { data } = await axios.get("/api/v1/category/get-category");
       setItems(data.category || []);
+      setSuggestions(data.noteCategories || []);
     } catch (e) {
       setError("Couldn't load categories.");
     } finally {
@@ -102,6 +104,22 @@ export default function CreateCategory() {
           </button>
         )}
       </form>
+      <div className="mb-6 flex flex-wrap items-center gap-2">
+        <span className="text-xs text-slate-500">Used in existing notes:</span>
+        {suggestions.map((c) => (
+          <button
+            key={c.slug}
+            type="button"
+            onClick={() => {
+              setName(c.name);
+              setId(null);
+            }}
+            className="rounded-full bg-violet-50 px-3 py-2 text-xs font-semibold text-violet-600"
+          >
+            {c.name}
+          </button>
+        ))}
+      </div>
       <Status loading={loading} />
       <div className="grid gap-4 sm:grid-cols-2">
         {items.map((c) => (

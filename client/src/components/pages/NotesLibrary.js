@@ -25,7 +25,13 @@ export default function NotesLibrary() {
     ])
       .then(([n, r]) => {
         setNotes(n.data.notes || []);
-        setCats(r.data.category || []);
+        setCats([
+          ...new Map(
+            [...(r.data.noteCategories || []), ...(r.data.category || [])].map(
+              (c) => [c.slug, c],
+            ),
+          ).values(),
+        ]);
       })
       .catch((e) => {
         if (e.code !== "ERR_CANCELED")
@@ -60,7 +66,7 @@ export default function NotesLibrary() {
           </Link>
           {cats.map((c) => (
             <Link
-              key={c._id}
+              key={c.slug}
               className={
                 "rounded-full px-4 py-2 text-xs font-bold " +
                 (category === c.slug

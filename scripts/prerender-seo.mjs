@@ -50,7 +50,12 @@ if (process.argv[3]) {
     if (!response.ok)
       throw new Error("Cannot load learning metadata: " + endpoint);
     const data = await response.json();
-    const items = pick ? data[pick] || [] : data;
+    const items =
+      pick === "category"
+        ? [...(data.noteCategories || []), ...(data.category || [])]
+        : pick
+          ? data[pick] || []
+          : data;
     for (const item of items) {
       const key =
         prefix === "/note/" || prefix === "/notes-category/"
@@ -86,7 +91,8 @@ for (const [route, seo] of routes) {
 fs.writeFileSync(
   path.join(build, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
-    [...routes.keys()].filter(route => routes.get(route).robots === "index,follow")
+    [...routes.keys()]
+      .filter((route) => routes.get(route).robots === "index,follow")
       .map((route) => "<url><loc>" + SITE_URL + route + "</loc></url>")
       .join("") +
     "</urlset>",

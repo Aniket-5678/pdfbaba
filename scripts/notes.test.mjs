@@ -1,3 +1,5 @@
+import Category from "../models/category.model.js";
+import { categoryController } from "../controllers/categoryController.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import Note from "../models/note.model.js";
@@ -132,10 +134,55 @@ test("note slugs are matched literally", async () => {
   }
 });
 
-test('deleting a note removes only the selected record and missing notes return 404',async()=>{
- const original=Note.findById;let deleted=false;
- try{Note.findById=async()=>({deleteOne:async()=>{deleted=true}});
- const res=response();await deleteNote({params:{id:'selected'}},res);assert.ok(deleted);assert.equal(res.body.success,true);
- Note.findById=async()=>null;const missing=response();await deleteNote({params:{id:'missing'}},missing);assert.equal(missing.code,404);
- }finally{Note.findById=original}
+test("deleting a note removes only the selected record and missing notes return 404", async () => {
+  const original = Note.findById;
+  let deleted = false;
+  try {
+    Note.findById = async () => ({
+      deleteOne: async () => {
+        deleted = true;
+      },
+    });
+    const res = response();
+    await deleteNote({ params: { id: "selected" } }, res);
+    assert.ok(deleted);
+    assert.equal(res.body.success, true);
+    Note.findById = async () => null;
+    const missing = response();
+    await deleteNote({ params: { id: "missing" } }, missing);
+    assert.equal(missing.code, 404);
+  } finally {
+    Note.findById = original;
+  }
+});
+
+test("category API exposes note categories even when legacy category names differ", async () => {
+  const originalFind = Category.find,
+    originalDistinct = Note.distinct;
+  try {
+    Category.find = () => ({
+      sort: async () => [
+        {
+          name: "technology study material",
+          slug: "technology-study-material",
+        },
+      ],
+    });
+    Note.distinct = async () => [
+      "technology",
+      "code errors",
+      "bachelors",
+      "entrance exam",
+    ];
+    const res = response();
+    await categoryController({}, res);
+    assert.equal(res.body.category[0].name, "technology study material");
+    assert.deepEqual(
+      res.body.noteCategories.map((c) => c.slug),
+      ["bachelors", "code-errors", "entrance-exam", "technology"],
+    );
+  } finally {
+    Category.find = originalFind;
+    Note.distinct = originalDistinct;
+  }
 });

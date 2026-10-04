@@ -3,15 +3,13 @@ import Note from "../models/note.model.js";
 import slugify from "slugify";
 import mongoose from "mongoose";
 const fail = (res, e) =>
-  res
-    .status(e.code === 11000 ? 409 : 400)
-    .json({
-      success: false,
-      message:
-        e.code === 11000
-          ? "This category already exists."
-          : "Could not save category. Check the name and try again.",
-    });
+  res.status(e.code === 11000 ? 409 : 400).json({
+    success: false,
+    message:
+      e.code === 11000
+        ? "This category already exists."
+        : "Could not save category. Check the name and try again.",
+  });
 export async function createCategoryController(req, res) {
   try {
     const name = String(req.body.name || "").trim();
@@ -62,7 +60,14 @@ export async function updateCategoryController(req, res) {
 export async function categoryController(req, res) {
   try {
     const category = await Category.find({}).sort({ name: 1 });
-    res.json({ success: true, category });
+    const noteCategories = (await Note.distinct("category"))
+      .filter(Boolean)
+      .sort()
+      .map((name) => ({
+        name,
+        slug: slugify(name, { lower: true, strict: true }),
+      }));
+    res.json({ success: true, category, noteCategories });
   } catch {
     res
       .status(500)
