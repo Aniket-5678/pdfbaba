@@ -5,9 +5,10 @@ import Layout from "../Layout/Layout";
 import Seo from "../Seo";
 import { PageHero, SearchBox, Status, panel, Reveal } from "./PageKit";
 import { BookOpen, ArrowRight, ChevronLeft } from "lucide-react";
-export default function NotesLibrary() {
-  const { category } = useParams(),
-    [notes, setNotes] = useState([]),
+export default function NotesLibrary({ categoryOverride } = {}) {
+  const params = useParams();
+  const category = categoryOverride ?? params.category;
+  const [notes, setNotes] = useState([]),
     [cats, setCats] = useState([]),
     [query, setQuery] = useState(""),
     [error, setError] = useState(""),
@@ -16,6 +17,8 @@ export default function NotesLibrary() {
     const c = new AbortController();
     setLoading(true);
     setError("");
+    setNotes([]);
+    setQuery("");
     Promise.all([
       axios.get("/api/notes", {
         params: category ? { category } : {},
@@ -24,6 +27,7 @@ export default function NotesLibrary() {
       axios.get("/api/v1/category/get-category", { signal: c.signal }),
     ])
       .then(([n, r]) => {
+        if (c.signal.aborted) return;
         setNotes(n.data.notes || []);
         setCats([
           ...new Map(
@@ -34,12 +38,14 @@ export default function NotesLibrary() {
         ]);
       })
       .catch((e) => {
-        if (e.code !== "ERR_CANCELED")
+        if (!c.signal.aborted)
           setError(
             "Couldn't load the learning library. Please refresh to try again.",
           );
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!c.signal.aborted) setLoading(false);
+      });
     return () => c.abort();
   }, [category]);
   const filtered = notes.filter((n) =>
@@ -47,12 +53,19 @@ export default function NotesLibrary() {
   );
   return (
     <Layout>
+      <Seo title={category ? category.replace(/-/g, " ") + " Study Notes" : "Study Notes"} />
       <PageHero
         eyebrow="READ. UNDERSTAND. BUILD."
         title={category ? category.replace(/-/g, " ") : "A library for"}
         accent={category ? "study notes." : "curious minds."}
         description="Explore clear explanations, practical examples and study notes. Find a topic and make it your own."
-      />
+      >
+        {category && (
+          <Link to="/categories" className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-violet-600">
+            <ChevronLeft size={16} /> All learning categories
+          </Link>
+        )}
+      </PageHero>
       <section className="mx-auto max-w-7xl px-5 py-10 sm:px-10">
         <div className="mb-6 flex flex-wrap gap-2">
           <Link

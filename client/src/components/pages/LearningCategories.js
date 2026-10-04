@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import {
@@ -8,9 +9,8 @@ import {
   Laptop,
   ArrowRight,
 } from "lucide-react";
-import Layout from "../Layout/Layout";
-import Seo from "../Seo";
-import { PageHero, Reveal, panel, primary } from "./PageKit";
+import NotesLibrary from "./NotesLibrary";
+import { Status } from "./PageKit";
 export const learningTopics = [
   {
     slug: "technology",
@@ -99,6 +99,42 @@ const ink = {
 };
 export default function LearningCategories({ standalone = false }) {
   const reduced = useReducedMotion();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    const controller = new AbortController();
+    axios.get("/api/v1/category/get-category", { signal: controller.signal })
+      .then(({ data }) => {
+        if (controller.signal.aborted) return;
+        const items = [...new Map(
+          [...(data.noteCategories || []), ...(data.category || [])]
+            .filter((item) => item.slug && item.name)
+            .map((item) => [item.slug, item]),
+        ).values()];
+        setCategories(items.map((item, index) => {
+          const style = learningTopics.find((entry) =>
+            entry.slug === item.slug ||
+            (entry.slug === "exam-prep" && item.slug === "exam-preparation"),
+          );
+          return {
+            slug: item.slug,
+            title: item.name,
+            description: style?.description || "Explore study notes and practical explanations for this topic.",
+            icon: style?.icon || BookOpen,
+            color: style?.color || Object.keys(palettes)[index % 4],
+          };
+        }));
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted)
+          setError("Couldn't load categories. Please refresh to try again.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
+  }, []);
   const Heading = standalone ? "h1" : "h2";
   return (
     <section
@@ -164,8 +200,11 @@ export default function LearningCategories({ standalone = false }) {
             />
           </motion.div>
         </div>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {learningTopics.map(
+        <div className="mt-10">
+          <Status loading={loading} error={error} empty={!categories.length} />
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {!loading && !error && categories.map(
             ({ slug, title, description, icon: Icon, color }, i) => (
               <motion.div
                 key={slug}
@@ -175,7 +214,7 @@ export default function LearningCategories({ standalone = false }) {
                 transition={{ duration: 0.45, delay: i * 0.08 }}
               >
                 <Link
-                  to={"/learn/" + slug}
+                  to={"/notes-category/" + encodeURIComponent(slug)}
                   className={
                     "group relative block h-full overflow-hidden rounded-3xl border bg-gradient-to-br p-6 shadow-[0_12px_32px_-24px_rgba(35,50,90,.3)] transition duration-300 motion-safe:hover:-translate-y-2 hover:shadow-xl " +
                     palettes[color]
@@ -194,7 +233,7 @@ export default function LearningCategories({ standalone = false }) {
                   </p>
                   <div className="mt-6 flex items-center justify-between">
                     <span className="text-xs font-medium text-slate-500">
-                      Explore learning paths
+                      Explore study notes
                     </span>
                     <span
                       className={
@@ -216,111 +255,5 @@ export default function LearningCategories({ standalone = false }) {
 }
 export function LearningPage() {
   const { topic } = useParams();
-  const data = learningTopics.find((item) => item.slug === topic);
-  const Icon = data?.icon || BookOpen;
-  return (
-    <Layout>
-      {data ? (
-        <>
-          <Seo
-            title={data.title + " Learning Guide"}
-            description={data.description}
-          />
-          <PageHero
-            eyebrow="CURIOUS MINDS START HERE"
-            title={data.title}
-            accent="Made approachable."
-            description={data.description}
-          >
-            <Link
-              to="/categories"
-              className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-violet-600"
-            >
-              ← All learning categories
-            </Link>
-          </PageHero>
-          <section className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:px-10 lg:grid-cols-[minmax(0,1fr)_300px]">
-            <div>
-              <h2 className="mb-2 text-2xl font-extrabold tracking-tight">
-                A little structure. A lot of possibility.
-              </h2>
-              <p className="mb-7 text-sm leading-7 text-slate-500">
-                Start with these foundations, then explore a project or
-                challenge to bring them to life.
-              </p>
-              <ol className="space-y-4">
-                {data.lessons.map((text, index) => (
-                  <li key={text}>
-                    <Reveal>
-                      <div
-                        className={
-                          panel +
-                          " group flex gap-4 transition duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-lg"
-                        }
-                      >
-                        <span
-                          className={
-                            "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-extrabold " +
-                            ink[data.color]
-                          }
-                        >
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <div>
-                          <p className="mb-2 text-[10px] font-bold uppercase tracking-[2px] text-slate-400">
-                            Your next foundation
-                          </p>
-                          <h3 className="text-sm font-semibold leading-7 text-slate-700">
-                            {text}
-                          </h3>
-                        </div>
-                      </div>
-                    </Reveal>
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <aside>
-              <div className="rounded-3xl bg-slate-950 p-7 text-white lg:sticky lg:top-6">
-                <span className="mb-6 inline-flex rounded-2xl bg-white/10 p-3 text-violet-300">
-                  <Icon size={28} />
-                </span>
-                <h2 className="text-xl font-bold">Make learning hands-on.</h2>
-                <p className="mb-6 mt-3 text-xs leading-7 text-slate-400">
-                  Reading is a starting point. Build something, test your
-                  understanding, and keep exploring.
-                </p>
-                {data.links.map(([title, path]) => (
-                  <Link
-                    key={path}
-                    to={path}
-                    className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold transition hover:border-violet-400 hover:bg-violet-600"
-                  >
-                    {title}
-                    <ArrowRight size={16} />
-                  </Link>
-                ))}
-                <Link
-                  to="/notes"
-                  className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold transition hover:border-violet-400 hover:bg-violet-600"
-                >
-                  Explore study notes
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </aside>
-          </section>
-        </>
-      ) : (
-        <section className="mx-auto max-w-xl px-5 py-20 text-center">
-          <BookOpen className="mx-auto mb-5 text-violet-400" size={40} />
-          <h1 className="text-3xl font-bold">Topic not found</h1>
-          <Link to="/categories" className={primary + " mt-6"}>
-            Browse learning categories
-            <ArrowRight size={16} />
-          </Link>
-        </section>
-      )}
-    </Layout>
-  );
+  return <NotesLibrary categoryOverride={topic === "exam-prep" ? "exam-preparation" : topic} />;
 }
