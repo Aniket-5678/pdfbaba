@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: '22'
           cache: npm
@@ -43,7 +43,7 @@ jobs:
         run: |
           tar -czf release.tar.gz index.js package.json package-lock.json .npmrc controllers db helper middlewear models routes public client/build deploy
           sha256sum release.tar.gz > release.tar.gz.sha256
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.1
         if: github.event_name != 'pull_request'
         with:
           name: release
@@ -59,7 +59,7 @@ jobs:
     timeout-minutes: 15
     environment: production
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8.0.1
         with:
           name: release
       - name: Configure SSH
@@ -72,11 +72,14 @@ jobs:
         run: |
           set -euo pipefail
           for name in DO_HOST DO_PORT DO_USERNAME DO_SSH_KEY DO_KNOWN_HOSTS; do
-            test -n "${!name}" || { echo "Missing secret: $name"; exit 1; }
+            if [[ -z "${!name}" ]]; then
+              echo "::error title=Missing GitHub Actions secret::$name is required. Configure repository Actions secrets; see deploy/README.md."
+              exit 1
+            fi
           done
-          [[ "$DO_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
-          [[ "$DO_PORT" =~ ^[0-9]+$ ]]
-          [[ "$DO_USERNAME" =~ ^[a-zA-Z0-9_-]+$ ]]
+          [[ "$DO_HOST" =~ ^[a-zA-Z0-9.-]+$ ]] || { echo "::error::DO_HOST must be an IP address or hostname without spaces."; exit 1; }
+          [[ "$DO_PORT" =~ ^[0-9]+$ ]] || { echo "::error::DO_PORT must contain only digits."; exit 1; }
+          [[ "$DO_USERNAME" =~ ^[a-zA-Z0-9_-]+$ ]] || { echo "::error::DO_USERNAME must be a valid SSH username without spaces."; exit 1; }
           install -m 700 -d ~/.ssh
           printf '%s\n' "$DO_SSH_KEY" > ~/.ssh/id_ed25519
           printf '%s\n' "$DO_KNOWN_HOSTS" > ~/.ssh/known_hosts

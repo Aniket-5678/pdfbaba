@@ -20,7 +20,20 @@ Under Settings > Secrets and variables > Actions set:
 | DO_SSH_KEY | Complete unencrypted private key whose public key is authorized on the Droplet |
 | DO_KNOWN_HOSTS | Verified SSH host key line(s) for the host and port |
 
+The Actions run failed with Missing secret: DO_KNOWN_HOSTS. This is a required fifth secret, independent of the Node runtime deprecation warnings. The workflow now uses Node 24 actions while keeping the application on Node.js 22.
+
 The screenshot already shows the first four names. Secret values cannot be read back from GitHub. Add DO_KNOWN_HOSTS: obtain the host fingerprint from the trusted DigitalOcean console (ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub), then compare it with ssh-keyscan output before saving that output as the secret. For nonstandard ports the line must use [159.65.157.186]:PORT. Do not disable host verification.
+
+For the pictured Droplet using SSH port 22, run in the trusted DigitalOcean Console:
+
+    ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+Then on your local machine (with OpenSSH installed):
+
+    ssh-keyscan -t ed25519 -p 22 159.65.157.186 > known_hosts
+    ssh-keygen -lf known_hosts
+
+Compare the SHA256 fingerprints. If they match, copy the contents of known_hosts into the DO_KNOWN_HOSTS repository secret, then use Actions > CI and DigitalOcean deployment > Run workflow on main. An old workflow rerun keeps its old action versions; start a new workflow run to use the upgrade.
 
 The deploy job uses the production GitHub environment. Create it if needed; configure reviewers only if you want a manual deployment gate.
 
