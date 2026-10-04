@@ -99,5 +99,5 @@ export function injectSeo(html, seo) {
     '"/><meta property="og:image" content="' +
     SITE_URL +
     '/social-card.png"/><meta name="twitter:card" content="summary_large_image"/>';
-  return clean.replace("</head>", tags + "</head>");
+  return clean.replace("</head>", tags.replace(/\/>/g, ' data-rh="true"/>' ) + "</head>");
 }
