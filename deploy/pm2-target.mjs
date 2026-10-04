@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import dotenv from 'dotenv';
+const [script, envFile] = process.argv.slice(2);
+let input = '';
+for await (const chunk of process.stdin) input += chunk;
+const matches = JSON.parse(input).filter(p => p.pm2_env?.pm_exec_path === script);
+if (matches.length !== 1) throw new Error('Expected exactly one existing PM2 process for the configured backend path.');
+const processInfo = matches[0];
+if (processInfo.pm2_env.watch) throw new Error('Disable PM2 watch for the production backend before deploying.');
+const port = String(processInfo.pm2_env.PORT || dotenv.parse(fs.readFileSync(envFile)).PORT || 8000);
+if (!/^\d+$/.test(port) || Number(port) < 1 || Number(port) > 65535) throw new Error('Invalid backend PORT.');
+console.log(processInfo.pm_id + ' ' + port);

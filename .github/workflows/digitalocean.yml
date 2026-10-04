@@ -28,9 +28,10 @@ jobs:
       - name: Check backend and deployment scripts
         run: |
           node scripts/check-syntax.mjs
-          bash -n deploy/deploy.sh deploy/setup.sh deploy/test-deploy.sh
-          shellcheck deploy/deploy.sh deploy/setup.sh deploy/test-deploy.sh
+          bash -n deploy/*.sh
+          shellcheck deploy/*.sh
           bash deploy/test-deploy.sh
+          bash deploy/test-legacy-deploy.sh
       - name: Install frontend dependencies
         run: npm ci --prefix client
       - name: Build production frontend
@@ -93,7 +94,7 @@ jobs:
           sha256sum -c release.tar.gz.sha256
           ssh droplet "mkdir -p /opt/pdfbaba/incoming/$RELEASE_ID"
           scp release.tar.gz release.tar.gz.sha256 "droplet:/opt/pdfbaba/incoming/$RELEASE_ID/"
-          ssh droplet "cd /opt/pdfbaba/incoming/$RELEASE_ID && sha256sum -c release.tar.gz.sha256 && tar -xzf release.tar.gz deploy/deploy.sh && bash deploy/deploy.sh '$RELEASE_ID'"
+          ssh droplet "cd /opt/pdfbaba/incoming/$RELEASE_ID && sha256sum -c release.tar.gz.sha256 && tar -xzf release.tar.gz deploy && bash deploy/deploy.sh '$RELEASE_ID'"
       - name: Remove SSH credentials
         if: always()
         run: rm -f ~/.ssh/id_ed25519 ~/.ssh/config ~/.ssh/known_hosts

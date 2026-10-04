@@ -3,6 +3,9 @@ set -euo pipefail
 umask 0027
 release_id=${1:?Release ID required}
 [[ "$release_id" =~ ^[a-f0-9]{40}-[0-9]+-[0-9]+$ ]] || { echo 'Invalid release ID'; exit 1; }
+if [[ -s /root/pdfbaba/.env ]]; then
+  exec bash "$(dirname "$0")/legacy-deploy.sh" "$release_id"
+fi
 base=/opt/pdfbaba
 exec 9>"$base/deploy.lock"
 flock -n 9 || { echo 'Another deployment is running'; exit 1; }
