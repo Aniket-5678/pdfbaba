@@ -189,7 +189,7 @@ useEffect(() => {
 
         <div className='nav-logo'>
           <Link className='nav-home ' to='/'>
-           <h2>PDF-BABA</h2>
+           <h2>Codebricket</h2>
           </Link>
         </div>
 
@@ -212,7 +212,7 @@ useEffect(() => {
     <MdClose className="close-btn" onClick={toggleMenu} />
   </div>
   <List>
-  <ListItem  component={Link}  to = "/"className="menu-item_1">PDF BABA</ListItem>
+  <ListItem  component={Link}  to = "/"className="menu-item_1">Codebricket</ListItem>
    {/* Auth links */}
     {!auth.user ? (
       <>
