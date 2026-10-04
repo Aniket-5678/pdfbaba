@@ -35,9 +35,9 @@ read -r pm2_id port <<< "$metadata"
 # Never copy or overwrite credentials, uploaded data or repository metadata.
 excludes=(--exclude=.env --exclude='.env.*' --exclude=.git --exclude=node_modules
   --exclude=uploads --exclude=filetopdf_uploads --exclude=sourcecodes
-  --exclude=client/node_modules --exclude=.well-known)
+  --exclude=client/node_modules --exclude=.well-known --exclude='google*.html')
 rsync -ac "${excludes[@]}" "$app/" "$backup/app/"
-rsync -ac --exclude=.well-known "$frontend/" "$backup/frontend/"
+rsync -ac --exclude=.well-known --exclude='google*.html' "$frontend/" "$backup/frontend/"
 [[ -e "$app/node_modules" || -L "$app/node_modules" ]] || fail 'Existing backend node_modules is missing.'
 switched=false
 modules_moved=false
@@ -54,7 +54,7 @@ rollback() {
       if [[ -L "$app/node_modules" ]]; then unlink "$app/node_modules"; fi
       mv "$backup/node_modules" "$app/node_modules"
     fi
-    rsync -ac --delete --exclude=.well-known "$backup/frontend/" "$frontend/"
+    rsync -ac --delete --exclude=.well-known --exclude='google*.html' "$backup/frontend/" "$frontend/"
     NODE_ENV=production pm2 restart "$pm2_id" --update-env
     pm2 save
     echo "::error::Deployment failed; previous app restored. Backup: $backup"
@@ -68,6 +68,16 @@ mv "$app/node_modules" "$backup/node_modules"
 modules_moved=true
 ln -s "$release/node_modules" "$app/node_modules"
 rsync -ac "${excludes[@]}" "$release/" "$app/"
+if [[ -f "$release/deploy/removed-files.txt" ]]; then
+  app_real=$(realpath "$app")
+  while IFS= read -r relative; do
+    [[ -n "$relative" ]] || continue
+    [[ "$relative" == *.js && "$relative" != /* && "$relative" != *..* ]] || fail "Invalid removed-file entry"
+    target=$(realpath -m "$app/$relative")
+    [[ "$target" == "$app_real/"* ]] || fail "Removed file escapes app directory"
+    rm -f -- "$target"
+  done < "$release/deploy/removed-files.txt"
+fi
 NODE_ENV=production pm2 restart "$pm2_id" --update-env
 ready=false
 for attempt in {1..30}; do
@@ -78,7 +88,10 @@ for attempt in {1..30}; do
   sleep 2
 done
 [[ "$ready" == true ]] || fail 'New backend did not become healthy; restoring the previous deployment.'
-rsync -ac --delete --exclude=.well-known "$release/client/build/" "$frontend/"
+if [[ -f "$release/scripts/prerender-seo.mjs" ]]; then
+  node "$release/scripts/prerender-seo.mjs" "$release/client/build" "http://127.0.0.1:$port/api/v1/sourcecode"
+fi
+rsync -ac --delete --exclude=.well-known --exclude='google*.html' "$release/client/build/" "$frontend/"
 cmp "$release/client/build/index.html" "$frontend/index.html" || fail 'Frontend publication verification failed.'
 curl --fail --silent --max-time 5 "http://127.0.0.1:$port/" >/dev/null || fail 'Backend frontend response check failed.'
 pm2 save

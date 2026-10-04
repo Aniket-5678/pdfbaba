@@ -6,6 +6,9 @@ fixture=$(mktemp -d "$root/.ci-tmp/legacy-test.XXXXXX")
 mkdir -p "$fixture/bin" "$fixture/app/node_modules" "$fixture/frontend" "$fixture/base/incoming"
 mkdir -p "$fixture/app/uploads" "$fixture/frontend/.well-known"
 printf 'PORT=8000\nJWT_SECRET=fixture-only\n' > "$fixture/app/.env"
+printf 'verification\n' > "$fixture/frontend/google-fixture.html"
+mkdir -p "$fixture/app/controllers"
+printf 'removed feature\n' > "$fixture/app/controllers/retired.js"
 printf 'old backend\n' > "$fixture/app/index.js"
 printf 'old frontend\n' > "$fixture/frontend/index.html"
 printf 'user data\n' > "$fixture/app/uploads/keep.pdf"
@@ -30,6 +33,7 @@ id1=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1-1
 id2=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-2-1
 mkdir -p "$fixture/package/deploy" "$fixture/package/client/build" "$fixture/base/incoming/$id1" "$fixture/base/incoming/$id2"
 cp deploy/pm2-target.mjs "$fixture/package/deploy/"
+printf 'controllers/retired.js\n' > "$fixture/package/deploy/removed-files.txt"
 printf 'new backend\n' > "$fixture/package/index.js"
 printf 'new frontend\n' > "$fixture/package/client/build/index.html"
 printf '{"name":"fixture"}\n' > "$fixture/package/package.json"
@@ -42,6 +46,8 @@ bash "$fixture/deploy.sh" "$id1"
 [[ $(cat "$fixture/frontend/index.html") == 'new frontend' ]]
 [[ $(cat "$fixture/app/uploads/keep.pdf") == 'user data' ]]
 [[ $(cat "$fixture/frontend/.well-known/keep") == 'challenge' ]]
+[[ ! -f "$fixture/app/controllers/retired.js" ]]
+[[ $(cat "$fixture/frontend/google-fixture.html") == 'verification' ]]
 grep -q 'JWT_SECRET=fixture-only' "$fixture/app/.env"
 if HEALTH_FAIL=1 bash "$fixture/deploy.sh" "$id2" > "$fixture/rollback.log" 2>&1; then
   echo 'Expected failed health check'; exit 1

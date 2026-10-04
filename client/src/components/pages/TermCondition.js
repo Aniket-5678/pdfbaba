@@ -67,7 +67,7 @@ const TermCondition = () => {
               fontFamily: "Poppins, sans-serif",
             }}
           >
-            By accessing or using the PDF Baba website (https://pdf-baba.com),
+            By accessing or using the Codebricket website (https://codebricket.com),
             you agree to comply with and be bound by these Terms and Conditions.
             If you do not agree, please discontinue the use of this website.
           </Typography>
@@ -125,7 +125,7 @@ const TermCondition = () => {
               fontFamily: "Poppins, sans-serif",
             }}
           >
-            PDF Baba provides digital educational materials and source codes for
+            Codebricket provides digital educational materials and source codes for
             developers. Once payment is successful, users receive immediate
             access to download the purchased digital product.
           </Typography>
@@ -153,7 +153,7 @@ const TermCondition = () => {
           >
             By purchasing source codes or digital materials, the user agrees not
             to resell, redistribute, or share the purchased content without
-            written permission from PDF Baba.
+            written permission from Codebricket.
           </Typography>
         </Box>
 
@@ -180,7 +180,7 @@ const TermCondition = () => {
               fontFamily: "Poppins, sans-serif",
             }}
           >
-            All prices listed on PDF Baba are in Indian Rupees (INR) and include
+            All prices listed on Codebricket are in Indian Rupees (INR) and include
             applicable taxes. Payments are processed securely through our
             payment partner, Razorpay. You must ensure that all information
             provided for payment is accurate and complete.
@@ -240,7 +240,7 @@ const TermCondition = () => {
               fontFamily: "Poppins, sans-serif",
             }}
           >
-            PDF Baba reserves the right to modify, suspend, or discontinue any
+            Codebricket reserves the right to modify, suspend, or discontinue any
             part of its services or policies at any time without prior notice.
             Users are encouraged to review these terms periodically.
           </Typography>
@@ -291,7 +291,7 @@ const TermCondition = () => {
               fontFamily: "Poppins, sans-serif",
             }}
           >
-            © 2025 PDF Baba. All rights reserved.
+            © 2025 Codebricket. All rights reserved.
           </Typography>
         </Box>
       </Container>

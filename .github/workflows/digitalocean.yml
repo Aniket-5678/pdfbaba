@@ -28,6 +28,8 @@ jobs:
       - name: Check backend and deployment scripts
         run: |
           node scripts/check-syntax.mjs
+          node --test scripts/seo.test.mjs
+          node scripts/smoke-backend.mjs
           bash -n deploy/*.sh
           shellcheck deploy/*.sh
           bash deploy/test-deploy.sh
@@ -39,10 +41,12 @@ jobs:
         env:
           CI: 'false'
           GENERATE_SOURCEMAP: 'false'
-        run: npm run build --prefix client
+        run: |
+          npm run build --prefix client
+          node scripts/prerender-seo.mjs
       - name: Package release without credentials or user uploads
         run: |
-          tar -czf release.tar.gz index.js package.json package-lock.json .npmrc controllers db helper middlewear models routes public client/build deploy
+          tar -czf release.tar.gz index.js package.json package-lock.json .npmrc controllers db helper middlewear models routes public client/build client/src client/public client/package.json client/package-lock.json client/.npmrc client/tailwind.config.js client/postcss.config.js deploy scripts
           sha256sum release.tar.gz > release.tar.gz.sha256
       - uses: actions/upload-artifact@v7.0.1
         if: github.event_name != 'pull_request'

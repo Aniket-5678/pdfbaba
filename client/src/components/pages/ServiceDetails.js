@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Seo from "../Seo";
 import Layout from "../Layout/Layout";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/auth";
@@ -13,7 +14,10 @@ const Skeleton = () => (
       <div className="h-[380px] rounded-xl bg-gray-300 dark:bg-gray-700"></div>
       <div className="flex gap-3">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="w-24 h-20 bg-gray-300 dark:bg-gray-700 rounded"></div>
+          <div
+            key={i}
+            className="w-24 h-20 bg-gray-300 dark:bg-gray-700 rounded"
+          ></div>
         ))}
       </div>
     </div>
@@ -66,22 +70,32 @@ const ServiceDetails = () => {
 
   return (
     <Layout>
+      {service && (
+        <Seo
+          title={service.title}
+          description={(
+            service.description ||
+            "Explore this source code project on Codebricket."
+          )
+            .replace(/<[^>]*>/g, "")
+            .slice(0, 170)}
+          product={service}
+        />
+      )}
       <div className="pt-24 pb-16 mt-7 px-4 max-w-7xl mx-auto">
-
         {!service ? (
           <Skeleton />
         ) : (
           <div className="grid md:grid-cols-2 gap-10">
-
             {/* ===== LEFT IMAGE GALLERY ===== */}
             <div>
               <div className="relative w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#171717] shadow-lg">
-  <img
-    src={mainImage}
-    alt={service.title || "Preview"}
-    className="w-full h-full object-contain object-center"
-  />
-</div>
+                <img
+                  src={mainImage}
+                  alt={service.title || "Preview"}
+                  className="w-full h-full object-contain object-center"
+                />
+              </div>
 
               {/* thumbnails */}
               <div className="flex gap-3 mt-4 overflow-x-auto">
@@ -106,7 +120,6 @@ const ServiceDetails = () => {
 
             {/* ===== RIGHT CONTENT ===== */}
             <div className="md:sticky md:top-24 h-fit">
-
               {/* Title */}
               <h1 className="text-[1.3rem] sm:text-2xl font-bold leading-snug">
                 {service.title}
@@ -152,10 +165,11 @@ const ServiceDetails = () => {
                   <li>✔ Setup documentation</li>
                   <li>✔ Lifetime access</li>
                   <li>✔ Ready production structure</li>
-                  <li className="text-red-500">✖ No refunds (digital product)</li>
+                  <li className="text-red-500">
+                    ✖ No refunds (digital product)
+                  </li>
                 </ul>
               </div>
-
             </div>
           </div>
         )}

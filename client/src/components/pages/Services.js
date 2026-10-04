@@ -1,551 +1,427 @@
-
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { gsap } from "gsap";
-import { useTheme } from "../context/ThemeContext";
+import { Link, useSearchParams } from "react-router-dom";
 import {
+  ArrowRight,
   ChevronLeft,
   ChevronRight,
-  ArrowRight,
-  Sparkles,
+  Code2,
+  ExternalLink,
+  ShoppingBag,
+  Zap,
+  Smartphone,
+  Settings,
+  Heart,
 } from "lucide-react";
-
-const Services = () => {
-  const [theme] = useTheme();
-  const isDark = theme === "dark";
-
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const sectionRef = useRef(null);
-  const headerRef = useRef(null);
-  const sliderRef = useRef(null);
-
-  const navigate = useNavigate();
-
-  /* =========================
-     FETCH SERVICES
-  ========================= */
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchServices = async () => {
-      try {
-        const res = await axios.get("/api/v1/sourcecode");
-if (isMounted) {
-  const sortedServices = [...res.data].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+import { FaReact, FaNodeJs } from "react-icons/fa";
+import { motion, useReducedMotion } from "framer-motion";
+export const projectCategories = [
+  "All Projects",
+  "Ecommerce",
+  "Business",
+  "Portfolio",
+  "SaaS",
+  "Blog",
+  "Travel",
+  "Restaurant",
+  "Real Estate",
+];
+function categoryFor(project) {
+  const text = (project.title + " " + project.description).toLowerCase();
+  return (
+    projectCategories
+      .slice(1)
+      .find(
+        (c) =>
+          text.includes(c.toLowerCase()) ||
+          (c === "Ecommerce" && /commerce|fashion|store|shop/.test(text)) ||
+          (c === "SaaS" && /dashboard|saas/.test(text)) ||
+          (c === "Real Estate" && /property|estate/.test(text)),
+      ) || "Business"
   );
-
-  setServices(sortedServices.slice(0, 10));
 }
-      } catch (err) {
-        console.error("Error fetching services:", err);
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchServices();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  /* =========================
-     GSAP ANIMATION
-  ========================= */
-
+export default function Services({ catalog = false }) {
+  const [projects, setProjects] = useState([]);
+  const [status, setStatus] = useState("loading");
+  const [selected, setSelected] = useState("All Projects");
+  const [params, setParams] = useSearchParams();
+  const [query, setQuery] = useState(params.get("q") || "");
+  const [saved, setSaved] = useState(() => {
+    try {
+      const value = JSON.parse(
+        localStorage.getItem("codebricket-saved") || "[]",
+      );
+      return Array.isArray(value) ? value : [];
+    } catch {
+      return [];
+    }
+  });
+  const rail = useRef(null),
+    reduced = useReducedMotion();
+  const Heading = catalog ? "h1" : "h2";
   useEffect(() => {
-    if (loading || services.length === 0) return undefined;
-
-    const section = sectionRef.current;
-    const header = headerRef.current;
-
-    if (!section || !header) return undefined;
-
-    const ctx = gsap.context(() => {
-      // Initial states
-      gsap.set(header.children, {
-        opacity: 0,
-        y: 25,
+    setQuery(params.get("q") || "");
+  }, [params]);
+  useEffect(() => {
+    const controller = new AbortController();
+    axios
+      .get("/api/v1/sourcecode", { signal: controller.signal })
+      .then(({ data }) => {
+        setProjects(
+          (Array.isArray(data) ? data : data.services || []).sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+          ),
+        );
+        setStatus("ready");
+      })
+      .catch((error) => {
+        if (error.code !== "ERR_CANCELED") setStatus("error");
       });
-
-      gsap.set(".service-card", {
-        opacity: 0,
-        y: 45,
-        scale: 0.97,
-      });
-
-      // Header animation
-      gsap.to(header.children, {
-        opacity: 1,
-        y: 0,
-        duration: 0.75,
-        stagger: 0.12,
-        ease: "power3.out",
-      });
-
-      // Cards animation
-      gsap.to(".service-card", {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.75,
-        stagger: 0.1,
-        delay: 0.2,
-        ease: "power3.out",
-      });
-
-      // Background glow
-      gsap.to(".service-glow-one", {
-        x: 45,
-        y: -25,
-        duration: 5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".service-glow-two", {
-        x: -35,
-        y: 25,
-        duration: 6,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    }, section);
-
-    return () => {
-      ctx.revert();
-    };
-  }, [loading, services.length]);
-
-  /* =========================
-     CARD HOVER
-  ========================= */
-
-  const handleCardEnter = (e) => {
-    const card = e.currentTarget;
-
-    const image = card.querySelector(".service-image");
-    const arrow = card.querySelector(".service-arrow");
-    const icon = card.querySelector(".service-icon");
-
-    gsap.to(card, {
-      y: -8,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-
-    if (image) {
-      gsap.to(image, {
-        scale: 1.07,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-    }
-
-    if (arrow) {
-      gsap.to(arrow, {
-        x: 5,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-
-    if (icon) {
-      gsap.to(icon, {
-        rotate: 8,
-        scale: 1.08,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  };
-
-  const handleCardLeave = (e) => {
-    const card = e.currentTarget;
-
-    const image = card.querySelector(".service-image");
-    const arrow = card.querySelector(".service-arrow");
-    const icon = card.querySelector(".service-icon");
-
-    gsap.to(card, {
-      y: 0,
-      duration: 0.35,
-      ease: "power2.out",
-    });
-
-    if (image) {
-      gsap.to(image, {
-        scale: 1,
-        duration: 0.5,
-        ease: "power2.out",
-      });
-    }
-
-    if (arrow) {
-      gsap.to(arrow, {
-        x: 0,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-
-    if (icon) {
-      gsap.to(icon, {
-        rotate: 0,
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    }
-  };
-
-  /* =========================
-     SLIDER
-  ========================= */
-
-  const scrollSlider = (direction) => {
-    if (!sliderRef.current) return;
-
-    const amount = direction === "left" ? -350 : 350;
-
-    sliderRef.current.scrollBy({
-      left: amount,
-      behavior: "smooth",
-    });
-  };
-
-  /* =========================
-     SKELETON
-  ========================= */
-
-  const SkeletonCard = () => (
-    <div
-      className={`flex-shrink-0 w-[270px] sm:w-[300px] md:w-[330px] rounded-3xl overflow-hidden animate-pulse ${
-        isDark
-          ? "bg-white/[0.04] border border-white/10"
-          : "bg-white border border-slate-200 shadow-sm"
-      }`}
-    >
-      <div className="w-full aspect-[16/10] bg-gray-300/30" />
-
-      <div className="p-5">
-        <div className="h-3 w-20 rounded bg-gray-300/40 mb-4" />
-        <div className="h-5 w-4/5 rounded bg-gray-300/40 mb-3" />
-        <div className="h-4 w-20 rounded bg-gray-300/40 mb-5" />
-        <div className="h-10 w-full rounded-xl bg-gray-300/40" />
-      </div>
-    </div>
+    return () => controller.abort();
+  }, []);
+  const filtered = projects.filter(
+    (p) =>
+      (selected === "All Projects" || categoryFor(p) === selected) &&
+      ((p.title || "") + " " + (p.description || ""))
+        .toLowerCase()
+        .includes(query.toLowerCase()),
   );
-
+  function toggleSaved(id) {
+    const next = saved.includes(id)
+      ? saved.filter((x) => x !== id)
+      : [...saved, id];
+    setSaved(next);
+    try {
+      localStorage.setItem("codebricket-saved", JSON.stringify(next));
+    } catch {}
+  }
   return (
     <section
-      ref={sectionRef}
-      className={`relative w-full overflow-hidden py-14 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 ${
-        isDark
-          ? "bg-gray-950 text-white"
-          : "bg-slate-50 text-slate-900"
-      }`}
+      id="projects"
+      className="relative scroll-mt-8 overflow-hidden bg-gradient-to-br from-white via-violet-50/40 to-blue-50/40 px-5 py-16 sm:px-10"
     >
-      {/* =========================
-          BACKGROUND DECORATION
-      ========================= */}
-
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className={`service-glow-one absolute -top-32 -left-32 h-80 w-80 rounded-full blur-3xl opacity-20 ${
-            isDark ? "bg-blue-600" : "bg-blue-300"
-          }`}
-        />
-
-        <div
-          className={`service-glow-two absolute -bottom-40 -right-32 h-96 w-96 rounded-full blur-3xl opacity-15 ${
-            isDark ? "bg-indigo-600" : "bg-indigo-300"
-          }`}
-        />
-
-        <div
-          className={`absolute inset-0 ${
-            isDark
-              ? "bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.08),transparent_45%)]"
-              : "bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.05),transparent_45%)]"
-          }`}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* =========================
-            HEADER
-        ========================= */}
-
-        <div
-          ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-9 md:mb-12"
-        >
-          <div>
-            {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="h-px w-8 bg-blue-600" />
-
-              <p className="text-blue-600 font-medium tracking-[3px] uppercase text-[10px] sm:text-xs">
-                Build & Launch
-              </p>
-            </div>
-
-            {/* Heading */}
-            <h2
-              className={`font-light leading-tight tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl ${
-                isDark ? "text-white" : "text-slate-900"
-              }`}
-            >
+      <div className="mx-auto max-w-[1440px]">
+        <div className="mb-8 flex flex-col justify-between gap-8 xl:flex-row xl:items-center">
+          <div className="max-w-[700px]">
+            <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-violet-100 px-4 py-2 text-[11px] font-bold tracking-wider text-violet-700">
+              <Code2 size={16} />
+              BUILD & LAUNCH
+            </p>
+            <Heading className="text-[36px] font-extrabold leading-[1.08] tracking-[-1.8px] text-slate-950 sm:text-[52px]">
               Ready-Made
-              <span className="block mt-1 font-medium bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
+              <br />
+              <span className="bg-gradient-to-r from-orange-500 via-pink-500 to-blue-600 bg-clip-text text-transparent">
                 Website Projects
               </span>
-            </h2>
-
-            <p
-              className={`mt-4 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed ${
-                isDark ? "text-gray-400" : "text-slate-600"
-              }`}
-            >
+            </Heading>
+            <p className="mt-4 text-sm leading-relaxed text-slate-500 sm:text-base">
               Explore professionally built website projects that you can
-              customize, use, and launch faster.
+              customize, use,
+              <br className="hidden xl:block" />
+              and launch faster. High-quality code, modern UI, and responsive
+              designs.
             </p>
           </div>
-
-          {/* View All */}
-          <button
-            type="button"
-            onClick={() => navigate("/service")}
-            className="group w-fit inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-medium shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all duration-300"
-          >
-            View All
-
-            <ArrowRight
-              size={18}
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            />
-          </button>
-        </div>
-
-        {/* =========================
-            SLIDER
-        ========================= */}
-
-        <div className="relative">
-          {/* Desktop Left Arrow */}
-          <button
-            type="button"
-            onClick={() => scrollSlider("left")}
-            aria-label="Previous projects"
-            className={`hidden md:flex absolute -left-5 lg:-left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 items-center justify-center rounded-full border shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 ${
-              isDark
-                ? "bg-gray-900/80 border-white/10 text-gray-300 hover:bg-blue-600 hover:border-blue-500 hover:text-white"
-                : "bg-white/90 border-slate-200 text-slate-600 hover:bg-blue-600 hover:border-blue-500 hover:text-white"
-            }`}
-          >
-            <ChevronLeft size={21} />
-          </button>
-
-          {/* Desktop Right Arrow */}
-          <button
-            type="button"
-            onClick={() => scrollSlider("right")}
-            aria-label="Next projects"
-            className={`hidden md:flex absolute -right-5 lg:-right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 items-center justify-center rounded-full border shadow-lg backdrop-blur-md transition-all duration-300 hover:scale-110 ${
-              isDark
-                ? "bg-gray-900/80 border-white/10 text-gray-300 hover:bg-blue-600 hover:border-blue-500 hover:text-white"
-                : "bg-white/90 border-slate-200 text-slate-600 hover:bg-blue-600 hover:border-blue-500 hover:text-white"
-            }`}
-          >
-            <ChevronRight size={21} />
-          </button>
-
-          {/* Loading */}
-          {loading ? (
-            <div className="flex gap-4 sm:gap-5 overflow-hidden pb-4">
-              {[...Array(5)].map((_, index) => (
-                <SkeletonCard key={index} />
-              ))}
-            </div>
-          ) : services.length === 0 ? (
-            /* Empty State */
-            <div
-              className={`rounded-3xl border p-10 text-center ${
-                isDark
-                  ? "bg-white/[0.03] border-white/10"
-                  : "bg-white border-slate-200"
-              }`}
-            >
-              <Sparkles className="mx-auto mb-4 text-blue-500" size={34} />
-
-              <h3 className="text-lg font-medium mb-2">
-                No projects available
-              </h3>
-
-              <p
-                className={`text-sm ${
-                  isDark ? "text-gray-400" : "text-slate-500"
-                }`}
-              >
-                New website projects will appear here soon.
-              </p>
-            </div>
-          ) : (
-            <div
-              ref={sliderRef}
-              className="flex gap-4 sm:gap-5 overflow-x-auto pb-5 scroll-smooth hide-scrollbar snap-x snap-mandatory"
-            >
-              {services.map((service) => (
-                <div
-                  key={service._id}
-                  onClick={() => navigate(`/service/${service._id}`)}
-                  onMouseEnter={handleCardEnter}
-                  onMouseLeave={handleCardLeave}
-                  className={`service-card group relative flex-shrink-0 snap-start w-[270px] sm:w-[300px] md:w-[330px] overflow-hidden rounded-3xl cursor-pointer border transition-colors duration-300 ${
-                    isDark
-                      ? "bg-white/[0.045] border-white/10 hover:bg-[#202020] hover:border-blue-500/40"
-                      : "bg-white border-slate-200 hover:border-blue-400 shadow-sm hover:shadow-2xl"
-                  }`}
-                >
-                  {/* =========================
-                      IMAGE
-                  ========================= */}
-
-                  <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-200 dark:bg-gray-900">
-                    <img
-                      src={
-                        service.thumbnail || "/default-thumbnail.png"
-                      }
-                      alt={service.title || "Website project"}
-                      loading="lazy"
-                      className="service-image absolute inset-0 w-full h-full object-cover object-center will-change-transform"
-                      onError={(e) => {
-                        e.currentTarget.src = "/default-thumbnail.png";
-                      }}
-                    />
-
-                    {/* Dark image overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-
-                    {/* Top Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white text-[10px] sm:text-xs font-medium">
-                        <Sparkles size={12} />
-                        Ready to Launch
-                      </span>
-                    </div>
-
-                    {/* Image Bottom Label */}
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <p className="text-white/70 text-[10px] sm:text-xs uppercase tracking-[2px] mb-1">
-                        Website Project
-                      </p>
-
-                      <h3 className="text-white font-semibold text-sm sm:text-base line-clamp-1">
-                        {service.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* =========================
-                      CONTENT
-                  ========================= */}
-
-                  <div className="p-4 sm:p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <p
-                          className={`text-[10px] sm:text-xs uppercase tracking-[1.5px] mb-1 ${
-                            isDark
-                              ? "text-gray-500"
-                              : "text-slate-400"
-                          }`}
-                        >
-                          Project Price
-                        </p>
-
-                        <p className="text-blue-600 font-bold text-lg sm:text-xl">
-                          ₹{service.price}
-                        </p>
-                      </div>
-
-                      <div
-                        className={`service-icon flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
-                          isDark
-                            ? "bg-blue-500/10 text-blue-400"
-                            : "bg-blue-50 text-blue-600"
-                        }`}
-                      >
-                        <ArrowRight size={18} />
-                      </div>
-                    </div>
-
-                    {/* CTA */}
-                    <div
-                      className={`mt-4 w-full py-2.5 rounded-xl flex items-center justify-center gap-2 text-sm font-medium transition-all duration-300 ${
-                        isDark
-                          ? "bg-white/5 text-gray-300 group-hover:bg-blue-600 group-hover:text-white"
-                          : "bg-slate-100 text-slate-700 group-hover:bg-blue-600 group-hover:text-white"
-                      }`}
-                    >
-                      Explore Project
-
-                      <ArrowRight
-                        className="service-arrow"
-                        size={16}
-                      />
-                    </div>
-                  </div>
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 xl:max-w-[560px]">
+            {[
+              [
+                Zap,
+                "Instant Download",
+                "Access after purchase",
+                "bg-orange-50 text-orange-500",
+              ],
+              [
+                Code2,
+                "Clean Code",
+                "Explore the implementation",
+                "bg-blue-50 text-blue-600",
+              ],
+              [
+                Smartphone,
+                "Modern Interfaces",
+                "Build for your audience",
+                "bg-violet-100 text-violet-600",
+              ],
+              [
+                Settings,
+                "Make It Your Own",
+                "Customize your project",
+                "bg-green-50 text-green-600",
+              ],
+            ].map(([Icon, title, text, color]) => (
+              <div key={title} className="flex items-center gap-2">
+                <span className={"rounded-xl p-3 " + color}>
+                  <Icon size={22} />
+                </span>
+                <div>
+                  <h3 className="text-[11px] font-bold text-slate-950">
+                    {title}
+                  </h3>
+                  <p className="mt-1 text-[9px] text-slate-500">{text}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {catalog && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setParams(query ? { q: query } : {});
+            }}
+            className="mb-5 flex max-w-lg gap-2"
+          >
+            <input
+              aria-label="Filter projects"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Find your next project..."
+              className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-violet-500"
+            />
+            <button className="rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white">
+              Search
+            </button>
+          </form>
+        )}
+        <div className="mb-7 flex items-center justify-between gap-5">
+          <div
+            role="group"
+            aria-label="Project categories"
+            className="no-scrollbar flex min-w-0 gap-2 overflow-x-auto pb-2"
+          >
+            {projectCategories.map((category) => (
+              <button
+                key={category}
+                aria-pressed={selected === category}
+                onClick={() => setSelected(category)}
+                className={
+                  "shrink-0 rounded-full border px-5 py-3 text-[11px] font-semibold transition " +
+                  (selected === category
+                    ? "border-transparent bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-md shadow-pink-100"
+                    : "border-slate-200 bg-white/80 text-slate-500 hover:border-orange-300")
+                }
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          {!catalog && (
+            <Link
+              to="/service"
+              className="hidden shrink-0 items-center gap-3 rounded-full bg-slate-950 px-6 py-3 text-xs font-semibold text-white lg:flex"
+            >
+              View All Projects <ArrowRight size={17} />
+            </Link>
           )}
         </div>
-
-        {/* Mobile Hint */}
-        {!loading && services.length > 0 && (
-          <div className="md:hidden mt-3 text-center">
-            <p
-              className={`text-[11px] ${
-                isDark ? "text-gray-500" : "text-slate-500"
-              }`}
+        {status === "loading" ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-96 animate-pulse rounded-3xl border border-slate-100 bg-white"
+              >
+                <div className="h-48 rounded-t-3xl bg-slate-100" />
+              </div>
+            ))}
+          </div>
+        ) : status === "error" ? (
+          <div
+            role="alert"
+            className="rounded-2xl border border-orange-100 bg-orange-50 p-8 text-center text-sm text-slate-600"
+          >
+            Projects couldn't be loaded.{" "}
+            <button
+              onClick={() => window.location.reload()}
+              className="font-semibold text-orange-600 underline"
             >
-              Swipe to explore more projects →
-            </p>
+              Try again
+            </button>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="rounded-2xl border border-slate-100 bg-white p-10 text-center text-slate-500">
+            No projects match this category or search.{" "}
+            <button
+              onClick={() => {
+                setSelected("All Projects");
+                setQuery("");
+                setParams({});
+              }}
+              className="text-violet-600 underline"
+            >
+              View all projects
+            </button>
+          </div>
+        ) : (
+          <div className="relative">
+            {!catalog && (
+              <>
+                <button
+                  aria-label="Previous projects"
+                  onClick={() =>
+                    rail.current.scrollBy({
+                      left: -340,
+                      behavior: reduced ? "auto" : "smooth",
+                    })
+                  }
+                  className="absolute -left-4 top-36 z-10 hidden rounded-full border border-slate-200 bg-white p-3 shadow-md md:block"
+                >
+                  <ChevronLeft size={19} />
+                </button>
+                <button
+                  aria-label="Next projects"
+                  onClick={() =>
+                    rail.current.scrollBy({
+                      left: 340,
+                      behavior: reduced ? "auto" : "smooth",
+                    })
+                  }
+                  className="absolute -right-4 top-36 z-10 hidden rounded-full border border-slate-200 bg-white p-3 shadow-md md:block"
+                >
+                  <ChevronRight size={19} />
+                </button>
+              </>
+            )}
+            <div
+              ref={rail}
+              className={
+                catalog
+                  ? "grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  : "no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-8"
+              }
+            >
+              {filtered.map((project, i) => (
+                <motion.article
+                  key={project._id}
+                  initial={reduced ? false : { opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{
+                    duration: 0.45,
+                    delay: Math.min(i * 0.05, 0.3),
+                  }}
+                  className={
+                    "group overflow-hidden rounded-[22px] border border-slate-200/70 bg-white shadow-[0_10px_35px_-20px_rgba(50,50,90,.3)] " +
+                    (!catalog
+                      ? "w-[280px] shrink-0 snap-start xl:w-[calc((100%-80px)/5)] xl:min-w-[240px]"
+                      : "")
+                  }
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-violet-100 to-blue-50">
+                    {project.thumbnail ? (
+                      <img
+                        src={
+                          project.thumbnail.startsWith("http:")
+                            ? project.thumbnail.replace("http:", "https:")
+                            : project.thumbnail
+                        }
+                        alt={project.title + " website preview"}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="flex h-full flex-col items-center justify-center gap-3 text-violet-400">
+                        <Code2 size={52} />
+                        <span className="text-xs text-slate-500">
+                          Source code project
+                        </span>
+                      </div>
+                    )}
+                    <span
+                      className={
+                        "absolute left-3 top-3 flex items-center gap-1 rounded-lg px-3 py-1.5 text-[10px] font-semibold text-white " +
+                        (i % 3 === 0
+                          ? "bg-orange-500"
+                          : i % 3 === 1
+                            ? "bg-violet-600"
+                            : "bg-emerald-500")
+                      }
+                    >
+                      <Zap size={12} />
+                      Ready to build
+                    </span>
+                    <button
+                      aria-label={
+                        saved.includes(project._id)
+                          ? "Remove " + project.title + " from saved projects"
+                          : "Save " + project.title
+                      }
+                      aria-pressed={saved.includes(project._id)}
+                      onClick={() => toggleSaved(project._id)}
+                      className="absolute right-3 top-3 rounded-full bg-white/90 p-2 text-slate-700 shadow-sm"
+                    >
+                      <Heart
+                        size={18}
+                        fill={saved.includes(project._id) ? "#ec4899" : "none"}
+                        className={
+                          saved.includes(project._id) ? "text-pink-500" : ""
+                        }
+                      />
+                    </button>
+                  </div>
+                  <div className="p-4">
+                    <p className="text-[11px] text-slate-500">
+                      {categoryFor(project)}
+                    </p>
+                    <Link to={"/service/" + project._id}>
+                      <h3 className="mt-1 line-clamp-2 text-[15px] font-bold text-slate-950 hover:text-violet-600">
+                        {project.title}
+                      </h3>
+                    </Link>
+                    <p className="mt-2 line-clamp-2 min-h-[40px] text-xs leading-relaxed text-slate-500">
+                      {(
+                        project.description ||
+                        "Explore the source code and customize it for your next project."
+                      ).replace(/<[^>]*>/g, "")}
+                    </p>
+                    <p className="mt-3 text-[23px] font-extrabold text-violet-600">
+                      {new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                        maximumFractionDigits: 0,
+                      }).format(project.price)}
+                    </p>
+                    <div className="my-4 flex items-center gap-4 text-cyan-500">
+                      <FaReact size={22} />
+                      <Code2 size={21} className="text-slate-900" />
+                      <FaNodeJs size={23} className="text-green-600" />
+                      {project.viewLink && (
+                        <a
+                          href={project.viewLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={"Live preview of " + project.title}
+                          className="ml-auto text-slate-500"
+                        >
+                          <ExternalLink size={18} />
+                        </a>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <Link
+                        to={"/service/" + project._id}
+                        className="flex flex-1 items-center justify-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-[11px] font-bold text-slate-950 transition hover:bg-violet-50"
+                      >
+                        Explore Project <ArrowRight size={15} />
+                      </Link>
+                      <Link
+                        to={"/sourcecode/buy/" + project._id}
+                        aria-label={"Buy " + project.title}
+                        className="rounded-xl border border-slate-200 p-3 text-slate-700 hover:bg-orange-50"
+                      >
+                        <ShoppingBag size={18} />
+                      </Link>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
           </div>
         )}
       </div>
-
-      {/* =========================
-          HIDE SCROLLBAR
-      ========================= */}
-
-      <style>
-        {`
-          .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-          }
-
-          .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}
-      </style>
     </section>
   );
-};
-
-export default Services;
-
+}

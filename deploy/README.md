@@ -85,8 +85,14 @@ Push main or run the workflow manually after setup. After the first healthy depl
     sudo systemctl status pdfbaba.service
     sudo journalctl -u pdfbaba.service -n 100 --no-pager
 
-Also check the public HTTPS homepage, login, PDF upload/download and payment flow. /healthz returns 503 until MongoDB connects; a bad MongoDB URI or Atlas allowlist prevents successful deployment.
+Also check the public HTTPS homepage, login, project browsing/download and payment flow. /healthz returns 503 until MongoDB connects; a bad MongoDB URI or Atlas allowlist prevents successful deployment.
 
 To roll back manually, select a retained release directory, repoint /opt/pdfbaba/current using a temporary symlink and mv -Tf, then restart pdfbaba.service and rerun health checks. The first ever deployment has no previous release to restore.
 
 References: [GitHub artifacts](https://docs.github.com/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts) and [DigitalOcean systemd/Nginx deployment](https://www.digitalocean.com/community/tutorials/how-to-deploy-node-js-applications-using-systemd-and-nginx).
+
+## Codebricket frontend and notes retirement
+
+The release includes React source and a Tailwind production build. Public routes get unique canonical, description and social metadata for https://codebricket.com; deployment also generates project detail metadata and sitemap entries from the backend API. React Helmet handles client navigation.
+
+PDF notes/category/question-paper APIs and administration screens have been retired. Removed code files are explicitly listed in deploy/removed-files.txt; legacy deployments remove only those files after creating the app backup. Existing upload data and production .env are preserved. Nginx Google verification files and .well-known challenges are also preserved during publish and rollback.

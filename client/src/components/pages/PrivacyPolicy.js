@@ -191,7 +191,7 @@ const PrivacyPolicy = () => {
               fontFamily: 'Poppins, sans-serif', // Apply Poppins font
             }}
           >
-            © 2025 PDF-Baba. All rights reserved.
+            © 2025 Codebricket. All rights reserved.
           </Typography>
         </Box>
       </Container>
