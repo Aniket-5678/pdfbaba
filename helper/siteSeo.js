@@ -1,5 +1,9 @@
 export const SITE_URL = "https://codebricket.com";
 export const staticSeo = {
+"/login": ["Log In", "Log in to your Codebricket account."],
+"/register": ["Create Your Account", "Create your Codebricket account and start learning."],
+"/forgetpass": ["Reset Password", "Reset your Codebricket account password."],
+"/sourcecode-order": ["My Projects", "View your Codebricket project purchases."],
   "/notes": [
     "Study Notes & Learning Library",
     "Explore study notes, practical examples and learning resources on Codebricket.",

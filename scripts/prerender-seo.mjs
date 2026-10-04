@@ -86,7 +86,7 @@ for (const [route, seo] of routes) {
 fs.writeFileSync(
   path.join(build, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
-    [...routes.keys()]
+    [...routes.keys()].filter(route => routes.get(route).robots === "index,follow")
       .map((route) => "<url><loc>" + SITE_URL + route + "</loc></url>")
       .join("") +
     "</urlset>",
