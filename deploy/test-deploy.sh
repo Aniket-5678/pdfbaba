@@ -31,6 +31,13 @@ tar -czf "$base/incoming/$id1/release.tar.gz" -C "$fixture/package" package.json
 cp "$base/incoming/$id1/release.tar.gz" "$base/incoming/$id2/release.tar.gz"
 mkdir -p "$base/incoming/$id0"
 cp "$base/incoming/$id1/release.tar.gz" "$base/incoming/$id0/release.tar.gz"
+mv "$base/shared/.env" "$base/shared/.env.saved"
+if bash "$fixture/deploy.sh" "$id0" > "$fixture/missing-env.log" 2>&1; then
+  echo "Expected missing environment rejection"; exit 1
+fi
+grep -q "Missing or empty" "$fixture/missing-env.log"
+[[ ! -e "$base/releases/$id0" ]]
+mv "$base/shared/.env.saved" "$base/shared/.env"
 if HEALTH_FAIL=1 bash "$fixture/deploy.sh" "$id0" > "$fixture/first-failure.log" 2>&1; then
   echo "Expected first deployment health-check failure"; exit 1
 fi

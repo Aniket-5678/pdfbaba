@@ -8,8 +8,13 @@ exec 9>"$base/deploy.lock"
 flock -n 9 || { echo 'Another deployment is running'; exit 1; }
 release="$base/releases/$release_id"
 archive="$base/incoming/$release_id/release.tar.gz"
-test -s "$base/shared/.env"
-test ! -e "$release"
+[[ -s "$base/shared/.env" ]] || { echo "::error::Missing or empty /opt/pdfbaba/shared/.env. Run deploy/setup.sh on the Droplet and fill the production environment file. See deploy/README.md."; exit 1; }
+[[ -r "$base/shared/.env" ]] || { echo "::error::Deployment user cannot read shared/.env. Check its pdfbaba group membership and file permissions."; exit 1; }
+[[ -d "$base/releases" && -w "$base/releases" ]] || { echo "::error::Release directory is missing or not writable. Complete deploy/setup.sh and reconnect SSH."; exit 1; }
+for directory in uploads filetopdf_uploads sourcecodes; do
+  [[ -d "$base/shared/$directory" ]] || { echo "::error::Missing shared/$directory. Complete setup and migrate existing uploads before deploying."; exit 1; }
+done
+[[ ! -e "$release" ]] || { echo "::error::Release directory already exists: $release. Start a new workflow attempt."; exit 1; }
 mkdir "$release"
 tar -xzf "$archive" -C "$release"
 cd "$release"
