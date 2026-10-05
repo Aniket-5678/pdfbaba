@@ -32,6 +32,7 @@ export default function Navbar() {
   function logout() {
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
+    setOpen(false);
     navigate("/");
   }
   return (
@@ -116,8 +117,13 @@ export default function Navbar() {
               >
                 {auth.user.name || "Account"}
               </Link>
-              <button onClick={logout} aria-label="Log out" className="p-2">
+              <button
+                onClick={logout}
+                title="Log out"
+                className="flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600"
+              >
                 <LogOut size={18} />
+                <span>Log out</span>
               </button>
             </>
           ) : (
@@ -188,6 +194,15 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+          {auth.user && (
+            <button
+              onClick={logout}
+              className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-semibold text-rose-600 transition-colors hover:bg-rose-50"
+            >
+              <LogOut size={18} />
+              Log out
+            </button>
+          )}
         </nav>
       )}
     </header>

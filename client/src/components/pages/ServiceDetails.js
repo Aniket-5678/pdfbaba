@@ -11,20 +11,20 @@ import toast from "react-hot-toast";
 const Skeleton = () => (
   <div className="animate-pulse grid md:grid-cols-2 gap-10">
     <div className="space-y-4">
-      <div className="h-[380px] rounded-xl bg-gray-300 dark:bg-gray-700"></div>
+      <div className="h-[260px] rounded-xl bg-gray-200 sm:h-[380px]"></div>
       <div className="flex gap-3">
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="w-24 h-20 bg-gray-300 dark:bg-gray-700 rounded"
+            className="h-16 w-20 rounded bg-gray-200 sm:h-20 sm:w-24"
           ></div>
         ))}
       </div>
     </div>
     <div className="space-y-4">
-      <div className="h-6 w-2/3 bg-gray-300 dark:bg-gray-700 rounded"></div>
-      <div className="h-20 bg-gray-300 dark:bg-gray-700 rounded"></div>
-      <div className="h-10 w-32 bg-gray-300 dark:bg-gray-700 rounded"></div>
+      <div className="h-6 w-2/3 rounded bg-gray-200"></div>
+      <div className="h-20 rounded bg-gray-200"></div>
+      <div className="h-10 w-32 rounded bg-gray-200"></div>
     </div>
   </div>
 );
@@ -86,25 +86,25 @@ const ServiceDetails = () => {
           product={service}
         />
       )}
-      <div className="min-h-[75vh] bg-gradient-to-b from-violet-50/70 via-white to-white px-4 pb-20 pt-28 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 sm:px-6">
+      <div className="min-h-[75vh] bg-gradient-to-b from-violet-50/70 via-white to-white px-4 pb-12 pt-8 sm:px-6 sm:pb-20 sm:pt-14">
        <div className="mx-auto max-w-6xl">
-        <div className="mb-7 flex items-center gap-2 text-sm font-medium text-slate-500"><Link to="/service" className="hover:text-violet-600">Projects</Link><span>/</span><span className="truncate text-slate-800 dark:text-slate-200">{service?.title || "Project details"}</span></div>
+        <div className="mb-5 flex min-w-0 items-center gap-2 text-xs font-medium text-slate-500 sm:mb-7 sm:text-sm"><Link to="/service" className="shrink-0 hover:text-violet-600">Projects</Link><span>/</span><span className="truncate text-slate-800">{service?.title || "Project details"}</span></div>
         {!service ? (
           <Skeleton />
         ) : (
           <div className="grid gap-8 lg:grid-cols-[1.1fr_.9fr]">
             {/* ===== LEFT IMAGE GALLERY ===== */}
             <div>
-              <div className="relative h-[340px] w-full overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-xl shadow-violet-100/60 dark:border-white/10 dark:bg-slate-900 sm:h-[500px]">
+              <div className="relative h-[260px] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg shadow-violet-100/60 sm:h-[400px] sm:rounded-[28px] lg:h-[500px]">
                 <img
                   src={mainImage}
                   alt={service.title || "Preview"}
-                  className="w-full h-full object-contain object-center"
+                  className="h-full w-full object-contain object-center"
                 />
               </div>
 
               {/* thumbnails */}
-              <div className="flex gap-3 mt-4 overflow-x-auto">
+              <div className="mt-3 flex gap-2 overflow-x-auto pb-1 sm:mt-4 sm:gap-3">
                 {[service.thumbnail, ...(service.multipleImages || [])]
                   .filter(Boolean)
                   .map((img, i) => (
@@ -113,7 +113,7 @@ const ServiceDetails = () => {
                       src={img}
                       alt={`${service.title} preview ${i + 1}`}
                       onClick={() => setMainImage(img)}
-                      className={`w-24 h-20 object-cover rounded-lg cursor-pointer border-2 transition
+                      className={`h-16 w-20 shrink-0 cursor-pointer rounded-lg border-2 object-cover transition sm:h-20 sm:w-24
                         ${
                           mainImage === img
                             ? "border-indigo-600 scale-105"
@@ -125,31 +125,31 @@ const ServiceDetails = () => {
             </div>
 
             {/* ===== RIGHT CONTENT ===== */}
-            <div className="h-fit rounded-[28px] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-slate-900 sm:p-9 lg:sticky lg:top-24">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-violet-50 px-3 py-1.5 text-xs font-bold text-violet-700 dark:bg-violet-400/10 dark:text-violet-300"><Sparkles size={14}/> INSTANT DIGITAL ACCESS</div>
+            <div className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/50 sm:rounded-[28px] sm:p-8 lg:sticky lg:top-24 lg:p-9">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-violet-50 px-3 py-1.5 text-[10px] font-bold text-violet-700 sm:mb-5 sm:text-xs"><Sparkles size={14}/> INSTANT DIGITAL ACCESS</div>
               {/* Title */}
-              <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+              <h1 className="break-words text-[1.35rem] font-bold leading-snug tracking-[-0.025em] text-slate-950 sm:text-[1.65rem] lg:text-[1.8rem]">
                 {service.title}
               </h1>
 
               {/* Description */}
-              <p className="mt-5 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+              <p className="mt-4 whitespace-pre-line break-words text-sm leading-7 text-slate-600 sm:mt-5 sm:text-base">
                 {service.description}
               </p>
 
               {/* Price */}
-              <div className="mt-7 flex items-end gap-3 border-t border-slate-100 pt-6 dark:border-white/10">
-                <span className="text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white">
+              <div className="mt-6 flex flex-wrap items-end gap-x-3 gap-y-1 border-t border-slate-100 pt-5 sm:mt-7 sm:pt-6">
+                <span className="text-4xl font-extrabold tracking-tight text-slate-950">
                   ₹{service.price}
                 </span>
                 <span className="pb-1 text-sm text-slate-500">One-time payment</span>
               </div>
 
               {/* Buttons */}
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-2">
                 <button
                   onClick={handleBuyNow}
-                  className="flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-6 py-4 font-bold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-500"
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-violet-700 px-5 py-3.5 font-bold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-800 sm:px-6 sm:py-4"
                 >
                   <ShoppingCart size={18} />
                   Buy Now
@@ -157,7 +157,7 @@ const ServiceDetails = () => {
 
                 <button
                   onClick={handleViewSource}
-                  className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 px-6 py-4 font-bold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-white dark:hover:bg-white/10"
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-slate-200 px-5 py-3.5 font-bold text-slate-700 transition hover:bg-slate-50 sm:px-6 sm:py-4"
                 >
                   <ExternalLink size={18} />
                   Live Preview
@@ -165,9 +165,9 @@ const ServiceDetails = () => {
               </div>
 
               {/* What you get */}
-              <div className="mt-7 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
-                <h3 className="mb-4 font-bold text-slate-900 dark:text-white">Included with your purchase</h3>
-                <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <div className="mt-6 rounded-2xl bg-slate-50 p-4 sm:mt-7 sm:p-5">
+                <h3 className="mb-4 font-bold text-slate-900">Included with your purchase</h3>
+                <ul className="space-y-3 text-sm text-slate-600">
                   <li className="flex gap-2"><Download size={17} className="text-violet-600"/> Complete source code and setup guide</li>
                   <li className="flex gap-2"><ShieldCheck size={17} className="text-violet-600"/> Lifetime access to your files</li>
                   <li className="flex gap-2"><Sparkles size={17} className="text-violet-600"/> Ready-to-customize project structure</li>

@@ -25,13 +25,17 @@ export const requireSignIn = async (req, res, next) => {
     // ✅ Fetch user (exclude sensitive fields)
     const user = await userModel
       .findById(decoded._id)
-      .select("-password -secretKey");
+      .select("-password -secretKey +passwordChangedAt");
 
     if (!user) {
       return res.status(401).json({
         success: false,
         message: "User not found",
       });
+    }
+
+    if ((decoded.passwordChangedAt || 0) !== (user.passwordChangedAt?.getTime() || 0)) {
+      return res.status(401).json({ success: false, message: "Session expired. Please sign in again." });
     }
 
     // ✅ Attach user to request
