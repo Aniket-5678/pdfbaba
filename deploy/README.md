@@ -6,7 +6,7 @@ The confirmed server layout is /root/pdfbaba for the backend, /root/pdfbaba/.env
 
 The deployment SSH user must access these root-owned paths and the existing PM2 daemon. The script locates exactly one PM2 process with script /root/pdfbaba/index.js, checks Nginx configuration, installs locked dependencies in a staged release, backs up existing code and frontend under /opt/pdfbaba/backups, then restarts only that process. The .env, uploaded files, .git and ACME .well-known directory are preserved. The same PM2 process name, script path, cwd and port are retained. A short backend interruption is expected.
 
-After MongoDB readiness succeeds, the React build is published to /var/www/html. Failure restores the backend, previous node_modules and frontend, then restarts the original PM2 process. Backups and releases remain available for recovery; monitor disk use and remove only unused old backups/releases. Do not delete a release targeted by /root/pdfbaba/node_modules.
+After MongoDB readiness succeeds, the React build is published to /var/www/html. Failure restores the backend, previous node_modules and frontend, then restarts the original PM2 process. Before each deployment, the script keeps the newest complete backup and the release targeted by /root/pdfbaba/node_modules, and removes older backups, inactive releases and stale incoming archives to keep disk use bounded. The newest backup remains available for rollback.
 
 PM2 must be installed for the SSH user; a pre-existing root nvm installation is loaded if necessary. Required tools are node, npm, pm2, rsync, curl, flock and nginx. Node.js 22 is recommended and used by CI. PM2 watch must be disabled for deployments. Keep the existing Nginx configuration and TLS certificates.
 

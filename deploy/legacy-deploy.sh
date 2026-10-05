@@ -17,12 +17,33 @@ for command in node npm pm2 rsync curl flock nginx; do
 done
 [[ -s "$app/.env" && -r "$app/.env" ]] || fail "Production environment file missing or unreadable: $app/.env"
 [[ -w "$app" && -d "$frontend" && -w "$frontend" ]] || fail "SSH deployment user needs write access to the existing app and Nginx frontend directory."
+[[ -e "$app/node_modules" || -L "$app/node_modules" ]] || fail 'Existing backend node_modules is missing.'
 nginx -t
 exec 9>"$base/deploy.lock"
 flock -n 9 || fail 'Another deployment is running.'
 release="$base/releases/$release_id"
 backup="$base/backups/$release_id"
 [[ ! -e "$release" && ! -e "$backup" ]] || fail 'Release already exists; start a new workflow attempt.'
+mkdir -p "$base/backups" "$base/releases" "$base/incoming"
+# Keep the latest completed rollback snapshot, the active node_modules target,
+# and the current upload. Older snapshots and inactive staged releases otherwise
+# grow without bound and can fill the small production disk during rsync.
+active_release=$(readlink -f "$app/node_modules" 2>/dev/null || true)
+active_release=${active_release%/node_modules}
+latest_backup=
+while IFS= read -r candidate; do
+  if [[ -f "$candidate/app/index.js" && -f "$candidate/frontend/index.html" ]]; then latest_backup=$candidate; break; fi
+done < <(find "$base/backups" -mindepth 1 -maxdepth 1 -type d ! -name "$release_id" -printf '%T@ %p\n' 2>/dev/null | sort -nr | cut -d' ' -f2-)
+while IFS= read -r candidate; do
+  [[ "$candidate" == "$latest_backup" ]] || rm -rf -- "$candidate"
+done < <(find "$base/backups" -mindepth 1 -maxdepth 1 -type d ! -name "$release_id" -print)
+while IFS= read -r candidate; do
+  candidate_real=$(readlink -f "$candidate" 2>/dev/null || true)
+  [[ -n "$candidate_real" && "$candidate_real" == "$active_release" ]] || rm -rf -- "$candidate"
+done < <(find "$base/releases" -mindepth 1 -maxdepth 1 -type d ! -name "$release_id" -print)
+while IFS= read -r candidate; do
+  [[ "$candidate" == "$base/incoming/$release_id" ]] || rm -rf -- "$candidate"
+done < <(find "$base/incoming" -mindepth 1 -maxdepth 1 -type d ! -name "$release_id" -print)
 mkdir -p "$release" "$backup/app" "$backup/frontend"
 chmod 700 "$base/backups" "$backup"
 tar -xzf "$base/incoming/$release_id/release.tar.gz" -C "$release"
@@ -38,7 +59,6 @@ excludes=(--exclude=.env --exclude='.env.*' --exclude=.git --exclude=node_module
   --exclude=client/node_modules --exclude=.well-known --exclude='google*.html')
 rsync -ac "${excludes[@]}" "$app/" "$backup/app/"
 rsync -ac --exclude=.well-known --exclude='google*.html' "$frontend/" "$backup/frontend/"
-[[ -e "$app/node_modules" || -L "$app/node_modules" ]] || fail 'Existing backend node_modules is missing.'
 switched=false
 modules_moved=false
 # Called by EXIT trap, including failures during activation.
