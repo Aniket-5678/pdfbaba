@@ -29,10 +29,13 @@ export default function AuthPage({ signup = false }) {
       } else {
         setAuth({ ...auth, user: data.user, token: data.token });
         localStorage.setItem("auth", JSON.stringify(data));
+        const from = location.state?.from;
         const target =
           typeof location.state === "string"
             ? location.state
-            : location.state?.from?.pathname;
+            : from?.pathname
+              ? from.pathname + (from.search || "") + (from.hash || "")
+              : undefined;
         navigate(
           target?.startsWith("/") &&
             !target.startsWith("//") &&

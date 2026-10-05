@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  CardMedia,
-  CardContent,
-  Divider,
-  CircularProgress,
 } from "@mui/material";
 import axios from "axios";
 import { useAuth } from "../context/auth";
@@ -20,10 +12,17 @@ const SourceCodeBuyNow = () => {
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [auth] = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    if (!auth.user) {
+      toast("Log in to continue with your purchase.", { icon: "🔒" });
+      navigate("/login", { replace: true, state: { from: { pathname: location.pathname, search: location.search, hash: location.hash } } });
+      return;
+    }
     fetchService();
-  }, []);
+  }, [auth.user, navigate, location.pathname, location.search, location.hash]);
 
   const fetchService = async () => {
     try {
@@ -38,7 +37,8 @@ const SourceCodeBuyNow = () => {
 
   const handlePayment = async () => {
     if (!auth.user) {
-      alert("Please login first.");
+      toast("Log in to continue with your purchase.", { icon: "🔒" });
+      navigate("/login", { state: { from: { pathname: location.pathname, search: location.search, hash: location.hash } } });
       return;
     }
 
@@ -50,7 +50,7 @@ const SourceCodeBuyNow = () => {
       );
 
       if (!window.Razorpay) {
-        alert("Razorpay SDK not loaded.");
+        toast.error("Secure checkout is unavailable right now. Please refresh and try again.");
         return;
       }
 
@@ -133,211 +133,67 @@ const SourceCodeBuyNow = () => {
       rzp1.open();
     } catch (err) {
       console.error("Buy request failed:", err.response?.data || err.message);
-      alert("Payment failed. Check console for details.");
+      toast.error(err.response?.data?.message || "Payment could not be started. Please try again.");
     }
   };
 
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          height: "80vh",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+  if (!auth.user) return null;
+  if (loading) return <Layout><div className="flex min-h-[70vh] items-center justify-center text-sm font-semibold text-violet-700">Preparing your secure checkout…</div></Layout>;
 
   if (!service)
     return (
-      <Typography variant="h6" align="center" mt={10}>
-        Source code not found.
-      </Typography>
+      <Layout><div className="py-32 text-center text-lg font-semibold text-slate-600">Project not found.</div></Layout>
     );
 
   return (
     <Layout>
-      <Box
-        sx={{
-          backgroundColor: "#f5f7fa",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          py: 8,
-          px: 2,
-          mt: 10,
-        }}
-      >
-        <Card
-          sx={{
-            maxWidth: 1100,
-            width: "100%",
-            borderRadius: 4,
-            boxShadow: "0px 8px 25px rgba(0,0,0,0.1)",
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            bgcolor: "#fff",
-          }}
-        >
+      <div className="min-h-[80vh] bg-gradient-to-b from-violet-50/70 via-white to-white px-4 pb-20 pt-28 dark:from-slate-950 dark:via-slate-950 sm:px-6">
+        <div className="mx-auto max-w-6xl">
+          <button onClick={() => navigate(`/service/${id}`)} className="mb-6 text-sm font-semibold text-violet-700 hover:underline">← Back to project</button>
+          <div className="mb-6"><p className="text-xs font-extrabold tracking-[.2em] text-violet-600">SECURE CHECKOUT</p><h1 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">You’re one step away.</h1><p className="mt-2 text-slate-500">Review your project and complete your one-time payment.</p></div>
+          <div className="grid overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-2xl shadow-violet-100/60 dark:border-white/10 dark:bg-slate-900 lg:grid-cols-[1.1fr_.9fr]">
           {/* Left Side - Image Gallery */}
-          <Box
-            sx={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              bgcolor: "#fafafa",
-            }}
-          >
-            <CardMedia
-              component="img"
-              image={service.thumbnail || "/placeholder.png"}
-              alt={service.title}
-              sx={{
-                width: "100%",
-                height: { xs: 250, sm: 300, md: 400 },
-                objectFit: "contain",
-                borderBottom: { xs: "1px solid #eee", md: "none" },
-              }}
-            />
+          <div className="flex min-h-[300px] items-center justify-center bg-slate-50 p-6 dark:bg-slate-800 sm:min-h-[480px]"><img className="max-h-[460px] w-full rounded-2xl object-contain" src={service.thumbnail || "/placeholder.png"} alt={service.title} />
 
             {service.multipleImages?.length > 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 1.5,
-                  p: 2,
-                  overflowX: "auto",
-                  justifyContent: { xs: "flex-start", md: "center" },
-                  bgcolor: "#f9f9f9",
-                }}
-              >
+              <div className="flex gap-3 overflow-x-auto bg-white p-4 dark:bg-slate-900">
                 {service.multipleImages.map((img, i) => (
                   <img
                     key={i}
                     src={img}
                     alt={`Screenshot ${i}`}
-                    style={{
-                      width: "90px",
-                      height: "70px",
-                      borderRadius: "8px",
-                      objectFit: "cover",
-                      border: "1px solid #ddd",
-                    }}
+                    className="h-16 w-20 rounded-xl border border-slate-200 object-cover"
                   />
                 ))}
-              </Box>
+              </div>
             )}
-          </Box>
+          </div>
 
           {/* Right Side - Details */}
-          <CardContent
-            sx={{
-              flex: 1,
-              p: { xs: 3, sm: 4 },
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              bgcolor: "#fff",
-            }}
-          >
-            <Box>
-              <Typography
-                variant="h4"
-                fontWeight="bold"
-                gutterBottom
-                sx={{
-                  color: "#111",
-                  fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
-                  fontFamily: "Poppins, sans-serif",
-                  lineHeight: 1.3,
-                }}
-              >
+          <div className="flex flex-col justify-between p-6 sm:p-9"><div>
+              <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-slate-950 dark:text-white">
                 {service.title}
-              </Typography>
+              </h2>
 
-              <Typography
-                variant="body1"
-                sx={{
-                  color: "#444",
-                  lineHeight: 1.6,
-                  mb: 3,
-                  fontSize: { xs: "0.9rem", md: "1rem" },
-                  fontFamily: "Poppins, sans-serif",
-                }}
-              >
+              <p className="mb-6 mt-4 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300">
                 {service.description}
-              </Typography>
+              </p>
 
-              <Divider sx={{ mb: 3 }} />
+              <div className="border-t border-slate-100" />
 
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: "bold",
-                  color: "#1976d2",
-                  mb: 1,
-                  fontFamily: "Poppins, sans-serif",
-                }}
-              >
+              <p className="mb-1 mt-5 text-4xl font-extrabold text-slate-950 dark:text-white">
                 ₹{service.price}
-              </Typography>
+              </p>
 
-              <Typography sx={{ color: "#777", mb: 3 }}>
-                One-time payment • Instant download access
-              </Typography>
+              <p className="mb-6 text-sm text-slate-500">One-time payment · Instant download access</p>
 
-              <Button
-                variant="contained"
-                onClick={handlePayment}
-                sx={{
-                  py: 1.4,
-                  fontSize: "0.95rem",
-                  background: "#1976d2",
-                  borderRadius: 2,
-                  fontFamily: "Poppins, sans-serif",
-                  "&:hover": { background: "#0d47a1" },
-                }}
-                fullWidth
-              >
-                💳 Pay Now & Get Source Code
-              </Button>
-            </Box>
+              <button onClick={handlePayment} className="w-full rounded-2xl bg-slate-950 px-5 py-4 font-bold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-700 dark:bg-violet-600">Pay securely & get your source code →</button><p className="mt-3 text-center text-xs text-slate-500">Secure payment · Files unlock after successful payment</p>
+            </div>
 
-            <Box sx={{ mt: 4 }}>
-              <Divider sx={{ mb: 2 }} />
-              <Typography
-                variant="subtitle2"
-                sx={{
-                  color: "#555",
-                  fontWeight: 600,
-                  mb: 1,
-                  fontFamily: "Poppins, sans-serif",
-                }}
-              >
-                What You’ll Get:
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#666",
-                  fontSize: "0.9rem",
-                  fontFamily: "Poppins, sans-serif",
-                }}
-              >
-                ✅ Complete source code (.zip) <br />
-                ✅ Setup instructions <br />
-                ✅ Ready-to-use project files <br />
-                ✅ Lifetime access after purchase<br />
-                🚫 No refunds after purchase (digital product)
-              </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
+            <div className="mt-8 border-t border-slate-100 pt-5 dark:border-white/10"><h3 className="mb-3 font-bold text-slate-900 dark:text-white">Your purchase includes</h3><ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300"><li>✓ Complete source code and setup instructions</li><li>✓ Ready-to-use project files</li><li>✓ Lifetime access after purchase</li><li className="text-xs text-slate-500">Digital purchases are non-refundable.</li></ul></div>
+          </div></div>
+        </div>
+      </div>
     </Layout>
   );
 };
