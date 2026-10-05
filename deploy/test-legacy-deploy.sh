@@ -31,16 +31,13 @@ export PM2_LOG="$fixture/pm2.log"
 printf '[{"pm_id":7,"pm2_env":{"pm_exec_path":"%s/index.js","watch":false,"PORT":"8000"}}]\n' "$fixture/app" > "$PM2_FIXTURE"
 id1=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-1-1
 id2=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-2-1
-mkdir -p "$fixture/package/deploy" "$fixture/package/client/build" "$fixture/base/incoming/$id1" "$fixture/base/incoming/$id2"
+mkdir -p "$fixture/package/deploy" "$fixture/package/client/build" "$fixture/base/incoming/$id1"
 cp deploy/pm2-target.mjs "$fixture/package/deploy/"
 printf 'controllers/retired.js\n' > "$fixture/package/deploy/removed-files.txt"
 printf 'new backend\n' > "$fixture/package/index.js"
 printf 'new frontend\n' > "$fixture/package/client/build/index.html"
 printf '{"name":"fixture"}\n' > "$fixture/package/package.json"
 tar -czf "$fixture/base/incoming/$id1/release.tar.gz" -C "$fixture/package" .
-printf 'bad backend\n' > "$fixture/package/index.js"
-printf 'bad frontend\n' > "$fixture/package/client/build/index.html"
-tar -czf "$fixture/base/incoming/$id2/release.tar.gz" -C "$fixture/package" .
 bash "$fixture/deploy.sh" "$id1"
 [[ $(cat "$fixture/app/index.js") == 'new backend' ]]
 [[ $(cat "$fixture/frontend/index.html") == 'new frontend' ]]
@@ -49,6 +46,10 @@ bash "$fixture/deploy.sh" "$id1"
 [[ ! -f "$fixture/app/controllers/retired.js" ]]
 [[ $(cat "$fixture/frontend/google-fixture.html") == 'verification' ]]
 grep -q 'JWT_SECRET=fixture-only' "$fixture/app/.env"
+mkdir -p "$fixture/base/incoming/$id2"
+printf 'bad backend\n' > "$fixture/package/index.js"
+printf 'bad frontend\n' > "$fixture/package/client/build/index.html"
+tar -czf "$fixture/base/incoming/$id2/release.tar.gz" -C "$fixture/package" .
 if HEALTH_FAIL=1 bash "$fixture/deploy.sh" "$id2" > "$fixture/rollback.log" 2>&1; then
   echo 'Expected failed health check'; exit 1
 fi
