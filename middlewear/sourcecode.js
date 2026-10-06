@@ -38,4 +38,31 @@ const sourcecodeUpload = multer({
   { name: "multipleImages", maxCount: 20 },
 ]);
 
-export default sourcecodeUpload;
+// Multer errors happen before the controller and otherwise fall through to
+// Express's HTML error page. Keep upload failures in the API's JSON format.
+const handleSourcecodeUpload = (req, res, next) => {
+  sourcecodeUpload(req, res, (error) => {
+    if (!error) return next();
+
+    if (error instanceof multer.MulterError) {
+      const tooLarge = error.code === "LIMIT_FILE_SIZE";
+      return res.status(tooLarge ? 413 : 400).json({
+        message: tooLarge
+          ? "An uploaded file exceeds the 1 GB limit"
+          : "Upload could not be processed",
+        code: error.code,
+      });
+    }
+
+    if (error.message === "Invalid file type") {
+      return res.status(400).json({
+        message: "ZIP must be a .zip file; images must be JPG or PNG",
+      });
+    }
+
+    console.error("Source code upload failed:", error);
+    return res.status(500).json({ message: "Could not save uploaded files" });
+  });
+};
+
+export default handleSourcecodeUpload;

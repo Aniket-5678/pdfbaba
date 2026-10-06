@@ -51,7 +51,9 @@ const AdminCreateSourceCode = () => {
       setViewLink(""); 
     } catch (error) {
       console.error(error);
-      toast.error("Error creating source code");
+      toast.error(
+        error.response?.data?.message || "Error creating source code"
+      );
     } finally {
       setLoading(false);
     }
