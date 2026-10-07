@@ -19,6 +19,10 @@ const pages = {
     "Ready-Made Website Projects & Source Code",
     "Browse production-ready website source code, ecommerce stores, SaaS apps, portfolios and business projects. Find a project to customize and launch with Codebricket.",
   ],
+  "/builder": [
+    "Free Website Builder & Customizable Templates",
+    "Build a website with customizable ecommerce, portfolio, CRM, business and agency templates. Edit sections, colors and pages, then publish your site with Codebricket Studio.",
+  ],
   "/categories": [
     "Programming & Study Categories",
     "Explore organized programming tutorials, technology topics, debugging guides, computer science fundamentals and exam preparation notes by category.",

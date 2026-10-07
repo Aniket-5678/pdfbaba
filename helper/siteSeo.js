@@ -22,6 +22,10 @@ export const staticSeo = {
     "Website Projects & Source Codes",
     "Explore ready-made website projects and source codes on Codebricket.",
   ],
+  "/builder": [
+    "Free Website Builder & Customizable Templates",
+    "Build a website with customizable ecommerce, portfolio, CRM, business and agency templates. Edit sections, colors and pages, then publish your site with Codebricket Studio.",
+  ],
   "/domain-suggestor": [
     "Domain Name Ideas",
     "Find domain name ideas for your next website project.",
