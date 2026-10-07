@@ -15,6 +15,7 @@ import {
   Layers,
   Check,
   Leaf,
+  WandSparkles,
 } from "lucide-react";
 import { FaReact, FaNodeJs, FaBootstrap } from "react-icons/fa";
 export default function Banner() {
@@ -55,6 +56,13 @@ export default function Banner() {
               className="inline-flex items-center gap-4 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 px-7 py-4 text-sm font-bold text-white shadow-xl shadow-orange-200/50 transition hover:-translate-y-1"
             >
               Explore Projects <ArrowRight size={20} />
+            </Link>
+            <Link
+              to="/builder"
+              className="inline-flex items-center gap-3 rounded-2xl bg-emerald-700 px-6 py-4 text-sm font-bold text-white shadow-xl shadow-emerald-200/60 transition hover:-translate-y-1 hover:bg-emerald-800"
+            >
+              <WandSparkles size={18} /> Build your website
+              <ArrowRight size={18} />
             </Link>
             <a
               href="#projects"

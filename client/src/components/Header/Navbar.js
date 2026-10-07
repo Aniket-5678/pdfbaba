@@ -23,6 +23,7 @@ export default function Navbar() {
     ["Notes", "/notes"],
     ["Roadmaps", "/exam-roadmap"],
     ["Practice", "/practice-quiz"],
+    ["Website Builder", "/builder"],
   ];
   function search(e) {
     e.preventDefault();
@@ -115,7 +116,7 @@ export default function Navbar() {
                 className="text-sm font-semibold"
                 to={"/dashboard/" + (auth.user.role === 1 ? "admin" : "user")}
               >
-                {auth.user.name || "Account"}
+                {auth.user.fullName || auth.user.name || "Account"}
               </Link>
               <button
                 onClick={logout}

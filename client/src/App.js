@@ -41,6 +41,9 @@ import SuccessPayment from "./components/pages/SuccessPayment";
 import SourceCodeOrder from "./components/pages/SourceCodeOrder";
 import AdminSourceCodeUpdateDelete from "./components/pages/admin/AdminSourceCodeUpdateDelete";
 import AdminUserSourceCodeOrder from "./components/pages/admin/AdminUserSourceCodeOrder";
+import WebsiteBuilder, { PublicWebsite } from "./components/pages/WebsiteBuilder";
+import DeveloperConnect from "./components/pages/DeveloperConnect";
+import DeveloperRequests from "./components/pages/admin/DeveloperRequests";
 
 function App() {
   const [theme] = useTheme();
@@ -66,6 +69,12 @@ function App() {
           <Route path="/note/:slug" element={<NoteDetail />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/site/:slug" element={<PublicWebsite />} />
+          <Route path="/builder" element={<PrivateRoutes />}>
+            <Route index element={<WebsiteBuilder />} />
+            <Route path=":id" element={<WebsiteBuilder />} />
+            <Route path="connect" element={<DeveloperConnect />} />
+          </Route>
           <Route path="/forgetpass" element={<Forgetpass />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/contact" element={<Contact />} />
@@ -108,6 +117,7 @@ function App() {
               path="admin/usersourcecodeorder"
               element={<AdminUserSourceCodeOrder />}
             />
+            <Route path="admin/developer-requests" element={<DeveloperRequests />} />
           </Route>
         </Routes>
       </div>

@@ -9,6 +9,7 @@ import {
   Code2,
   ShoppingBag,
   Plus,
+  BriefcaseBusiness,
 } from "lucide-react";
 export const adminLinks = [
   ["Overview", "/dashboard/admin", LayoutDashboard],
@@ -22,6 +23,7 @@ export const adminLinks = [
   ["Create project", "/dashboard/admin/sourcecode", Plus],
   ["Manage projects", "/dashboard/admin/sourcecodeupdatedelete", Code2],
   ["Orders", "/dashboard/admin/usersourcecodeorder", ShoppingBag],
+  ["Developer requests", "/dashboard/admin/developer-requests", BriefcaseBusiness],
 ];
 export default function Adminmenu() {
   return (

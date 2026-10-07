@@ -1,3 +1,10 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard
+Disallow: /sourcecode/buy/
+Disallow: /success/
+Disallow: /sourcecode-order
+Disallow: /login
+Disallow: /register
+Disallow: /forgetpass
+Sitemap: https://codebricket.com/sitemap.xml
