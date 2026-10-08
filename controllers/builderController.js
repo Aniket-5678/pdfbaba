@@ -5,6 +5,19 @@ const cleanBlocks = (blocks) => Array.isArray(blocks) ? blocks.slice(0, 40).map(
   id: String(b.id || "").slice(0, 80), type: String(b.type || "text").slice(0, 30),
   title: String(b.title || "").slice(0, 180), text: String(b.text || "").slice(0, 2000),
   eyebrow: String(b.eyebrow || "").slice(0, 100), buttonText: String(b.buttonText || "").slice(0, 80),
+  elementType: String(b.elementType || "").slice(0, 30), font: String(b.font || "").slice(0, 120),
+  fontSize: Math.max(8, Math.min(160, Number(b.fontSize) || 18)), fontWeight: [300, 400, 500, 600, 700, 800].includes(Number(b.fontWeight)) ? Number(b.fontWeight) : 400,
+  align: ["left", "center", "right"].includes(b.align) ? b.align : "left", icon: String(b.icon || "").slice(0, 40),
+  x: Math.max(0, Math.min(100, Number(b.x) || 0)), y: Math.max(0, Math.min(2000, Number(b.y) || 0)),
+  moveX: Math.max(-4000, Math.min(4000, Number(b.moveX) || 0)), moveY: Math.max(-4000, Math.min(4000, Number(b.moveY) || 0)),
+  layoutWidth: Math.max(10, Math.min(100, Number(b.layoutWidth) || 36)), layoutHeight: Math.max(5, Math.min(1200, Number(b.layoutHeight) || 12)),
+  margin: Math.max(0, Math.min(200, Number(b.margin) || 0)), padding: Math.max(0, Math.min(200, Number(b.padding) || 0)),
+  borderRadius: Math.max(0, Math.min(200, Number(b.borderRadius) || 0)),
+  borderWidth: Math.max(0, Math.min(24, Number(b.borderWidth) || 0)),
+  borderColor: /^#[0-9a-f]{6}$/i.test(b.borderColor || "") ? b.borderColor : "",
+  animation: ["none", "fade", "rise", "pop", "float"].includes(b.animation) ? b.animation : "none",
+  resized: b.resized === true,
+  layoutAdjusted: b.layoutAdjusted === true,
   image: String(b.image || "").slice(0, 500), link: String(b.link || "").slice(0, 500),
   width: Math.max(25, Math.min(100, Number(b.width) || 100)),
   height: Math.max(120, Math.min(1200, Number(b.height) || 320)),
@@ -56,6 +69,11 @@ export async function updateSite(req, res) {
   }
   if (typeof req.body.published === "boolean") site.published = req.body.published;
   await site.save(); res.json(site);
+}
+export async function deleteSite(req, res) {
+  const site = await BuilderSite.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
+  if (!site) return res.status(404).json({ message: "Website not found" });
+  res.json({ success: true, id: site._id });
 }
 export async function publicSite(req, res) {
   const site = await BuilderSite.findOne({ slug: req.params.slug, published: true }).select("name slug template theme blocks pages").lean();
