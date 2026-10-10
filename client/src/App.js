@@ -1,3 +1,4 @@
+import React, { Suspense, lazy } from "react";
 import NotesLibrary, { NoteDetail } from "./components/pages/NotesLibrary";
 import NotesWorkspace from "./components/pages/admin/NotesWorkspace";
 import CreateCategory from "./components/pages/admin/CreateCategory";
@@ -41,9 +42,10 @@ import SuccessPayment from "./components/pages/SuccessPayment";
 import SourceCodeOrder from "./components/pages/SourceCodeOrder";
 import AdminSourceCodeUpdateDelete from "./components/pages/admin/AdminSourceCodeUpdateDelete";
 import AdminUserSourceCodeOrder from "./components/pages/admin/AdminUserSourceCodeOrder";
-import WebsiteBuilder, { PublicWebsite } from "./components/pages/WebsiteBuilder";
 import DeveloperConnect from "./components/pages/DeveloperConnect";
 import DeveloperRequests from "./components/pages/admin/DeveloperRequests";
+const WebsiteBuilder = lazy(() => import("./components/pages/WebsiteBuilder"));
+const PublicWebsite = lazy(() => import("./components/pages/WebsiteBuilder").then(module => ({ default: module.PublicWebsite })));
 
 function App() {
   const [theme] = useTheme();
@@ -69,10 +71,10 @@ function App() {
           <Route path="/note/:slug" element={<NoteDetail />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/site/:slug" element={<PublicWebsite />} />
+          <Route path="/site/:slug" element={<Suspense fallback={<div className="wb-loading" role="status">Loading website…</div>}><PublicWebsite /></Suspense>} />
           <Route path="/builder" element={<PrivateRoutes />}>
-            <Route index element={<WebsiteBuilder />} />
-            <Route path=":id" element={<WebsiteBuilder />} />
+            <Route index element={<Suspense fallback={<div className="wb-loading" role="status">Loading studio…</div>}><WebsiteBuilder /></Suspense>} />
+            <Route path=":id" element={<Suspense fallback={<div className="wb-loading" role="status">Loading studio…</div>}><WebsiteBuilder /></Suspense>} />
             <Route path="connect" element={<DeveloperConnect />} />
           </Route>
           <Route path="/forgetpass" element={<Forgetpass />} />
