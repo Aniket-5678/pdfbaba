@@ -42,6 +42,10 @@ export const staticSeo = {
     "Practice Quizzes",
     "Practice your knowledge and grow your skills with Codebricket quizzes.",
   ],
+  "/coding-practice": [
+    "Online Coding Practice: Challenges in Any Programming Language",
+    "Practice coding online with JavaScript, Python, HTML, CSS and more. Filter by topic or difficulty, write solutions, preview frontend tasks and check your answers.",
+  ],
   "/about": [
     "About Codebricket",
     "Learn about Codebricket source code projects and practical learning resources.",
@@ -76,7 +80,7 @@ export function seoForPath(pathname) {
       : dynamic
         ? "Explore Projects & Learning"
         : "Codebricket");
-  return {
+  const result = {
     title: title + " | Codebricket",
     description:
       known?.[1] ||
@@ -85,6 +89,26 @@ export function seoForPath(pathname) {
     robots: privatePage || !found ? "noindex,follow" : "index,follow",
     found,
   };
+  if (pathname === "/coding-practice") {
+    result.schema = {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Codebricket Online Coding Practice",
+      url: result.canonical,
+      description: result.description,
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "Any",
+      browserRequirements: "Requires a modern web browser",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      featureList: [
+        "Programming challenges across multiple languages",
+        "Difficulty and topic filters",
+        "Frontend code preview and task checks",
+        "Hints and solution explanations",
+      ],
+    };
+  }
+  return result;
 }
 export function escapeHtml(value) {
   return String(value || "")
@@ -110,7 +134,7 @@ export function injectSeo(html, seo) {
     seo.robots +
     '"/><link rel="canonical" href="' +
     escapeHtml(seo.canonical) +
-    '"/><meta property="og:site_name" content="Codebricket"/><meta property="og:title" content="' +
+      '"/><meta property="og:type" content="website"/><meta property="og:locale" content="en_IN"/><meta property="og:site_name" content="Codebricket"/><meta property="og:title" content="' +
     escapeHtml(seo.title) +
     '"/><meta property="og:description" content="' +
     escapeHtml(seo.description) +
@@ -118,9 +142,20 @@ export function injectSeo(html, seo) {
     escapeHtml(seo.canonical) +
     '"/><meta property="og:image" content="' +
     SITE_URL +
-    '/social-card.png"/><meta name="twitter:card" content="summary_large_image"/>';
+    '/social-card.png"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="' +
+    escapeHtml(seo.title) +
+    '"/><meta name="twitter:description" content="' +
+    escapeHtml(seo.description) +
+    '"/><meta name="twitter:image" content="' +
+    SITE_URL +
+    '/social-card.png"/>';
+  const schemaTag = seo.schema
+    ? '<script type="application/ld+json">' +
+      JSON.stringify(seo.schema).replace(/</g, "\\u003c") +
+      "</script>"
+    : "";
   return clean.replace(
     "</head>",
-    tags.replace(/\/>/g, ' data-rh="true"/>') + "</head>",
+    tags.replace(/\/>/g, ' data-rh="true"/>') + schemaTag + "</head>",
   );
 }

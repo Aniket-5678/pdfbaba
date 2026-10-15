@@ -9,6 +9,10 @@ export default function AuthPage({ signup = false }) {
   const [auth, setAuth] = useAuth(),
     navigate = useNavigate(),
     location = useLocation();
+  const returnTo =
+    typeof location.state === "string"
+      ? { pathname: location.state }
+      : location.state?.from || null;
   const [form, setForm] = useState({ fullName: "", email: "", password: "" }),
     [visible, setVisible] = useState(false),
     [busy, setBusy] = useState(false),
@@ -25,11 +29,13 @@ export default function AuthPage({ signup = false }) {
       );
       if (!data.success) throw new Error(data.message || "Please try again.");
       if (signup) {
-        navigate("/login", { state: { registered: true } });
+        navigate("/login", {
+          state: { registered: true, ...(returnTo ? { from: returnTo } : {}) },
+        });
       } else {
         setAuth({ ...auth, user: data.user, token: data.token });
         localStorage.setItem("auth", JSON.stringify(data));
-        const from = location.state?.from;
+        const from = returnTo;
         const target =
           typeof location.state === "string"
             ? location.state
@@ -213,6 +219,7 @@ export default function AuthPage({ signup = false }) {
               <Link
                 className="font-bold text-violet-600"
                 to={signup ? "/login" : "/register"}
+                state={returnTo ? { from: returnTo } : undefined}
               >
                 {signup ? "Log in" : "Create an account"}
               </Link>

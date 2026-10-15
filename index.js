@@ -13,6 +13,7 @@ import roadmapRoutes from "./routes/roadmapRoutes.js";
 import domainRoutes from "./routes/domainRoutes.js";
 import sourceCodeRoutes from "./routes/sourceCodeRoutes.js";
 import builderRoutes from "./routes/builderRoutes.js";
+import codingQuestionRoutes from "./routes/codingQuestionRoutes.js";
 import fs from "fs";
 import SourceCode from "./models/sourceCodeModel.js";
 import { SITE_URL, seoForPath, injectSeo } from "./helper/siteSeo.js";
@@ -82,6 +83,7 @@ app.use("/api/v1/domain", domainRoutes);
 // Mount source code routes
 app.use("/api/v1/sourcecode", sourceCodeRoutes);
 app.use("/api/v1/builder", builderRoutes);
+app.use("/api/v1/coding-questions", codingQuestionRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ✅ Public folder serve karna

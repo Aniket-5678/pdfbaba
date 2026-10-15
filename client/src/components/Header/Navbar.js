@@ -23,6 +23,7 @@ export default function Navbar() {
     ["Notes", "/notes"],
     ["Roadmaps", "/exam-roadmap"],
     ["Practice", "/practice-quiz"],
+    ["Coding", "/coding-practice"],
     ["Website Builder", "/builder"],
   ];
   function search(e) {

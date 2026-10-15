@@ -35,6 +35,10 @@ const pages = {
     "Programming Practice Quizzes",
     "Practice programming and technical concepts with online quizzes. Test your knowledge, review what you know and keep building your skills.",
   ],
+  "/coding-practice": [
+    "Online Coding Practice: Challenges in Any Programming Language",
+    "Practice coding online with JavaScript, Python, HTML, CSS and more. Filter by topic or difficulty, write solutions, preview frontend tasks and check your answers.",
+  ],
   "/about": [
     "About Codebricket",
     "Learn about Codebricket, our source code marketplace and practical developer learning resources.",
@@ -84,7 +88,25 @@ export default function Seo({ title, description, product }) {
       pathname,
     ) ||
     (!known && !detail);
-  const schema = product
+  const schema = pathname === "/coding-practice"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name: "Codebricket Online Coding Practice",
+        url: canonical,
+        description: summary,
+        applicationCategory: "EducationalApplication",
+        operatingSystem: "Any",
+        browserRequirements: "Requires a modern web browser",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+        featureList: [
+          "Programming challenges across multiple languages",
+          "Difficulty and topic filters",
+          "Frontend code preview and task checks",
+          "Hints and solution explanations",
+        ],
+      }
+    : product
     ? {
         "@context": "https://schema.org",
         "@type": "Product",

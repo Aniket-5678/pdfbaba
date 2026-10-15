@@ -3,6 +3,8 @@ import Layout from "../Layout/Layout";
 import Banner from "./Banner";
 import Services from "./Services";
 import LearningCategories from "./LearningCategories";
+import CodingPracticeSection from "./CodingPracticeSection";
+import WebsiteBuilderSection from "./WebsiteBuilderSection";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -16,6 +18,8 @@ export default function HomePage() {
   return (
     <Layout>
       <Banner />
+      <CodingPracticeSection />
+      <WebsiteBuilderSection />
       <section className="mx-auto max-w-[1360px] border-t border-slate-100 px-5 py-9 sm:px-10">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>

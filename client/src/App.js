@@ -24,6 +24,8 @@ import { useTheme } from "./components/context/ThemeContext";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy";
 import TermCondition from "./components/pages/TermCondition";
 import { Toaster } from "react-hot-toast";
+import CodingPractice from "./components/pages/CodingPractice";
+import CodingQuestionManager from "./components/pages/admin/CodingQuestionManager";
 import ServiceList from "./components/pages/ServiceList";
 import CreateQuiz from "./components/pages/admin/CreateQuiz";
 import QuizList from "./components/pages/admin/QuizList";
@@ -85,6 +87,9 @@ function App() {
           <Route path="/termcondition" element={<TermCondition />} />
           <Route path="/service" element={<ServiceList />} />
           <Route path="/practice-quiz" element={<QuizPlayList />} />
+          <Route path="/coding-practice" element={<PrivateRoutes />}>
+            <Route index element={<CodingPractice />} />
+          </Route>
           <Route path="/play/:id" element={<PlayQuiz />} />
           <Route path="/exam-roadmap" element={<Roadmap />} />
           <Route path="/roadmap/:id" element={<RoadmapDetail />} />
@@ -104,6 +109,7 @@ function App() {
             <Route path="admin/create-category" element={<CreateCategory />} />
             <Route path="admin/create-quiz" element={<CreateQuiz />} />
             <Route path="admin/all-quiz" element={<QuizList />} />
+            <Route path="admin/coding-questions" element={<CodingQuestionManager />} />
             <Route path="admin/createroadmap" element={<CreateRoadmap />} />
             <Route path="admin/roadmaplist" element={<RoadmapList />} />
             <Route path="admin/update/:id" element={<UpdateRoadmap />} />

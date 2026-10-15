@@ -31,7 +31,19 @@ export default function AccessGate({ admin = false }) {
     stored = Boolean(localStorage.getItem("auth"));
   } catch {}
   if ((!auth.token && !stored) || state === "denied")
-    return <Navigate to="/login" replace state={location.pathname} />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{
+          from: {
+            pathname: location.pathname,
+            search: location.search,
+            hash: location.hash,
+          },
+        }}
+      />
+    );
   if (state === "allowed" && auth.token) return <Outlet />;
   return (
     <div

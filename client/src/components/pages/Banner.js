@@ -64,6 +64,13 @@ export default function Banner() {
               <WandSparkles size={18} /> Build your website
               <ArrowRight size={18} />
             </Link>
+            <Link
+              to="/coding-practice"
+              className="inline-flex items-center gap-3 rounded-2xl border border-violet-200 bg-violet-50 px-6 py-4 text-sm font-bold text-violet-800 shadow-sm transition hover:-translate-y-1 hover:bg-violet-100"
+            >
+              <Code2 size={18} /> Practice coding in any language
+              <ArrowRight size={18} />
+            </Link>
             <a
               href="#projects"
               className="inline-flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold text-slate-950 transition hover:bg-violet-50"
