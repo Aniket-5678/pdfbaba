@@ -11,20 +11,20 @@ export const staticSeo = {
     "View your Codebricket project purchases.",
   ],
   "/notes": [
-    "Study Notes & Learning Library",
-    "Explore study notes, practical examples and learning resources on Codebricket.",
+    "Programming Study Notes & Learning Library",
+    "Browse programming and technology notes by category. Find clear explanations and examples, then use tags to guide your next study session on Codebricket.",
   ],
   "/": [
-    "Build Faster. Create Bigger.",
-    "Discover ready-made website projects, source codes, developer roadmaps and practical learning resources. Build your next idea with Codebricket.",
+    "Coding Practice, Website Builder & Projects",
+    "Build websites with Codebricket Studio, practise programming challenges, follow developer roadmaps, take quizzes and explore source code projects and study notes.",
   ],
   "/service": [
     "Website Projects & Source Codes",
     "Explore ready-made website projects and source codes on Codebricket.",
   ],
   "/builder": [
-    "Free Website Builder & Customizable Templates",
-    "Build a website with customizable ecommerce, portfolio, CRM, business and agency templates. Edit sections, colors and pages, then publish your site with Codebricket Studio.",
+    "Website Builder & Customizable Website Templates",
+    "Create a portfolio, business, blog or shop website from a template or blank canvas. Edit sections and media, preview desktop and mobile, and publish with Codebricket Studio.",
   ],
   "/domain-suggestor": [
     "Domain Name Ideas",
@@ -35,16 +35,16 @@ export const staticSeo = {
     "Explore technology, debugging, programming and exam preparation learning paths.",
   ],
   "/exam-roadmap": [
-    "Developer Learning Roadmaps",
-    "Find structured learning paths and step-by-step developer roadmaps.",
+    "Developer Roadmaps & Programming Learning Paths",
+    "Explore step-by-step developer roadmaps for programming and technology. Follow milestones, check prerequisites and track learning progress at your own pace with Codebricket.",
   ],
   "/practice-quiz": [
-    "Practice Quizzes",
-    "Practice your knowledge and grow your skills with Codebricket quizzes.",
+    "Programming Quizzes & Technical Practice",
+    "Take focused programming and technology quizzes, check your answers and review concepts that need more practice. Use Codebricket quizzes to guide your next study session.",
   ],
   "/coding-practice": [
-    "Online Coding Practice: Challenges in Any Programming Language",
-    "Practice coding online with JavaScript, Python, HTML, CSS and more. Filter by topic or difficulty, write solutions, preview frontend tasks and check your answers.",
+    "Online Coding Practice & Programming Challenges",
+    "Solve programming challenges by language, topic and difficulty. Read examples, use progressive hints, preview frontend tasks and check solutions against configured tests on Codebricket.",
   ],
   "/about": [
     "About Codebricket",
@@ -106,6 +106,32 @@ export function seoForPath(pathname) {
         "Frontend code preview and task checks",
         "Hints and solution explanations",
       ],
+    };
+  } else if (pathname === "/builder") {
+    result.schema = {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Codebricket Website Builder",
+      url: result.canonical,
+      description: result.description,
+      applicationCategory: "DesignApplication",
+      operatingSystem: "Any",
+      browserRequirements: "Requires a modern web browser",
+      featureList: [
+        "Website templates for portfolios, businesses, blogs and shops",
+        "Editable page sections, text, images and colors",
+        "Desktop, tablet and mobile previews",
+        "Publish a shareable website",
+      ],
+    };
+  } else if (["/exam-roadmap", "/practice-quiz"].includes(pathname)) {
+    result.schema = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: result.title,
+      url: result.canonical,
+      description: result.description,
+      isPartOf: { "@type": "WebSite", name: "Codebricket", url: SITE_URL },
     };
   }
   return result;

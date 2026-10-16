@@ -108,6 +108,7 @@ export default function PlayQuiz() {
                   <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
                     {quiz.title}
                   </h1>
+                  {quiz.description && <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">{quiz.description}</p>}
                 </div>
                 <div
                   aria-label="Time remaining"
@@ -161,9 +162,11 @@ export default function PlayQuiz() {
                         <p className="mt-2 text-xs text-slate-500">
                           Correct answer: {a.question.correctAnswer}
                         </p>
+                        {a.question.explanation && <p className="mt-3 rounded-xl bg-violet-50 p-3 text-xs leading-6 text-violet-900"><b>Why:</b> {a.question.explanation}</p>}
                       </div>
                     ))}
                   </div>
+                  <section className="mt-6 overflow-hidden rounded-3xl border border-violet-100 bg-gradient-to-br from-violet-50 via-white to-orange-50 p-6 sm:p-8"><span className="text-[10px] font-bold uppercase tracking-[.16em] text-violet-700">Turn the result into progress</span><h2 className="mt-3 text-xl font-extrabold tracking-tight text-slate-950">Review the reasoning behind each answer</h2><p className="mt-3 text-sm leading-7 text-slate-600">A score shows how this attempt went; the answer review helps identify what to revisit. For each missed question, write down the concept it tests and why the correct choice fits. Then return to the topic material and try again later without relying on recall of the options.</p><p className="mt-2 text-sm leading-7 text-slate-600">If you missed a question because of wording, note the important condition in the prompt. If the concept itself was unfamiliar, study that idea with a small example before retaking the quiz.</p></section>
                 </>
               ) : (
                 <form onSubmit={next} className={panel + " sm:p-8"}>

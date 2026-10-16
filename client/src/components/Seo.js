@@ -4,40 +4,40 @@ import { useLocation } from "react-router-dom";
 const origin = "https://codebricket.com";
 const pages = {
   "/notes": [
-    "Study Notes & Learning Library",
-    "Explore study notes, practical examples and learning resources on Codebricket.",
+    "Programming Study Notes & Learning Library",
+    "Browse programming and technology notes by category. Find clear explanations and examples, then use tags to guide your next study session on Codebricket.",
   ],
   "/domain-suggestor": [
     "Domain Name Ideas",
     "Explore domain name ideas for your next project on Codebricket.",
   ],
   "/": [
-    "Build Faster. Create Bigger.",
-    "Discover ready-made website projects, source codes, developer roadmaps and practical learning resources. Build your next idea with Codebricket.",
+    "Coding Practice, Website Builder & Projects",
+    "Build websites with Codebricket Studio, practise programming challenges, follow developer roadmaps, take quizzes and explore source code projects and study notes.",
   ],
   "/service": [
     "Ready-Made Website Projects & Source Code",
     "Browse production-ready website source code, ecommerce stores, SaaS apps, portfolios and business projects. Find a project to customize and launch with Codebricket.",
   ],
   "/builder": [
-    "Free Website Builder & Customizable Templates",
-    "Build a website with customizable ecommerce, portfolio, CRM, business and agency templates. Edit sections, colors and pages, then publish your site with Codebricket Studio.",
+    "Website Builder & Customizable Website Templates",
+    "Create a portfolio, business, blog or shop website from a template or blank canvas. Edit sections and media, preview desktop and mobile, and publish with Codebricket Studio.",
   ],
   "/categories": [
     "Programming & Study Categories",
     "Explore organized programming tutorials, technology topics, debugging guides, computer science fundamentals and exam preparation notes by category.",
   ],
   "/exam-roadmap": [
-    "Developer Roadmaps & Learning Paths",
-    "Follow structured developer roadmaps and step-by-step learning paths for programming, web development and career-ready technical skills.",
+    "Developer Roadmaps & Programming Learning Paths",
+    "Explore step-by-step developer roadmaps for programming and technology. Follow milestones, check prerequisites and track learning progress at your own pace with Codebricket.",
   ],
   "/practice-quiz": [
-    "Programming Practice Quizzes",
-    "Practice programming and technical concepts with online quizzes. Test your knowledge, review what you know and keep building your skills.",
+    "Programming Quizzes & Technical Practice",
+    "Take focused programming and technology quizzes, check your answers and review concepts that need more practice. Use Codebricket quizzes to guide your next study session.",
   ],
   "/coding-practice": [
-    "Online Coding Practice: Challenges in Any Programming Language",
-    "Practice coding online with JavaScript, Python, HTML, CSS and more. Filter by topic or difficulty, write solutions, preview frontend tasks and check your answers.",
+    "Online Coding Practice & Programming Challenges",
+    "Solve programming challenges by language, topic and difficulty. Read examples, use progressive hints, preview frontend tasks and check solutions against configured tests on Codebricket.",
   ],
   "/about": [
     "About Codebricket",
@@ -106,6 +106,32 @@ export default function Seo({ title, description, product }) {
           "Hints and solution explanations",
         ],
       }
+    : pathname === "/builder"
+      ? {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Codebricket Website Builder",
+          url: canonical,
+          description: summary,
+          applicationCategory: "DesignApplication",
+          operatingSystem: "Any",
+          browserRequirements: "Requires a modern web browser",
+          featureList: [
+            "Website templates for portfolios, businesses, blogs and shops",
+            "Editable page sections, text, images and colors",
+            "Desktop, tablet and mobile previews",
+            "Publish a shareable website",
+          ],
+        }
+      : ["/exam-roadmap", "/practice-quiz"].includes(pathname)
+        ? {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: finalTitle,
+            url: canonical,
+            description: summary,
+            isPartOf: { "@type": "WebSite", name: "Codebricket", url: origin },
+          }
     : product
     ? {
         "@context": "https://schema.org",

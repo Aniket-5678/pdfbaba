@@ -422,6 +422,26 @@ export default function Services({ catalog = false }) {
           </div>
         )}
       </div>
+      {catalog && (
+        <div className="mx-auto mt-14 max-w-6xl space-y-8">
+          <section className="relative overflow-hidden rounded-[30px] bg-slate-950 p-6 text-white shadow-xl shadow-violet-200/50 sm:p-9 lg:p-11">
+            <div aria-hidden="true" className="absolute -right-16 -top-24 h-72 w-72 rounded-full bg-violet-500/20 blur-3xl" />
+            <div className="relative">
+              <div className="grid gap-5 lg:grid-cols-[.9fr_1.1fr] lg:items-end"><div><span className="inline-flex rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.17em] text-orange-200">A practical project field guide</span><h2 className="mt-4 max-w-xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">Choose with a goal.<br/><span className="text-violet-300">Customize with a plan.</span></h2></div><p className="max-w-xl text-sm leading-7 text-slate-300">A source code project is most useful when it matches something you want to understand or build. Use the preview and project description to make an informed choice, then work through the code in deliberate steps.</p></div>
+              <div className="mt-8 grid gap-3 md:grid-cols-3">
+                {[["01","Evaluate the fit","Identify the page types and features you need. Compare those requirements with the project description and live preview before deciding it is a useful starting point."],["02","Map the structure","After opening the code, locate the app entry point, routes, shared components and configuration. Understanding where a change belongs makes customization safer."],["03","Test the experience","Run the project locally, replace sample content and check the primary journey at mobile and desktop widths. Recheck navigation, forms and empty states after edits."]].map(([number,title,text],index)=><article key={number} className="rounded-2xl border border-white/10 bg-white/[.06] p-5 backdrop-blur-sm"><span className={"inline-flex h-8 w-8 items-center justify-center rounded-xl text-[10px] font-extrabold " + (index===0?"bg-orange-300/15 text-orange-200":index===1?"bg-violet-300/15 text-violet-200":"bg-emerald-300/15 text-emerald-200")}>{number}</span><h3 className="mt-4 text-sm font-bold text-white">{title}</h3><p className="mt-2 text-xs leading-6 text-slate-300">{text}</p></article>)}
+              </div>
+            </div>
+          </section>
+          <section className="overflow-hidden rounded-[30px] border border-slate-200 bg-gradient-to-br from-white via-violet-50/50 to-orange-50/70 p-6 sm:p-9">
+            <div className="flex flex-wrap items-end justify-between gap-4"><div><span className="text-[10px] font-bold uppercase tracking-[.17em] text-violet-700">Find a useful starting point</span><h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950">Pick the project by what you want to practise.</h2></div><p className="max-w-lg text-xs leading-6 text-slate-600">Different project types expose different engineering decisions. Start with the kind of user experience you want to study.</p></div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[["E-commerce","Study product discovery, product detail layouts and the transitions between browsing and taking action.","bg-orange-100 text-orange-700"],["Portfolio","Look at how work samples are presented, how context is written and how a visitor finds the next step.","bg-violet-100 text-violet-700"],["SaaS & dashboards","Inspect navigation hierarchy, data summaries and the way dense information is grouped for scanning.","bg-blue-100 text-blue-700"],["Business & services","Review how a site explains an offer, establishes trust and makes contact information easy to find.","bg-emerald-100 text-emerald-700"]].map(([title,text,color])=><article key={title} className="rounded-2xl border border-white bg-white/85 p-4 shadow-sm"><span className={"inline-flex rounded-lg px-2.5 py-1 text-[9px] font-bold " + color}>{title}</span><p className="mt-3 text-xs leading-6 text-slate-600">{text}</p></article>)}
+            </div>
+            <p className="mt-5 border-t border-slate-200/80 pt-4 text-[11px] leading-6 text-slate-500">Before relying on a codebase, read its setup instructions and verify which services or environment settings it needs. Keep credentials private, make a backup before larger changes, and check the experience from a visitor’s point of view.</p>
+          </section>
+        </div>
+      )}
     </section>
   );
 }

@@ -550,6 +550,10 @@ export default function RoadmapDetail() {
                   </div>
                 </details>
               )}
+              <section className="mt-10 grid gap-6 border-t border-slate-100 pt-7 sm:grid-cols-2">
+                <article><h2 className="text-lg font-bold">How to get value from this path</h2><p className="mt-3 text-sm leading-7 text-slate-600">Use each step as a checkpoint, not just a title to read. After studying a topic, write a small example, explain the main idea without notes, and record any question that remains. That makes it easier to see which foundations need another pass.</p></article>
+                <article><h2 className="text-lg font-bold">Turn progress into practice</h2><p className="mt-3 text-sm leading-7 text-slate-600">When a step introduces a tool or technique, try it in a small project and notice how it connects to earlier steps. The completion markers save your progress in this browser; they are a personal checklist and do not measure mastery automatically.</p></article>
+              </section>
             </div>
           </section>
         </>

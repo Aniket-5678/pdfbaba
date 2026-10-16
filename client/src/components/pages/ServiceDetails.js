@@ -38,6 +38,14 @@ const ServiceDetails = () => {
 
   const [service, setService] = useState(null);
   const [mainImage, setMainImage] = useState("");
+  const projectText = `${service?.title || ""} ${service?.description || ""}`.toLowerCase();
+  const projectKind = /shop|store|ecommerce|e-commerce|cart|product/.test(projectText)
+    ? { title: "What to review in this store project", text: "For a store experience, trace the path from product discovery to the next action. Review how product information, imagery, navigation and mobile layouts work together. Before adapting checkout or payment behavior, confirm which integrations are included and configure them for your own environment." }
+    : /portfolio|agency|creative|designer/.test(projectText)
+      ? { title: "Make the portfolio tell a clear story", text: "When exploring a portfolio, look at how work samples are grouped and what context accompanies each one. Replace sample projects with work you can describe, keep image crops consistent, and make sure contact details and links lead to the right destination." }
+      : /dashboard|saas|admin|analytics/.test(projectText)
+        ? { title: "Understand the dashboard structure", text: "For a dashboard, inspect how navigation, summary information and detailed views are separated. Check empty, loading and error states as well as the populated screen, then connect the interface to data and access rules appropriate for your own application." }
+        : { title: "Explore the project before customizing it", text: "Use the live preview to understand the visitor journey, then compare it with the supplied project description. Review the setup instructions and available files before changing the interface. Test your edits at narrow and wide screen sizes, and verify that navigation, forms and external links behave as intended." };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -176,6 +184,7 @@ const ServiceDetails = () => {
             </div>
           </div>
         )}
+        {service && <section className="mt-10 grid gap-7 border-t border-slate-200 pt-8 sm:grid-cols-2"><article><h2 className="text-lg font-bold text-slate-950">{projectKind.title}</h2><p className="mt-3 text-sm leading-7 text-slate-600">{projectKind.text}</p></article><article><h2 className="text-lg font-bold text-slate-950">A useful customization checklist</h2><p className="mt-3 text-sm leading-7 text-slate-600">Start by running the project as provided and noting its framework, dependencies and configuration. Change one area at a time, keep credentials out of source files, and test the main user journey after each meaningful change. This makes the code easier to understand and helps you catch regressions early.</p></article></section>}
        </div>
       </div>
     </Layout>
