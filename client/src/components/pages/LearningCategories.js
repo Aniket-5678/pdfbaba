@@ -256,6 +256,72 @@ export default function LearningCategories({ standalone = false }) {
           </div>
           <p className="mt-7 border-t border-blue-100 pt-5 text-xs leading-6 text-slate-500">A helpful checkpoint is being able to explain the concept, show one example, and describe a case where it would not apply. If one of those is hard, return to the note or choose a smaller step.</p>
         </section>
+        {standalone && (
+          <section className="relative mt-8 overflow-hidden rounded-[30px] border border-violet-100 bg-gradient-to-br from-slate-950 via-violet-950 to-indigo-950 p-5 text-white shadow-xl shadow-violet-950/10 sm:mt-10 sm:p-8 lg:p-10" aria-labelledby="learning-path-guide">
+            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-500/20 blur-3xl" />
+            <div className="relative">
+              <div className="max-w-3xl">
+                <span className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-violet-200 sm:text-xs">A practical learning system</span>
+                <h2 id="learning-path-guide" className="mt-4 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl lg:text-4xl">Turn a category into a learning path you can follow</h2>
+                <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base">A topic becomes easier to study when you know what question you are trying to answer, what to practise, and how you will check your understanding. Use this simple structure to make the notes and learning materials in a category more useful.</p>
+              </div>
+
+              <div className="mt-7 grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {[
+                  ["01", "Choose a question", "Replace a broad goal like “learn web development” with a question you can investigate, such as how a browser turns a request into a page."],
+                  ["02", "Find the prerequisites", "List the terms or smaller ideas the question depends on. Review those first if the explanation relies on unfamiliar vocabulary."],
+                  ["03", "Make the idea observable", "Predict what a small example will do, run it, and change one input or condition. Compare the result with your prediction."],
+                  ["04", "Apply and explain", "Use the idea in a small exercise, then describe your approach and its limits without copying the note."],
+                ].map(([number, title, text]) => (
+                  <article key={number} className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.07] p-4 backdrop-blur-sm sm:p-5">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-white/10 text-xs font-extrabold text-orange-300">{number}</span>
+                    <h3 className="mt-4 text-sm font-bold leading-snug text-white sm:text-base">{title}</h3>
+                    <p className="mt-2 text-xs leading-6 text-slate-300 sm:text-sm">{text}</p>
+                  </article>
+                ))}
+              </div>
+
+              <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-2">
+                <article className="rounded-2xl border border-white/10 bg-white/[0.07] p-5 sm:p-6">
+                  <h3 className="text-base font-bold text-white sm:text-lg">When a topic feels confusing, use the signal</h3>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      ["The words feel unfamiliar", "Pause and define the terms. Identify which earlier concept each one assumes before continuing."],
+                      ["You understand the words but cannot predict the output", "Trace the example one statement at a time. Write down how each important value changes."],
+                      ["The example makes sense, but you cannot build it yourself", "Hide the solution and recreate a smaller version. Use the error message to find the step you do not yet understand."],
+                    ].map(([signal, response]) => (
+                      <div key={signal} className="rounded-xl border border-white/10 bg-slate-950/20 p-3 sm:p-4">
+                        <h4 className="text-sm font-semibold leading-snug text-violet-100">{signal}</h4>
+                        <p className="mt-1.5 text-xs leading-5 text-slate-300 sm:text-sm">{response}</p>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+
+                <article className="rounded-2xl border border-white/10 bg-white/[0.07] p-5 sm:p-6">
+                  <h3 className="text-base font-bold text-white sm:text-lg">A flexible review cycle</h3>
+                  <p className="mt-2 text-xs leading-6 text-slate-300 sm:text-sm">Space your practice so you have to retrieve the idea again, rather than only recognizing it from a recent reread.</p>
+                  <ol className="mt-4 space-y-3">
+                    {[
+                      ["First session", "Read for one clear question and write a short explanation from memory."],
+                      ["Next review", "Recreate the smallest example without looking, then check what you missed."],
+                      ["Later practice", "Solve a related problem or change the example to cover a different case."],
+                      ["End-of-week check", "Summarize what you can now explain, what still causes errors, and what to revisit."],
+                    ].map(([time, activity]) => (
+                      <li key={time} className="grid grid-cols-[100px_minmax(0,1fr)] gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0 sm:grid-cols-[120px_minmax(0,1fr)]">
+                        <span className="text-xs font-bold text-orange-300">{time}</span>
+                        <p className="text-xs leading-5 text-slate-300 sm:text-sm">{activity}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="mt-4 text-xs leading-6 text-slate-400">Treat this as a starting rhythm, not a deadline. Give difficult ideas more time and revisit them when you meet them in practice.</p>
+                </article>
+              </div>
+
+              <p className="mt-5 rounded-2xl border border-violet-300/15 bg-violet-400/10 p-4 text-xs leading-6 text-violet-100 sm:p-5 sm:text-sm">A useful learning record is small: the question you started with, the example you tried, what surprised you, and the next question you want to answer. That gives your next study session a clear place to begin.</p>
+            </div>
+          </section>
+        )}
       </div>
     </section>
   );

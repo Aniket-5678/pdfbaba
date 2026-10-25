@@ -185,6 +185,34 @@ const ServiceDetails = () => {
           </div>
         )}
         {service && <section className="mt-10 grid gap-7 border-t border-slate-200 pt-8 sm:grid-cols-2"><article><h2 className="text-lg font-bold text-slate-950">{projectKind.title}</h2><p className="mt-3 text-sm leading-7 text-slate-600">{projectKind.text}</p></article><article><h2 className="text-lg font-bold text-slate-950">A useful customization checklist</h2><p className="mt-3 text-sm leading-7 text-slate-600">Start by running the project as provided and noting its framework, dependencies and configuration. Change one area at a time, keep credentials out of source files, and test the main user journey after each meaningful change. This makes the code easier to understand and helps you catch regressions early.</p></article></section>}
+        {service && (
+          <section className="mt-8 grid gap-7 border-t border-slate-200 pt-8 sm:grid-cols-2">
+            <article>
+              <h2 className="text-lg font-bold text-slate-950">Project purpose and features</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                Use the project description above to understand its stated purpose, then compare it with the screenshots and live preview. This helps you see which audience the interface appears to serve and what tasks it supports. The listing does not provide a separate feature specification, so check each visible page, link and form in the preview before treating a behavior as part of the project.
+              </p>
+            </article>
+            <article>
+              <h2 className="text-lg font-bold text-slate-950">Technologies and setup</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                The project listing does not identify a technology stack or configuration requirements. Check the included setup guide and source files to confirm the framework, runtime, dependencies and any services the project actually uses. Follow those project-specific instructions; do not assume that an API, backend or database is included unless the files document it.
+              </p>
+            </article>
+            <article>
+              <h2 className="text-lg font-bold text-slate-950">What you can learn</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                As you review the source, connect a screen in the preview to the files that render and style it. Trace one interaction from the user’s input to the visible result, then make a small change and test it. Depending on the project, this can build practical experience with interface structure, styling, application flow, configuration and debugging.
+              </p>
+            </article>
+            <article>
+              <h2 className="text-lg font-bold text-slate-950">Use cases and possible improvements</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                A source project can serve as a learning reference or a starting point for a customized site when its included code fits your needs. After reviewing what is already present, consider improvements such as clearer keyboard focus, more helpful empty or error states, additional tests, or refinements for smaller screens. These are ideas to evaluate, not features claimed to be included.
+              </p>
+            </article>
+          </section>
+        )}
        </div>
       </div>
     </Layout>

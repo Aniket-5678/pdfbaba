@@ -440,6 +440,94 @@ export default function Services({ catalog = false }) {
             </div>
             <p className="mt-5 border-t border-slate-200/80 pt-4 text-[11px] leading-6 text-slate-500">Before relying on a codebase, read its setup instructions and verify which services or environment settings it needs. Keep credentials private, make a backup before larger changes, and check the experience from a visitor’s point of view.</p>
           </section>
+          <section className="overflow-hidden rounded-[30px] border border-violet-100 bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 p-5 text-white shadow-xl shadow-violet-950/10 sm:p-8 lg:p-10">
+            <div className="grid gap-5 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+              <div>
+                <span className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-orange-200">A customization plan</span>
+                <h2 className="mt-4 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">Make the project fit a real need.</h2>
+              </div>
+              <p className="text-sm leading-7 text-slate-300">A useful adaptation starts with a clear brief, not a long list of edits. Decide what the site should help its visitors do, then make changes in small, reviewable steps. Use the project description and preview as reference points, and confirm implementation details in the supplied files.</p>
+            </div>
+            <div className="mt-6 grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {[["01 · Audience", "Who is the site for, and what do visitors need to understand or complete? Write one primary goal before changing pages."], ["02 · Scope", "Choose the pages and essential interactions needed for that goal. Separate must-have behavior from ideas that can wait."], ["03 · Content", "Replace placeholder copy and imagery with material that accurately represents the intended site. Check that each section supports the visitor’s task."], ["04 · Constraints", "Note target screen sizes, required integrations and setup needs. Verify each constraint against the project files rather than assuming it is already supported."]].map(([label, text], index) => (
+                <article key={label} className="min-w-0 rounded-2xl border border-white/10 bg-white/[0.07] p-4 sm:p-5">
+                  <span className={"text-[9px] font-extrabold uppercase tracking-[.12em] " + ["text-orange-200", "text-violet-200", "text-sky-200", "text-emerald-200"][index]}>{label}</span>
+                  <p className="mt-3 text-xs leading-6 text-slate-300 sm:text-sm">{text}</p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-2">
+              <article className="rounded-2xl border border-white/10 bg-white/[0.07] p-5 sm:p-6">
+                <h3 className="text-base font-bold text-white sm:text-lg">Work in small, reviewable passes</h3>
+                <ol className="mt-3 list-decimal space-y-2 pl-5 text-xs leading-6 text-slate-300 sm:text-sm">
+                  <li>Run the project as supplied and note the important pages and interactions.</li>
+                  <li>Update content and assets, then check that the meaning and hierarchy remain clear.</li>
+                  <li>Make one focused interface or behavior change at a time so its effect is easy to inspect.</li>
+                  <li>After each pass, revisit the main visitor journey and keep a short note of what changed.</li>
+                </ol>
+              </article>
+              <article className="rounded-2xl border border-white/10 bg-white/[0.07] p-5 sm:p-6">
+                <h3 className="text-base font-bold text-white sm:text-lg">Review from a visitor’s point of view</h3>
+                <ul className="mt-3 space-y-2 text-xs leading-6 text-slate-300 sm:text-sm">
+                  <li>Can visitors understand the purpose of each page and find the next step?</li>
+                  <li>Do navigation, buttons and forms behave as their labels promise?</li>
+                  <li>Is important content readable at narrow and wide screen sizes?</li>
+                  <li>Can keyboard users identify and reach the interactive controls?</li>
+                  <li>Are empty, loading or error states understandable where the project uses them?</li>
+                </ul>
+              </article>
+            </div>
+            <p className="mt-5 rounded-2xl border border-white/10 bg-black/10 p-4 text-xs leading-6 text-slate-300 sm:p-5 sm:text-sm">A project is ready for its next iteration when the main task is clear, the important interactions have been checked, and the remaining improvements are written down. This review is a practical checklist; the actual capabilities and setup vary by project.</p>
+          </section>
+          <section className="overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_16px_45px_-32px_rgba(30,41,59,.35)]">
+            <div className="bg-gradient-to-br from-violet-50 via-white to-orange-50 p-5 sm:p-8 lg:p-10">
+              <div className="max-w-3xl">
+                <span className="inline-flex rounded-full border border-violet-100 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-violet-700">After you choose a project</span>
+                <h2 className="mt-4 text-2xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-3xl">What to expect after buying source code</h2>
+                <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">Review the project description and preview before checkout so you know which project you are selecting. The exact files and setup requirements depend on that listing.</p>
+              </div>
+              <ol className="mt-6 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {[["1 · Review", "Open the project details and compare its description and available preview with what you need."], ["2 · Checkout", "Sign in and complete the one-time payment through the secure checkout for the selected project."], ["3 · Download", "After payment verification, the flow opens a success page where you can download the project ZIP. The current order download window is 24 hours, so save the file locally promptly."], ["4 · Set up", "Extract the archive and follow the setup instructions included with the purchase. Check that project's own files for its prerequisites and configuration; there is no single setup command that applies to every project."]].map(([title, text], index) => (
+                  <li key={title} className="min-w-0 rounded-2xl border border-white bg-white/85 p-4 shadow-sm sm:p-5">
+                    <span className={"inline-flex h-8 w-8 items-center justify-center rounded-xl text-xs font-extrabold " + ["bg-orange-100 text-orange-700", "bg-violet-100 text-violet-700", "bg-blue-100 text-blue-700", "bg-emerald-100 text-emerald-700"][index]}>{String(index + 1).padStart(2, "0")}</span>
+                    <h3 className="mt-3 text-sm font-bold text-slate-900 sm:text-base">{title}</h3>
+                    <p className="mt-2 text-xs leading-6 text-slate-600 sm:text-sm">{text}</p>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/80 p-4 text-xs leading-6 text-slate-600 sm:text-sm">The download is a ZIP file, not an automatically hosted or deployed website. You receive the files for the project shown in its listing; inspect the included documentation and verify its requirements before making it part of a live business workflow.</p>
+            </div>
+            <div className="border-t border-slate-200 p-5 sm:p-8 lg:p-10">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-[.16em] text-violet-700">Browse by project type</span>
+                  <h3 className="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">Different starting points for different business needs.</h3>
+                </div>
+                <p className="max-w-xl text-xs leading-6 text-slate-600 sm:text-sm">The catalog groups projects into these types. Use them to narrow your search, then confirm each project's actual scope from its own details.</p>
+              </div>
+              <div className="mt-5 grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {[["E-commerce", "Present products and help visitors move from browsing toward an inquiry or purchase. Check each listing to see which commerce steps are actually included."], ["Business", "Explain a company’s services, audience and contact path in one place; useful when customers need a clear introduction before reaching out."], ["Portfolio", "Show selected work and its context so prospective clients or employers can understand the creator’s experience and approach."], ["SaaS", "Introduce a software product or present an application-style interface. Review the project details to distinguish a visual starting point from any working service features."], ["Blog", "Organize articles and subject matter to support publishing, education or a company’s content strategy."], ["Travel", "Present destinations, itineraries or travel information in a way that helps visitors compare options and plan their next step."], ["Restaurant", "Share a menu, location and dining information so guests can decide what to order or how to visit."], ["Real estate", "Present properties and key listing information to help prospective buyers or renters explore available options."]].map(([title, text], index) => (
+                  <article key={title} className="min-w-0 rounded-2xl border border-slate-100 bg-gradient-to-br from-slate-50 to-white p-4 sm:p-5">
+                    <span className={"inline-flex rounded-lg px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide " + ["bg-orange-100 text-orange-700", "bg-emerald-100 text-emerald-700", "bg-violet-100 text-violet-700", "bg-blue-100 text-blue-700"][index % 4]}>{title}</span>
+                    <p className="mt-3 text-xs leading-6 text-slate-600 sm:text-sm">{text}</p>
+                  </article>
+                ))}
+              </div>
+              <p className="mt-5 border-t border-slate-100 pt-4 text-xs leading-6 text-slate-500 sm:text-sm">A project can provide a useful base for a business website, but fit depends on its real features, content, setup and your requirements. A template or source archive by itself does not guarantee business results; plan to adapt and review it for your audience.</p>
+            </div>
+          </section>
+          <section className="relative overflow-hidden rounded-[30px] border border-violet-100 bg-gradient-to-br from-violet-50 via-white to-orange-50 p-5 sm:p-8 lg:p-9">
+            <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="max-w-3xl">
+                <span className="inline-flex rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-violet-700">Need a custom solution?</span>
+                <h2 className="mt-3 text-xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-2xl">Talk to a developer about your project.</h2>
+                <p className="mt-3 text-sm leading-7 text-slate-600">If you need a website shaped around requirements beyond a ready-made project, use the developer request form to describe your idea, project type and budget. The team can reply to the email you provide. Sign in is required to open the form.</p>
+              </div>
+              <Link to="/builder/connect" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-violet-700 sm:w-fit">
+                Talk to a developer <ArrowRight size={16} />
+              </Link>
+            </div>
+          </section>
         </div>
       )}
     </section>
