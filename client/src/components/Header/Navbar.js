@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Braces,
   Search,
@@ -14,10 +15,33 @@ import { useAuth } from "../context/auth";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    const term = query.trim();
+    if (term.length < 2) {
+      setResults([]);
+      setSearching(false);
+      return undefined;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      setSearching(true);
+      try {
+        const { data } = await axios.get("/api/v1/search", { params: { q: term, limit: 4 }, signal: controller.signal });
+        setResults(data.results || []);
+      } catch (error) {
+        if (!controller.signal.aborted) setResults([]);
+      } finally {
+        if (!controller.signal.aborted) setSearching(false);
+      }
+    }, 300);
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [query]);
   const links = [
-    ["Home", "/"],
     ["Projects", "/service"],
     ["Categories", "/categories"],
     ["Notes", "/notes"],
@@ -30,7 +54,8 @@ export default function Navbar() {
   function search(e) {
     e.preventDefault();
     setOpen(false);
-    navigate("/service?q=" + encodeURIComponent(query.trim()));
+    setSearchOpen(false);
+    if (query.trim()) navigate("/search?q=" + encodeURIComponent(query.trim()));
   }
   function logout() {
     setAuth({ ...auth, user: null, token: "" });
@@ -59,7 +84,7 @@ export default function Navbar() {
           Built for developers
         </span>
       </div>
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-6 px-5 py-5 sm:px-10">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-5 py-5 sm:px-8">
         <Link
           to="/"
           aria-label="Codebricket home"
@@ -72,7 +97,7 @@ export default function Navbar() {
         </Link>
         <nav
           aria-label="Main navigation"
-          className="hidden items-center gap-5 min-[1360px]:flex"
+          className="hidden shrink-0 items-center gap-3 whitespace-nowrap min-[1360px]:flex"
         >
           {links.map(([label, path]) => (
             <NavLink
@@ -80,7 +105,7 @@ export default function Navbar() {
               end={path === "/"}
               to={path}
               className={({ isActive }) =>
-                "border-b-2 py-3 text-[13px] font-medium transition-colors hover:text-orange-500 " +
+                "whitespace-nowrap border-b-2 py-3 text-xs font-medium transition-colors hover:text-orange-500 " +
                 (isActive
                   ? "border-orange-500 text-slate-950"
                   : "border-transparent text-slate-600")
@@ -90,21 +115,14 @@ export default function Navbar() {
             </NavLink>
           ))}
         </nav>
-        <form
-          onSubmit={search}
-          role="search"
-          className="hidden max-w-[260px] flex-1 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-3 lg:flex"
-        >
-          <Search size={16} className="shrink-0 text-slate-500" />
-          <input
-            aria-label="Search projects"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search projects, tech, or categories..."
-            className="w-full bg-transparent text-[11px] outline-none"
-          />
-        </form>
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="relative hidden max-w-[220px] min-w-[150px] flex-1 lg:block">
+          <form onSubmit={search} role="search" className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-3">
+            <Search size={16} className="shrink-0 text-slate-500" />
+            <input aria-label="Search all Codebricket features" value={query} onFocus={() => setSearchOpen(true)} onChange={(e) => { setQuery(e.target.value); setSearchOpen(true); }} placeholder="Search everything..." className="w-full bg-transparent text-[11px] outline-none" />
+          </form>
+          {searchOpen && query.trim().length >= 2 && <SearchSuggestions results={results} searching={searching} query={query} onSelect={() => setSearchOpen(false)} onSeeAll={search} />}
+        </div>
+        <div className="hidden shrink-0 items-center gap-2 md:flex">
           <Link
             to="/sourcecode-order"
             aria-label="My projects"
@@ -162,21 +180,22 @@ export default function Navbar() {
           aria-label="Mobile navigation"
           className="border-t border-slate-100 bg-white px-5 pb-5 min-[1360px]:hidden"
         >
-          <form
-            onSubmit={search}
-            className="my-4 flex gap-2 rounded-xl bg-slate-50 p-3"
-          >
+          <div className="relative">
+          <form onSubmit={search} className="my-4 flex gap-2 rounded-xl bg-slate-50 p-3">
             <input
-              aria-label="Search projects on mobile"
+              aria-label="Search all Codebricket features"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search projects..."
+              onFocus={() => setSearchOpen(true)}
+              onChange={(e) => { setQuery(e.target.value); setSearchOpen(true); }}
+              placeholder="Search everything..."
               className="min-w-0 flex-1 bg-transparent outline-none"
             />
             <button aria-label="Submit search">
               <Search size={20} />
             </button>
           </form>
+          {searchOpen && query.trim().length >= 2 && <SearchSuggestions results={results} searching={searching} query={query} onSelect={() => setSearchOpen(false)} onSeeAll={search} />}
+          </div>
           {[
             ...links,
             ["My projects", "/sourcecode-order"],
@@ -209,5 +228,21 @@ export default function Navbar() {
         </nav>
       )}
     </header>
+  );
+}
+
+function SearchSuggestions({ results, searching, query, onSelect, onSeeAll }) {
+  return (
+    <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[65vh] min-w-[280px] overflow-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+      <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">Search results</p>
+      {searching ? <p className="px-3 py-4 text-sm text-slate-500">Searching…</p> : results.length ? results.map((item, index) => (
+        <Link key={`${item.type}-${item.path}-${index}`} to={item.path} onClick={onSelect} className="block rounded-xl px-3 py-2.5 hover:bg-orange-50">
+          <span className="block text-[10px] font-bold uppercase tracking-wide text-orange-600">{item.type}</span>
+          <span className="mt-0.5 block truncate text-sm font-semibold text-slate-900">{item.title}</span>
+          {item.description && <span className="mt-0.5 block truncate text-xs text-slate-500">{item.description}</span>}
+        </Link>
+      )) : <p className="px-3 py-4 text-sm text-slate-500">No matches for “{query}”.</p>}
+      <button type="button" onClick={onSeeAll} className="mt-1 w-full rounded-xl border-t border-slate-100 px-3 py-3 text-left text-xs font-bold text-slate-700 hover:bg-slate-50">See all results →</button>
+    </div>
   );
 }
