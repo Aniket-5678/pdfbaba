@@ -21,6 +21,7 @@ export default function Navbar() {
     ["Projects", "/service"],
     ["Categories", "/categories"],
     ["Notes", "/notes"],
+    ["YouTube Tutorials", "/learning-hub"],
     ["Roadmaps", "/exam-roadmap"],
     ["Practice", "/practice-quiz"],
     ["Coding", "/coding-practice"],

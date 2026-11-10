@@ -46,6 +46,8 @@ import AdminSourceCodeUpdateDelete from "./components/pages/admin/AdminSourceCod
 import AdminUserSourceCodeOrder from "./components/pages/admin/AdminUserSourceCodeOrder";
 import DeveloperConnect from "./components/pages/DeveloperConnect";
 import DeveloperRequests from "./components/pages/admin/DeveloperRequests";
+import LearningHub from "./components/pages/LearningHub";
+import LearningTutorialManager from "./components/pages/admin/LearningTutorialManager";
 const WebsiteBuilder = lazy(() => import("./components/pages/WebsiteBuilder"));
 const PublicWebsite = lazy(() => import("./components/pages/WebsiteBuilder").then(module => ({ default: module.PublicWebsite })));
 
@@ -68,6 +70,7 @@ function App() {
           />
           <Route path="/learn/:topic" element={<LearningPage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/learning-hub" element={<LearningHub />} />
           <Route path="/notes" element={<NotesLibrary />} />
           <Route path="/notes-category/:category" element={<NotesLibrary />} />
           <Route path="/note/:slug" element={<NoteDetail />} />
@@ -126,6 +129,7 @@ function App() {
               element={<AdminUserSourceCodeOrder />}
             />
             <Route path="admin/developer-requests" element={<DeveloperRequests />} />
+            <Route path="admin/learning-hub" element={<LearningTutorialManager />} />
           </Route>
         </Routes>
       </div>

@@ -12,12 +12,22 @@ import {
   Smartphone,
   LayoutGrid,
   Code2,
+  Youtube,
 } from "lucide-react";
 import { FaReact, FaNodeJs } from "react-icons/fa";
 export default function HomePage() {
   return (
     <Layout>
       <Banner />
+      <section className="mx-auto max-w-[1360px] px-5 py-8 sm:px-10 sm:py-10">
+        <Link to="/learning-hub" className="group flex flex-col justify-between gap-5 overflow-hidden rounded-3xl border border-violet-100 bg-gradient-to-r from-violet-50 via-white to-orange-50 p-6 shadow-sm transition hover:shadow-lg sm:flex-row sm:items-center sm:p-8">
+          <div className="flex items-start gap-4">
+            <span className="rounded-2xl bg-white p-3 text-red-600 shadow-sm"><Youtube size={26} /></span>
+            <div><p className="text-[10px] font-extrabold uppercase tracking-[.16em] text-violet-700">Your next learning step</p><h2 className="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">YouTube Tutorials</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Find programming tutorials and recommended YouTube channels, organized by language.</p></div>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-sm font-bold text-white transition group-hover:bg-violet-700">Explore tutorials <ArrowRight size={16} /></span>
+        </Link>
+      </section>
       <CodingPracticeSection />
       <WebsiteBuilderSection />
       <section className="mx-auto max-w-[1360px] border-t border-slate-100 px-5 py-9 sm:px-10">

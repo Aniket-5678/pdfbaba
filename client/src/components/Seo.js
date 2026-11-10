@@ -7,6 +7,10 @@ const pages = {
     "Programming Study Notes & Learning Library",
     "Browse programming and technology notes by category. Find clear explanations and examples, then use tags to guide your next study session on Codebricket.",
   ],
+  "/learning-hub": [
+    "Programming Tutorials & YouTube Channels",
+    "Find curated programming tutorials and recommended YouTube channels by language. Explore practical learning guides for Python, JavaScript, Java and more on Codebricket.",
+  ],
   "/domain-suggestor": [
     "Domain Name Ideas",
     "Explore domain name ideas for your next project on Codebricket.",

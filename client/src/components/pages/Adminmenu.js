@@ -11,6 +11,7 @@ import {
   Plus,
   BriefcaseBusiness,
   Braces,
+  Youtube,
 } from "lucide-react";
 export const adminLinks = [
   ["Overview", "/dashboard/admin", LayoutDashboard],
@@ -22,6 +23,7 @@ export const adminLinks = [
   ["Coding questions", "/dashboard/admin/coding-questions", Braces],
   ["Create roadmap", "/dashboard/admin/createroadmap", Plus],
   ["Manage roadmaps", "/dashboard/admin/roadmaplist", Route],
+  ["Learning Hub", "/dashboard/admin/learning-hub", Youtube],
   ["Create project", "/dashboard/admin/sourcecode", Plus],
   ["Manage projects", "/dashboard/admin/sourcecodeupdatedelete", Code2],
   ["Orders", "/dashboard/admin/usersourcecodeorder", ShoppingBag],
