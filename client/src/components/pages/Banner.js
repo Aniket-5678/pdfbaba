@@ -16,6 +16,7 @@ import {
   Check,
   Leaf,
   WandSparkles,
+  Youtube,
 } from "lucide-react";
 import { FaReact, FaNodeJs, FaBootstrap } from "react-icons/fa";
 export default function Banner() {
@@ -70,6 +71,16 @@ export default function Banner() {
             >
               <Code2 size={18} /> Practice coding in any language
               <ArrowRight size={18} />
+            </Link>
+            <Link
+              to="/learning-hub"
+              className="group inline-flex items-center gap-3 rounded-2xl border border-red-200/80 bg-white px-6 py-4 text-sm font-bold text-slate-800 shadow-lg shadow-red-100/60 transition duration-200 hover:-translate-y-1 hover:border-red-300 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-red-600 text-white shadow-sm transition group-hover:scale-105">
+                <Youtube size={17} />
+              </span>
+              YouTube Tutorials
+              <ArrowRight size={17} className="text-red-600 transition group-hover:translate-x-1" />
             </Link>
             <a
               href="#projects"

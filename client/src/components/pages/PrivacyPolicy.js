@@ -521,7 +521,7 @@ const PrivacyPolicy = () => {
                           </p>
 
                           <p className="mt-1 text-sm font-medium">
-                            [Your Official Codebricket Support Email]
+                            pdfbaba07@gmail.com
                           </p>
                         </div>
 

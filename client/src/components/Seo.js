@@ -8,8 +8,8 @@ const pages = {
     "Browse programming and technology notes by category. Find clear explanations and examples, then use tags to guide your next study session on Codebricket.",
   ],
   "/learning-hub": [
-    "Programming Tutorials & YouTube Channels",
-    "Find curated programming tutorials and recommended YouTube channels by language. Explore practical learning guides for Python, JavaScript, Java and more on Codebricket.",
+    "Free Programming YouTube Tutorials by Language",
+    "Discover curated free programming tutorials and trusted YouTube channels by language. Find learning guides for Python, JavaScript, Java and more, then open lessons directly on YouTube.",
   ],
   "/domain-suggestor": [
     "Domain Name Ideas",
@@ -127,7 +127,7 @@ export default function Seo({ title, description, product }) {
             "Publish a shareable website",
           ],
         }
-      : ["/exam-roadmap", "/practice-quiz"].includes(pathname)
+    : ["/exam-roadmap", "/practice-quiz", "/learning-hub"].includes(pathname)
         ? {
             "@context": "https://schema.org",
             "@type": "CollectionPage",

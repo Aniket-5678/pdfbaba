@@ -7,7 +7,9 @@ import {
   BookOpen,
   Check,
   ChevronDown,
+  CirclePlay,
   Search,
+  X,
   Youtube,
 } from "lucide-react";
 import Layout from "../Layout/Layout";
@@ -74,18 +76,18 @@ export default function LearningHub() {
         <section className="relative isolate overflow-hidden border-b border-violet-100 bg-white">
           <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-40 -z-10 h-[32rem] w-[32rem] rounded-full bg-violet-100/70 blur-3xl" />
           <div aria-hidden="true" className="pointer-events-none absolute -left-36 top-20 -z-10 h-72 w-72 rounded-full bg-orange-100/60 blur-3xl" />
-          <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1fr_300px] lg:items-center lg:py-20">
+          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-10 sm:py-14 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center lg:gap-12 lg:py-16">
             <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50/80 px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[.16em] text-violet-700 sm:text-xs"><BookOpen size={15} /> Curated learning guides</span>
-              <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-[-.04em] text-slate-950 sm:text-5xl lg:text-[3.5rem]">Learn programming from <span className="text-violet-600">great teachers.</span></h1>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">Explore hand-picked YouTube tutorials by programming language. Find a channel that fits your next topic and start learning with a clear direction.</p>
-              <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-slate-500"><span className="inline-flex items-center gap-2"><Check size={15} className="text-emerald-600" /> Language-based discovery</span><span className="inline-flex items-center gap-2"><Check size={15} className="text-emerald-600" /> Direct channel links</span></div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50/80 px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[.16em] text-violet-700 sm:text-xs"><BookOpen size={15} /> Your free programming learning hub</span>
+              <h1 className="mt-5 max-w-3xl text-[2.15rem] font-extrabold leading-[1.08] tracking-[-.045em] text-slate-950 sm:text-5xl lg:text-[3.65rem]">Find a course worth watching. <span className="text-violet-600">Start learning today.</span></h1>
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">Skip the endless YouTube search. Choose a programming language, explore curated learning guides and channels, then open the lessons directly on YouTube—free and at your own pace.</p>
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2.5 text-xs font-semibold text-slate-600 sm:text-sm"><span className="inline-flex items-center gap-2"><Check size={15} className="text-emerald-600" /> Browse by language</span><span className="inline-flex items-center gap-2"><Check size={15} className="text-emerald-600" /> Curated channels</span><span className="inline-flex items-center gap-2"><CirclePlay size={15} className="text-red-600" /> Go straight to YouTube</span></div>
             </div>
-            <div className="hidden rounded-3xl border border-slate-200/80 bg-white/80 p-6 shadow-[0_20px_60px_-35px_rgba(57,37,100,.35)] backdrop-blur-sm lg:block">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-600"><Youtube size={25} /></div>
-              <p className="mt-5 text-3xl font-extrabold tracking-tight text-slate-950">{tutorials.length}</p>
-              <p className="mt-1 text-sm font-semibold text-slate-700">curated learning guides</p>
-              <p className="mt-4 border-t border-slate-100 pt-4 text-xs leading-5 text-slate-500">Browse the collection and choose a programming language to get started.</p>
+            <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-[0_20px_60px_-35px_rgba(57,37,100,.3)] backdrop-blur-sm sm:flex sm:items-center sm:gap-4 sm:p-5 lg:block lg:rounded-3xl lg:p-6">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600"><Youtube size={23} /></div>
+              <div className="mt-3 sm:mt-0 lg:mt-5"><p className="text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">{tutorials.length}</p>
+              <p className="mt-0.5 text-sm font-semibold text-slate-700">curated learning guides</p></div>
+              <p className="mt-3 border-t border-slate-100 pt-3 text-xs leading-5 text-slate-500 sm:ml-auto sm:mt-0 sm:border-0 sm:pt-0 lg:mt-4 lg:border-t lg:pt-4">Pick a language below and find a clear place to start.</p>
             </div>
           </div>
         </section>
@@ -93,11 +95,16 @@ export default function LearningHub() {
         <section className="mx-auto max-w-7xl px-5 py-9 sm:px-10 sm:py-12">
           <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div><p className="text-[10px] font-extrabold uppercase tracking-[.16em] text-violet-700">Explore the collection</p><h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">Programming tutorials</h2><p className="mt-2 text-sm text-slate-500">Find a language, topic, or channel to begin.</p></div>
-            <p className="text-xs font-medium text-slate-500">{filtered.length} {filtered.length === 1 ? "guide" : "guides"} available</p>
+            <p aria-live="polite" className="text-xs font-medium text-slate-500">{filtered.length} {filtered.length === 1 ? "guide" : "guides"} {query || language !== "All languages" ? "found" : "to explore"}</p>
           </div>
 
+          {!loading && !error && languages.length > 1 && <div className="mb-4 flex min-w-0 gap-2 overflow-x-auto pb-1 [scrollbar-width:thin]" aria-label="Quick language filters">
+            {languages.slice(0, 7).map((item) => <button key={item} type="button" onClick={() => updateFilter(setLanguage, item)} aria-pressed={language === item} className={"shrink-0 rounded-full border px-3.5 py-2 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 " + (language === item ? "border-violet-600 bg-violet-600 text-white shadow-sm shadow-violet-200" : "border-slate-200 bg-white text-slate-600 hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700")}>{item === "All languages" ? "All languages" : item}</button>)}
+            {languages.length > 7 && <span className="flex shrink-0 items-center px-2 text-[11px] font-medium text-slate-400">More languages in filters</span>}
+          </div>}
+
           <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:grid-cols-[minmax(0,1fr)_240px]">
-            <label className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3.5 focus-within:ring-2 focus-within:ring-violet-200"><Search size={17} className="shrink-0 text-slate-400" /><span className="sr-only">Search tutorials</span><input value={query} onChange={(e) => updateFilter(setQuery, e.target.value)} placeholder="Search by language, topic, or channel" className="w-full bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400" /></label>
+            <label className="flex min-w-0 items-center gap-3 rounded-xl bg-slate-50 px-4 py-3.5 focus-within:ring-2 focus-within:ring-violet-200"><Search size={17} className="shrink-0 text-slate-400" /><span className="sr-only">Search tutorials</span><input value={query} onChange={(e) => updateFilter(setQuery, e.target.value)} placeholder="Search language, topic, or channel" className="min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400" />{query && <button type="button" onClick={() => updateFilter(setQuery, "")} aria-label="Clear search" className="grid h-7 w-7 shrink-0 place-items-center rounded-lg text-slate-400 transition hover:bg-white hover:text-slate-700"><X size={15} /></button>}</label>
             <label className="relative flex items-center rounded-xl border border-slate-200 bg-white px-4 focus-within:border-violet-400"><span className="mr-3 text-xs font-semibold text-slate-500">Language</span><span className="sr-only">Filter by language</span><select value={language} onChange={(e) => updateFilter(setLanguage, e.target.value)} className="min-w-0 flex-1 appearance-none bg-transparent py-3 text-sm font-bold text-slate-800 outline-none"><option>All languages</option>{languages.slice(1).map((item) => <option key={item}>{item}</option>)}</select><ChevronDown size={15} className="pointer-events-none text-slate-400" /></label>
           </div>
 
@@ -110,7 +117,7 @@ export default function LearningHub() {
                 <div className="flex items-start justify-between gap-3"><span className="rounded-full bg-violet-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.12em] text-violet-700">{item.language}</span><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600 transition group-hover:bg-red-600 group-hover:text-white"><Youtube size={18} /></span></div>
                 <h3 className="mt-5 text-lg font-bold leading-snug tracking-tight text-slate-950">{item.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{item.description}</p>
-                <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-100 pt-4"><div className="min-w-0"><p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Recommended channel</p><p className="mt-1 truncate text-sm font-bold text-slate-800">{item.channelName}</p></div><a href={item.channelUrl} target="_blank" rel="noreferrer" aria-label={`Visit ${item.channelName} YouTube channel`} className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-slate-950 px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-violet-700">Visit channel <ArrowUpRight size={14} /></a></div>
+                <div className="mt-5 flex flex-col items-stretch gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Recommended channel</p><p className="mt-1 truncate text-sm font-bold text-slate-800">{item.channelName}</p></div><a href={item.channelUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${item.channelName} YouTube channel`} className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl bg-slate-950 px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2">Visit channel <ArrowUpRight size={14} /></a></div>
               </article>)}
             </div>
 
