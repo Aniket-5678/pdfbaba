@@ -20,9 +20,22 @@ export default function LearningHub() {
   const [tutorials, setTutorials] = useState([]);
   const [language, setLanguage] = useState("All languages");
   const [query, setQuery] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!searching) return undefined;
+    const timeout = window.setTimeout(() => setSearching(false), 450);
+    return () => window.clearTimeout(timeout);
+  }, [searching, searchTerm]);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setSearchTerm(query), 300);
+    return () => window.clearTimeout(timeout);
+  }, [query]);
 
   useEffect(() => {
     let active = true;
@@ -47,13 +60,13 @@ export default function LearningHub() {
     [tutorials],
   );
   const filtered = useMemo(() => {
-    const term = query.trim().toLowerCase();
+    const term = searchTerm.trim().toLowerCase();
     return tutorials.filter((item) => {
       const matchesLanguage = language === "All languages" || item.language === language;
       const searchable = `${item.language} ${item.title} ${item.description} ${item.channelName}`.toLowerCase();
       return matchesLanguage && (!term || searchable.includes(term));
     });
-  }, [tutorials, language, query]);
+  }, [tutorials, language, searchTerm]);
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, pageCount);
   const firstVisiblePage = Math.max(1, Math.min(currentPage - 2, pageCount - 4));
@@ -68,6 +81,13 @@ export default function LearningHub() {
   function updateFilter(setter, value) {
     setter(value);
     setPage(1);
+  }
+
+  function submitSearch(event) {
+    event.preventDefault();
+    setSearchTerm(query);
+    setPage(1);
+    setSearching(true);
   }
 
   return (
@@ -104,14 +124,21 @@ export default function LearningHub() {
           </div>}
 
           <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:grid-cols-[minmax(0,1fr)_240px]">
-            <label className="flex min-w-0 items-center gap-3 rounded-xl bg-slate-50 px-4 py-3.5 focus-within:ring-2 focus-within:ring-violet-200"><Search size={17} className="shrink-0 text-slate-400" /><span className="sr-only">Search tutorials</span><input value={query} onChange={(e) => updateFilter(setQuery, e.target.value)} placeholder="Search language, topic, or channel" className="min-w-0 flex-1 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400" />{query && <button type="button" onClick={() => updateFilter(setQuery, "")} aria-label="Clear search" className="grid h-7 w-7 shrink-0 place-items-center rounded-lg text-slate-400 transition hover:bg-white hover:text-slate-700"><X size={15} /></button>}</label>
+            <form role="search" onSubmit={submitSearch} className="flex min-w-0 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 transition focus-within:border-violet-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-violet-100">
+              <Search size={18} aria-hidden="true" className="shrink-0 text-violet-500" />
+              <label className="sr-only" htmlFor="learning-hub-search">Search tutorials</label>
+              <input id="learning-hub-search" type="search" autoComplete="off" value={query} onChange={(e) => updateFilter(setQuery, e.target.value)} placeholder="Search languages, topics, guides, or channels" className="min-w-0 flex-1 bg-transparent py-3.5 text-sm text-slate-800 outline-none placeholder:text-slate-400" />
+              {query && <button type="button" onClick={() => { updateFilter(setQuery, ""); setSearchTerm(""); }} aria-label="Clear search" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-400 transition hover:bg-violet-50 hover:text-violet-700"><X size={16} /></button>}
+              <button type="submit" className="hidden shrink-0 items-center gap-2 rounded-lg bg-violet-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 sm:inline-flex">Search <span aria-hidden="true" className="text-violet-200">↵</span></button>
+            </form>
             <label className="relative flex items-center rounded-xl border border-slate-200 bg-white px-4 focus-within:border-violet-400"><span className="mr-3 text-xs font-semibold text-slate-500">Language</span><span className="sr-only">Filter by language</span><select value={language} onChange={(e) => updateFilter(setLanguage, e.target.value)} className="min-w-0 flex-1 appearance-none bg-transparent py-3 text-sm font-bold text-slate-800 outline-none"><option>All languages</option>{languages.slice(1).map((item) => <option key={item}>{item}</option>)}</select><ChevronDown size={15} className="pointer-events-none text-slate-400" /></label>
           </div>
 
+          {query.trim() && searchTerm !== query && <p role="status" className="mt-3 text-xs text-slate-500">Searching as you type… Press Enter to search now.</p>}
           {error && <p role="alert" className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">{error}</p>}
-          {loading && <div role="status" aria-label="Loading tutorial guides" className="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">{Array.from({ length: 6 }, (_, index) => <div key={index} className="min-w-0 animate-pulse rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"><div className="flex items-center justify-between"><div className="h-6 w-24 rounded-full bg-violet-50" /><div className="h-9 w-9 rounded-xl bg-red-50" /></div><div className="mt-5 h-5 w-3/4 rounded bg-slate-100" /><div className="mt-4 space-y-2"><div className="h-3 rounded bg-slate-100" /><div className="h-3 rounded bg-slate-100" /><div className="h-3 w-4/5 rounded bg-slate-100" /></div><div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-4"><div className="space-y-2"><div className="h-2.5 w-28 rounded bg-slate-100" /><div className="h-3.5 w-36 rounded bg-slate-100" /></div><div className="h-10 w-28 rounded-xl bg-slate-100" /></div></div>)}</div>}
+          {(loading || searching) && <div role="status" aria-label={searching ? "Searching tutorial guides" : "Loading tutorial guides"} className="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">{Array.from({ length: 6 }, (_, index) => <div key={index} className="min-w-0 animate-pulse rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"><div className="flex items-center justify-between"><div className="h-6 w-24 rounded-full bg-violet-50" /><div className="h-9 w-9 rounded-xl bg-red-50" /></div><div className="mt-5 h-5 w-3/4 rounded bg-slate-100" /><div className="mt-4 space-y-2"><div className="h-3 rounded bg-slate-100" /><div className="h-3 rounded bg-slate-100" /><div className="h-3 w-4/5 rounded bg-slate-100" /></div><div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-4"><div className="space-y-2"><div className="h-2.5 w-28 rounded bg-slate-100" /><div className="h-3.5 w-36 rounded bg-slate-100" /></div><div className="h-10 w-28 rounded-xl bg-slate-100" /></div></div>)}</div>}
 
-          {!loading && !error && pageItems.length > 0 && <>
+          {!loading && !searching && !error && pageItems.length > 0 && <>
             <div className="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
               {pageItems.map((item) => <article key={item._id} className="group flex min-w-0 min-h-[250px] flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_25px_-20px_rgba(15,23,42,.4)] transition duration-200 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_20px_45px_-25px_rgba(76,29,149,.28)] sm:min-h-[270px] sm:p-6">
                 <div className="flex items-start justify-between gap-3"><span className="rounded-full bg-violet-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[.12em] text-violet-700">{item.language}</span><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-50 text-red-600 transition group-hover:bg-red-600 group-hover:text-white"><Youtube size={18} /></span></div>
@@ -131,7 +158,7 @@ export default function LearningHub() {
             </div>}
           </>}
 
-          {!loading && !error && pageItems.length === 0 && <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-50 text-violet-600"><Search size={22} /></span><h3 className="mt-5 text-lg font-bold text-slate-900">No matching guides</h3><p className="mt-2 text-sm text-slate-500">Try another search or choose a different language.</p><button onClick={() => { setQuery(""); setLanguage("All languages"); setPage(1); }} className="mt-5 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:border-violet-200 hover:text-violet-700">Clear filters</button></div>}
+          {!loading && !searching && !error && pageItems.length === 0 && <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-50 text-violet-600"><Search size={22} /></span><h3 className="mt-5 text-lg font-bold text-slate-900">No matching guides</h3><p className="mt-2 text-sm text-slate-500">Try another search or choose a different language.</p><button onClick={() => { setQuery(""); setSearchTerm(""); setLanguage("All languages"); setPage(1); }} className="mt-5 rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:border-violet-200 hover:text-violet-700">Clear filters</button></div>}
         </section>
       </div>
     </Layout>
